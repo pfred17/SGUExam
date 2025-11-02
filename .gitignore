@@ -1,0 +1,81 @@
+## Ignore Visual Studio temporary files, build results, and personal settings
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options directory
+.vs/
+
+# Visual Studio 2019/2022 auto-generated files
+Generated\ Files/
+
+# Build results of Web projects
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Uncomment if using optional tasks.json for build system
+# *.tasks.json
+
+# Others
+*_i.c
+*_p.c
+*_h.h
+*.dbmdl
+*.bak
+*.backup
+*.tmp
+*.temp
+*.log
+
+# Publish output
+publish/
+dist/
+out/
+Debug/
+Release/
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored except for build scripts
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.snupkg
+
+# Azure and other deployment files
+.publishsettings
+*.pubxml
+*.pubxml.user
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code workspace
+.vscode/
+
+# Git folder itself
+.git/
+
+# Others
+*.DS_Store
+*.vsidx
+*.sqlite
+*.db
