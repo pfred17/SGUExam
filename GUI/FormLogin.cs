@@ -1,14 +1,5 @@
 ﻿using BLL;
 using DTO;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace GUI
 {
@@ -34,7 +25,7 @@ namespace GUI
             }
 
             // Chuyển qua form chính và truyền role
-            MainForm main = new MainForm(user.Role);
+            MainForm main = new MainForm(user);
             main.Show();
             this.Hide();
         }

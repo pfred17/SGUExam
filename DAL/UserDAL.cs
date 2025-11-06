@@ -23,14 +23,37 @@ namespace DAL
             DataRow row = dt.Rows[0];
             return new UserDTO
             {
-                MaNguoiDung = Convert.ToInt32(row["ma_nd"]),
+                MSSV = row["ma_nd"].ToString(),
                 TenDangNhap = row["ten_dang_nhap"].ToString(),
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
                 Role = row["loai_nd"].ToString(),
+                GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
+
+        public List<UserDTO> getAllUsers()
+        {
+            string query = "SELECT * FROM nguoi_dung";
+            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+            List<UserDTO> users = new List<UserDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                users.Add(new UserDTO
+                {
+                    MSSV = row["ma_nd"].ToString(),
+                    TenDangNhap = row["ten_dang_nhap"].ToString(),
+                    MatKhau = row["mat_khau"].ToString(),
+                    HoTen = row["ho_ten"].ToString(),
+                    Email = row["email"].ToString(),
+                    Role = row["loai_nd"].ToString(),
+                    GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
+                });
+            }
+            return users;
+        }   
     }
 }

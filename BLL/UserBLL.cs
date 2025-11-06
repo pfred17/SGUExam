@@ -11,5 +11,10 @@ namespace BLL
         {
             return dal.CheckLogin(username, password);
         }
+
+        public List<UserDTO> GetAllUsers()
+        {
+            return dal.getAllUsers();
+        }
     }
 }

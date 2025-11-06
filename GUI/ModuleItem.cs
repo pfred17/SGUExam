@@ -8,6 +8,7 @@ namespace GUI
 {
     public class ModuleItem
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Group { get; set; }

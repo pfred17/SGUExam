@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GUI
+namespace GUI.forms.nguoidung
 {
-    public partial class TongQuan : UserControl
+    public partial class Them : Form
     {
-        public TongQuan()
+        public Them()
         {
             InitializeComponent();
+        }
+
+        private void guna2HtmlLabel2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
