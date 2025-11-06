@@ -53,6 +53,7 @@
             // 
             // tableNguoiDung
             // 
+            tableNguoiDung.AllowUserToAddRows = false;
             dataGridViewCellStyle1.BackColor = Color.White;
             tableNguoiDung.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -208,6 +209,7 @@
             // guna2Button1
             // 
             guna2Button1.BorderRadius = 2;
+            guna2Button1.Cursor = Cursors.Hand;
             guna2Button1.CustomizableEdges = customizableEdges5;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;

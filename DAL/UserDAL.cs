@@ -54,6 +54,31 @@ namespace DAL
                 });
             }
             return users;
-        }   
+        }
+
+        public bool CreateUser(UserDTO userDTO)
+        {
+            string query = @"INSERT INTO nguoi_dung 
+                        (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, loai_nd, trang_thai)
+                     VALUES 
+                        (@MSSV, @TenDangNhap, @MatKhau, @HoTen, @Email, @GioiTinh, @LoaiNguoiDung, @TrangThai)";
+
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@MSSV", userDTO.MSSV),
+                new SqlParameter("@TenDangNhap", userDTO.TenDangNhap),
+                new SqlParameter("@MatKhau", userDTO.MatKhau),
+                new SqlParameter("@HoTen", userDTO.HoTen),
+                new SqlParameter("@Email", userDTO.Email),
+                new SqlParameter("@GioiTinh", userDTO.GioiTinh),
+                new SqlParameter("@LoaiNguoiDung", userDTO.Role),
+                new SqlParameter("@TrangThai", userDTO.TrangThai)
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+
+            return rows > 0;
+        }
+
     }
 }

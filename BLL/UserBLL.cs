@@ -16,5 +16,11 @@ namespace BLL
         {
             return dal.getAllUsers();
         }
+
+        public bool CreateUser(UserDTO userDTO)
+        {
+            bool isCreated = dal.CreateUser(userDTO);
+            return isCreated;
+        }
     }
 }
