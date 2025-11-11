@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GUI
+namespace GUI.forms.nguoidung
 {
-    public partial class TongQuan : UserControl
+    public partial class Sua : Form
     {
-        public TongQuan()
+        public Sua()
         {
             InitializeComponent();
         }

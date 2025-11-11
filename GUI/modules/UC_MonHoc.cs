@@ -14,10 +14,14 @@ namespace GUI.modules
 {
     public partial class UC_MonHoc : UserControl
     {
+        private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+        public UC_MonHoc(string userId)
         private readonly MonHocBLL monHocBLL = new MonHocBLL();
         private List<MonHocDTO>? listMonHoc;
         public UC_MonHoc()
         {
+            _userId = userId;
             InitializeComponent();
             SetupDataGridView();
             LoadMonHocData();

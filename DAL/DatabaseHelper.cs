@@ -11,9 +11,7 @@ namespace DAL
 
         public static SqlConnection GetConnection()
         {
-            var conn = new SqlConnection(connectionString);
-            conn.Open();
-            return conn;
+            return new SqlConnection(connectionString);
         }
 
         public static DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
