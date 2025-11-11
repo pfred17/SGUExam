@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using DTO;
 using Microsoft.Data.SqlClient;
 
 namespace DAL

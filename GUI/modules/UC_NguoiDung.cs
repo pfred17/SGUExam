@@ -1,16 +1,6 @@
 ﻿using BLL;
 using GUI.forms.nguoidung;
 using Guna.UI2.WinForms;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace GUI.modules
 {
@@ -45,12 +35,26 @@ namespace GUI.modules
                     Size = new Size(30, 30),
                 };
 
-                tableNguoiDung.Rows.Add(
+                int rowIndex = tableNguoiDung.Rows.Add(
                     user.MSSV, user.HoTen,
                     user.Email, user.Role,
                     user.TrangThai == 1 ? "Hoạt động" : "Bị khóa",
                     Properties.Resources.icon_edit,
                     Properties.Resources.icon_delete);
+
+                DataGridViewRow row = tableNguoiDung.Rows[rowIndex];
+                DataGridViewCell cellTrangThai = row.Cells[4]; // cột trạng thái
+
+                if (user.TrangThai == 1)
+                {
+                    cellTrangThai.Style.ForeColor = Color.Green;
+                    cellTrangThai.Style.Font = new Font(tableNguoiDung.Font, FontStyle.Bold);
+                }
+                else
+                {
+                    cellTrangThai.Style.ForeColor = Color.Red;
+                    cellTrangThai.Style.Font = new Font(tableNguoiDung.Font, FontStyle.Bold);
+                }
             }
         }
 
@@ -122,7 +126,15 @@ namespace GUI.modules
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            new Them().Show();
+            Them formThem = new Them();
+
+            // Đăng ký lắng nghe sự kiện UserAdded từ form Them
+            formThem.UserAdded += (s, ev) =>
+            {
+                loadDataForTable(); // Gọi lại hàm load dữ liệu khi thêm thành công
+            };
+
+            formThem.ShowDialog();
         }
     }
 }
