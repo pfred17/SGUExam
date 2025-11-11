@@ -50,7 +50,7 @@ namespace GUI.forms.nguoidung
 
             try
             {
-                _userBLL.CreateUser(user);
+                _userBLL.CreateNewUser(user);
                 MessageBox.Show("Thêm người dùng thành công!", "Thành công",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 // Gọi event báo ra ngoài là đã thêm user thành công
