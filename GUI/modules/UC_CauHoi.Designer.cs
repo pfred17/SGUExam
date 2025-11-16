@@ -35,19 +35,21 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(399, 283);
+            guna2HtmlLabel1.Location = new Point(499, 354);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(166, 47);
+            guna2HtmlLabel1.Size = new Size(201, 56);
             guna2HtmlLabel1.TabIndex = 1;
             guna2HtmlLabel1.Text = "UC_CauHoi";
             // 
             // UC_CauHoi
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_CauHoi";
-            Size = new Size(933, 653);
+            Size = new Size(1120, 730);
             ResumeLayout(false);
             PerformLayout();
         }

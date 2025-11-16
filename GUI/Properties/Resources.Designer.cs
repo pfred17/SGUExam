@@ -103,6 +103,16 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap gear_16600271 {
+            get {
+                object obj = ResourceManager.GetObject("gear_16600271", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap hocphan_dark {
             get {
                 object obj = ResourceManager.GetObject("hocphan_dark", resourceCulture);
@@ -216,6 +226,16 @@ namespace GUI.Properties {
         internal static System.Drawing.Bitmap phanquyen_white {
             get {
                 object obj = ResourceManager.GetObject("phanquyen_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap settings {
+            get {
+                object obj = ResourceManager.GetObject("settings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

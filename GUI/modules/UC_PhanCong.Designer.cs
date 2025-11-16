@@ -35,19 +35,21 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(352, 279);
+            guna2HtmlLabel1.Location = new Point(440, 349);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(210, 47);
+            guna2HtmlLabel1.Size = new Size(255, 56);
             guna2HtmlLabel1.TabIndex = 3;
             guna2HtmlLabel1.Text = "UC_PhanCong";
             // 
             // UC_PhanCong
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_PhanCong";
-            Size = new Size(933, 653);
+            Size = new Size(1120, 730);
             ResumeLayout(false);
             PerformLayout();
         }

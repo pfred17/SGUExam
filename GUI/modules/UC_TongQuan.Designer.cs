@@ -35,19 +35,21 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(296, 257);
+            guna2HtmlLabel1.Location = new Point(370, 321);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(331, 47);
+            guna2HtmlLabel1.Size = new Size(402, 56);
             guna2HtmlLabel1.TabIndex = 0;
             guna2HtmlLabel1.Text = "ĐÂY LÀ UC_TongQuan";
             // 
             // UC_TongQuan
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_TongQuan";
-            Size = new Size(933, 653);
+            Size = new Size(1120, 730);
             Load += UC_TongQuan_Load;
             ResumeLayout(false);
             PerformLayout();

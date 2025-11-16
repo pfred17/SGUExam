@@ -7,7 +7,7 @@ namespace DAL
     public static class DatabaseHelper
     {
         private static readonly string connectionString =
-            "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SGUExam; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
+            "Data Source = DESKTOP-U6EVNRO;Initial Catalog = SGUExam2; User ID = sa; Password=12345678;Trust Server Certificate=True";
         
 
         public static SqlConnection GetConnection()
