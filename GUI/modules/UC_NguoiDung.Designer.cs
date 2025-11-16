@@ -9,7 +9,7 @@
 
         /// <summary> 
         /// Clean up any resources being used.
-        /// </summary>
+        /// </summary> 
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
@@ -76,12 +76,13 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             tableNguoiDung.DefaultCellStyle = dataGridViewCellStyle3;
             tableNguoiDung.GridColor = Color.FromArgb(231, 229, 255);
-            tableNguoiDung.Location = new Point(43, 104);
+            tableNguoiDung.Location = new Point(38, 78);
+            tableNguoiDung.Margin = new Padding(3, 2, 3, 2);
             tableNguoiDung.Name = "tableNguoiDung";
             tableNguoiDung.RowHeadersVisible = false;
             tableNguoiDung.RowHeadersWidth = 51;
             tableNguoiDung.RowTemplate.Height = 50;
-            tableNguoiDung.Size = new Size(1041, 593);
+            tableNguoiDung.Size = new Size(911, 445);
             tableNguoiDung.TabIndex = 0;
             tableNguoiDung.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             tableNguoiDung.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -178,10 +179,11 @@
             guna2ComboBox1.ForeColor = Color.FromArgb(68, 88, 112);
             guna2ComboBox1.ItemHeight = 30;
             guna2ComboBox1.Items.AddRange(new object[] { "Tất cả", "Quản trị", "Giảng viên", "Sinh viên" });
-            guna2ComboBox1.Location = new Point(43, 37);
+            guna2ComboBox1.Location = new Point(38, 28);
+            guna2ComboBox1.Margin = new Padding(3, 2, 3, 2);
             guna2ComboBox1.Name = "guna2ComboBox1";
             guna2ComboBox1.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            guna2ComboBox1.Size = new Size(130, 36);
+            guna2ComboBox1.Size = new Size(114, 36);
             guna2ComboBox1.StartIndex = 0;
             guna2ComboBox1.TabIndex = 1;
             // 
@@ -197,14 +199,14 @@
             guna2TextBox1.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             guna2TextBox1.Font = new Font("Segoe UI", 9F);
             guna2TextBox1.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2TextBox1.Location = new Point(204, 37);
-            guna2TextBox1.Margin = new Padding(3, 4, 3, 4);
+            guna2TextBox1.Location = new Point(178, 28);
             guna2TextBox1.Name = "guna2TextBox1";
             guna2TextBox1.PlaceholderText = "";
             guna2TextBox1.SelectedText = "";
             guna2TextBox1.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            guna2TextBox1.Size = new Size(373, 36);
+            guna2TextBox1.Size = new Size(326, 27);
             guna2TextBox1.TabIndex = 2;
+            guna2TextBox1.TextChanged += guna2TextBox1_TextChanged;
             // 
             // guna2Button1
             // 
@@ -218,24 +220,26 @@
             guna2Button1.FillColor = Color.FromArgb(6, 101, 208);
             guna2Button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             guna2Button1.ForeColor = Color.White;
-            guna2Button1.Location = new Point(859, 37);
+            guna2Button1.Location = new Point(752, 28);
+            guna2Button1.Margin = new Padding(3, 2, 3, 2);
             guna2Button1.Name = "guna2Button1";
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            guna2Button1.Size = new Size(225, 36);
+            guna2Button1.Size = new Size(197, 27);
             guna2Button1.TabIndex = 3;
             guna2Button1.Text = "THÊM NGƯỜI DÙNG";
             guna2Button1.Click += guna2Button1_Click;
             // 
             // UC_NguoiDung
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2Button1);
             Controls.Add(guna2TextBox1);
             Controls.Add(guna2ComboBox1);
             Controls.Add(tableNguoiDung);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "UC_NguoiDung";
-            Size = new Size(1120, 730);
+            Size = new Size(980, 548);
             Load += UC_NguoiDung_Load;
             ((System.ComponentModel.ISupportInitialize)tableNguoiDung).EndInit();
             ResumeLayout(false);

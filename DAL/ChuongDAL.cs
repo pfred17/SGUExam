@@ -11,57 +11,110 @@ namespace DAL
 {
     public class ChuongDAL
     {
-        public List<ChuongDTO> GetAllChuong()
+        public  List<ChuongDTO> GetChuongByMonHoc(long maMonHoc)
         {
+            string query = "SELECT * FROM chuong WHERE ma_mh = @ma_mh";
+            SqlParameter[] parameters = {
+                new SqlParameter("@ma_mh", maMonHoc)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
             List<ChuongDTO> list = new List<ChuongDTO>();
-
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            {
-                string query = "SELECT ma_chuong, ten_chuong, ma mon hoc FROM chuong";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                foreach (DataRow row in dt.Rows)
                 {
                     list.Add(new ChuongDTO
                     {
-                        MaChuong = reader.GetInt64(0),
-                        TenChuong = reader.GetString(1),
-                        MaMonHoc = reader.GetInt64(2)
+                        MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                        TenChuong = Convert.ToString(row["ten_chuong"]),
+                        MaMonHoc = Convert.ToInt64(row["ma_mh"])
                     });
                 }
                 return list;
-            }
         }
 
-        public void AddRandomChuongForMonHoc(long maMonHoc)
+        public long AddChuong(ChuongDTO chuong, long maMonHoc)
         {
+            string query = @"
+                INSERT INTO chuong (ten_chuong, ma_mh)
+                OUTPUT INSERTED.ma_chuong
+                VALUES (@ten_chuong, @ma_mh)
+            ";
 
-            string[] templates = new[]
-            {
-                "Giới thiệu môn học và mục tiêu học tập",
-                "Các khái niệm cơ bản trong chương trình học",
-                "Tổng quan lý thuyết trọng tâm",
-                "Ứng dụng thực tiễn của kiến thức",
-                "Bài tập và câu hỏi ôn tập"
+            SqlParameter[] parameters = {
+                new SqlParameter("@ten_chuong", chuong.TenChuong),
+                new SqlParameter("@ma_mh", maMonHoc)
             };
 
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            {
-                var random = new Random();
-                for (int i = 0; i < 3; i++)
-                {
-                    string noiDung = templates[random.Next(templates.Length)];
+            object result = DatabaseHelper.ExecuteScalar(query, parameters);
+            return Convert.ToInt64(result);
+        }
 
-                    string query = "INSERT INTO chuong (ten_chuong, ma_mh) VALUES (@ten_chuong, @ma_mh)";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@ten_chuong", noiDung);
-                        cmd.Parameters.AddWithValue("@ma_mh", maMonHoc);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+        public bool UpdateChuong(ChuongDTO chuong)
+        {
+            string query = @"
+                UPDATE chuong
+                SET ten_chuong = @ten_chuong
+                WHERE ma_chuong = @ma_chuong;
+            ";
+
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@ma_chuong", chuong.MaChuong),
+                new SqlParameter("@ten_chuong", chuong.TenChuong),
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+
+        public bool DeleteChuong(long maChuong)
+        {
+            string query = @"DELETE FROM chuong WHERE ma_chuong = @ma_chuong";
+
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@ma_chuong", maChuong)
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+
+        public List<ChuongDTO> GetChuongPaged(long maMonHoc, int page, int pageSize)
+        {
+            string query = @"
+                SELECT * FROM chuong
+                WHERE ma_mh = @ma_mh
+                ORDER BY ma_chuong
+                OFFSET(@page - 1) * @pageSize ROWS
+                FETCH NEXT @pageSize ROWS ONLY;
+            ";
+            SqlParameter[] parameters = {
+                new SqlParameter("@ma_mh", maMonHoc),
+                new SqlParameter("@page",page),
+                new SqlParameter("@pageSize", pageSize)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            List<ChuongDTO> list = new List<ChuongDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new ChuongDTO
+                {
+                    MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                    TenChuong = Convert.ToString(row["ten_chuong"]),
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"])
+                });
             }
+
+            return list;
+        }
+
+        public int GetTotalChuongByMonHoc(long maMonHoc)
+        {
+            string query = "SELECT COUNT(*) FROM chuong WHERE ma_mh = @ma_mh";
+            SqlParameter[] parameters = {
+                new SqlParameter("@ma_mh", maMonHoc)
+            };
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query,parameters));
         }
     }
 }

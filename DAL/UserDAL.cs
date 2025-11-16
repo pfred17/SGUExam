@@ -148,6 +148,85 @@ namespace DAL
             return dt.Rows.Count > 0;
         }
 
+        public List<UserDTO> GetAllUserByRole()
+        {
+            string query = @"
+                SELECT 
+                    nd.ma_nd,
+                    nd.ho_ten,
+                    nd.email,
+                    nq.ten_nhom_quyen
+                FROM nguoi_dung AS nd
+                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                WHERE nq.ten_nhom_quyen != 'Sinh viên' AND nd.trang_thai = 1;
+            ";
 
+            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+            List<UserDTO> list = new List<UserDTO>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new UserDTO
+                {
+                    MSSV = row["ma_nd"].ToString() ?? "",
+                    HoTen = row["ho_ten"].ToString() ?? "",
+                    Email = row["email"].ToString() ?? "",
+                    Role = row["ten_nhom_quyen"].ToString() ?? "",
+                });
+            }
+
+            return list;
+        }
+        public List<UserDTO> GetUserPaged(int page, int pageSize)
+        {
+            string query = @"
+                SELECT 
+                    nd.ma_nd,
+                    nd.ho_ten,
+                    nd.email,
+                    nq.ten_nhom_quyen
+                FROM nguoi_dung AS nd
+                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                WHERE nq.ten_nhom_quyen != 'Sinh viên' AND nd.trang_thai = 1
+                ORDER BY nd.ma_nd
+                OFFSET(@page - 1) * @pageSize ROWS
+                FETCH NEXT @pageSize ROWS ONLY;
+            ";
+            SqlParameter[] parameters = {
+                new SqlParameter("@page",page),
+                new SqlParameter("@pageSize", pageSize)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            List<UserDTO> list = new List<UserDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new UserDTO
+                {
+                    MSSV = row["ma_nd"].ToString() ?? "",
+                    HoTen = row["ho_ten"].ToString() ?? "",
+                    Email = row["email"].ToString() ?? "",
+                    Role = row["ten_nhom_quyen"].ToString() ?? "",
+                });
+            }
+
+            return list;
+        }
+
+        public int GetTotalUser()
+        {
+            string query = @"
+                SELECT COUNT(*) 
+                FROM nguoi_dung AS nd
+                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                WHERE nq.ten_nhom_quyen != 'Sinh viên' 
+                  AND nd.trang_thai = 1;
+            ";
+
+            var result = DatabaseHelper.ExecuteScalar(query);
+            return result != null ? Convert.ToInt32(result) : 0;
+        }
     }
 }

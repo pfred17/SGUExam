@@ -9,16 +9,8 @@ namespace DTO
     public class ChuongDTO
     {
         public long MaChuong { get; set; }
-        public required string TenChuong { get; set; }
+        public string TenChuong { get; set; } = "";
         public long MaMonHoc { get; set; }
-
         public ChuongDTO() { }
-
-        public ChuongDTO(long maChuong, string tenChuong, long maMonHoc)
-        {
-            MaChuong = maChuong;
-            TenChuong = tenChuong;
-            MaMonHoc = maMonHoc;
-        }
     }
 }

@@ -158,5 +158,10 @@ namespace GUI.forms.nguoidung
         {
             lbErrorPassowrd.Visible = false;
         }
+
+        private void lbErrorEmail_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -1,16 +1,17 @@
-CREATE DATABASE SGUExam;
+CREATE DATABASE SGUExam2;
 GO
 
-USE SGUExam;
+USE SGUExam2;
 GO
 
 CREATE TABLE [nguoi_dung] (
-  [ma_nd] BIGINT PRIMARY KEY IDENTITY(1, 1),
+  [ma_nd] VARCHAR(255) PRIMARY KEY,
   [ten_dang_nhap] VARCHAR(50) UNIQUE NOT NULL,
   [mat_khau] VARCHAR(255) NOT NULL,
   [ho_ten] nvarchar(100) NOT NULL,
   [email] VARCHAR(100) UNIQUE NOT NULL,
   [loai_nd] nvarchar(255) NOT NULL CHECK ([loai_nd] IN (N'Sinh viên', N'Giảng viên', N'Quản trị')),
+  [gioi_tinh] TINYINT DEFAULT (1), -- 1: nam, 2: nữ
   [trang_thai] TINYINT DEFAULT (1)
 )
 GO
@@ -43,14 +44,14 @@ CREATE TABLE [nhom_quyen_chuc_nang] (
 GO
 
 CREATE TABLE [nguoi_dung_nhom_quyen] (
-  [ma_nd] BIGINT NOT NULL,
+  [ma_nd] VARCHAR(255) NOT NULL,
   [ma_nhom_quyen] BIGINT NOT NULL,
   PRIMARY KEY ([ma_nd], [ma_nhom_quyen])
 )
 GO
 
 CREATE TABLE [mon_hoc] (
-  [ma_mh] BIGINT PRIMARY KEY IDENTITY(1, 1),
+  [ma_mh] BIGINT PRIMARY KEY,
   [ten_mh] nvarchar(100) NOT NULL,
   [so_tin_chi] INT NOT NULL,
   [trang_thai] TINYINT DEFAULT (1)
@@ -85,6 +86,7 @@ CREATE TABLE [nhom_hoc_phan] (
   [ma_nhom] BIGINT PRIMARY KEY IDENTITY(1, 1),
   [ma_mh] BIGINT,
   [ten_nhom] nvarchar(100) NOT NULL,
+  [ghi_chu] nvarchar(255) NOT NULL,
   [hoc_ky] nvarchar(20) NOT NULL,
   [nam_hoc] nvarchar(20) NOT NULL,
   [trang_thai] TINYINT DEFAULT (1)
@@ -92,7 +94,7 @@ CREATE TABLE [nhom_hoc_phan] (
 GO
 
 CREATE TABLE [chi_tiet_nhom_hoc_phan] (
-  [ma_nd] BIGINT NOT NULL,
+  [ma_nd] VARCHAR(255) NOT NULL,
   [ma_nhom] BIGINT NOT NULL,
   [ma_diem_danh] BIGINT,
   PRIMARY KEY ([ma_nd], [ma_nhom])
@@ -101,9 +103,8 @@ GO
 
 CREATE TABLE [phan_cong] (
   [ma_pc] BIGINT PRIMARY KEY IDENTITY(1, 1),
-  [ma_nd] BIGINT,
-  [ma_nhom] BIGINT,
-  [vai_tro] nvarchar(255) NOT NULL CHECK ([vai_tro] IN (N'Giảng dạy', N'Hỗ trợ'))
+  [ma_nd] VARCHAR(255),
+  [ma_mh] BIGINT,
 )
 GO
 
@@ -152,7 +153,7 @@ GO
 CREATE TABLE [bai_lam] (
   [ma_bai] BIGINT PRIMARY KEY IDENTITY(1, 1),
   [ma_de] BIGINT,
-  [ma_nd] BIGINT,
+  [ma_nd] VARCHAR(255),
   [thoi_gian_bat_dau] DATETIME,
   [thoi_gian_nop] DATETIME,
   [diem] DECIMAL(5,2)
@@ -170,18 +171,9 @@ GO
 CREATE TABLE [diem_danh] (
   [ma_dd] BIGINT PRIMARY KEY IDENTITY(1, 1),
   [ma_nhom] BIGINT,
-  [ma_nd] BIGINT,
+  [ma_nd] VARCHAR(255),
   [thoi_gian] DATETIME,
   [trang_thai] TINYINT DEFAULT (1)
-)
-GO
-
-CREATE TABLE [thong_bao] (
-  [ma_tb] BIGINT PRIMARY KEY IDENTITY(1, 1),
-  [ma_nd_gui] BIGINT,
-  [tieu_de] VARCHAR(255) NOT NULL,
-  [noi_dung] TEXT NOT NULL,
-  [thoi_gian_gui] DATETIME
 )
 GO
 
@@ -218,10 +210,10 @@ GO
 ALTER TABLE [chi_tiet_nhom_hoc_phan] ADD FOREIGN KEY ([ma_nhom]) REFERENCES [nhom_hoc_phan] ([ma_nhom])
 GO
 
-ALTER TABLE [phan_cong] ADD FOREIGN KEY ([ma_nd]) REFERENCES [nguoi_dung] ([ma_nd])
+ALTER TABLE [phan_cong] ADD FOREIGN KEY ([ma_mh]) REFERENCES [mon_hoc] ([ma_mh])
 GO
 
-ALTER TABLE [phan_cong] ADD FOREIGN KEY ([ma_nhom]) REFERENCES [nhom_hoc_phan] ([ma_nhom])
+ALTER TABLE [phan_cong] ADD FOREIGN KEY ([ma_nd]) REFERENCES [nguoi_dung] ([ma_nd])
 GO
 
 ALTER TABLE [de_thi_cau_hinh] ADD FOREIGN KEY ([ma_de]) REFERENCES [de_thi] ([ma_de])
@@ -258,7 +250,4 @@ ALTER TABLE [diem_danh] ADD FOREIGN KEY ([ma_nhom]) REFERENCES [nhom_hoc_phan] (
 GO
 
 ALTER TABLE [diem_danh] ADD FOREIGN KEY ([ma_nd]) REFERENCES [nguoi_dung] ([ma_nd])
-GO
-
-ALTER TABLE [thong_bao] ADD FOREIGN KEY ([ma_nd_gui]) REFERENCES [nguoi_dung] ([ma_nd])
 GO
