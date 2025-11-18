@@ -118,61 +118,79 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="hocphan_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-books-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tongquan_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\home-white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tongquan_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-home-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="hocphan_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\hocphan-whte.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cauhoi_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-question-50 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cauhoi_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-question-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="monhoc_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-book-50 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="monhoc_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-book-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="phancong_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-assignment-50 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="phancong_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-assignment-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="kiemtra_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-document-50 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="kiemtra_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-document-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="diemdanh_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-assignment-50 (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="diemdanh_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-assignment-50 (3).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="phanquyen_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-users-settings-32 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="phanquyen_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-users-settings-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nguoidung_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-users-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nguoidung_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\icons\icons8-users-48 (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="tongquan_img" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icons\tongquan.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="avatar_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\avatar-default.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_cauhoi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_cauhoi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_dekiemtra" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_dekiemtra.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_diemdanh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_diemdanh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_monhoc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_monhoc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_nhomhocphan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_nhomhocphan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_nhomnguoidung" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_nhomnguoidung.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_phancong" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_phancong.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_phanquyencaidat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_phanquyencaidat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_tongquan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_tongquan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_user" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_user.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_plus_user" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_plus_user.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_blinds" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon-blinds.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="password" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\password.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon-password" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon-password.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon-eyes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon-eyes.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fullname" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\fullname.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="loginold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\loginold.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="email" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\email.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="confirmpassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\confirmpassword.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_detail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\icon_detail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

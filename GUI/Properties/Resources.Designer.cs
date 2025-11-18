@@ -63,9 +63,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cauhoi_dark {
+        internal static System.Drawing.Bitmap avatar_default {
             get {
-                object obj = ResourceManager.GetObject("cauhoi_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("avatar_default", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cauhoi_white {
+        internal static System.Drawing.Bitmap confirmpassword {
             get {
-                object obj = ResourceManager.GetObject("cauhoi_white", resourceCulture);
+                object obj = ResourceManager.GetObject("confirmpassword", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap diemdanh_dark {
+        internal static System.Drawing.Bitmap email {
             get {
-                object obj = ResourceManager.GetObject("diemdanh_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("email", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap diemdanh_white {
+        internal static System.Drawing.Bitmap fullname {
             get {
-                object obj = ResourceManager.GetObject("diemdanh_white", resourceCulture);
+                object obj = ResourceManager.GetObject("fullname", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap hocphan_dark {
+        internal static System.Drawing.Bitmap icon_blinds {
             get {
-                object obj = ResourceManager.GetObject("hocphan_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_blinds", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap hocphan_white {
+        internal static System.Drawing.Bitmap icon_cauhoi {
             get {
-                object obj = ResourceManager.GetObject("hocphan_white", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_cauhoi", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap kiemtra_dark {
+        internal static System.Drawing.Bitmap icon_dekiemtra {
             get {
-                object obj = ResourceManager.GetObject("kiemtra_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_dekiemtra", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap kiemtra_white {
+        internal static System.Drawing.Bitmap icon_delete {
             get {
-                object obj = ResourceManager.GetObject("kiemtra_white", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap monhoc_dark {
+        internal static System.Drawing.Bitmap icon_detail {
             get {
-                object obj = ResourceManager.GetObject("monhoc_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_detail", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap monhoc_white {
+        internal static System.Drawing.Bitmap icon_diemdanh {
             get {
-                object obj = ResourceManager.GetObject("monhoc_white", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_diemdanh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap nguoidung_dark {
+        internal static System.Drawing.Bitmap icon_edit {
             get {
-                object obj = ResourceManager.GetObject("nguoidung_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_edit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap nguoidung_white {
+        internal static System.Drawing.Bitmap icon_eyes {
             get {
-                object obj = ResourceManager.GetObject("nguoidung_white", resourceCulture);
+                object obj = ResourceManager.GetObject("icon-eyes", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap phancong_dark {
+        internal static System.Drawing.Bitmap icon_logout {
             get {
-                object obj = ResourceManager.GetObject("phancong_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_logout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +193,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap phancong_white {
+        internal static System.Drawing.Bitmap icon_monhoc {
             get {
-                object obj = ResourceManager.GetObject("phancong_white", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_monhoc", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +203,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap phanquyen_dark {
+        internal static System.Drawing.Bitmap icon_nhomhocphan {
             get {
-                object obj = ResourceManager.GetObject("phanquyen_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_nhomhocphan", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +213,9 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap phanquyen_white {
+        internal static System.Drawing.Bitmap icon_nhomnguoidung {
             get {
-                object obj = ResourceManager.GetObject("phanquyen_white", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_nhomnguoidung", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +223,79 @@ namespace GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tongquan_dark {
+        internal static System.Drawing.Bitmap icon_password {
             get {
-                object obj = ResourceManager.GetObject("tongquan_dark", resourceCulture);
+                object obj = ResourceManager.GetObject("icon-password", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_phancong {
+            get {
+                object obj = ResourceManager.GetObject("icon_phancong", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_phanquyencaidat {
+            get {
+                object obj = ResourceManager.GetObject("icon_phanquyencaidat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_plus_user {
+            get {
+                object obj = ResourceManager.GetObject("icon_plus_user", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_tongquan {
+            get {
+                object obj = ResourceManager.GetObject("icon_tongquan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_user {
+            get {
+                object obj = ResourceManager.GetObject("icon_user", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loginold {
+            get {
+                object obj = ResourceManager.GetObject("loginold", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap password {
+            get {
+                object obj = ResourceManager.GetObject("password", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -236,16 +306,6 @@ namespace GUI.Properties {
         internal static System.Drawing.Bitmap tongquan_img {
             get {
                 object obj = ResourceManager.GetObject("tongquan_img", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap tongquan_white {
-            get {
-                object obj = ResourceManager.GetObject("tongquan_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

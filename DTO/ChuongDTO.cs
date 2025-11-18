@@ -1,9 +1,16 @@
-﻿namespace DTO
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DTO
 {
     public class ChuongDTO
     {
         public long MaChuong { get; set; }
-        public long MaMh { get; set; }
-        public string TenChuong { get; set; } = string.Empty;
+        public string TenChuong { get; set; } = "";
+        public long MaMonHoc { get; set; }
+        public ChuongDTO() { }
     }
 }

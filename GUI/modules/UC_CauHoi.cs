@@ -19,6 +19,7 @@ namespace GUI.modules
 
         public UC_CauHoi()
         {
+            _userId = userId;
             InitializeComponent();
             LoadMonHoc();
             LoadDoKho();
