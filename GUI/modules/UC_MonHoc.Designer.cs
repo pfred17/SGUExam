@@ -35,19 +35,22 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(383, 303);
+            guna2HtmlLabel1.Location = new Point(479, 379);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(185, 47);
+            guna2HtmlLabel1.Size = new Size(223, 56);
             guna2HtmlLabel1.TabIndex = 2;
             guna2HtmlLabel1.Text = "UC_MonHoc";
             // 
             // UC_MonHoc
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_MonHoc";
-            Size = new Size(933, 653);
+            Size = new Size(1166, 816);
+            Load += UC_MonHoc_Load;
             ResumeLayout(false);
             PerformLayout();
         }

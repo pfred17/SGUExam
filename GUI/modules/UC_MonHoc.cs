@@ -16,5 +16,10 @@ namespace GUI.modules
         {
             InitializeComponent();
         }
+
+        private void UC_MonHoc_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

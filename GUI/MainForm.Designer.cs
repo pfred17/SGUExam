@@ -41,31 +41,36 @@
             panelSidebar.CustomizableEdges = customizableEdges1;
             panelSidebar.Dock = DockStyle.Left;
             panelSidebar.Location = new Point(0, 0);
+            panelSidebar.Margin = new Padding(4);
             panelSidebar.Name = "panelSidebar";
             panelSidebar.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            panelSidebar.Size = new Size(250, 687);
+            panelSidebar.Size = new Size(312, 859);
             panelSidebar.TabIndex = 0;
+            panelSidebar.Paint += panelSidebar_Paint;
             // 
             // panelMain
             // 
             panelMain.CustomizableEdges = customizableEdges3;
             panelMain.Dock = DockStyle.Fill;
-            panelMain.Location = new Point(250, 0);
+            panelMain.Location = new Point(312, 0);
+            panelMain.Margin = new Padding(4);
             panelMain.Name = "panelMain";
             panelMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            panelMain.Size = new Size(876, 687);
+            panelMain.Size = new Size(1096, 859);
             panelMain.TabIndex = 1;
+            panelMain.Paint += panelMain_Paint;
             // 
-            // Form2
+            // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoValidate = AutoValidate.EnableAllowFocusChange;
-            ClientSize = new Size(1126, 687);
+            ClientSize = new Size(1408, 859);
             Controls.Add(panelMain);
             Controls.Add(panelSidebar);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "Form2";
+            Margin = new Padding(4);
+            Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form2";
             Load += Form2_Load;

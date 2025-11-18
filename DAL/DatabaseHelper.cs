@@ -1,14 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL
 {
     public static class DatabaseHelper
     {
-        private static readonly string connectionString =
-            "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SGUExam; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
-        
+        public static readonly string connectionString =
+             "Data Source=DESKTOP-VNR8V8P\\DUYPHONG;" +
+             "Initial Catalog=SGUExam;Integrated Security=SSPI;" +
+             "TrustServerCertificate=True;";
 
         public static SqlConnection GetConnection()
         {

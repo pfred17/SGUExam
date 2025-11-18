@@ -133,10 +133,10 @@ namespace GUI
                         Width = 190,
                         BorderRadius = 2,
                         FillColor = Color.Transparent,
-                        HoverState = { 
-                            FillColor = Color.FromArgb(116, 185, 255), 
-                            ForeColor = Color.White, 
-                            Image = mod.IconActive 
+                        HoverState = {
+                            FillColor = Color.FromArgb(116, 185, 255),
+                            ForeColor = Color.White,
+                            Image = mod.IconActive
                         },
                         ForeColor = Color.FromArgb(99, 110, 114),
                         Font = new Font("Segoe UI", 9, FontStyle.Bold),
@@ -184,6 +184,16 @@ namespace GUI
             UserControl uc = (UserControl)Activator.CreateInstance(ucType);
             uc.Dock = DockStyle.Fill;
             panelMain.Controls.Add(uc);
+        }
+
+        private void panelSidebar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelMain_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
