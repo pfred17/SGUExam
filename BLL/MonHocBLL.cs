@@ -15,7 +15,10 @@ namespace BLL
         {
             return _dal.GetAllMonHoc();
         }
-
+        public bool IsMonHocExists(long maMH)
+        {
+            return _dal.IsMonHocExists(maMH);
+        }
         public MonHocDTO? GetMonHocById(long maMonHoc)
         {
             return _dal.GetMonHocById(maMonHoc);
@@ -24,22 +27,18 @@ namespace BLL
         {
             return _dal.AddMonHoc(monHoc);
         }
-
         public bool UpdateMonHoc(MonHocDTO monHoc)
         {
             return _dal.UpdateMonHoc(monHoc);
         }
-
         public bool DeleteMonHoc(long monHocId)
         {
             return _dal.DeleteMonHoc(monHocId);
         }
-
         public List<MonHocDTO> GetMonHocPaged(int page, int pageSize)
         {
             return _dal.GetMonHocPaged(page, pageSize);
         }
-
         public int GetTotalMonHoc()
         {
             return _dal.GetTotalMonHoc();

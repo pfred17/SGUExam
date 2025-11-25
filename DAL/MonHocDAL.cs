@@ -32,7 +32,7 @@ namespace DAL
         public MonHocDTO? GetMonHocById(long maMonHoc)
         {
             string query = "SELECT * FROM mon_hoc WHERE ma_mh = @ma_mh";
-            SqlParameter[] parameters = new SqlParameter[] {
+            SqlParameter[] parameters =  {
                 new SqlParameter("@ma_mh", maMonHoc)
             };
 
@@ -47,6 +47,17 @@ namespace DAL
                 SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
                 TrangThai = Convert.ToByte(row["trang_thai"])
             };
+        }
+        public bool IsMonHocExists(long maMH)
+        {
+            string query = "SELECT COUNT(*) FROM mon_hoc WHERE ma_mh = @ma_mh";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@ma_mh", maMH)
+            };
+            object result = DatabaseHelper.ExecuteScalar(query, parameters);
+            int count = result != null ? Convert.ToInt32(result) : 0;
+            return count > 0;
         }
         public long AddMonHoc(MonHocDTO monHoc)
         {
@@ -71,9 +82,9 @@ namespace DAL
         public bool UpdateMonHoc(MonHocDTO monHoc)
         {
             string query = @"
-                UPDATE mon_hon
-                SET ten_mh = @ten_mh
-                    so_tin_chi = @so_tin_chi
+                UPDATE mon_hoc
+                SET ten_mh = @ten_mh,
+                    so_tin_chi = @so_tin_chi,
                     trang_thai = @trang_thai
                 WHERE ma_mh = @ma_mh;
             ";
@@ -102,14 +113,16 @@ namespace DAL
 
         public List<MonHocDTO> GetMonHocPaged(int page, int pageSize)
         {
+            int offset = (page - 1) * pageSize;
+
             string query = @"
                 SELECT * FROM mon_hoc
                 ORDER BY ma_mh
-                OFFSET(@page - 1) * @pageSize ROWS
+                OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
             ";
             SqlParameter[] parameters = { 
-                new SqlParameter("@page",page),
+                new SqlParameter("@offset", offset),
                 new SqlParameter("@pageSize", pageSize)
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
@@ -119,7 +132,7 @@ namespace DAL
                 list.Add(new MonHocDTO
                 {
                     MaMH = Convert.ToInt64(row["ma_mh"]),
-                    TenMH = Convert.ToString(row["ten_mh"]),
+                    TenMH = Convert.ToString(row["ten_mh"]) ?? "", 
                     SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
                     TrangThai = Convert.ToByte(row["trang_thai"])
                 });

@@ -104,7 +104,7 @@
             dgvMonHoc.RowTemplate.Height = 40;
             dgvMonHoc.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvMonHoc.Size = new Size(1074, 261);
-            dgvMonHoc.TabIndex = 5;
+            dgvMonHoc.TabIndex = 0;
             dgvMonHoc.CellContentClick += dgvMonHoc_CellContentClick;
             dgvMonHoc.CellMouseMove += dgvMonHoc_CellMouseMove;
             dgvMonHoc.SelectionChanged += dgvMonHoc_SelectionChanged;
@@ -198,7 +198,7 @@
             btnPrev.Name = "btnPrev";
             btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnPrev.Size = new Size(30, 29);
-            btnPrev.TabIndex = 6;
+            btnPrev.TabIndex = 1;
             btnPrev.Text = "<";
             btnPrev.Click += btnPrev_Click;
             // 
@@ -210,7 +210,7 @@
             lblPage.Location = new Point(993, 613);
             lblPage.Name = "lblPage";
             lblPage.Size = new Size(50, 29);
-            lblPage.TabIndex = 8;
+            lblPage.TabIndex = 2;
             lblPage.Text = "1/1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
             // 
@@ -227,7 +227,7 @@
             btnNext.Name = "btnNext";
             btnNext.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnNext.Size = new Size(30, 29);
-            btnNext.TabIndex = 7;
+            btnNext.TabIndex = 3;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
             // 
@@ -242,7 +242,7 @@
             pnHeader.Name = "pnHeader";
             pnHeader.Padding = new Padding(10);
             pnHeader.Size = new Size(1120, 60);
-            pnHeader.TabIndex = 8;
+            pnHeader.TabIndex = 0;
             // 
             // btnThem
             // 
@@ -257,7 +257,7 @@
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnThem.Size = new Size(182, 29);
-            btnThem.TabIndex = 3;
+            btnThem.TabIndex = 0;
             btnThem.Text = "+THÊM MÔN HỌC";
             btnThem.Click += btnThemMonHoc_Click;
             // 
@@ -282,7 +282,7 @@
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtSearch.Size = new Size(241, 36);
-            txtSearch.TabIndex = 6;
+            txtSearch.TabIndex = 1;
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Leave += txtSearch_Leave;
             // 

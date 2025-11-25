@@ -62,7 +62,7 @@ namespace GUI.forms.MonHoc
 
             // Căn giữa
             MaChuong.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            TenChuong.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            TenChuong.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             // Custom style table
             dgvChuong.AllowUserToAddRows = false;
@@ -152,9 +152,21 @@ namespace GUI.forms.MonHoc
 
             }
             DisplayData(dataToDisplay);
-            lblPage.Text = $"{pageNumber} / {totalPages}";
-            btnPrev.Enabled = pageNumber > 1;
-            btnNext.Enabled = pageNumber < totalPages;
+            if (totalRecords == 0)
+            {
+                lblPage.Text = "0";
+                btnPrev.Enabled = false;
+                btnNext.Enabled = false;
+                dgvChuong.Enabled = false;
+            }
+            else
+            {
+
+                lblPage.Text = $"{pageNumber} / {totalPages}";
+                btnPrev.Enabled = pageNumber > 1;
+                btnNext.Enabled = pageNumber < totalPages;
+                dgvChuong.Enabled = true;
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -238,21 +250,28 @@ namespace GUI.forms.MonHoc
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            string ten = txtInput.Text.Trim();
-            if (string.IsNullOrEmpty(ten)) return;
+            txtInputChuong_Leave(sender, e);
+            if (lblError.Visible)
+            {
+                txtInput.Focus();
+                return;
+            }
+
+            string tenChuong = txtInput.Text.Trim();
+            if (string.IsNullOrEmpty(tenChuong)) return;
 
             if (currentMode == Mode.Add)
             {
                 ChuongDTO newChuong = new ChuongDTO
                 {
-                    TenChuong = ten
+                    TenChuong = tenChuong
                 };
                 chuongBLL.AddChuong(newChuong, _maMonHoc);
                 LoadData();
             }
             else if (currentMode == Mode.Edit && editingChuong != null)
             {
-                editingChuong.TenChuong = ten;
+                editingChuong.TenChuong = tenChuong;
                 chuongBLL.UpdateChuong(editingChuong);
             }
 
@@ -269,12 +288,18 @@ namespace GUI.forms.MonHoc
 
         private void txtInputChuong_Leave(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtInput.Text))
+            string input = txtInput.Text.Trim();
+            if (string.IsNullOrWhiteSpace(input))
             {
                 lblError.Text = "Tên chương không được để trống.";
                 lblError.Visible = true;
             }
-            else if (txtInput.Text.Length > 50)
+            else if (chuongBLL.IsChuongExists(input))
+            {
+                lblError.Text = "Tên chương đã tồn tại.";
+                lblError.Visible = true;
+            }
+            else if (input.Length > 50)
             {
                 lblError.Text = "Tên chương tối đa 50 ký tự.";
                 lblError.Visible = true;

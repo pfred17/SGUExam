@@ -40,16 +40,6 @@ namespace DAL
             }
             return list;
         }
-        public bool DeletePhanCong(long maPhanCong)
-        {
-            string query = @"DELETE FROM phan_cong WHERE ma_pc = @ma_pc";
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@ma_pc", maPhanCong)
-            };
-            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
-            return rows > 0;
-        }
         public PhanCongDTO? GetPhanCongById(long maPhanCong)
         {
             string query = @"
@@ -97,6 +87,34 @@ namespace DAL
             object result = DatabaseHelper.ExecuteScalar(query, parameters);
             return Convert.ToInt64(result);
         }
+        public bool UpdatePhanCong(PhanCongDTO phanCong)
+        {
+            string query = @"
+                UPDATE phan_cong
+                SET ma_mh = @ma_mh,
+                    ma_nd = @ma_nd
+                WHERE ma_pc = @ma_pc;
+            ";
+
+            SqlParameter[] parameters = {
+                new("ma_pc", phanCong.MaPhanCong),
+                new("ma_mh", phanCong.MaMonHoc),
+                new("ma_nd", phanCong.MaNguoiDung),
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+        public bool DeletePhanCong(long maPhanCong)
+        {
+            string query = @"DELETE FROM phan_cong WHERE ma_pc = @ma_pc";
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@ma_pc", maPhanCong)
+            };
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
         public List<PhanCongDTO> GetPhanCongPaged(int page, int pageSize)
         {
             string query = @"
@@ -137,7 +155,7 @@ namespace DAL
         {
             string query = @"
             SELECT COUNT(*) 
-            FROM phan_cong AS pc 
+            FROM phan_cong pc 
             INNER JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
             INNER JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd;
             ";

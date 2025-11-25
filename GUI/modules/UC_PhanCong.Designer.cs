@@ -75,7 +75,7 @@
             pnMain.Name = "pnMain";
             pnMain.Padding = new Padding(20);
             pnMain.Size = new Size(1120, 730);
-            pnMain.TabIndex = 0;
+            pnMain.TabIndex = 1;
             // 
             // dgvPhanCong
             // 
@@ -118,6 +118,7 @@
             dgvPhanCong.Size = new Size(1074, 261);
             dgvPhanCong.TabIndex = 0;
             dgvPhanCong.CellContentClick += dgvPhanCong_CellContentClick;
+            dgvPhanCong.CellFormatting += dgvPhanCong_CellFormatting;
             dgvPhanCong.CellMouseMove += dgvPhanCong_CellMouseMove;
             dgvPhanCong.SelectionChanged += dgvPhanCong_SelectionChanged;
             // 
@@ -178,6 +179,7 @@
             // 
             TenGiangVien.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             TenGiangVien.HeaderText = "Tên giảng viên";
+            TenGiangVien.MinimumWidth = 6;
             TenGiangVien.Name = "TenGiangVien";
             TenGiangVien.ReadOnly = true;
             TenGiangVien.Resizable = DataGridViewTriState.False;
@@ -228,9 +230,9 @@
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(993, 613);
+            lblPage.Location = new Point(989, 612);
             lblPage.Name = "lblPage";
-            lblPage.Size = new Size(50, 29);
+            lblPage.Size = new Size(60, 30);
             lblPage.TabIndex = 2;
             lblPage.Text = "1/1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
@@ -263,7 +265,7 @@
             pnHeader.Name = "pnHeader";
             pnHeader.Padding = new Padding(10);
             pnHeader.Size = new Size(1120, 60);
-            pnHeader.TabIndex = 1;
+            pnHeader.TabIndex = 0;
             // 
             // btnThem
             // 
@@ -278,7 +280,7 @@
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnThem.Size = new Size(182, 29);
-            btnThem.TabIndex = 1;
+            btnThem.TabIndex = 0;
             btnThem.Text = "+THÊM PHÂN CÔNG";
             btnThem.Click += btnThem_Click;
             // 
@@ -303,7 +305,7 @@
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtSearch.Size = new Size(241, 36);
-            txtSearch.TabIndex = 0;
+            txtSearch.TabIndex = 1;
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Leave += txtSearch_Leave;
             // 

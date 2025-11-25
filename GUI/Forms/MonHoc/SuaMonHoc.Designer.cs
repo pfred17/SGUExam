@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lblMaMonHoc = new Label();
             txtMaMonHoc = new Guna.UI2.WinForms.Guna2TextBox();
             lblThongTinMonHoc = new Label();
@@ -68,7 +68,7 @@
             // txtMaMonHoc
             // 
             txtMaMonHoc.BackColor = SystemColors.Control;
-            txtMaMonHoc.CustomizableEdges = customizableEdges13;
+            txtMaMonHoc.CustomizableEdges = customizableEdges1;
             txtMaMonHoc.DefaultText = "";
             txtMaMonHoc.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtMaMonHoc.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -85,7 +85,7 @@
             txtMaMonHoc.PlaceholderForeColor = Color.Gray;
             txtMaMonHoc.PlaceholderText = "Nhập mã môn học";
             txtMaMonHoc.SelectedText = "";
-            txtMaMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtMaMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtMaMonHoc.Size = new Size(479, 41);
             txtMaMonHoc.TabIndex = 2;
             // 
@@ -125,7 +125,7 @@
             // txtTenMonHoc
             // 
             txtTenMonHoc.BackColor = SystemColors.Control;
-            txtTenMonHoc.CustomizableEdges = customizableEdges15;
+            txtTenMonHoc.CustomizableEdges = customizableEdges3;
             txtTenMonHoc.DefaultText = "";
             txtTenMonHoc.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtTenMonHoc.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -141,9 +141,11 @@
             txtTenMonHoc.PlaceholderForeColor = Color.Gray;
             txtTenMonHoc.PlaceholderText = "Nhập tên môn học";
             txtTenMonHoc.SelectedText = "";
-            txtTenMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            txtTenMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtTenMonHoc.Size = new Size(479, 41);
             txtTenMonHoc.TabIndex = 4;
+            txtTenMonHoc.TextChanged += txtTenMonHoc_TextChanged;
+            txtTenMonHoc.Leave += txtTenMonHoc_Leave;
             // 
             // lblTongSoTinChi
             // 
@@ -158,7 +160,7 @@
             // txtSoTinChi
             // 
             txtSoTinChi.BackColor = SystemColors.Control;
-            txtSoTinChi.CustomizableEdges = customizableEdges17;
+            txtSoTinChi.CustomizableEdges = customizableEdges5;
             txtSoTinChi.DefaultText = "";
             txtSoTinChi.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtSoTinChi.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -174,9 +176,11 @@
             txtSoTinChi.PlaceholderForeColor = Color.Gray;
             txtSoTinChi.PlaceholderText = "Nhập số tín chỉ";
             txtSoTinChi.SelectedText = "";
-            txtSoTinChi.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            txtSoTinChi.ShadowDecoration.CustomizableEdges = customizableEdges6;
             txtSoTinChi.Size = new Size(479, 41);
             txtSoTinChi.TabIndex = 7;
+            txtSoTinChi.TextChanged += txtSoTinChi_TextChanged;
+            txtSoTinChi.Leave += txtSoTinChi_Leave;
             // 
             // lblErrorSoTinChi
             // 
@@ -208,11 +212,11 @@
             tsTrangThai.CheckedState.InnerBorderColor = Color.White;
             tsTrangThai.CheckedState.InnerColor = Color.White;
             tsTrangThai.Cursor = Cursors.Hand;
-            tsTrangThai.CustomizableEdges = customizableEdges19;
+            tsTrangThai.CustomizableEdges = customizableEdges7;
             tsTrangThai.Location = new Point(139, 380);
             tsTrangThai.Margin = new Padding(3, 2, 3, 2);
             tsTrangThai.Name = "tsTrangThai";
-            tsTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            tsTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
             tsTrangThai.Size = new Size(34, 16);
             tsTrangThai.TabIndex = 10;
             tsTrangThai.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
@@ -224,40 +228,41 @@
             // 
             btnSubmit.BackColor = Color.DodgerBlue;
             btnSubmit.Cursor = Cursors.Hand;
-            btnSubmit.CustomizableEdges = customizableEdges21;
+            btnSubmit.CustomizableEdges = customizableEdges9;
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(360, 397);
+            btnSubmit.Location = new Point(312, 397);
             btnSubmit.Margin = new Padding(3, 2, 3, 2);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            btnSubmit.Size = new Size(71, 36);
+            btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnSubmit.Size = new Size(112, 36);
             btnSubmit.TabIndex = 11;
-            btnSubmit.Text = "Thêm";
+            btnSubmit.Text = "Cập nhật";
             btnSubmit.Click += btnSubmit_Click;
             // 
             // btnClose
             // 
             btnClose.BackColor = Color.DodgerBlue;
             btnClose.Cursor = Cursors.Hand;
-            btnClose.CustomizableEdges = customizableEdges23;
+            btnClose.CustomizableEdges = customizableEdges11;
             btnClose.FillColor = Color.Silver;
             btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = Color.Black;
             btnClose.Location = new Point(447, 397);
             btnClose.Margin = new Padding(3, 2, 3, 2);
             btnClose.Name = "btnClose";
-            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnClose.Size = new Size(86, 36);
             btnClose.TabIndex = 12;
             btnClose.Text = "Thoát";
             btnClose.Click += btnClose_Click;
             // 
-            // Sua
+            // SuaMonHoc
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(584, 461);
             Controls.Add(lblMaMonHoc);
             Controls.Add(txtMaMonHoc);
@@ -275,7 +280,7 @@
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "Sua";
+            Name = "SuaMonHoc";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sửa môn học";
             ResumeLayout(false);

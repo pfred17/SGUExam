@@ -244,13 +244,13 @@
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(359, 394);
+            btnSubmit.Location = new Point(341, 394);
             btnSubmit.Margin = new Padding(3, 2, 3, 2);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnSubmit.Size = new Size(71, 36);
+            btnSubmit.Size = new Size(89, 36);
             btnSubmit.TabIndex = 13;
-            btnSubmit.Text = "Thêm";
+            btnSubmit.Text = "Lưu";
             btnSubmit.Click += btnSubmit_Click;
             // 
             // btnClose
@@ -270,10 +270,11 @@
             btnClose.Text = "Thoát";
             btnClose.Click += btnClose_Click;
             // 
-            // Them
+            // ThemMonHoc
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(584, 461);
             Controls.Add(lblMaMonHoc);
             Controls.Add(txtMaMonHoc);
@@ -292,7 +293,7 @@
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "Them";
+            Name = "ThemMonHoc";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Thêm môn học";
             ResumeLayout(false);

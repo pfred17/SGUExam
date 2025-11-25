@@ -24,13 +24,20 @@ namespace DAL
                     list.Add(new ChuongDTO
                     {
                         MaChuong = Convert.ToInt64(row["ma_chuong"]),
-                        TenChuong = Convert.ToString(row["ten_chuong"]),
+                        TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
                         MaMonHoc = Convert.ToInt64(row["ma_mh"])
                     });
                 }
                 return list;
         }
-
+        public bool IsChuongExists(string tenChuong)
+        {
+            string query = "SELECT COUNT(*) FROM chuong WHERE ten_chuong = @ten_chuong";
+            SqlParameter parameters = new SqlParameter("@ten_chuong", tenChuong);
+            object result = DatabaseHelper.ExecuteScalar(query, parameters);
+            int count = result != null ? Convert.ToInt32(result) : 0;
+            return count > 0;
+        }
         public long AddChuong(ChuongDTO chuong, long maMonHoc)
         {
             string query = @"

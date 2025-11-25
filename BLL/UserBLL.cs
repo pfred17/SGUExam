@@ -47,6 +47,12 @@ namespace BLL
         {
             return dal.GetAllUserByRole();
         }
+        public List<UserDTO> GetAllUserByRoleExcluding(string userId)
+        {
+            var allUsers = dal.GetAllUserByRole();
+                
+            return allUsers.Where(u => u.MSSV != userId).ToList();
+        }
         public List<UserDTO> GetUserPaged(int page, int pageSize)
         {
             return dal.GetUserPaged(page, pageSize);

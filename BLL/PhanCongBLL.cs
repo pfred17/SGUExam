@@ -18,6 +18,10 @@ namespace BLL
         {
             return _dal.AddPhanCong(phanCong);
         }
+        public bool UpdatePhanCong(PhanCongDTO phanCong)
+        {
+            return _dal.UpdatePhanCong(phanCong);
+        }
         public bool DeletePhanCong(long maPhanCong)
         {
             return _dal.DeletePhanCong(maPhanCong);

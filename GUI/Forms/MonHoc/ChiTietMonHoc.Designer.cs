@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lblThongTinMonHoc = new Label();
             lblDanhSachChuong = new Label();
             dgvChuong = new DataGridView();
@@ -88,14 +88,14 @@
             dgvChuong.AllowUserToResizeRows = false;
             dgvChuong.BackgroundColor = Color.White;
             dgvChuong.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            dataGridViewCellStyle2.SelectionForeColor = Color.White;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(116, 185, 255);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvChuong.ColumnHeadersHeight = 32;
             dgvChuong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvChuong.Columns.AddRange(new DataGridViewColumn[] { MaChuong, TenChuong, EditCol, DeleteCol });
@@ -170,7 +170,7 @@
             // txtInput
             // 
             txtInput.BackColor = SystemColors.Control;
-            txtInput.CustomizableEdges = customizableEdges13;
+            txtInput.CustomizableEdges = customizableEdges1;
             txtInput.DefaultText = "";
             txtInput.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtInput.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -186,7 +186,7 @@
             txtInput.PlaceholderForeColor = Color.Gray;
             txtInput.PlaceholderText = "Nhập tên chương";
             txtInput.SelectedText = "";
-            txtInput.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtInput.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtInput.Size = new Size(352, 36);
             txtInput.TabIndex = 4;
             txtInput.TextChanged += txtInputChuong_TextChanged;
@@ -209,14 +209,14 @@
             // 
             btnSubmit.BackColor = Color.DodgerBlue;
             btnSubmit.Cursor = Cursors.Hand;
-            btnSubmit.CustomizableEdges = customizableEdges15;
+            btnSubmit.CustomizableEdges = customizableEdges3;
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
             btnSubmit.Location = new Point(407, 328);
             btnSubmit.Margin = new Padding(3, 2, 3, 2);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnSubmit.Size = new Size(71, 36);
             btnSubmit.TabIndex = 9;
             btnSubmit.Text = "Thêm";
@@ -226,14 +226,14 @@
             // 
             btnCancel.BackColor = Color.White;
             btnCancel.Cursor = Cursors.Hand;
-            btnCancel.CustomizableEdges = customizableEdges17;
+            btnCancel.CustomizableEdges = customizableEdges5;
             btnCancel.FillColor = Color.Silver;
             btnCancel.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.Black;
             btnCancel.Location = new Point(487, 328);
             btnCancel.Margin = new Padding(3, 2, 3, 2);
             btnCancel.Name = "btnCancel";
-            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnCancel.Size = new Size(64, 36);
             btnCancel.TabIndex = 10;
             btnCancel.Text = "Hủy";
@@ -243,14 +243,14 @@
             // 
             btnClose.BackColor = Color.DodgerBlue;
             btnClose.Cursor = Cursors.Hand;
-            btnClose.CustomizableEdges = customizableEdges19;
+            btnClose.CustomizableEdges = customizableEdges7;
             btnClose.FillColor = Color.FromArgb(6, 101, 208);
             btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = Color.White;
             btnClose.Location = new Point(486, 414);
             btnClose.Margin = new Padding(3, 2, 3, 2);
             btnClose.Name = "btnClose";
-            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnClose.Size = new Size(86, 36);
             btnClose.TabIndex = 11;
             btnClose.Text = "Thoát";
@@ -260,14 +260,14 @@
             // 
             btnPrev.BackColor = Color.DodgerBlue;
             btnPrev.Cursor = Cursors.Hand;
-            btnPrev.CustomizableEdges = customizableEdges21;
+            btnPrev.CustomizableEdges = customizableEdges9;
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
             btnPrev.Location = new Point(453, 269);
             btnPrev.Margin = new Padding(3, 2, 3, 2);
             btnPrev.Name = "btnPrev";
-            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnPrev.Size = new Size(30, 29);
             btnPrev.TabIndex = 12;
             btnPrev.Text = "<";
@@ -289,23 +289,24 @@
             // 
             btnNext.BackColor = Color.DodgerBlue;
             btnNext.Cursor = Cursors.Hand;
-            btnNext.CustomizableEdges = customizableEdges23;
+            btnNext.CustomizableEdges = customizableEdges11;
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
             btnNext.Location = new Point(539, 269);
             btnNext.Margin = new Padding(3, 2, 3, 2);
             btnNext.Name = "btnNext";
-            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnNext.Size = new Size(30, 29);
             btnNext.TabIndex = 13;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
             // 
-            // ChiTiet
+            // ChiTietMonHoc
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(584, 461);
             Controls.Add(btnPrev);
             Controls.Add(lblPage);
@@ -322,7 +323,7 @@
             FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "ChiTiet";
+            Name = "ChiTietMonHoc";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Chi tiết";
             ((System.ComponentModel.ISupportInitialize)dgvChuong).EndInit();

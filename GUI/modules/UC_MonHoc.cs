@@ -156,24 +156,30 @@ namespace GUI.modules
             // Lấy ID của môn học
             var maMonHoc = dgvMonHoc.Rows[e.RowIndex].Cells["MaMonHoc"].Value?.ToString();
             var tenMonHoc = dgvMonHoc.Rows[e.RowIndex].Cells["TenMonHoc"].Value?.ToString();
+            long maMH = long.Parse(maMonHoc);
 
             if (columnName == "DetailCol")
             {
-                ChiTietMonHoc frm = new ChiTietMonHoc(long.Parse(maMonHoc));
+                ChiTietMonHoc frm = new ChiTietMonHoc(maMH);
                 frm.ShowDialog();
             }
 
             if (columnName == "EditCol")
             {
-                SuaMonHoc frm = new SuaMonHoc(long.Parse(maMonHoc));
-                frm.ShowDialog();
+                SuaMonHoc frm = new SuaMonHoc(maMH);
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadData();
+                }
+
+
             }
             if (columnName == "DeleteCol")
             {
                 DialogResult confirm = MessageBox.Show($"Xoá môn học {tenMonHoc}?", "Xác nhận", MessageBoxButtons.YesNo);
                 if (confirm == DialogResult.Yes)
                 {
-                    _monHocBLL.DeleteMonHoc(long.Parse(maMonHoc));
+                    _monHocBLL.DeleteMonHoc(maMH);
                     LoadData();
                 }
             }

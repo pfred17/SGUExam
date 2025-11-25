@@ -15,6 +15,7 @@ namespace GUI.forms.PhanCong
 {
     public partial class ThemTheoGiangVien : UserControl
     {
+        private readonly string _userId;
         private readonly UserBLL _userBLL = new UserBLL();
         private readonly PhanCongBLL _phanCongBLL = new PhanCongBLL();
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
@@ -32,12 +33,12 @@ namespace GUI.forms.PhanCong
 
         private System.Threading.Timer _debounceTimer;
         private const int DebounceDelay = 450;
-        public ThemTheoGiangVien()
+        public ThemTheoGiangVien(string userId)
         {
+            _userId = userId;
             InitializeComponent();
             SetupDataGridView();
             LoadData();
-
         }
         private void SetupDataGridView()
         {
@@ -103,7 +104,7 @@ namespace GUI.forms.PhanCong
         }
         private void LoadComboBox()
         {
-            listUser = _userBLL.GetAllUserByRole();
+            listUser = _userBLL.GetAllUserByRoleExcluding(_userId);
             UserDTO defaultUser = new UserDTO
             {
                 MSSV = "",

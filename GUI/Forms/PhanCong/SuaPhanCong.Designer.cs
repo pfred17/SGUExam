@@ -56,7 +56,7 @@
             lblSua.Location = new Point(162, 17);
             lblSua.Name = "lblSua";
             lblSua.Size = new Size(161, 21);
-            lblSua.TabIndex = 1;
+            lblSua.TabIndex = 0;
             lblSua.Text = "Điều chỉnh phân công";
             // 
             // lblMaPhanCong
@@ -66,7 +66,7 @@
             lblMaPhanCong.Location = new Point(32, 52);
             lblMaPhanCong.Name = "lblMaPhanCong";
             lblMaPhanCong.Size = new Size(109, 21);
-            lblMaPhanCong.TabIndex = 2;
+            lblMaPhanCong.TabIndex = 1;
             lblMaPhanCong.Text = "Mã phân công";
             // 
             // txtMaPhanCong
@@ -91,7 +91,7 @@
             txtMaPhanCong.SelectedText = "";
             txtMaPhanCong.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtMaPhanCong.Size = new Size(419, 35);
-            txtMaPhanCong.TabIndex = 3;
+            txtMaPhanCong.TabIndex = 2;
             // 
             // lblMonHoc
             // 
@@ -100,7 +100,7 @@
             lblMonHoc.Location = new Point(32, 132);
             lblMonHoc.Name = "lblMonHoc";
             lblMonHoc.Size = new Size(71, 21);
-            lblMonHoc.TabIndex = 4;
+            lblMonHoc.TabIndex = 3;
             lblMonHoc.Text = "Môn học";
             // 
             // cbxMonHoc
@@ -120,7 +120,7 @@
             cbxMonHoc.Name = "cbxMonHoc";
             cbxMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges4;
             cbxMonHoc.Size = new Size(419, 36);
-            cbxMonHoc.TabIndex = 5;
+            cbxMonHoc.TabIndex = 4;
             // 
             // cbxGiangVien
             // 
@@ -139,7 +139,7 @@
             cbxGiangVien.Name = "cbxGiangVien";
             cbxGiangVien.ShadowDecoration.CustomizableEdges = customizableEdges6;
             cbxGiangVien.Size = new Size(419, 36);
-            cbxGiangVien.TabIndex = 7;
+            cbxGiangVien.TabIndex = 6;
             // 
             // lblGiangVien
             // 
@@ -147,9 +147,9 @@
             lblGiangVien.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblGiangVien.Location = new Point(32, 217);
             lblGiangVien.Name = "lblGiangVien";
-            lblGiangVien.Size = new Size(71, 21);
-            lblGiangVien.TabIndex = 6;
-            lblGiangVien.Text = "Môn học";
+            lblGiangVien.Size = new Size(84, 21);
+            lblGiangVien.TabIndex = 5;
+            lblGiangVien.Text = "Giảng viên";
             // 
             // btnSubmit
             // 
@@ -159,14 +159,14 @@
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(356, 305);
+            btnSubmit.Location = new Point(253, 304);
             btnSubmit.Margin = new Padding(3, 2, 3, 2);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnSubmit.Size = new Size(95, 36);
-            btnSubmit.TabIndex = 21;
+            btnSubmit.TabIndex = 7;
             btnSubmit.Text = "Cập nhật";
-            btnSubmit.Click += this.btnSubmit_Click;
+            btnSubmit.Click += btnSubmit_Click;
             // 
             // btnClose
             // 
@@ -176,19 +176,20 @@
             btnClose.FillColor = Color.Silver;
             btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = Color.Black;
-            btnClose.Location = new Point(248, 305);
+            btnClose.Location = new Point(365, 304);
             btnClose.Margin = new Padding(3, 2, 3, 2);
             btnClose.Name = "btnClose";
             btnClose.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnClose.Size = new Size(86, 36);
-            btnClose.TabIndex = 23;
+            btnClose.TabIndex = 8;
             btnClose.Text = "Thoát";
-            btnClose.Click += this.btnClose_Click;
+            btnClose.Click += btnClose_Click;
             // 
             // SuaPhanCong
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(484, 361);
             Controls.Add(lblSua);
             Controls.Add(lblMaPhanCong);

@@ -64,7 +64,6 @@ namespace GUI.modules
             dgvPhanCong.MultiSelect = false;
             dgvPhanCong.ReadOnly = true;
         }
-
         public void LoadData()
         {
             pageNumber = 1;
@@ -97,6 +96,7 @@ namespace GUI.modules
                 int rowIndex = dgvPhanCong.Rows.Add();
                 var row = dgvPhanCong.Rows[rowIndex];
 
+
                 row.Cells["MonHoc"].Value = "Không tìm thấy kết quả";
                 row.Height = 50;
 
@@ -118,6 +118,8 @@ namespace GUI.modules
                 {
                     int rowIndex = dgvPhanCong.Rows.Add();
                     var row = dgvPhanCong.Rows[rowIndex];
+
+                    row.Tag = pc;
 
                     row.Cells["MaPhanCong"].Value = pc.MaPhanCong;
                     row.Cells["MaMon"].Value = pc.MaMonHoc;
@@ -226,7 +228,6 @@ namespace GUI.modules
                 LoadPage();
             }
         }
-
         private void dgvPhanCong_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Bỏ qua nếu click vào header hoặc ngoài phạm vi dữ liệu
@@ -236,31 +237,64 @@ namespace GUI.modules
             // Lấy tên cột được click
             string columnName = dgvPhanCong.Columns[e.ColumnIndex].Name;
 
-            // Lấy ID của phân công
-            var maPhanCong = dgvPhanCong.Rows[e.RowIndex].Cells["MaPhanCong"].Value?.ToString();
-
-            if (columnName == "EditCol")
+            if (columnName == "EditCol" || columnName == "DeleteCol")
             {
-                SuaPhanCong frm = new SuaPhanCong(long.Parse(maPhanCong));
-                frm.ShowDialog();
-            }
+                string? maGiangVien = dgvPhanCong.Rows[e.RowIndex].Cells["MaGiangVien"].Value?.ToString();
 
-            if (columnName == "DeleteCol")
-            {
-                DialogResult confirm = MessageBox.Show($"Xoá phân công {maPhanCong}?", "Xác nhận", MessageBoxButtons.YesNo);
-                if (confirm == DialogResult.Yes)
+                if (maGiangVien == _userId)
                 {
-                    _phanCongBLL.DeletePhanCong(long.Parse(maPhanCong));
-                    LoadData();
+                    MessageBox.Show("Bạn không thể thao tác!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var currentRow = dgvPhanCong.Rows[e.RowIndex];
+                if (currentRow.Tag is PhanCongDTO dataItem)
+                {
+                    long maPC = dataItem.MaPhanCong;
+                    long maMH = dataItem.MaMonHoc;
+
+                    if (columnName == "EditCol")
+                    {
+
+                        SuaPhanCong frm = new SuaPhanCong(maPC, maMH, _userId);
+                        if (frm.ShowDialog() == DialogResult.OK)
+                        {
+                            LoadData();
+                        }
+                    }
+
+                    if (columnName == "DeleteCol")
+                    {
+                        DialogResult confirm = MessageBox.Show($"Xoá phân công {maPC}?", "Xác nhận", MessageBoxButtons.YesNo);
+                        if (confirm == DialogResult.Yes)
+                        {
+                            _phanCongBLL.DeletePhanCong(maPC);
+                            LoadData();
+                        }
+                    }
                 }
             }
         }
+        private void dgvPhanCong_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
 
+            if (dgvPhanCong.Columns[e.ColumnIndex].Name == "EditCol" ||
+                dgvPhanCong.Columns[e.ColumnIndex].Name == "DeleteCol")
+            {
+                string? maGiangVien = dgvPhanCong.Rows[e.RowIndex].Cells["MaGiangVien"].Value?.ToString();
+                if (maGiangVien == _userId)
+                {
+                    e.Value = null;
+                    return;
+                }
+            }
+        }
         private void dgvPhanCong_SelectionChanged(object sender, EventArgs e)
         {
+
             dgvPhanCong.ClearSelection();
         }
-
         private void btnPrev_Click(object sender, EventArgs e)
         {
             if (pageNumber > 1)
@@ -269,7 +303,6 @@ namespace GUI.modules
                 LoadPage();
             }
         }
-
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (pageNumber < totalPages)
@@ -278,10 +311,9 @@ namespace GUI.modules
                 LoadPage();
             }
         }
-
         private void btnThem_Click(object sender, EventArgs e)
         {
-            ThemPhanCong frm = new ThemPhanCong();
+            ThemPhanCong frm = new ThemPhanCong(_userId);
             frm.ShowDialog();
             LoadData();
         }
@@ -291,15 +323,21 @@ namespace GUI.modules
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 string columnName = dgvPhanCong.Columns[e.ColumnIndex].Name;
+
                 if (columnName == "EditCol" || columnName == "DeleteCol")
                 {
-                    dgvPhanCong.Cursor = Cursors.Hand;
+                    string? maGiangVien = dgvPhanCong.Rows[e.RowIndex].Cells["MaGiangVien"].Value?.ToString();
+          
+                    if (maGiangVien == _userId)
+                        dgvPhanCong.Cursor = Cursors.Default;
+                    else
+                        dgvPhanCong.Cursor = Cursors.Hand;
                 }
                 else
                 {
                     dgvPhanCong.Cursor = Cursors.Default;
                 }
             }
-        }
+        }     
     }
 }
