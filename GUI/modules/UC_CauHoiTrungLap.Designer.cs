@@ -30,6 +30,7 @@
         {
             guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             pnlTop = new Panel();
+            btnTatCaCauHoi = new Button();
             lblThongKe = new Label();
             lblDescription = new Label();
             lblTitle = new Label();
@@ -39,8 +40,10 @@
             cboMonHoc = new ComboBox();
             cboLoaiCauHoi = new ComboBox();
             flpMain = new FlowLayoutPanel();
+            button1 = new Button();
             pnlTop.SuspendLayout();
             pnlFilter.SuspendLayout();
+            flpMain.SuspendLayout();
             SuspendLayout();
             // 
             // guna2HtmlLabel1
@@ -54,6 +57,7 @@
             // 
             // pnlTop
             // 
+            pnlTop.Controls.Add(btnTatCaCauHoi);
             pnlTop.Controls.Add(lblThongKe);
             pnlTop.Controls.Add(lblDescription);
             pnlTop.Controls.Add(lblTitle);
@@ -63,11 +67,23 @@
             pnlTop.Size = new Size(1120, 125);
             pnlTop.TabIndex = 2;
             // 
+            // btnTatCaCauHoi
+            // 
+            btnTatCaCauHoi.BackColor = Color.RoyalBlue;
+            btnTatCaCauHoi.ForeColor = SystemColors.ControlLightLight;
+            btnTatCaCauHoi.Location = new Point(278, 59);
+            btnTatCaCauHoi.Name = "btnTatCaCauHoi";
+            btnTatCaCauHoi.Size = new Size(114, 29);
+            btnTatCaCauHoi.TabIndex = 3;
+            btnTatCaCauHoi.Text = "Tất cả câu hỏi";
+            btnTatCaCauHoi.UseVisualStyleBackColor = false;
+            btnTatCaCauHoi.Click += loadTatCauHoi_Click;
+            // 
             // lblThongKe
             // 
             lblThongKe.AutoSize = true;
             lblThongKe.ForeColor = Color.Crimson;
-            lblThongKe.Location = new Point(623, 57);
+            lblThongKe.Location = new Point(665, 95);
             lblThongKe.Name = "lblThongKe";
             lblThongKe.Size = new Size(371, 20);
             lblThongKe.TabIndex = 2;
@@ -78,17 +94,18 @@
             lblDescription.AutoSize = true;
             lblDescription.Font = new Font("Microsoft Sans Serif", 8.25F);
             lblDescription.ForeColor = Color.Gray;
-            lblDescription.Location = new Point(30, 60);
+            lblDescription.Location = new Point(30, 95);
             lblDescription.Name = "lblDescription";
             lblDescription.Size = new Size(371, 17);
             lblDescription.TabIndex = 1;
             lblDescription.Text = "Lọc và xóa các câu hỏi trùng lặp trong ngân hàng câu hỏi";
+            lblDescription.Click += lblDescription_Click;
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
             lblTitle.ForeColor = Color.Chocolate;
-            lblTitle.Location = new Point(30, 25);
+            lblTitle.Location = new Point(30, 63);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(175, 20);
             lblTitle.TabIndex = 0;
@@ -110,7 +127,7 @@
             // btnReset
             // 
             btnReset.FlatStyle = FlatStyle.Flat;
-            btnReset.Location = new Point(700, 20);
+            btnReset.Location = new Point(897, 27);
             btnReset.Name = "btnReset";
             btnReset.Size = new Size(94, 29);
             btnReset.TabIndex = 7;
@@ -122,7 +139,7 @@
             btnLoc.BackColor = Color.FromArgb(0, 123, 255);
             btnLoc.FlatStyle = FlatStyle.Flat;
             btnLoc.ForeColor = Color.White;
-            btnLoc.Location = new Point(580, 20);
+            btnLoc.Location = new Point(759, 27);
             btnLoc.Name = "btnLoc";
             btnLoc.Size = new Size(94, 29);
             btnLoc.TabIndex = 6;
@@ -151,6 +168,7 @@
             // 
             flpMain.AutoScroll = true;
             flpMain.BackColor = Color.White;
+            flpMain.Controls.Add(button1);
             flpMain.Dock = DockStyle.Fill;
             flpMain.FlowDirection = FlowDirection.TopDown;
             flpMain.Location = new Point(0, 187);
@@ -158,6 +176,15 @@
             flpMain.Size = new Size(1120, 543);
             flpMain.TabIndex = 4;
             flpMain.WrapContents = false;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 0;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
             // 
             // UC_CauHoiTrungLap
             // 
@@ -173,6 +200,7 @@
             pnlTop.ResumeLayout(false);
             pnlTop.PerformLayout();
             pnlFilter.ResumeLayout(false);
+            flpMain.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -190,5 +218,7 @@
         private Button btnLoc;
         private ComboBox cboMonHoc;
         private FlowLayoutPanel flpMain;
+        private Button btnTatCaCauHoi;
+        private Button button1;
     }
 }

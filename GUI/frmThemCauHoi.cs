@@ -287,37 +287,24 @@ namespace GUI
             }
         }
 
-        // Validate trước khi lưu
+        // Validate trước khi lưu câu hỏi
         private bool ValidateBeforeSave(out string noiDung, out long maChuong, out string doKho)
         {
             noiDung = rtbNoiDung.Text.Trim();
-            maChuong = 0;
+            maChuong = (cbChuong.SelectedItem as ChuongDTO)?.MaChuong ?? 0;
             doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(noiDung))
+            bool ShowWarning(string msg)
             {
-                MessageBox.Show("Nội dung câu hỏi không được để trống.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            if (_dapAnList.Count != 4)
-            {
-                MessageBox.Show("Vui lòng nhập đủ 4 đáp án.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (!_dapAnList.Any(x => x.Dung))
-            {
-                MessageBox.Show("Vui lòng đánh dấu ít nhất một đáp án đúng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (cbChuong.SelectedItem is ChuongDTO chosen) maChuong = chosen.MaChuong;
-            if (maChuong == 0)
-            {
-                MessageBox.Show("Vui lòng chọn Chương hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(noiDung)) return ShowWarning("Nội dung câu hỏi không được để trống.");
+            if (_dapAnList.Count != 4) return ShowWarning("Vui lòng nhập đủ 4 đáp án.");
+            if (!_dapAnList.Any(x => x.Dung)) return ShowWarning("Vui lòng đánh dấu ít nhất một đáp án đúng.");
+            if (maChuong == 0) return ShowWarning("Vui lòng chọn Chương hợp lệ.");
+            if (string.IsNullOrEmpty(doKho)) return ShowWarning("Vui lòng chọn Độ khó cho câu hỏi.");
 
             return true;
         }

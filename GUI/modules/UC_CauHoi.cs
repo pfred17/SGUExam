@@ -69,7 +69,10 @@ namespace GUI.modules
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
 
-
+        public void dispkayTatCaCauHoiFromTrungLap()
+        {
+            LoadData();
+        }
         private void LoadData()
         {
             long maMH = cbMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
@@ -180,8 +183,9 @@ namespace GUI.modules
 
             if (colName == "SuaCol")
             {
-                MessageBox.Show("Chức năng này đang phát triển...", "Thông báo",
-                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var frm = new frmSuaCauHoi(maCH); // truyền mã câu hỏi cần sửa
+                if (frm.ShowDialog() == DialogResult.OK)
+                    LoadData();
             }
             else if (colName == "XoaCol")
             {
@@ -194,20 +198,24 @@ namespace GUI.modules
             }
         }
 
-        private void label1_Click(object sender, EventArgs e) => ShowCauHoiView();
-        private void label2_Click(object sender, EventArgs e) => ShowCauHoiTrungLap();
+        // hàm này sẽ hiển thị tất cả câu hỏi khi ở form UC_CauHoi
+        private void showAllCauHoi(object sender, EventArgs e) {
+            // reset combobox 
+            if(cbMonHoc.Items.Count >0)
+                cbMonHoc.SelectedIndex = 0; // chọn tất cả môn học
+            if (cbChuong.Items.Count > 0)
+                cbChuong.SelectedIndex = 0;  // "Chọn tất cả chương"
+            if (cbDoKho.Items.Count > 0)
+                cbDoKho.SelectedIndex = 0;   // "Tất cả"
+            // Reset textbox tìm kiếm
+            txtTimKiem.Text = "Nhập nội dung câu hỏi để tìm kiếm...";
+            txtTimKiem.ForeColor = Color.Gray;
+        }
+        private void cauHoiTrungLap_Click(object sender, EventArgs e) => ShowCauHoiTrungLap();
 
         #endregion
 
         #region Chuyển view UC
-
-        private void ShowCauHoiView() 
-        {
-            this.Visible = true;
-            if (_ucTrungLap != null)
-                _ucTrungLap.Visible = false;
-            LoadData();
-        }
 
         private void ShowCauHoiTrungLap()
         {
@@ -215,7 +223,7 @@ namespace GUI.modules
 
             if (_ucTrungLap == null)
             {
-                _ucTrungLap = new UC_CauHoiTrungLap();
+                _ucTrungLap = new UC_CauHoiTrungLap(this); // Tạo mới UC_CauHoiTrungLap nếu chưa có
                 _ucTrungLap.Dock = DockStyle.Fill;
                 var parent = this.Parent;
                 if (parent != null)

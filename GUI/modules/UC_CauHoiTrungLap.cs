@@ -15,9 +15,12 @@ namespace GUI.modules
     public partial class UC_CauHoiTrungLap : UserControl
     {
         private readonly CauHoiBLL _bll = new CauHoiBLL();
-        public UC_CauHoiTrungLap()
+
+        private UC_CauHoi _parentUC; // lưu trữ tham chiếu tới UC_CauHoi mà nó “thuộc về”.
+        public UC_CauHoiTrungLap(UC_CauHoi parent)
         {
             InitializeComponent();
+            _parentUC = parent;
         }
         // load du lieu 
         public void UC_CauHoiTrungLap_Load(object sender, EventArgs e)
@@ -221,7 +224,24 @@ namespace GUI.modules
             cboMonHoc.SelectedIndex = 0;
             LoadDuLieu();
         }
+
+        public void loadTatCauHoi_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;     // ẩn UC_TrungLap
+            _parentUC.Visible = true; // hiện UC_CauHoi
+            _parentUC.dispkayTatCaCauHoiFromTrungLap(); // load dữ liệu
+        }
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTatCaCauHoi_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblDescription_Click(object sender, EventArgs e)
         {
 
         }

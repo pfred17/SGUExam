@@ -29,7 +29,7 @@
             label2 = new Label();
             btnTuDieuChinh = new Button();
             btnThemMoi = new Button();
-            label1 = new Label();
+            lbTatCaCauhoi = new Label();
             btnTimKiem = new Button();
             pnlContainer = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvCauHoi).BeginInit();
@@ -145,7 +145,7 @@
             label2.Size = new Size(176, 28);
             label2.TabIndex = 8;
             label2.Text = "Câu hỏi trùng lặp";
-            label2.Click += label2_Click;
+            label2.Click += cauHoiTrungLap_Click;
             // 
             // btnTuDieuChinh
             // 
@@ -173,16 +173,16 @@
             btnThemMoi.UseVisualStyleBackColor = false;
             btnThemMoi.Click += btnThemMoi_Click;
             // 
-            // label1
+            // lbTatCaCauhoi
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label1.Location = new Point(25, 100);
-            label1.Name = "label1";
-            label1.Size = new Size(145, 28);
-            label1.TabIndex = 7;
-            label1.Text = "Tất cả câu hỏi";
-            label1.Click += label1_Click;
+            lbTatCaCauhoi.AutoSize = true;
+            lbTatCaCauhoi.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lbTatCaCauhoi.Location = new Point(25, 100);
+            lbTatCaCauhoi.Name = "lbTatCaCauhoi";
+            lbTatCaCauhoi.Size = new Size(145, 28);
+            lbTatCaCauhoi.TabIndex = 7;
+            lbTatCaCauhoi.Text = "Tất cả câu hỏi";
+            lbTatCaCauhoi.Click += showAllCauHoi;
             // 
             // btnTimKiem
             // 
@@ -216,7 +216,7 @@
             Controls.Add(cbMonHoc);
             Controls.Add(cbChuong);
             Controls.Add(cbDoKho);
-            Controls.Add(label1);
+            Controls.Add(lbTatCaCauhoi);
             Controls.Add(label2);
             Controls.Add(btnThemMoi);
             Controls.Add(btnTuDieuChinh);
@@ -240,7 +240,7 @@
         private DataGridViewTextBoxColumn colDoKho = null!;
         private DataGridViewImageColumn SuaCol = null!;
         private DataGridViewImageColumn XoaCol = null!;
-        private Label label1 = null!;
+        private Label lbTatCaCauhoi = null!;
         private Label label2 = null!;
         private Button btnThemMoi = null!;
         private Button btnTuDieuChinh = null!;
