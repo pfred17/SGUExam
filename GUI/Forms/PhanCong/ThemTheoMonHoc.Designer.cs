@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lblMonHoc = new Label();
             cbxMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
@@ -59,9 +59,9 @@
             // 
             lblMonHoc.AutoSize = true;
             lblMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMonHoc.Location = new Point(26, 40);
+            lblMonHoc.Location = new Point(30, 53);
             lblMonHoc.Name = "lblMonHoc";
-            lblMonHoc.Size = new Size(71, 21);
+            lblMonHoc.Size = new Size(90, 28);
             lblMonHoc.TabIndex = 13;
             lblMonHoc.Text = "Môn học";
             // 
@@ -69,7 +69,7 @@
             // 
             cbxMonHoc.BackColor = Color.Transparent;
             cbxMonHoc.Cursor = Cursors.Hand;
-            cbxMonHoc.CustomizableEdges = customizableEdges1;
+            cbxMonHoc.CustomizableEdges = customizableEdges11;
             cbxMonHoc.DrawMode = DrawMode.OwnerDrawFixed;
             cbxMonHoc.DropDownStyle = ComboBoxStyle.DropDownList;
             cbxMonHoc.FocusedColor = Color.FromArgb(94, 148, 255);
@@ -77,17 +77,18 @@
             cbxMonHoc.Font = new Font("Segoe UI", 10F);
             cbxMonHoc.ForeColor = Color.FromArgb(68, 88, 112);
             cbxMonHoc.ItemHeight = 30;
-            cbxMonHoc.Location = new Point(136, 33);
+            cbxMonHoc.Location = new Point(155, 44);
+            cbxMonHoc.Margin = new Padding(3, 4, 3, 4);
             cbxMonHoc.MaxDropDownItems = 5;
             cbxMonHoc.Name = "cbxMonHoc";
-            cbxMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            cbxMonHoc.Size = new Size(588, 36);
+            cbxMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            cbxMonHoc.Size = new Size(671, 36);
             cbxMonHoc.TabIndex = 14;
             // 
             // txtSearch
             // 
             txtSearch.BackColor = SystemColors.Control;
-            txtSearch.CustomizableEdges = customizableEdges3;
+            txtSearch.CustomizableEdges = customizableEdges13;
             txtSearch.DefaultText = "";
             txtSearch.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtSearch.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -97,14 +98,14 @@
             txtSearch.Font = new Font("Segoe UI", 9F);
             txtSearch.ForeColor = Color.Black;
             txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(26, 92);
-            txtSearch.Margin = new Padding(3, 4, 3, 4);
+            txtSearch.Location = new Point(30, 123);
+            txtSearch.Margin = new Padding(3, 5, 3, 5);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderForeColor = Color.Gray;
             txtSearch.PlaceholderText = "Tìm kiếm giảng viên...";
             txtSearch.SelectedText = "";
-            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtSearch.Size = new Size(698, 36);
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtSearch.Size = new Size(798, 48);
             txtSearch.TabIndex = 15;
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Leave += txtSearch_Leave;
@@ -117,28 +118,27 @@
             dgv.AllowUserToResizeRows = false;
             dgv.BackgroundColor = Color.White;
             dgv.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(116, 185, 255);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgv.ColumnHeadersHeight = 40;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.Columns.AddRange(new DataGridViewColumn[] { MSSV, HoTen, Email, NhomQuyen, CheckCol });
             dgv.EnableHeadersVisualStyles = false;
             dgv.GridColor = Color.FromArgb(231, 229, 255);
-            dgv.Location = new Point(26, 149);
-            dgv.Margin = new Padding(3, 2, 3, 2);
+            dgv.Location = new Point(30, 199);
             dgv.MultiSelect = false;
             dgv.Name = "dgv";
             dgv.RowHeadersVisible = false;
             dgv.RowHeadersWidth = 51;
             dgv.RowTemplate.Height = 40;
             dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgv.Size = new Size(698, 210);
+            dgv.Size = new Size(798, 280);
             dgv.TabIndex = 16;
             dgv.CellContentClick += dgv_CellContentClick;
             dgv.CellValueChanged += dgv_CellValueChanged;
@@ -155,7 +155,7 @@
             MSSV.ReadOnly = true;
             MSSV.Resizable = DataGridViewTriState.False;
             MSSV.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MSSV.Width = 118;
+            MSSV.Width = 147;
             // 
             // HoTen
             // 
@@ -180,40 +180,41 @@
             Email.ReadOnly = true;
             Email.Resizable = DataGridViewTriState.False;
             Email.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Email.Width = 54;
+            Email.Width = 66;
             // 
             // NhomQuyen
             // 
             NhomQuyen.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             NhomQuyen.DataPropertyName = "Role";
             NhomQuyen.HeaderText = "Nhóm quyền";
+            NhomQuyen.MinimumWidth = 6;
             NhomQuyen.Name = "NhomQuyen";
             NhomQuyen.ReadOnly = true;
             NhomQuyen.Resizable = DataGridViewTriState.False;
             NhomQuyen.SortMode = DataGridViewColumnSortMode.NotSortable;
-            NhomQuyen.Width = 110;
+            NhomQuyen.Width = 138;
             // 
             // CheckCol
             // 
             CheckCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             CheckCol.HeaderText = "Chọn";
+            CheckCol.MinimumWidth = 6;
             CheckCol.Name = "CheckCol";
             CheckCol.Resizable = DataGridViewTriState.False;
-            CheckCol.Width = 54;
+            CheckCol.Width = 66;
             // 
             // btnPrev
             // 
             btnPrev.BackColor = Color.DodgerBlue;
             btnPrev.Cursor = Cursors.Hand;
-            btnPrev.CustomizableEdges = customizableEdges5;
+            btnPrev.CustomizableEdges = customizableEdges15;
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(608, 434);
-            btnPrev.Margin = new Padding(3, 2, 3, 2);
+            btnPrev.Location = new Point(695, 579);
             btnPrev.Name = "btnPrev";
-            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnPrev.Size = new Size(30, 29);
+            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnPrev.Size = new Size(34, 39);
             btnPrev.TabIndex = 17;
             btnPrev.Text = "<";
             btnPrev.Click += btnPrev_Click;
@@ -223,9 +224,10 @@
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(641, 434);
+            lblPage.Location = new Point(733, 579);
+            lblPage.Margin = new Padding(3, 4, 3, 4);
             lblPage.Name = "lblPage";
-            lblPage.Size = new Size(50, 29);
+            lblPage.Size = new Size(57, 39);
             lblPage.TabIndex = 19;
             lblPage.Text = "1/1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
@@ -234,15 +236,14 @@
             // 
             btnNext.BackColor = Color.DodgerBlue;
             btnNext.Cursor = Cursors.Hand;
-            btnNext.CustomizableEdges = customizableEdges7;
+            btnNext.CustomizableEdges = customizableEdges17;
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(694, 434);
-            btnNext.Margin = new Padding(3, 2, 3, 2);
+            btnNext.Location = new Point(793, 579);
             btnNext.Name = "btnNext";
-            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btnNext.Size = new Size(30, 29);
+            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnNext.Size = new Size(34, 39);
             btnNext.TabIndex = 18;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
@@ -251,22 +252,21 @@
             // 
             btnThem.BackColor = Color.DodgerBlue;
             btnThem.Cursor = Cursors.Hand;
-            btnThem.CustomizableEdges = customizableEdges9;
+            btnThem.CustomizableEdges = customizableEdges19;
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
             btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThem.ForeColor = Color.White;
-            btnThem.Location = new Point(567, 499);
-            btnThem.Margin = new Padding(3, 2, 3, 2);
+            btnThem.Location = new Point(648, 665);
             btnThem.Name = "btnThem";
-            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnThem.Size = new Size(157, 29);
+            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            btnThem.Size = new Size(179, 39);
             btnThem.TabIndex = 20;
             btnThem.Text = "+LƯU PHÂN CÔNG";
             btnThem.Click += btnThem_Click;
             // 
             // ThemTheoMonHoc
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(lblMonHoc);
             Controls.Add(cbxMonHoc);
@@ -276,8 +276,9 @@
             Controls.Add(lblPage);
             Controls.Add(btnNext);
             Controls.Add(btnThem);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "ThemTheoMonHoc";
-            Size = new Size(750, 560);
+            Size = new Size(857, 747);
             ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
             ResumeLayout(false);
             PerformLayout();

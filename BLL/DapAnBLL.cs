@@ -12,5 +12,10 @@ namespace BLL
         {
             return _dal.GetByCauHoi(maCauHoi);
         }
+
+        public void XoaTheoCauHoi(long maCauHoi)
+        {
+            _dal.XoaTheoCauHoi(maCauHoi);
+        }
     }
 }

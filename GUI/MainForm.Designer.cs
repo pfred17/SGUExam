@@ -43,18 +43,17 @@
             panelSidebar.BorderThickness = 1;
             panelSidebar.CustomBorderThickness = new Padding(1);
             panelSidebar.CustomizableEdges = customizableEdges1;
-            panelSidebar.Location = new Point(0, 0);
+            panelSidebar.Location = new Point(0, 74);
             panelSidebar.Margin = new Padding(3, 2, 3, 2);
             panelSidebar.Name = "panelSidebar";
             panelSidebar.ShadowDecoration.CustomizableEdges = customizableEdges2;
             panelSidebar.Size = new Size(250, 730);
             panelSidebar.TabIndex = 0;
-            panelSidebar.Paint += panelSidebar_Paint;
             // 
             // panelMain
             // 
             panelMain.CustomizableEdges = customizableEdges3;
-            panelMain.Location = new Point(250, 73);
+            panelMain.Location = new Point(250, 74);
             panelMain.Margin = new Padding(3, 2, 3, 2);
             panelMain.Name = "panelMain";
             panelMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
@@ -74,7 +73,7 @@
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoValidate = AutoValidate.EnableAllowFocusChange;
             ClientSize = new Size(1370, 803);

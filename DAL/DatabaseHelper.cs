@@ -7,7 +7,7 @@ namespace DAL
     {
         public static readonly string connectionString =
              "Data Source=DESKTOP-VNR8V8P\\DUYPHONG;" +
-             "Initial Catalog=SGUExam;Integrated Security=SSPI;" +
+             "Initial Catalog=SGUExam2;Integrated Security=SSPI;" +
              "TrustServerCertificate=True;";
 
         public static SqlConnection GetConnection()

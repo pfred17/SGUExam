@@ -12,12 +12,14 @@ namespace DAL
         {
             var list = new List<CauHoiDTO>();
             string query = @"
-                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, ch.do_kho, cg.ma_chuong
+                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong ,nd.ho_ten AS tac_gia
                 FROM cau_hoi ch
                 JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
                 JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
+                LEFT JOIN phan_cong pc ON mh.ma_mh = pc.ma_mh
+                LEFT JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
                 WHERE ch.trang_thai = 1
-                ORDER BY ch.ma_cau_hoi DESC";
+                ORDER BY ch.ma_cau_hoi ASC";
 
             var dt = DatabaseHelper.ExecuteQuery(query);
             foreach (System.Data.DataRow row in dt.Rows)
@@ -27,13 +29,15 @@ namespace DAL
                     MaCauHoi = (long)row["ma_cau_hoi"],
                     NoiDung = (string)row["noi_dung"],
                     DoKho = (string)row["do_kho"],
+                    MaMonHoc = (long)row["ma_mh"],
+                    MaChuong = (long)row["ma_chuong"],        
                     TenMonHoc = (string)row["ten_mh"],
+                    TacGia = row["tac_gia"]?.ToString() ?? "Chưa rõ tác giả",
                 });
             }
             return list;
         }
-
-        public CauHoiDTO GetById(long maCauHoi)
+        public CauHoiDTO? GetById(long maCauHoi)
         {
             string query = @"
                 SELECT ch.*, cg.ma_mh, mh.ten_mh, cg.ten_chuong
@@ -62,7 +66,7 @@ namespace DAL
         {
             using var conn = DatabaseHelper.GetConnection();
             conn.Open();
-            using var tran = conn.BeginTransaction();
+            using var tran = conn.BeginTransaction(); // BeginTransaction là bắt đầu một giao dịch
             try
             {
                 string insertCH = @"INSERT INTO cau_hoi (ma_chuong, noi_dung, do_kho, trang_thai)
@@ -75,6 +79,7 @@ namespace DAL
                 cmd.Parameters.AddWithValue("@DoKho", doKho);
                 long maCauHoi = Convert.ToInt64(cmd.ExecuteScalar());
 
+                // thêm đáp án cho câu hỏi vừa tạo dùng transaction
                 string insertDA = "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@MaCH, @NoiDung, @Dung)";
                 foreach (var da in dapAnList)
                 {
@@ -85,7 +90,7 @@ namespace DAL
                     cmdDA.ExecuteNonQuery();
                 }
 
-                tran.Commit();
+                tran.Commit(); // Nếu tất cả các lệnh trên thành công, commit transaction
                 return maCauHoi;
             }
             catch
@@ -129,12 +134,12 @@ namespace DAL
             }
             catch
             {
-                tran.Rollback();
+                tran.Rollback(); // Nếu có lỗi xảy ra, rollback transaction
                 throw;
             }
         }
 
-        public void Xoa(long maCauHoi)
+        public void Xoa(long maCauHoi) // Xóa mềm
         {
             string query = "UPDATE cau_hoi SET trang_thai=0 WHERE ma_cau_hoi=@MaCH";
             var param = new SqlParameter("@MaCH", maCauHoi);

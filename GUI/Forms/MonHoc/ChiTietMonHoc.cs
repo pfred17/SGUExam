@@ -309,5 +309,10 @@ namespace GUI.forms.MonHoc
                 LoadPage();
             }
         }
+
+        private void lblError_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
