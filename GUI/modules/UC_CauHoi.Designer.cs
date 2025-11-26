@@ -44,6 +44,7 @@
             txtTimKiem.Size = new Size(930, 30);
             txtTimKiem.TabIndex = 2;
             txtTimKiem.Text = "Nhập nội dung câu hỏi để tìm kiếm...";
+            txtTimKiem.TextChanged += txtTimKiem_TextChanged;
             txtTimKiem.Enter += txtTimKiem_Enter;
             txtTimKiem.KeyPress += txtTimKiem_KeyPress;
             txtTimKiem.Leave += txtTimKiem_Leave;
@@ -88,6 +89,7 @@
             dgvCauHoi.Size = new Size(1050, 430);
             dgvCauHoi.TabIndex = 1;
             dgvCauHoi.CellContentClick += dgvCauHoi_CellContentClick;
+            dgvCauHoi.SelectionChanged += dgvCauHoi_SelectionChanged;
             // 
             // colID
             // 
@@ -203,7 +205,6 @@
             pnlContainer.Size = new Size(1120, 450);
             pnlContainer.TabIndex = 0;
             pnlContainer.Visible = false;
-            //pnlContainer.Paint += pnlContainer_Paint;
             // 
             // UC_CauHoi
             // 

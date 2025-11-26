@@ -201,7 +201,7 @@ namespace GUI.modules
 
         #region Chuyển view UC
 
-        private void ShowCauHoiView()
+        private void ShowCauHoiView() 
         {
             this.Visible = true;
             if (_ucTrungLap != null)
@@ -225,5 +225,16 @@ namespace GUI.modules
         }
 
         #endregion
+
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        // xóa chọn dòng khi click vào DataGridView
+        private void dgvCauHoi_SelectionChanged(object sender, EventArgs e)
+        {
+            dgvCauHoi.ClearSelection();
+        }
     }
 }

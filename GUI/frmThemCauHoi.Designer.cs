@@ -39,7 +39,6 @@ namespace GUI
             rtbNoiDung = new RichTextBox();
             labelDanhSach = new Label();
             btnThemCauTraLoi = new Button();
-            //pnlDapAnContainer = new Panel();
             pnlDapAnContainer = new FlowLayoutPanel();
             btnLuuCauHoi = new Button();
             openFileDialog1 = new OpenFileDialog();
@@ -88,6 +87,7 @@ namespace GUI
             btnChonFile.TabIndex = 8;
             btnChonFile.Text = "Choose File";
             btnChonFile.UseVisualStyleBackColor = false;
+            btnChonFile.Click += BtnChonFile_Click;
             // 
             // label9
             // 
@@ -119,6 +119,7 @@ namespace GUI
             btnThemVaoHeThong.TabIndex = 5;
             btnThemVaoHeThong.Text = "THÊM VÀO HỆ THỐNG";
             btnThemVaoHeThong.UseVisualStyleBackColor = false;
+            btnThemVaoHeThong.Click += BtnThemVaoHeThong_Click;
             // 
             // lblMonHocFile
             // 
@@ -143,7 +144,6 @@ namespace GUI
             cbChuongFile.Name = "cbChuongFile";
             cbChuongFile.Size = new Size(121, 28);
             cbChuongFile.TabIndex = 12;
-            cbChuongFile.SelectedIndexChanged += cbChuongFile_SelectedIndexChanged;
             // 
             // cbMonHocFile
             // 
@@ -191,6 +191,7 @@ namespace GUI
             cbMonHoc.Name = "cbMonHoc";
             cbMonHoc.Size = new Size(260, 28);
             cbMonHoc.TabIndex = 1;
+            cbMonHoc.SelectedIndexChanged += CbMonHoc_SelectedIndexChanged;
             // 
             // labelChuong
             // 
@@ -241,14 +242,14 @@ namespace GUI
             rtbNoiDung.BorderStyle = BorderStyle.FixedSingle;
             rtbNoiDung.Location = new Point(24, 105);
             rtbNoiDung.Name = "rtbNoiDung";
-            rtbNoiDung.Size = new Size(736, 98);
+            rtbNoiDung.Size = new Size(736, 102);
             rtbNoiDung.TabIndex = 7;
             rtbNoiDung.Text = "";
             // 
             // labelDanhSach
             // 
             labelDanhSach.AutoSize = true;
-            labelDanhSach.Location = new Point(24, 246);
+            labelDanhSach.Location = new Point(24, 262);
             labelDanhSach.Name = "labelDanhSach";
             labelDanhSach.Size = new Size(127, 20);
             labelDanhSach.TabIndex = 8;
@@ -259,25 +260,23 @@ namespace GUI
             btnThemCauTraLoi.BackColor = Color.FromArgb(0, 123, 255);
             btnThemCauTraLoi.FlatStyle = FlatStyle.Flat;
             btnThemCauTraLoi.ForeColor = Color.White;
-            btnThemCauTraLoi.Location = new Point(24, 209);
+            btnThemCauTraLoi.Location = new Point(24, 213);
             btnThemCauTraLoi.Name = "btnThemCauTraLoi";
             btnThemCauTraLoi.Size = new Size(160, 34);
             btnThemCauTraLoi.TabIndex = 9;
             btnThemCauTraLoi.Text = "THÊM CÂU TRẢ LỜI";
             btnThemCauTraLoi.UseVisualStyleBackColor = false;
-            btnThemCauTraLoi.Click += btnThemCauTraLoi_Click_1;
+            btnThemCauTraLoi.Click += BtnThemCauTraLoi_Click;
             // 
-
             // pnlDapAnContainer
             // 
             pnlDapAnContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlDapAnContainer.AutoScroll = true;
             pnlDapAnContainer.BorderStyle = BorderStyle.FixedSingle;
-            pnlDapAnContainer.Location = new Point(24, 269);
+            pnlDapAnContainer.Location = new Point(24, 285);
             pnlDapAnContainer.Name = "pnlDapAnContainer";
-            pnlDapAnContainer.Size = new Size(736, 261);
+            pnlDapAnContainer.Size = new Size(736, 245);
             pnlDapAnContainer.TabIndex = 10;
-
             // 
             // btnLuuCauHoi
             // 
@@ -291,6 +290,7 @@ namespace GUI
             btnLuuCauHoi.TabIndex = 11;
             btnLuuCauHoi.Text = "+ Lưu câu hỏi";
             btnLuuCauHoi.UseVisualStyleBackColor = false;
+            btnLuuCauHoi.Click += BtnLuuCauHoi_Click;
             // 
             // openFileDialog1
             // 
@@ -306,7 +306,7 @@ namespace GUI
             Name = "frmThemCauHoi";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Thêm câu hỏi";
-            Load += frmThemCauHoi_Load;
+            Load += FrmThemCauHoi_Load;
             tabControl1.ResumeLayout(false);
             tabTuFile.ResumeLayout(false);
             tabTuFile.PerformLayout();
@@ -338,7 +338,6 @@ namespace GUI
         private RichTextBox rtbNoiDung;
         private Label labelDanhSach;
         private Button btnThemCauTraLoi;
-        //private Panel pnlDapAnContainer;
         private FlowLayoutPanel pnlDapAnContainer;
         private Button btnLuuCauHoi;
         private OpenFileDialog openFileDialog1;
