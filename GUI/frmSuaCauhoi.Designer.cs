@@ -189,6 +189,7 @@ namespace GUI
             cbMonHoc.Name = "cbMonHoc";
             cbMonHoc.Size = new Size(260, 28);
             cbMonHoc.TabIndex = 1;
+            cbMonHoc.SelectedIndexChanged += CbMonHoc_SelectedIndexChanged;
             // 
             // labelChuong
             // 
@@ -287,6 +288,7 @@ namespace GUI
             btnSuaCauHoi.TabIndex = 11;
             btnSuaCauHoi.Text = "+ Sửa câu hỏi";
             btnSuaCauHoi.UseVisualStyleBackColor = false;
+            btnSuaCauHoi.Click += BtnSuaCauHoi_Click;
             // 
             // openFileDialog1
             // 

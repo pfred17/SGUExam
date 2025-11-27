@@ -21,9 +21,16 @@ namespace BLL
             // Chuẩn hóa từ khóa
             string keywordNormalized = string.IsNullOrEmpty(tuKhoa) ? "" : Normalize(tuKhoa);
 
+            // Lấy danh sách chương của môn học (nếu chọn môn)
+            HashSet<long>? dsChuong = null;
+            if (maMH > 0)
+                dsChuong = _chuongBLL.GetChuongByMonHoc(maMH)
+                                     .Select(ch => ch.MaChuong)
+                                     .ToHashSet();
+
             return list.Where(c =>
                 // Lọc theo môn học
-                (maMH == 0 || _chuongBLL.GetChuongByMonHoc(maMH).Any(ch => ch.MaChuong == c.MaChuong)) &&
+                (dsChuong == null || dsChuong.Contains(c.MaChuong)) &&
                 // Lọc theo chương
                 (maChuong == 0 || c.MaChuong == maChuong) &&
                 // Lọc theo độ khó

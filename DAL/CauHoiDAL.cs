@@ -54,6 +54,7 @@ namespace DAL
                 {
                     MaCauHoi = Convert.ToInt64(row["ma_cau_hoi"]),
                     MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
                     NoiDung = row["noi_dung"]?.ToString() ?? "",
                     DoKho = row["do_kho"]?.ToString() ?? "",
                     TenMonHoc = row["ten_mh"]?.ToString() ?? "",

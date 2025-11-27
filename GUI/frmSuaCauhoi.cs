@@ -17,9 +17,8 @@ namespace GUI
         private readonly CauHoiBLL _cauHoiBLL = new();
 
         private readonly long _maCauHoi; // ID câu hỏi cần sửa
-        // danh sach dáp án tạm thời trong quá trình sửa
-        private readonly List<DapAnDTO> _dapAnList = new();
-        private int _nextTempId = -1; // tạo ID tạm cho đáp án mới (âm để tránh trùng)
+        private readonly List<DapAnDTO> _dapAnList = new(); // danh sách đáp án tạm thời
+        private int _nextTempId = -1; // ID tạm cho đáp án mới
 
         public frmSuaCauHoi(long maCauHoi)
         {
@@ -60,49 +59,22 @@ namespace GUI
                 return;
             }
 
+            cbMonHoc.SelectedIndexChanged -= CbMonHoc_SelectedIndexChanged;
+            cbMonHoc.SelectedValue = cauHoi.MaMonHoc;
+            LoadChuongToCombo(cbChuong, cauHoi.MaMonHoc);
+            // Set chương đúng
+            cbChuong.SelectedValue = cauHoi.MaChuong;
+
+            // Delay chọn chương, đảm bảo combo đã có dữ liệu
+
+            cbDoKho.SelectedItem = cbDoKho.Items.Contains(cauHoi.DoKho) ? cauHoi.DoKho : cbDoKho.Items[0];
             rtbNoiDung.Text = cauHoi.NoiDung;
-            // chọn môn học 
-            var mon = _monHocBLL.GetAllMonHoc().FirstOrDefault(m => m.MaMH == cauHoi.MaMonHoc);
-            if (mon != null)
-            {
-                cbMonHoc.SelectedItem = mon;
-                // load chương theo môn học
-                LoadChuongToCombo(cbChuong, mon.MaMH);
-                // chọn chương
-                var chuong = cbChuong.Items.Cast<ChuongDTO>().FirstOrDefault(c => c.MaChuong == cauHoi.MaChuong);
-                if (chuong != null) cbChuong.SelectedItem = chuong;
-                // chọn độ khó
-                if (cbDoKho.Items.Contains(cauHoi.DoKho))
-                    cbDoKho.SelectedItem = cauHoi.DoKho;
-                else
-                    cbDoKho.SelectedIndex = 0; // mặc định "Tất cả"
-                // load đáp án
-                var dapAns = _cauHoiBLL.GetDapAn(_maCauHoi);
-                _dapAnList.Clear();
-                _dapAnList.AddRange(dapAns);
-                RefreshAnswerListUI();
 
-            }
-            //cbMonHoc.SelectedValue = cauHoi.MaMonHoc; // 
+            _dapAnList.Clear();
+            _dapAnList.AddRange(_cauHoiBLL.GetDapAn(_maCauHoi));
+            RefreshAnswerListUI();
 
-            //cbDoKho.SelectedItem = cauHoi.DoKho;
-            //// Load danh sách chương của môn học
-            //LoadChuongToCombo(cbChuong, cauHoi.MaMonHoc);
-            //cbChuong.SelectedValue = cauHoi.MaChuong;
-            ////// chọn môn học và chương
-            ////var mon = _monHocBLL.GetAllMonHoc().FirstOrDefault(m => m.MaMH == cauHoi.MaMonHoc);
-            ////if (mon != null)
-            ////{
-            ////    cbMonHoc.SelectedItem = mon;
-            ////    LoadChuongToCombo(cbChuong, mon.MaMH);
-            ////    var chuong = cbChuong.Items.Cast<ChuongDTO>().FirstOrDefault(c => c.MaChuong == cauHoi.MaChuong);
-            ////    if (chuong != null) cbChuong.SelectedItem = chuong;
-            ////}
-            //// load đáp án
-            //var dapAns = _cauHoiBLL.GetDapAn(_maCauHoi);
-            //_dapAnList.Clear();
-            //_dapAnList.AddRange(dapAns);
-            //RefreshAnswerListUI();
+            cbMonHoc.SelectedIndexChanged += CbMonHoc_SelectedIndexChanged;
         }
 
         private void LoadDoKhoToCombo(ComboBox cb)
@@ -136,7 +108,8 @@ namespace GUI
 
         private void BtnChonFile_Click(object? sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK) txtDuongDan.Text = openFileDialog1.FileName;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                txtDuongDan.Text = openFileDialog1.FileName;
         }
 
         private void BtnThemVaoHeThong_Click(object? sender, EventArgs e)
@@ -245,7 +218,6 @@ namespace GUI
 
             return panel;
         }
-        // -------------------------------------------
         private void RemoveEditor(Panel panel)
         {
             if (pnlDapAnContainer.Controls.Contains(panel))
@@ -316,11 +288,11 @@ namespace GUI
         }
 
         // Lưu câu hỏi -> gọi BLL
-        private void BtnLuuCauHoi_Click(object? sender, EventArgs e)
+        private void BtnSuaCauHoi_Click(object? sender, EventArgs e)
         {
             if (!ValidateBeforeSave(out string noiDung, out long maChuong, out string doKho)) return;
 
-            foreach (var da in _dapAnList) da.MaCauHoi = 0;
+            foreach (var da in _dapAnList) da.MaCauHoi = _maCauHoi;
 
             btnSuaCauHoi.Enabled = false;
             var prevCursor = Cursor.Current;
@@ -328,8 +300,8 @@ namespace GUI
 
             try
             {
-                long newId = _cauHoiBLL.ThemMoi(maChuong, noiDung, doKho, _dapAnList);
-                MessageBox.Show($"Lưu câu hỏi thành công (ID: {newId})", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _cauHoiBLL.CapNhat(_maCauHoi,maChuong, noiDung, doKho, _dapAnList);
+                MessageBox.Show($"Sữa câu hỏi thành công (ID: {_maCauHoi})", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
             }
