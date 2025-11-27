@@ -101,42 +101,52 @@ namespace DAL
             }
         }
 
-        public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> dapAnList)
+        public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> list)
         {
             using var conn = DatabaseHelper.GetConnection();
             conn.Open();
-            using var tran = conn.BeginTransaction();
-            try
-            {
-                string updateCH = @"UPDATE cau_hoi 
-                                    SET ma_chuong=@MaChuong, noi_dung=@NoiDung, do_kho=@DoKho
-                                    WHERE ma_cau_hoi=@MaCH";
 
-                var cmd = new SqlCommand(updateCH, conn, tran);
-                cmd.Parameters.AddWithValue("@MaCH", maCauHoi);
-                cmd.Parameters.AddWithValue("@MaChuong", maChuong);
-                cmd.Parameters.AddWithValue("@NoiDung", noiDung);
-                cmd.Parameters.AddWithValue("@DoKho", doKho);
+            // update câu hỏi
+            using (var cmd = new SqlCommand(
+                "UPDATE cau_hoi SET ma_chuong=@c, noi_dung=@n, do_kho=@d WHERE ma_cau_hoi=@id", conn))
+            {
+                cmd.Parameters.AddWithValue("@id", maCauHoi);
+                cmd.Parameters.AddWithValue("@c", maChuong);
+                cmd.Parameters.AddWithValue("@n", noiDung);
+                cmd.Parameters.AddWithValue("@d", doKho);
                 cmd.ExecuteNonQuery();
-
-                _dapAnDAL.XoaTheoCauHoi(maCauHoi, tran);
-
-                string insertDA = "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@MaCH, @NoiDung, @Dung)";
-                foreach (var da in dapAnList)
-                {
-                    var cmdDA = new SqlCommand(insertDA, conn, tran);
-                    cmdDA.Parameters.AddWithValue("@MaCH", maCauHoi);
-                    cmdDA.Parameters.AddWithValue("@NoiDung", da.NoiDung);
-                    cmdDA.Parameters.AddWithValue("@Dung", da.Dung ? 1 : 0);
-                    cmdDA.ExecuteNonQuery();
-                }
-
-                tran.Commit();
             }
-            catch
+
+            // lấy danh sách đáp án cũ (key = ma_dap_an)
+            var old = new HashSet<long>();
+            using (var cmd = new SqlCommand("SELECT ma_dap_an FROM dap_an WHERE ma_cau_hoi=@id", conn))
             {
-                tran.Rollback(); // Nếu có lỗi xảy ra, rollback transaction
-                throw;
+                cmd.Parameters.AddWithValue("@id", maCauHoi);
+                using var rd = cmd.ExecuteReader();
+                while (rd.Read()) old.Add(rd.GetInt64(0));
+            }
+
+            // update hoặc insert
+            foreach (var da in list)
+            {
+                if (old.Contains(da.MaDapAn))
+                {
+                    using var u = new SqlCommand(
+                        "UPDATE dap_an SET noi_dung=@n, dung=@d WHERE ma_dap_an=@id", conn);
+                    u.Parameters.AddWithValue("@id", da.MaDapAn);
+                    u.Parameters.AddWithValue("@n", da.NoiDung);
+                    u.Parameters.AddWithValue("@d", da.Dung ? 1 : 0);
+                    u.ExecuteNonQuery();
+                }
+                else
+                {
+                    using var i = new SqlCommand(
+                        "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@ch, @n, @d)", conn);
+                    i.Parameters.AddWithValue("@ch", maCauHoi);
+                    i.Parameters.AddWithValue("@n", da.NoiDung);
+                    i.Parameters.AddWithValue("@d", da.Dung ? 1 : 0);
+                    i.ExecuteNonQuery();
+                }
             }
         }
 

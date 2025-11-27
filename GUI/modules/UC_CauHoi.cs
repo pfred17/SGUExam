@@ -71,7 +71,16 @@ namespace GUI.modules
 
         public void dispkayTatCaCauHoiFromTrungLap()
         {
-            LoadData();
+            //long maMH = cbMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
+            //long maChuong = cbChuong.SelectedItem is ChuongDTO chuong ? chuong.MaChuong : 0;
+            //string doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text.Trim();
+            //string tuKhoa = txtTimKiem.Text.Trim() == "Nhập nội dung câu hỏi để tìm kiếm..." ? "" : txtTimKiem.Text.Trim();
+
+            //// CỐT LÕI: KHÔNG GroupBy ở đây nữa!
+            //filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maChuong, doKho, tuKhoa)
+            //                          .ToList(); // Lấy hết, không lọc trùng
+
+            //RenderGrid(filteredList);
         }
         private void LoadData()
         {
@@ -219,7 +228,7 @@ namespace GUI.modules
 
         private void ShowCauHoiTrungLap()
         {
-            this.Visible = false;
+            this.Visible = false; // ẩn UC_CauHoi hiện tại
 
             if (_ucTrungLap == null)
             {

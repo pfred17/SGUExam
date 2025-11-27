@@ -330,7 +330,7 @@ namespace GUI
             }
 
             if (string.IsNullOrWhiteSpace(noiDung)) return ShowWarning("Nội dung câu hỏi không được để trống.");
-            if (_dapAnList.Count != 4) return ShowWarning("Vui lòng nhập đủ 4 đáp án.");
+            //if (_dapAnList.Count != 4) return ShowWarning("Vui lòng nhập đủ 4 đáp án.");
             if (!_dapAnList.Any(x => x.Dung)) return ShowWarning("Vui lòng đánh dấu ít nhất một đáp án đúng.");
             if (maChuong == 0) return ShowWarning("Vui lòng chọn Chương hợp lệ.");
             if (string.IsNullOrEmpty(doKho)) return ShowWarning("Vui lòng chọn Độ khó cho câu hỏi.");

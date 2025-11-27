@@ -99,7 +99,7 @@
             lblDescription.Size = new Size(371, 17);
             lblDescription.TabIndex = 1;
             lblDescription.Text = "Lọc và xóa các câu hỏi trùng lặp trong ngân hàng câu hỏi";
-            lblDescription.Click += lblDescription_Click;
+            //lblDescription.Click += lblDescription_Click;
             // 
             // lblTitle
             // 

@@ -14,7 +14,8 @@ namespace GUI.modules
 {
     public partial class UC_CauHoiTrungLap : UserControl
     {
-        private readonly CauHoiBLL _bll = new CauHoiBLL();
+        private readonly CauHoiBLL _cauHoiBLL = new CauHoiBLL();
+        private readonly MonHocBLL _monHocBLL = new MonHocBLL();
 
         private UC_CauHoi _parentUC; // lưu trữ tham chiếu tới UC_CauHoi mà nó “thuộc về”.
         public UC_CauHoiTrungLap(UC_CauHoi parent)
@@ -30,194 +31,202 @@ namespace GUI.modules
         }
         public void LoadComboBox()
         {
+            cboLoaiCauHoi.Items.Clear();
             cboLoaiCauHoi.Items.Add("Tất cả");
             cboLoaiCauHoi.SelectedIndex = 0;
             // load mon hoc
+            cboMonHoc.Items.Clear();
             cboMonHoc.Items.Add("Tất cả môn học");
-            var dsMon = new MonHocBLL().GetAllMonHoc();
-            foreach (var mon in dsMon)
-            {
-                cboMonHoc.Items.Add(mon.TenMH);
-                cboMonHoc.SelectedIndex = 0;
-            }
+            cboMonHoc.Items.AddRange(_monHocBLL.GetAllMonHoc().Select(m => m.TenMH).ToArray());
+            cboMonHoc.SelectedIndex = 0;
         }
 
         public void LoadDuLieu()
         {
             flpMain.Controls.Clear();
-            var (nhomTrung, cauTrung, cauDuyNhat) = _bll.LayThongKeTrungLap();
-            var dsNhom = _bll.LayCauHoiTrungLap();
+            var (nhomTrung, cauTrung, cauDuyNhat) = _cauHoiBLL.LayThongKeTrungLap();
+            var dsNhom = _cauHoiBLL.LayCauHoiTrungLap();
             // cap nhat thong ke 
             lblThongKe.Text = $"{nhomTrung} nhóm trùng lặp + {cauTrung} câu trùng + {cauDuyNhat} câu duy nhất";
 
             if (nhomTrung == 0)
             {
-                var lbl = new Label
+                flpMain.Controls.Add(new Label
                 {
                     Text = "Tuyệt vời! Không có câu hỏi nào bị trùng lặp.",
                     Font = new Font("Segoe UI", 16F, FontStyle.Bold),
                     ForeColor = Color.ForestGreen,
-                    Margin = new Padding(30, 50, 0, 20),
+                    Margin = new Padding(30, 80, 0, 20),
                     AutoSize = true
-                };
-                flpMain.Controls.Add(lbl);
+                });
                 return;
             }
             foreach (var nhom in dsNhom)
-            {
-                flpMain.Controls.Add(TaoNhomTrungLap(nhom));
-            }
+                flpMain.Controls.Add(CreateGroupCard(nhom));
         }
-
-        public Control TaoNhomTrungLap(CauHoiTrungLapDTO nhom)
+        private Control CreateGroupCard(CauHoiTrungLapDTO nhom)
         {
-            // Header
-            var header = new Panel
+            var card = new Panel
             {
-                Height = 60,
-                BackColor = Color.FromArgb(210, 170, 130),
-                Margin = new Padding(20, 15, 20, 0),
-                Cursor = Cursors.Hand,
-                Tag = false // false = đang thu gọn
+                Width = flpMain.ClientSize.Width - 50,
+                Margin = new Padding(20, 10, 20, 25),
+                BackColor = Color.White,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
 
-            var lblSoLuong = new Label
+            // Bóng đổ nhẹ
+            card.Paint += (s, e) =>
+            {
+                if (card.Width < 20) return;
+                using var brush = new SolidBrush(Color.FromArgb(35, 0, 0, 0));
+                e.Graphics.FillRectangle(brush, 6, 8, card.Width - 6, card.Height - 8);
+            };
+
+            var header = CreateHeader(nhom);
+            var detail = CreateDetail(nhom);
+
+            card.Controls.Add(detail);
+            card.Controls.Add(header);
+            card.Controls.SetChildIndex(header, 0);
+
+            return card;
+        }
+        private Panel CreateHeader(CauHoiTrungLapDTO nhom)
+        {
+            var header = new Panel
+            {
+                Height = 70,
+                Dock = DockStyle.Top,
+                BackColor = Color.FromArgb(255, 240, 225),
+                Cursor = Cursors.Hand,
+                Tag = false
+            };
+
+            var lblCount = new Label
             {
                 Text = $"{nhom.SoLuong} câu hỏi giống nhau",
-                Location = new Point(25, 20),
-                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
                 ForeColor = Color.SaddleBrown,
+                AutoSize = true,
+                Location = new Point(25, 23)
+            };
+
+            var tag = new Label
+            {
+                Text = "Trùng lặp",
+                BackColor = Color.Crimson,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Padding = new Padding(12, 6, 12, 6),
                 AutoSize = true
             };
 
             var btnToggle = new Button
             {
                 Text = "Down Arrow",
-                Size = new Size(45, 45),
-                Location = new Point(header.Width - 100, 8),
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 18F),
+                Font = new Font("Segoe UI", 20F, FontStyle.Bold),
                 ForeColor = Color.Maroon,
-                BackColor = Color.Transparent
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 },
+                Size = new Size(60, 60),
+                TextAlign = ContentAlignment.MiddleCenter
             };
 
-            var tagTrungLap = new Label
+            void Toggle()
             {
-                Text = "Trùng lặp",
-                BackColor = Color.Crimson,
-                ForeColor = Color.White,
-                Padding = new Padding(12, 6, 12, 6),
-                Location = new Point(header.Width - 220, 18),
-                AutoSize = true,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                bool expanded = (bool)header.Tag;
+                ((FlowLayoutPanel) header.Parent.Controls[1]).Visible = !expanded;
+                btnToggle.Text = !expanded ? "Up Arrow" : "Down Arrow";
+                header.Tag = !expanded;
+            }
+
+            header.Click += (s, e) => { if (e is MouseEventArgs m && m.Button == MouseButtons.Left) Toggle(); };
+            btnToggle.Click += (s, e) => Toggle();
+
+            header.Resize += (s, e) =>
+            {
+                btnToggle.Location = new Point(header.Width - 80, 5);
+                tag.Location = new Point(header.Width - tag.Width - 95, 22);
             };
 
-            header.Controls.AddRange(new Control[] { lblSoLuong, btnToggle, tagTrungLap });
-
-            // Detail
+            header.Controls.AddRange(new Control[] { lblCount, tag, btnToggle });
+            return header;
+        }
+        private FlowLayoutPanel CreateDetail(CauHoiTrungLapDTO nhom)
+        {
             var detail = new FlowLayoutPanel
             {
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                Padding = new Padding(25),
-                Margin = new Padding(20, 5, 20, 25),
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Padding = new Padding(20, 15, 20, 30),
+                BackColor = Color.FromArgb(255, 250, 240),
                 BorderStyle = BorderStyle.FixedSingle,
-                BackColor = Color.FromArgb(255, 248, 240),
                 Visible = false
             };
 
             foreach (var ch in nhom.DanhSach)
+                detail.Controls.Add(CreateQuestionItem(ch, ch.MaCauHoi == nhom.DanhSach.First().MaCauHoi));
+
+            if (nhom.SoLuong > 1)
             {
-                detail.Controls.Add(TaoItemCauHoi(ch));
+                var btnDelete = new Button
+                {
+                    Text = $"Xóa {nhom.SoLuong - 1} câu trùng (giữ ID: {nhom.DanhSach[0].MaCauHoi})",
+                    Height = 50,
+                    Margin = new Padding(0, 25, 0, 0),
+                    BackColor = Color.FromArgb(220, 53, 69),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    Cursor = Cursors.Hand
+                };
+                btnDelete.FlatAppearance.BorderSize = 0;
+                btnDelete.FlatAppearance.MouseOverBackColor = Color.FromArgb(180, 30, 40);
+
+                btnDelete.Click += (s, e) =>
+                {
+                    if (MessageBox.Show($"Xác nhận xóa {nhom.SoLuong - 1} câu hỏi trùng lặp?", "Xác nhận",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        foreach (var c in nhom.DanhSach.Skip(1))
+                            _cauHoiBLL.Xoa(c.MaCauHoi);
+
+                        LoadDuLieu();
+                        _parentUC?.dispkayTatCaCauHoiFromTrungLap();
+                    }
+                };
+
+                detail.Controls.Add(btnDelete);
             }
 
-            // Nút xóa nhóm
-            var btnXoa = new Button
-            {
-                Text = $"Xóa {nhom.SoLuong - 1} câu trùng (giữ lại mới nhất - ID: {nhom.DanhSach[0].MaCauHoi})",
-                BackColor = Color.IndianRed,
-                ForeColor = Color.White,
-                Height = 50,
-                Dock = DockStyle.Bottom,
-                FlatStyle = FlatStyle.Flat,
-                Margin = new Padding(0, 20, 0, 0),
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold)
-            };
-            btnXoa.Click += (s, e) =>
-            {
-                if (MessageBox.Show($"Bạn chắc chắn muốn xóa {nhom.SoLuong - 1} câu hỏi trùng lặp?\n" +
-                    $"Giữ lại câu mới nhất (ID: {nhom.DanhSach[0].MaCauHoi})",
-                    "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                {
-                    foreach (var ch in nhom.DanhSach.Skip(1))
-                        _bll.Xoa(ch.MaCauHoi);
-                    LoadDuLieu(); // refresh
-                }
-            };
-            detail.Controls.Add(btnXoa);
-
-            // Sự kiện mở rộng
-            Action toggleAction = () =>
-            {
-                bool expanded = (bool)header.Tag;
-                detail.Visible = !expanded;
-                btnToggle.Text = !expanded ? "Up Arrow" : "Down Arrow";
-                header.Tag = !expanded;
-            };
-
-            header.MouseClick += (s, e) => toggleAction();
-            btnToggle.Click += (s, e) => toggleAction(); // không cần e.Handled,
-
-            // Container
-            var container = new Panel { AutoSize = true };
-            container.Controls.Add(header);
-            container.Controls.Add(detail);
-            return container;
+            return detail;
         }
-        private Panel TaoItemCauHoi(CauHoiDTO ch)
+        private Control CreateQuestionItem(CauHoiDTO ch, bool isKeep)
         {
-            var p = new Panel
+            var item = new Panel
             {
-                Height = 120,
-                Margin = new Padding(0, 0, 0, 18),
-                BorderStyle = BorderStyle.None
+                Height = 110,
+                BackColor = isKeep ? Color.FromArgb(230, 245, 230) : Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(0, 0, 0, 15),
+                Padding = new Padding(15, 12, 15, 12)
             };
 
-            var chk = new CheckBox { Location = new Point(10, 45) };
-
-            var lblNoiDung = new Label
+            item.Controls.AddRange(new Control[]
             {
-                Text = ch.NoiDung.Length > 300 ? ch.NoiDung.Substring(0, 300) + "..." : ch.NoiDung,
-                Location = new Point(55, 12),
-                Size = new Size(900, 70),
-                Font = new Font("Segoe UI", 10.5F),
-                ForeColor = Color.Black
-            };
+                new Label { Text = isKeep ? "Kept" : "Removed", Font = new Font("Segoe UI", 16F, FontStyle.Bold), ForeColor = isKeep ? Color.Green : Color.Gray, Location = new Point(12, 8), Size = new Size(30, 30), TextAlign = ContentAlignment.MiddleCenter },
+                new Label { Text = ch.NoiDung.Length > 500 ? ch.NoiDung.Substring(0,500) + "..." : ch.NoiDung, Location = new Point(55, 8), MaximumSize = new Size(900, 0), AutoSize = true, Font = new Font("Segoe UI", 10.5F), ForeColor = Color.FromArgb(30,30,30) },
+                new Label { Text = $"Môn: {ch.TenMonHoc} • Độ khó: {ch.DoKho} • Tác giả: {ch.TacGia} • ID: {ch.MaCauHoi}", Location = new Point(55, 70), ForeColor = Color.FromArgb(90,90,130), Font = new Font("Segoe UI", 9F, FontStyle.Italic), AutoSize = true },
+                new Label { Text = "Sẽ giữ lại", BackColor = Color.FromArgb(40,167,69), ForeColor = Color.White, Font = new Font("Segoe UI", 8F, FontStyle.Bold), Padding = new Padding(8,3,8,3), AutoSize = true, Visible = isKeep, Location = new Point(800, 10) }
+            });
 
-            var lblInfo = new Label
-            {
-                Text = $"Môn: {ch.TenMonHoc}   |   Độ khó: {ch.DoKho}   |   Tác giả: {ch.TacGia}",
-                Location = new Point(55, 85),
-                ForeColor = Color.MidnightBlue,
-                Font = new Font("Segoe UI", 9.5F),
-                AutoSize = true
-            };
-
-            p.Controls.AddRange(new Control[] { chk, lblNoiDung, lblInfo });
-            return p;
+            return item;
         }
-
-        private void Toggle(Panel header, FlowLayoutPanel detail, Button btn)
-        {
-            bool expanded = (bool)header.Tag;
-            detail.Visible = !expanded;
-            btn.Text = !expanded ? "Up Arrow" : "Down Arrow";
-            header.Tag = !expanded;
-        }
-        // Nút Lọc & Reset
-        private void btnLoc_Click(object sender, EventArgs e)
-        {
-            LoadDuLieu();
-        }
+        // === Sự kiện nút ===
+        private void btnLoc_Click(object sender, EventArgs e) => LoadDuLieu();
         private void btnReset_Click(object sender, EventArgs e)
         {
             cboLoaiCauHoi.SelectedIndex = 0;
@@ -225,25 +234,44 @@ namespace GUI.modules
             LoadDuLieu();
         }
 
-        public void loadTatCauHoi_Click(object sender, EventArgs e)
+        private void loadTatCauHoi_Click(object sender, EventArgs e)
         {
-            this.Visible = false;     // ẩn UC_TrungLap
-            _parentUC.Visible = true; // hiện UC_CauHoi
-            _parentUC.dispkayTatCaCauHoiFromTrungLap(); // load dữ liệu
-        }
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnTatCaCauHoi_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblDescription_Click(object sender, EventArgs e)
-        {
-
+            this.Visible = false;
+            _parentUC.Visible = true;
+            _parentUC.dispkayTatCaCauHoiFromTrungLap();
         }
     }
+
+        //// Nút Lọc & Reset
+        //private void btnLoc_Click(object sender, EventArgs e)
+        //{
+        //    LoadDuLieu();
+        //}
+        //private void btnReset_Click(object sender, EventArgs e)
+        //{
+        //    cboLoaiCauHoi.SelectedIndex = 0;
+        //    cboMonHoc.SelectedIndex = 0;
+        //    LoadDuLieu();
+        //}
+
+        //public void loadTatCauHoi_Click(object sender, EventArgs e)
+        //{
+        //    this.Visible = false;     // ẩn UC_TrungLap
+        //    _parentUC.Visible = true; // hiện UC_CauHoi
+        //    _parentUC.dispkayTatCaCauHoiFromTrungLap(); // load dữ liệu
+        //}
+        //private void label1_Click(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void btnTatCaCauHoi_Click(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void lblDescription_Click(object sender, EventArgs e)
+        //{
+
+        //}
 }
