@@ -1,6 +1,5 @@
 ﻿using Guna.UI2.WinForms;
 using System.Drawing.Drawing2D;
-using System.Drawing.Drawing2D;
 namespace GUI
 {
     partial class FormLogin

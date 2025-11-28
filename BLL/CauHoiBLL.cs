@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-
 namespace BLL
 {
     public class CauHoiBLL
@@ -41,19 +40,50 @@ namespace BLL
         }
 
         // Hàm bỏ dấu + lowercase(để search tiếng Việt)
+        //private string Normalize(string text)
+        //{
+        //    if (string.IsNullOrEmpty(text)) return "";
+        //    text = text.ToLower().Normalize(NormalizationForm.FormD);
+        //    var sb = new StringBuilder();
+        //    foreach (var ch in text)
+        //    {
+        //        if (CharUnicodeInfo.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
+        //            sb.Append(ch);
+        //    }
+
+        //    return sb.ToString().Normalize(NormalizationForm.FormC);
+        //}
+
         private string Normalize(string text)
         {
-            if (string.IsNullOrEmpty(text)) return "";
-            text = text.ToLower().Normalize(NormalizationForm.FormD);
-            var sb = new StringBuilder();
-            foreach (var ch in text)
-            {
-                if (CharUnicodeInfo.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
-                    sb.Append(ch);
-            }
+            if (string.IsNullOrWhiteSpace(text))
+                return string.Empty;
 
-            return sb.ToString().Normalize(NormalizationForm.FormC);
+            // 1. Chuẩn hóa Unicode + bỏ dấu
+            text = text.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
+            foreach (var c in text)
+            {
+                var category = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (category != UnicodeCategory.NonSpacingMark)
+                    sb.Append(c);
+            }
+            text = sb.ToString().Normalize(NormalizationForm.FormC);
+
+            // 2. Xóa ký tự thừa, giữ chữ thường liền mạch
+            return text
+                .ToLowerInvariant()
+                .Replace(" ", "")
+                .Replace("\r", "").Replace("\n", "").Replace("\t", "")
+                .Replace(".", "").Replace(",", "").Replace(";", "").Replace(":", "")
+                .Replace("?", "").Replace("!", "")
+                .Replace("(", "").Replace(")", "")
+                .Replace("\"", "").Replace("'", "")
+                .Replace("“", "").Replace("”", "")
+                .Replace("–", "").Replace("-", "").Replace("—", "")
+                .Trim();
         }
+
         /// Search theo từ khóa
         public List<CauHoiDTO> Search(string keyword)
         {
@@ -88,34 +118,52 @@ namespace BLL
 
 
         /// Lấy danh sách câu hỏi trùng
+        //public List<CauHoiTrungLapDTO> LayCauHoiTrungLap()
+        //{
+        //    var danhSachCauHoi = _cauHoiDAL.GetAllForDisplay();
+
+        //    return danhSachCauHoi
+        //        .GroupBy(cauHoi => Normalize(cauHoi.NoiDung.Trim()))       // Nhóm theo nội dung câu hỏi
+        //        .Where(nhom => nhom.Count() >= 2)               // Chỉ lấy nhóm có >= 2 phần tử
+        //        .Select(nhom => new CauHoiTrungLapDTO
+        //        {
+        //            NoiDung = nhom.Key,                // Key = nội dung câu hỏi sau khi trim
+        //            SoLuong = nhom.Count(),                     // Số câu trùng
+        //            DanhSach = nhom
+        //                        .OrderByDescending(c => c.MaCauHoi)
+        //                        .ToList()                       // Danh sách câu hỏi trong nhóm
+        //        })
+        //        .OrderByDescending(dto => dto.SoLuong)          // Sắp theo số lượng trùng
+        //        .ThenByDescending(dto => dto.DanhSach.First().MaCauHoi)
+        //        .ToList();
+        //}
         public List<CauHoiTrungLapDTO> LayCauHoiTrungLap()
         {
-            var danhSachCauHoi = _cauHoiDAL.GetAllForDisplay();
+            var ds = _cauHoiDAL.GetAllForDisplay();
 
-            return danhSachCauHoi
-                .GroupBy(cauHoi => cauHoi.NoiDung.Trim())       // Nhóm theo nội dung câu hỏi
-                .Where(nhom => nhom.Count() >= 2)               // Chỉ lấy nhóm có >= 2 phần tử
-                .Select(nhom => new CauHoiTrungLapDTO
-                {   
-                    NoiDung = nhom.Key,                         // Key = nội dung câu hỏi sau khi trim
-                    SoLuong = nhom.Count(),                     // Số câu trùng
-                    DanhSach = nhom
-                                .OrderByDescending(c => c.MaCauHoi)
-                                .ToList()                       // Danh sách câu hỏi trong nhóm
+            return ds
+                .GroupBy(x => Normalize(x.NoiDung))  // dùng normalize chuẩn
+                .Where(g => g.Count() > 1)
+                .Select(g => new CauHoiTrungLapDTO
+                {
+                    SoLuong = g.Count(),
+                    DanhSach = g.ToList()
                 })
-                .OrderByDescending(dto => dto.SoLuong)          // Sắp theo số lượng trùng
-                .ThenByDescending(dto => dto.DanhSach.First().MaCauHoi)
                 .ToList();
         }
+
+
         /// Thống kê nhanh: số nhóm trùng, số câu trùng, số câu duy nhất
-        public (int NhomTrung,int cauTrung, int CauDuyNhat) LayThongKeTrungLap()
+        public (int NhomTrung, int CauTrung, int CauDuyNhat) LayThongKeTrungLap()
         {
             var tatca = _cauHoiDAL.GetAllForDisplay();
             var trungLap = LayCauHoiTrungLap();
-            int tongCauTrungLap = trungLap.Sum(x => x.SoLuong);
+
+            int tongCauTrung = trungLap.Sum(x => x.SoLuong);
             int soNhom = trungLap.Count;
-            int cauDuyNhat = tatca.Count - tongCauTrungLap + soNhom;// mỗi nhóm chỉ tính 1 câu đại diện
-            return (soNhom, tongCauTrungLap, cauDuyNhat);
+            int cauDuyNhat = tatca.Count - tongCauTrung + soNhom;
+
+            return (soNhom, tongCauTrung, cauDuyNhat);
         }
     }
 }

@@ -16,12 +16,12 @@ namespace GUI.modules
     {
         private readonly CauHoiBLL _cauHoiBLL = new CauHoiBLL();
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
-
         private UC_CauHoi _parentUC; // lưu trữ tham chiếu tới UC_CauHoi mà nó “thuộc về”.
         public UC_CauHoiTrungLap(UC_CauHoi parent)
         {
             InitializeComponent();
             _parentUC = parent;
+            this.Load += UC_CauHoiTrungLap_Load;
         }
         // load du lieu 
         public void UC_CauHoiTrungLap_Load(object sender, EventArgs e)
@@ -62,17 +62,23 @@ namespace GUI.modules
                 return;
             }
             foreach (var nhom in dsNhom)
-                flpMain.Controls.Add(CreateGroupCard(nhom));
+            {
+                //flpMain.Controls.Add(CreateGroupCard(nhom));
+                var card = CreateGroupCard(nhom);
+                flpMain.Controls.Add(card);
+            }
         }
         private Control CreateGroupCard(CauHoiTrungLapDTO nhom)
         {
             var card = new Panel
             {
-                Width = flpMain.ClientSize.Width - 50,
+                //Width = flpMain.ClientSize.Width - 50,
                 Margin = new Padding(20, 10, 20, 25),
                 BackColor = Color.White,
                 AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                MaximumSize = new Size(1100, 0),
+                MinimumSize = new Size(800, 0)
             };
 
             // Bóng đổ nhẹ
@@ -136,7 +142,7 @@ namespace GUI.modules
             void Toggle()
             {
                 bool expanded = (bool)header.Tag;
-                ((FlowLayoutPanel) header.Parent.Controls[1]).Visible = !expanded;
+                ((FlowLayoutPanel)header.Parent.Controls[1]).Visible = !expanded;
                 btnToggle.Text = !expanded ? "Up Arrow" : "Down Arrow";
                 header.Tag = !expanded;
             }
@@ -242,36 +248,36 @@ namespace GUI.modules
         }
     }
 
-        //// Nút Lọc & Reset
-        //private void btnLoc_Click(object sender, EventArgs e)
-        //{
-        //    LoadDuLieu();
-        //}
-        //private void btnReset_Click(object sender, EventArgs e)
-        //{
-        //    cboLoaiCauHoi.SelectedIndex = 0;
-        //    cboMonHoc.SelectedIndex = 0;
-        //    LoadDuLieu();
-        //}
+    //// Nút Lọc & Reset
+    //private void btnLoc_Click(object sender, EventArgs e)
+    //{
+    //    LoadDuLieu();
+    //}
+    //private void btnReset_Click(object sender, EventArgs e)
+    //{
+    //    cboLoaiCauHoi.SelectedIndex = 0;
+    //    cboMonHoc.SelectedIndex = 0;
+    //    LoadDuLieu();
+    //}
 
-        //public void loadTatCauHoi_Click(object sender, EventArgs e)
-        //{
-        //    this.Visible = false;     // ẩn UC_TrungLap
-        //    _parentUC.Visible = true; // hiện UC_CauHoi
-        //    _parentUC.dispkayTatCaCauHoiFromTrungLap(); // load dữ liệu
-        //}
-        //private void label1_Click(object sender, EventArgs e)
-        //{
+    //public void loadTatCauHoi_Click(object sender, EventArgs e)
+    //{
+    //    this.Visible = false;     // ẩn UC_TrungLap
+    //    _parentUC.Visible = true; // hiện UC_CauHoi
+    //    _parentUC.dispkayTatCaCauHoiFromTrungLap(); // load dữ liệu
+    //}
+    //private void label1_Click(object sender, EventArgs e)
+    //{
 
-        //}
+    //}
 
-        //private void btnTatCaCauHoi_Click(object sender, EventArgs e)
-        //{
+    //private void btnTatCaCauHoi_Click(object sender, EventArgs e)
+    //{
 
-        //}
+    //}
 
-        //private void lblDescription_Click(object sender, EventArgs e)
-        //{
+    //private void lblDescription_Click(object sender, EventArgs e)
+    //{
 
-        //}
+    //}
 }

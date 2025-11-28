@@ -68,20 +68,6 @@ namespace GUI.modules
             combo.SelectedIndex = 0;                     // Mặc định chọn phần tử đầu tiên
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
-
-        public void dispkayTatCaCauHoiFromTrungLap()
-        {
-            //long maMH = cbMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
-            //long maChuong = cbChuong.SelectedItem is ChuongDTO chuong ? chuong.MaChuong : 0;
-            //string doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text.Trim();
-            //string tuKhoa = txtTimKiem.Text.Trim() == "Nhập nội dung câu hỏi để tìm kiếm..." ? "" : txtTimKiem.Text.Trim();
-
-            //// CỐT LÕI: KHÔNG GroupBy ở đây nữa!
-            //filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maChuong, doKho, tuKhoa)
-            //                          .ToList(); // Lấy hết, không lọc trùng
-
-            //RenderGrid(filteredList);
-        }
         private void LoadData()
         {
             long maMH = cbMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
@@ -95,7 +81,10 @@ namespace GUI.modules
                                       .ToList();
             RenderGrid(filteredList);
         }
-
+        public void dispkayTatCaCauHoiFromTrungLap()
+        {
+            LoadData(); // load lại toàn bộ câu hỏi
+        }
         private void RenderGrid(List<CauHoiDTO> data)
         {
             dgvCauHoi.Rows.Clear();
@@ -239,6 +228,7 @@ namespace GUI.modules
                     parent.Controls.Add(_ucTrungLap);
             }
             _ucTrungLap.Visible = true;
+            _ucTrungLap.LoadDuLieu(); // Đảm bảo load lại dữ liệu khi chuyển view
         }
 
         #endregion

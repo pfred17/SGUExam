@@ -39,7 +39,7 @@
             // 
             txtTimKiem.Font = new Font("Segoe UI", 10F);
             txtTimKiem.ForeColor = Color.Gray;
-            txtTimKiem.Location = new Point(25, 220);
+            txtTimKiem.Location = new Point(25, 217);
             txtTimKiem.Name = "txtTimKiem";
             txtTimKiem.Size = new Size(930, 30);
             txtTimKiem.TabIndex = 2;
@@ -51,14 +51,14 @@
             // 
             // cbDoKho
             // 
-            cbDoKho.Location = new Point(891, 160);
+            cbDoKho.Location = new Point(902, 132);
             cbDoKho.Name = "cbDoKho";
             cbDoKho.Size = new Size(182, 31);
             cbDoKho.TabIndex = 6;
             // 
             // cbChuong
             // 
-            cbChuong.Location = new Point(461, 160);
+            cbChuong.Location = new Point(462, 132);
             cbChuong.Name = "cbChuong";
             cbChuong.Size = new Size(303, 31);
             cbChuong.TabIndex = 5;
@@ -66,7 +66,7 @@
             // 
             // cbMonHoc
             // 
-            cbMonHoc.Location = new Point(25, 160);
+            cbMonHoc.Location = new Point(25, 132);
             cbMonHoc.Name = "cbMonHoc";
             cbMonHoc.Size = new Size(395, 31);
             cbMonHoc.TabIndex = 4;
@@ -140,7 +140,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label2.Location = new Point(213, 100);
+            label2.Location = new Point(214, 56);
             label2.Name = "label2";
             label2.Size = new Size(176, 28);
             label2.TabIndex = 8;
@@ -152,7 +152,7 @@
             btnTuDieuChinh.BackColor = Color.FromArgb(243, 156, 18);
             btnTuDieuChinh.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnTuDieuChinh.ForeColor = Color.White;
-            btnTuDieuChinh.Location = new Point(766, 80);
+            btnTuDieuChinh.Location = new Point(773, 44);
             btnTuDieuChinh.Name = "btnTuDieuChinh";
             btnTuDieuChinh.Size = new Size(320, 56);
             btnTuDieuChinh.TabIndex = 10;
@@ -165,7 +165,7 @@
             btnThemMoi.BackColor = Color.FromArgb(52, 152, 219);
             btnThemMoi.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnThemMoi.ForeColor = Color.White;
-            btnThemMoi.Location = new Point(441, 80);
+            btnThemMoi.Location = new Point(443, 44);
             btnThemMoi.Name = "btnThemMoi";
             btnThemMoi.Size = new Size(304, 56);
             btnThemMoi.TabIndex = 9;
@@ -177,7 +177,7 @@
             // 
             lbTatCaCauhoi.AutoSize = true;
             lbTatCaCauhoi.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbTatCaCauhoi.Location = new Point(25, 100);
+            lbTatCaCauhoi.Location = new Point(25, 56);
             lbTatCaCauhoi.Name = "lbTatCaCauhoi";
             lbTatCaCauhoi.Size = new Size(145, 28);
             lbTatCaCauhoi.TabIndex = 7;
@@ -188,7 +188,7 @@
             // 
             btnTimKiem.BackColor = Color.FromArgb(46, 204, 113);
             btnTimKiem.ForeColor = Color.White;
-            btnTimKiem.Location = new Point(961, 220);
+            btnTimKiem.Location = new Point(972, 217);
             btnTimKiem.Name = "btnTimKiem";
             btnTimKiem.Size = new Size(112, 35);
             btnTimKiem.TabIndex = 3;
