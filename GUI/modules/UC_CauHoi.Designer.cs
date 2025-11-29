@@ -32,7 +32,12 @@
             lbTatCaCauhoi = new Label();
             btnTimKiem = new Button();
             pnlContainer = new Panel();
+            //cbSoDongTrang = new ComboBox();
+            btnTrangSau = new Button();
+            btnTrangTruoc = new Button();
+            lblTrangHienTai = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCauHoi).BeginInit();
+            pnlContainer.SuspendLayout();
             SuspendLayout();
             // 
             // txtTimKiem
@@ -44,7 +49,7 @@
             txtTimKiem.Size = new Size(930, 30);
             txtTimKiem.TabIndex = 2;
             txtTimKiem.Text = "Nhập nội dung câu hỏi để tìm kiếm...";
-            txtTimKiem.TextChanged += txtTimKiem_TextChanged;
+            txtTimKiem.TextChanged += txtTimKiem_TextChanged_LiveSearch;
             txtTimKiem.Enter += txtTimKiem_Enter;
             txtTimKiem.KeyPress += txtTimKiem_KeyPress;
             txtTimKiem.Leave += txtTimKiem_Leave;
@@ -86,7 +91,7 @@
             dgvCauHoi.RowHeadersVisible = false;
             dgvCauHoi.RowHeadersWidth = 51;
             dgvCauHoi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCauHoi.Size = new Size(1050, 430);
+            dgvCauHoi.Size = new Size(1050, 370);
             dgvCauHoi.TabIndex = 1;
             dgvCauHoi.CellContentClick += dgvCauHoi_CellContentClick;
             dgvCauHoi.SelectionChanged += dgvCauHoi_SelectionChanged;
@@ -121,6 +126,7 @@
             colDoKho.MinimumWidth = 6;
             colDoKho.Name = "colDoKho";
             colDoKho.ReadOnly = true;
+            cbDoKho.SelectedIndexChanged += cbDoKho_SelectedIndexChanged;
             // 
             // SuaCol
             // 
@@ -199,12 +205,59 @@
             // pnlContainer
             // 
             pnlContainer.BackColor = Color.White;
+            pnlContainer.Controls.Add(btnTrangSau);
+            pnlContainer.Controls.Add(btnTrangTruoc);
+            pnlContainer.Controls.Add(lblTrangHienTai);
             pnlContainer.Dock = DockStyle.Bottom;
-            pnlContainer.Location = new Point(0, 280);
+            pnlContainer.Location = new Point(0, 660);
             pnlContainer.Name = "pnlContainer";
-            pnlContainer.Size = new Size(1120, 450);
+            pnlContainer.Size = new Size(1120, 70);
             pnlContainer.TabIndex = 0;
-            pnlContainer.Visible = false;
+            // 
+            // btnTrangSau
+            // 
+            btnTrangSau.Location = new Point(981, 14);
+            btnTrangSau.Name = "btnTrangSau";
+            btnTrangSau.Size = new Size(94, 29);
+            btnTrangSau.TabIndex = 2;
+            btnTrangSau.Text = ">>";
+            btnTrangSau.UseVisualStyleBackColor = true;
+            btnTrangSau.Click += btnNextPage_Click;
+            // Custom màu xanh đẹp
+            btnTrangTruoc.BackColor = Color.FromArgb(52, 152, 219);
+            btnTrangTruoc.ForeColor = Color.White;
+            btnTrangTruoc.FlatStyle = FlatStyle.Flat;
+            btnTrangTruoc.FlatAppearance.BorderSize = 0;
+            btnTrangTruoc.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnTrangTruoc.FlatAppearance.MouseOverBackColor = Color.FromArgb(41, 128, 185);
+            pnlContainer.Controls.Add(btnTrangTruoc);
+            // 
+            // btnTrangTruoc
+            // 
+            btnTrangTruoc.Location = new Point(792, 17);
+            btnTrangTruoc.Name = "btnTrangTruoc";
+            btnTrangTruoc.Size = new Size(94, 29);
+            btnTrangTruoc.TabIndex = 1;
+            btnTrangTruoc.Text = "<<";
+            btnTrangTruoc.UseVisualStyleBackColor = true;
+            btnTrangTruoc.Click += btnPrevPage_Click;
+            // Custom màu xanh đẹp
+            btnTrangSau.BackColor = Color.FromArgb(52, 152, 219);
+            btnTrangSau.ForeColor = Color.White;
+            btnTrangSau.FlatStyle = FlatStyle.Flat;
+            btnTrangSau.FlatAppearance.BorderSize = 0;
+            btnTrangSau.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnTrangSau.FlatAppearance.MouseOverBackColor = Color.FromArgb(41, 128, 185);
+            pnlContainer.Controls.Add(btnTrangSau);
+            // 
+            // lblTrangHienTai
+            // 
+            lblTrangHienTai.AutoSize = true;
+            lblTrangHienTai.Location = new Point(892, 20);
+            lblTrangHienTai.Name = "lblTrangHienTai";
+            lblTrangHienTai.Size = new Size(83, 23);
+            lblTrangHienTai.TabIndex = 0;
+            lblTrangHienTai.Text = "Trang 1/1";
             // 
             // UC_CauHoi
             // 
@@ -224,10 +277,16 @@
             Name = "UC_CauHoi";
             Size = new Size(1120, 730);
             ((System.ComponentModel.ISupportInitialize)dgvCauHoi).EndInit();
+            pnlContainer.ResumeLayout(false);
+            pnlContainer.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
+        private void TxtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         private TextBox txtTimKiem = null!;
         private ComboBox cbDoKho = null!;
@@ -246,5 +305,9 @@
         private Button btnTuDieuChinh = null!;
         private Button btnTimKiem = null!;
         private Panel pnlContainer = null!;
+        private Label lblTrangHienTai;
+        private Button btnTrangSau;
+        private Button btnTrangTruoc;
+        //private ComboBox cbSoDongTrang;
     }
 }

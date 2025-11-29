@@ -21,21 +21,44 @@ namespace GUI.modules
         private List<CauHoiDTO> filteredList = new(); // Dữ liệu đã lọc
         private UC_CauHoiTrungLap? _ucTrungLap;
 
+        // Phân trang
+        private int CurrentPage = 1;
+        private int PageSize = 10;
+        private int TotalPage = 1;
+        private System.Windows.Forms.Timer? timerSearch = null;
         public UC_CauHoi(string userId)
         {
             _userId = userId;
             InitializeComponent();
+            SetupDataGridView();
 
             // Gán event
-            cbDoKho.SelectedIndexChanged += cbDoKho_SelectedIndexChanged;
-
             LoadMonHoc();
             LoadDoKho();
-            LoadData();
+            LoadData(1);
         }
 
         #region Load dữ liệu
+        private void SetupDataGridView()
+        {
+            // Tắt style hệ thống để custom header
+            dgvCauHoi.EnableHeadersVisualStyles = false;
+            dgvCauHoi.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            dgvCauHoi.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvCauHoi.DefaultCellStyle.Font = new Font("Segoe UI", 12F);
+            dgvCauHoi.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 249, 253);
+            dgvCauHoi.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dgvCauHoi.GridColor = Color.FromArgb(235, 240, 245);
 
+            // Custom style table
+            dgvCauHoi.AllowUserToAddRows = false;
+            dgvCauHoi.AllowUserToOrderColumns = false;
+            dgvCauHoi.AllowUserToResizeColumns = false;
+            dgvCauHoi.AllowUserToResizeRows = false;
+            dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCauHoi.MultiSelect = false;
+            dgvCauHoi.ReadOnly = true;
+        }
         private void LoadMonHoc()
         {
             var list = _monHocBLL.GetAllMonHoc();
@@ -68,18 +91,42 @@ namespace GUI.modules
             combo.SelectedIndex = 0;                     // Mặc định chọn phần tử đầu tiên
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
-        private void LoadData()
+        private void LoadData(int? page = null)
         {
-            long maMH = cbMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
-            long maChuong = cbChuong.SelectedItem is ChuongDTO chuong ? chuong.MaChuong : 0;
-            string doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text.Trim();
-            string tuKhoa = txtTimKiem.Text.Trim() == "Nhập nội dung câu hỏi để tìm kiếm..." ? "" : txtTimKiem.Text.Trim();
+            // Nếu có truyền page (từ nút prev/next), dùng nó. Không thì giữ trang hiện tại hoặc về 1 nếu đang filter
+            CurrentPage = page ?? CurrentPage;
+            CurrentPage = Math.Max(1, CurrentPage); // không để nhỏ hơn 1
 
+            // Lấy điều kiện lọc
+            long maMH = cbMonHoc.SelectedIndex > 0 && cbMonHoc.SelectedItem is MonHocDTO mon ? mon.MaMH : 0;
+            long maChuong = cbChuong.SelectedIndex > 0 && cbChuong.SelectedItem is ChuongDTO chuong ? chuong.MaChuong : 0;
+            string doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text.Trim();
+            string tuKhoa = txtTimKiem.Text.Trim();
+            if (tuKhoa == "Nhập nội dung câu hỏi để tìm kiếm...") tuKhoa = "";
+
+            // Lấy dữ liệu + lọc + loại trùng (giữ lại bản mới nhất theo MaCauHoi)
             filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maChuong, doKho, tuKhoa)
-                                      .GroupBy(c => (c.NoiDung ?? string.Empty).Trim())
-                                      .Select(g => g.First())
-                                      .ToList();
-            RenderGrid(filteredList);
+                .GroupBy(c => CauHoiBLL.Normalize(c.NoiDung))// loại trùng chính xác nội dung
+                .Select(g => g.OrderByDescending(x => x.MaCauHoi).First()) // giữ bản mới nhất
+                .ToList();
+
+            // Tính tổng trang
+            TotalPage = (int)Math.Ceiling(filteredList.Count / (double)PageSize);
+            CurrentPage = Math.Min(CurrentPage, TotalPage); // không để vượt quá TotalPage
+            if (TotalPage == 0) TotalPage = 1;
+
+            // Lấy dữ liệu phân trang
+            var pagedData = filteredList
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            RenderGrid(pagedData);
+            lblTrangHienTai.Text = $"Trang {CurrentPage}/{TotalPage}";
+
+            // Disable/enable nút prev next
+            btnTrangTruoc.Enabled = CurrentPage > 1;
+            btnTrangSau.Enabled = CurrentPage < TotalPage;
         }
         public void dispkayTatCaCauHoiFromTrungLap()
         {
@@ -121,7 +168,29 @@ namespace GUI.modules
         #endregion
 
         #region Sự kiện UI
+        private void txtTimKiem_TextChanged_LiveSearch(object sender, EventArgs e)
+        {
+            // Nếu đang hiển thị placeholder → không tìm
+            if (txtTimKiem.Text == "Nhập nội dung câu hỏi để tìm kiếm...") return;
 
+            // Hủy timer cũ
+            timerSearch?.Stop();
+            timerSearch?.Dispose();
+
+            // Tạo timer mới
+            timerSearch = new System.Windows.Forms.Timer
+            {
+                Interval = 300 // 300ms sau khi ngừng gõ mới tìm
+            };
+
+            timerSearch.Tick += (s, ev) =>
+            {
+                timerSearch.Stop();
+                LoadData(1); // về trang 1 khi tìm kiếm mới
+            };
+
+            timerSearch.Start();
+        }
         private void txtTimKiem_Enter(object sender, EventArgs e)
         {
             if (txtTimKiem.Text == "Nhập nội dung câu hỏi để tìm kiếm...")
@@ -143,7 +212,7 @@ namespace GUI.modules
         private void txtTimKiem_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
-                LoadData();
+                LoadData(1); // // bắt đầu từ trang 1 khi search
         }
 
         private void btnTimKiem_Click(object sender, EventArgs e) => LoadData();
@@ -152,13 +221,23 @@ namespace GUI.modules
         {
             if (cbMonHoc.SelectedItem is MonHocDTO monHoc)
                 LoadChuongTheoMonHoc(monHoc.MaMH);
-            LoadData();
+            LoadData(1);
         }
 
-        private void cbChuong_SelectedIndexChanged(object? sender, EventArgs e) => LoadData();
+        private void cbChuong_SelectedIndexChanged(object? sender, EventArgs e) => LoadData(1);
 
-        private void cbDoKho_SelectedIndexChanged(object? sender, EventArgs e) => LoadData();
+        private void cbDoKho_SelectedIndexChanged(object? sender, EventArgs e) => LoadData(1);
 
+        private void btnPrevPage_Click(object sender, EventArgs e)
+        {
+            if (CurrentPage > 1)
+                LoadData(CurrentPage - 1);
+        }
+        private void btnNextPage_Click(object sender, EventArgs e)
+        {
+            if (CurrentPage < TotalPage)
+                LoadData(CurrentPage + 1);
+        }
         private void btnThemMoi_Click(object sender, EventArgs e)
         {
             var frm = new frmThemCauHoi();
@@ -232,11 +311,6 @@ namespace GUI.modules
         }
 
         #endregion
-
-        private void txtTimKiem_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         // xóa chọn dòng khi click vào DataGridView
         private void dgvCauHoi_SelectionChanged(object sender, EventArgs e)
