@@ -39,12 +39,22 @@ namespace BLL
         {
             return dal.CheckLogin(username, password);
         }
-
         public List<UserDTO> GetAllUsers()
         {
             return dal.getAllUsers();
         }
-
+        public List<UserDTO> GetAllUserByRole()
+        {
+            return dal.GetAllUserByRole();
+        }
+        public List<UserDTO> GetUserPaged(int page, int pageSize)
+        {
+            return dal.GetUserPaged(page, pageSize);
+        }
+        public int GetTotalUser()
+        {
+            return dal.GetTotalUser();
+        }
         public bool CreateNewUser(UserDTO userDTO)
         {
             bool isCreated = dal.CreateNewUser(userDTO);
