@@ -54,5 +54,10 @@ namespace BLL
         {
             return dal.CreateUser(username, hoten, password, email);
         }
+        public UserDTO GetUserById(string userId)
+        {
+            var users = GetAllUsers();
+            return users.FirstOrDefault(u => u.MSSV == userId);
+        }
     }
 }

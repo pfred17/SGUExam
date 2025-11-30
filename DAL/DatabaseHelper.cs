@@ -1,45 +1,130 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using MySql.Data.MySqlClient;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Data.Common;
 
 namespace DAL
 {
     public static class DatabaseHelper
     {
         private static readonly string connectionString =
-            "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SGUExam2; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
-        
-            //"Data Source=LG8888\\SQLEXPRESS;Initial Catalog=SGUExam;Integrated Security=True;TrustServerCertificate=True";
+    "Server=localhost;Database=SGUExam;User ID=root;Password=13376655;SslMode=Disabled;";
 
-        public static SqlConnection GetConnection()
+
+        public static MySqlConnection GetConnection()
         {
-            return new SqlConnection(connectionString);
+            return new MySqlConnection(connectionString);
         }
 
-        public static DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
+        // ---------- Helpers ----------
+        private static void AddParameters(MySqlCommand cmd, params MySqlParameter[] parameters)
         {
-            using (SqlConnection conn = GetConnection())
-            {
-                SqlCommand cmd = new SqlCommand(query, conn);
-                if (parameters != null)
-                    cmd.Parameters.AddRange(parameters);
+            if (parameters == null) return;
+            cmd.Parameters.AddRange(parameters);
+        }
 
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt;
+        private static void AddParameters(MySqlCommand cmd, params DbParameter[] dbParameters)
+        {
+            if (dbParameters == null) return;
+
+            foreach (var p in dbParameters)
+            {
+                // Nếu bản thân là MySqlParameter (hiếm khi xảy ra khi caller dùng MySql), ta cast luôn
+                if (p is MySqlParameter mp)
+                {
+                    cmd.Parameters.Add(mp);
+                    continue;
+                }
+
+                // Chuyển DbParameter (ví dụ SqlParameter) sang MySqlParameter
+                var newParam = new MySqlParameter
+                {
+                    ParameterName = p.ParameterName,
+                    Value = p.Value ?? DBNull.Value,
+                    DbType = p.DbType,
+                    Direction = p.Direction
+                };
+
+                // Copy kích thước nếu có
+                try
+                {
+                    if (p.Size > 0)
+                        newParam.Size = p.Size;
+                }
+                catch { /* một số DbParameter có thể không hỗ trợ Size - bỏ qua an toàn */ }
+
+                cmd.Parameters.Add(newParam);
             }
         }
 
-        public static int ExecuteNonQuery(string query, params SqlParameter[] parameters)
+        // ---------- ExecuteQuery overloads ----------
+        public static DataTable ExecuteQuery(string query, params MySqlParameter[] parameters)
         {
-            using (SqlConnection conn = GetConnection())
+            using (MySqlConnection conn = GetConnection())
+            {
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    AddParameters(cmd, parameters);
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+
+        public static DataTable ExecuteQuery(string query, params DbParameter[] parameters)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    AddParameters(cmd, parameters);
+                    using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+
+        // ---------- ExecuteNonQuery overloads ----------
+        public static int ExecuteNonQuery(string query, params MySqlParameter[] parameters)
+        {
+            using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(query, conn);
-                if (parameters != null)
-                    cmd.Parameters.AddRange(parameters);
-                return cmd.ExecuteNonQuery();
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    AddParameters(cmd, parameters);
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static int ExecuteNonQuery(string query, params DbParameter[] parameters)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    AddParameters(cmd, parameters);
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public static object ExecuteScalar(string query, params MySqlParameter[] parameters)
+        {
+            using (var connection = GetConnection())
+            using (var command = new MySqlCommand(query, connection))
+            {
+                AddParameters(command, parameters);
+                connection.Open();
+                return command.ExecuteScalar();
             }
         }
     }
