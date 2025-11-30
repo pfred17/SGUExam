@@ -35,6 +35,7 @@ namespace DAL
             };
         }
 
+        // Hàm lấy danh sách tất cả người dùng của hệ thống
         public List<UserDTO> getAllUsers()
         {
             string query = "SELECT * FROM nguoi_dung";
@@ -57,6 +58,7 @@ namespace DAL
             return users;
         }
 
+        // Hàm tạo người dùng mới
         public bool CreateNewUser(UserDTO userDTO)
         {
             string query = @"INSERT INTO nguoi_dung  (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, loai_nd, trang_thai)
@@ -124,7 +126,42 @@ namespace DAL
             };
         }
 
-        private Dictionary<string, UserDTO> users = new Dictionary<string, UserDTO>();
+        // Hàm cập nhật thông tin người dùng
+        public bool UpdateUser(UserDTO user)
+        {
+            string query = @"UPDATE nguoi_dung 
+                             SET ten_dang_nhap = @TenDangNhap, 
+                                 mat_khau = @MatKhau, 
+                                 ho_ten = @HoTen, 
+                                 email = @Email, 
+                                 gioi_tinh = @GioiTinh, 
+                                 loai_nd = @LoaiNguoiDung
+                             WHERE ma_nd = @MSSV";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@MSSV", user.MSSV),
+                new SqlParameter("@TenDangNhap", user.TenDangNhap),
+                new SqlParameter("@MatKhau", user.MatKhau),
+                new SqlParameter("@HoTen", user.HoTen),
+                new SqlParameter("@Email", user.Email),
+                new SqlParameter("@GioiTinh", user.GioiTinh),
+                new SqlParameter("@LoaiNguoiDung", user.Role),
+            };
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+
+        // Hàm khóa người dùng
+        public bool LockUser(string userId)
+        {
+            string query = "UPDATE nguoi_dung SET trang_thai = 0 WHERE ma_nd = @id";
+            SqlParameter[] param =
+            {
+                new SqlParameter("@id", userId)
+            };
+            int rows = DatabaseHelper.ExecuteNonQuery(query, param);
+            return rows > 0;
+        }
 
         public bool UpdatePassword(string email, string newPassword)
         {
@@ -147,6 +184,30 @@ namespace DAL
             DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
             return dt.Rows.Count > 0;
         }
+
+        public UserDTO GetUserById(string userId)
+        {
+            string query = "SELECT * FROM nguoi_dung WHERE ma_nd = @id";
+            SqlParameter[] param = {
+                new SqlParameter("@id", userId)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
+            if (dt.Rows.Count == 0)
+                return null;
+            DataRow row = dt.Rows[0];
+            return new UserDTO
+            {
+                MSSV = row["ma_nd"].ToString(),
+                TenDangNhap = row["ten_dang_nhap"].ToString(),
+                MatKhau = row["mat_khau"].ToString(),
+                HoTen = row["ho_ten"].ToString(),
+                Email = row["email"].ToString(),
+                Role = row["loai_nd"].ToString(),
+                GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
+                TrangThai = Convert.ToInt32(row["trang_thai"])
+            };
+        }
+
 
 
     }

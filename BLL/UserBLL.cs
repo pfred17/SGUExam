@@ -50,9 +50,25 @@ namespace BLL
             bool isCreated = dal.CreateNewUser(userDTO);
             return isCreated;
         }
+
+        public bool UpdateUser(UserDTO userDTO)
+        {
+            return dal.UpdateUser(userDTO);
+        }
+
+        public bool LockUser(string userId)
+        {
+            return dal.LockUser(userId);
+        }
+
         public UserDTO Register(string username,string hoten, string password, string email)
         {
             return dal.CreateUser(username, hoten, password, email);
         }
+        public UserDTO GetUserById(string userId)
+        {
+            return dal.GetUserById(userId);
+        }
+
     }
 }
