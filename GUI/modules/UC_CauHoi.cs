@@ -19,7 +19,7 @@ namespace GUI.modules
         private readonly ChuongBLL _chuongBLL = new();
 
         private List<CauHoiDTO> filteredList = new(); // Dữ liệu đã lọc
-        private UC_CauHoiTrungLap? _ucTrungLap;
+        private UC_CauHoiTrungLap1? _ucTrungLap;
 
         private const string PLACEHOLDER = "Nhập nội dung câu hỏi để tìm kiếm...";
         // Phân trang
@@ -247,9 +247,10 @@ namespace GUI.modules
         }
 
         // hàm này sẽ hiển thị tất cả câu hỏi khi ở form UC_CauHoi
-        private void showAllCauHoi(object sender, EventArgs e) {
+        private void showAllCauHoi(object sender, EventArgs e)
+        {
             // reset combobox 
-            if(cbMonHoc.Items.Count >0)
+            if (cbMonHoc.Items.Count > 0)
                 cbMonHoc.SelectedIndex = 0; // chọn tất cả môn học
             if (cbChuong.Items.Count > 0)
                 cbChuong.SelectedIndex = 0;  // "Chọn tất cả chương"
@@ -271,14 +272,14 @@ namespace GUI.modules
 
             if (_ucTrungLap == null)
             {
-                _ucTrungLap = new UC_CauHoiTrungLap(this); // Tạo mới UC_CauHoiTrungLap nếu chưa có
+                _ucTrungLap = new UC_CauHoiTrungLap1(this); // Tạo mới UC_CauHoiTrungLap nếu chưa có
                 _ucTrungLap.Dock = DockStyle.Fill;
                 var parent = this.Parent;
                 if (parent != null)
                     parent.Controls.Add(_ucTrungLap);
             }
             _ucTrungLap.Visible = true;
-            _ucTrungLap.LoadDuLieu(); // Đảm bảo load lại dữ liệu khi chuyển view
+          //  _ucTrungLap.LoadDuLieu(); // Đảm bảo load lại dữ liệu khi chuyển view
         }
 
         #endregion

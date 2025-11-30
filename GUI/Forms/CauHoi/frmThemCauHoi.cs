@@ -15,7 +15,7 @@ namespace GUI
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
         private readonly CauHoiBLL _cauHoiBLL = new();
-     
+
         // In-memory answers
         private readonly List<DapAnDTO> _dapAnList = new();
         private int _nextTempId = -1; // tạo ID tạm cho đáp án mới (âm để tránh trùng)
@@ -111,7 +111,7 @@ namespace GUI
                     if (chuong == null)
                     {
                         var newChuong = new ChuongDTO { MaChuong = 0, MaMonHoc = maMonHoc, TenChuong = tenChuong };
-                        maChuong = _chuongBLL.AddChuong(newChuong,maMonHoc); // trả về ID chương mới
+                        maChuong = _chuongBLL.AddChuong(newChuong, maMonHoc); // trả về ID chương mới
                     }
                     else
                     {
@@ -186,7 +186,7 @@ namespace GUI
         }
 
         // Hiển thị panel chỉnh sửa/nhập đáp án; gộp để không tạo nhiều file
-   
+
         private void ShowAnswerEditor(DapAnDTO? editing = null)
         {
             // nếu editor đang mở thì focus
@@ -199,7 +199,7 @@ namespace GUI
         }
 
         private Panel CreateEditorPanel(DapAnDTO? editing) //  tạo UI panel chỉnh sửa/nhập đáp án
-        { 
+        {
             var panel = new Panel
             {
                 Width = pnlDapAnContainer.ClientSize.Width - 8,
@@ -307,7 +307,7 @@ namespace GUI
                 var dtoToEdit = _dapAnList.FirstOrDefault(x => x.MaDapAn == dto.MaDapAn);
                 if (dtoToEdit != null)
                 {
-                 
+
                     pnlDapAnContainer.Controls.Remove(summary); //  để tránh trùng lặp UI khi chỉnh sửa
                     var editor = CreateEditorPanel(dtoToEdit);
                     pnlDapAnContainer.Controls.Add(editor);
@@ -391,6 +391,11 @@ namespace GUI
             if (string.IsNullOrEmpty(text)) return string.Empty;
             var s = text.Replace("\r", " ").Replace("\n", " ").Trim();
             return s.Length <= maxLen ? s : s.Substring(0, maxLen) + "...";
+        }
+
+        private void txtDuongDan_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

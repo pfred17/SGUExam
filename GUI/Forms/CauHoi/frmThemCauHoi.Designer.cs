@@ -107,6 +107,7 @@ namespace GUI
             txtDuongDan.ReadOnly = true;
             txtDuongDan.Size = new Size(740, 27);
             txtDuongDan.TabIndex = 6;
+            txtDuongDan.TextChanged += txtDuongDan_TextChanged;
             // 
             // btnThemVaoHeThong
             // 
@@ -150,7 +151,7 @@ namespace GUI
             cbMonHocFile.DropDownStyle = ComboBoxStyle.DropDownList;
             cbMonHocFile.Location = new Point(30, 40);
             cbMonHocFile.Name = "cbMonHocFile";
-            cbMonHocFile.Size = new Size(121, 28);
+            cbMonHocFile.Size = new Size(192, 28);
             cbMonHocFile.TabIndex = 13;
             // 
             // tabThuCong

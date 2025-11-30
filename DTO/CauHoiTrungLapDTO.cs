@@ -7,5 +7,6 @@ namespace DTO
         public string NoiDung { get; set; } = "";
         public int SoLuong { get; set; }
         public List<CauHoiDTO> DanhSach { get; set; } = new();
+        public bool IsBanGoc { get; set; } = true; // mặc định true
     }
 }

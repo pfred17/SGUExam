@@ -12,12 +12,10 @@ namespace DAL
         {
             var list = new List<CauHoiDTO>();
             string query = @"
-                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong ,nd.ho_ten AS tac_gia
+                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong 
                 FROM cau_hoi ch
                 JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
                 JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
-                LEFT JOIN phan_cong pc ON mh.ma_mh = pc.ma_mh
-                LEFT JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
                 WHERE ch.trang_thai = 1
                 ORDER BY ch.ma_cau_hoi ASC";
 
@@ -32,7 +30,6 @@ namespace DAL
                     MaMonHoc = (long)row["ma_mh"],
                     MaChuong = (long)row["ma_chuong"],        
                     TenMonHoc = (string)row["ten_mh"],
-                    TacGia = row["tac_gia"]?.ToString() ?? "Chưa rõ tác giả",
                 });
             }
             return list;
@@ -156,5 +153,6 @@ namespace DAL
             var param = new SqlParameter("@MaCH", maCauHoi);
             DatabaseHelper.ExecuteNonQuery(query, param);
         }
+        
     }
 }

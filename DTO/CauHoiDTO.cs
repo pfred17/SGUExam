@@ -8,6 +8,7 @@
         public string NoiDung { get; set; } = "";
         public string DoKho { get; set; } = "";
         public string TenMonHoc { get; set; } = "";
-        public string TacGia { get; set; } = "Chưa xác định";  
+        public string TacGia { get; set; } = "Chưa xác định";
+        public bool IsBanSao { get; set; } // mặc định true
     }
 }
