@@ -21,6 +21,7 @@ namespace GUI.modules
         private List<CauHoiDTO> filteredList = new(); // Dữ liệu đã lọc
         private UC_CauHoiTrungLap? _ucTrungLap;
 
+        private const string PLACEHOLDER = "Nhập nội dung câu hỏi để tìm kiếm...";
         // Phân trang
         private int CurrentPage = 1;
         private int PageSize = 10;
@@ -93,38 +94,27 @@ namespace GUI.modules
         }
         private void LoadData(int? page = null)
         {
-            // Nếu có truyền page (từ nút prev/next), dùng nó. Không thì giữ trang hiện tại hoặc về 1 nếu đang filter
-            CurrentPage = page ?? CurrentPage;
-            CurrentPage = Math.Max(1, CurrentPage); // không để nhỏ hơn 1
+            CurrentPage = Math.Max(1, page ?? CurrentPage);
 
-            // Lấy điều kiện lọc
-            long maMH = cbMonHoc.SelectedIndex > 0 && cbMonHoc.SelectedItem is MonHocDTO mon ? mon.MaMH : 0;
-            long maChuong = cbChuong.SelectedIndex > 0 && cbChuong.SelectedItem is ChuongDTO chuong ? chuong.MaChuong : 0;
-            string doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text.Trim();
-            string tuKhoa = txtTimKiem.Text.Trim();
-            if (tuKhoa == "Nhập nội dung câu hỏi để tìm kiếm...") tuKhoa = "";
+            var maMH = cbMonHoc.SelectedItem is MonHocDTO m && m.MaMH > 0 ? m.MaMH : 0;
+            var maCh = cbChuong.SelectedItem is ChuongDTO c && c.MaChuong > 0 ? c.MaChuong : 0;
+            var doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text;
+            var keyword = txtTimKiem.Text == PLACEHOLDER ? "" : txtTimKiem.Text.Trim();
 
-            // Lấy dữ liệu + lọc + loại trùng (giữ lại bản mới nhất theo MaCauHoi)
-            filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maChuong, doKho, tuKhoa)
-                .GroupBy(c => CauHoiBLL.Normalize(c.NoiDung))// loại trùng chính xác nội dung
-                .Select(g => g.OrderByDescending(x => x.MaCauHoi).First()) // giữ bản mới nhất
+            filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maCh, doKho, keyword)
+                .GroupBy(x => CauHoiBLL.Normalize(x.NoiDung))
+                .Select(g => g.OrderByDescending(x => x.MaCauHoi).First())
                 .ToList();
 
-            // Tính tổng trang
-            TotalPage = (int)Math.Ceiling(filteredList.Count / (double)PageSize);
-            CurrentPage = Math.Min(CurrentPage, TotalPage); // không để vượt quá TotalPage
-            if (TotalPage == 0) TotalPage = 1;
+            TotalPage = Math.Max(1, (int)Math.Ceiling(filteredList.Count / (double)PageSize));
+            CurrentPage = Math.Min(CurrentPage, TotalPage);
 
-            // Lấy dữ liệu phân trang
-            var pagedData = filteredList
+            RenderGrid(filteredList
                 .Skip((CurrentPage - 1) * PageSize)
                 .Take(PageSize)
-                .ToList();
+                .ToList());
 
-            RenderGrid(pagedData);
             lblTrangHienTai.Text = $"Trang {CurrentPage}/{TotalPage}";
-
-            // Disable/enable nút prev next
             btnTrangTruoc.Enabled = CurrentPage > 1;
             btnTrangSau.Enabled = CurrentPage < TotalPage;
         }
@@ -132,68 +122,48 @@ namespace GUI.modules
         {
             LoadData(); // load lại toàn bộ câu hỏi
         }
-        private void RenderGrid(List<CauHoiDTO> data)
+        private void RenderGrid(List<CauHoiDTO> list)
         {
             dgvCauHoi.Rows.Clear();
 
-            if (data == null || data.Count == 0)
+            if (list.Count == 0)
             {
-                int rowIndex = dgvCauHoi.Rows.Add();
-                var row = dgvCauHoi.Rows[rowIndex];
+                var row = dgvCauHoi.Rows[dgvCauHoi.Rows.Add()];
                 row.Cells["colNoiDung"].Value = "Không tìm thấy kết quả";
                 row.Cells["colNoiDung"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 row.Cells["colNoiDung"].Style.ForeColor = Color.Gray;
-
-                row.Cells["colID"].Value = "";
-                row.Cells["colMonHoc"].Value = "";
-                row.Cells["colDoKho"].Value = "";
-                row.Cells["SuaCol"].Value = null;
-                row.Cells["XoaCol"].Value = null;
                 return;
             }
-
-            foreach (var ch in data)
+            for (int i = 0; i < list.Count; i++)
             {
-                int rowIndex = dgvCauHoi.Rows.Add();
-                var row = dgvCauHoi.Rows[rowIndex];
-                row.Cells["colID"].Value = ch.MaCauHoi;
-                row.Cells["colNoiDung"].Value = ch.NoiDung;
-                row.Cells["colMonHoc"].Value = ch.TenMonHoc;
-                row.Cells["colDoKho"].Value = ch.DoKho;
-                row.Cells["SuaCol"].Value = Properties.Resources.icon_edit;
-                row.Cells["XoaCol"].Value = Properties.Resources.icon_delete;
+                var x = list[i];
+                dgvCauHoi.Rows.Add(
+                    (CurrentPage - 1) * PageSize + i + 1, // số thứ tự
+                    x.NoiDung,
+                    x.TenMonHoc,
+                    x.DoKho,
+                    Properties.Resources.icon_edit,
+                    Properties.Resources.icon_delete
+                );
+                // Lưu ID thật vào Tag của dòng để dùng khi sửa/xóa
+                dgvCauHoi.Rows[i].Tag = x.MaCauHoi;
             }
         }
 
         #endregion
 
         #region Sự kiện UI
-        private void txtTimKiem_TextChanged_LiveSearch(object sender, EventArgs e)
+        private void txtTimKiem_TextChanged_LiveSearch(object s, EventArgs e)
         {
-            // Nếu đang hiển thị placeholder → không tìm
-            if (txtTimKiem.Text == "Nhập nội dung câu hỏi để tìm kiếm...") return;
-
-            // Hủy timer cũ
+            if (txtTimKiem.Text == PLACEHOLDER) return;
             timerSearch?.Stop();
-            timerSearch?.Dispose();
-
-            // Tạo timer mới
-            timerSearch = new System.Windows.Forms.Timer
-            {
-                Interval = 300 // 300ms sau khi ngừng gõ mới tìm
-            };
-
-            timerSearch.Tick += (s, ev) =>
-            {
-                timerSearch.Stop();
-                LoadData(1); // về trang 1 khi tìm kiếm mới
-            };
-
+            timerSearch = new System.Windows.Forms.Timer { Interval = 300 };
+            timerSearch.Tick += (a, b) => { timerSearch.Stop(); LoadData(1); };
             timerSearch.Start();
         }
         private void txtTimKiem_Enter(object sender, EventArgs e)
         {
-            if (txtTimKiem.Text == "Nhập nội dung câu hỏi để tìm kiếm...")
+            if (txtTimKiem.Text == PLACEHOLDER)
             {
                 txtTimKiem.Text = "";
                 txtTimKiem.ForeColor = Color.Black;
@@ -204,7 +174,7 @@ namespace GUI.modules
         {
             if (string.IsNullOrWhiteSpace(txtTimKiem.Text))
             {
-                txtTimKiem.Text = "Nhập nội dung câu hỏi để tìm kiếm...";
+                txtTimKiem.Text = PLACEHOLDER;
                 txtTimKiem.ForeColor = Color.Gray;
             }
         }
@@ -256,7 +226,8 @@ namespace GUI.modules
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             string colName = dgvCauHoi.Columns[e.ColumnIndex].Name;
-            long maCH = Convert.ToInt64(dgvCauHoi.Rows[e.RowIndex].Cells["colID"].Value);
+            // Lấy ID thật từ Tag
+            long maCH = Convert.ToInt64(dgvCauHoi.Rows[e.RowIndex].Tag);
 
             if (colName == "SuaCol")
             {

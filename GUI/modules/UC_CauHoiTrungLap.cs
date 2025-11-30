@@ -21,7 +21,6 @@ namespace GUI.modules
         {
             InitializeComponent();
             _parentUC = parent;
-            this.Load += UC_CauHoiTrungLap_Load;
         }
         // load du lieu 
         public void UC_CauHoiTrungLap_Load(object sender, EventArgs e)
@@ -63,7 +62,6 @@ namespace GUI.modules
             }
             foreach (var nhom in dsNhom)
             {
-                //flpMain.Controls.Add(CreateGroupCard(nhom));
                 var card = CreateGroupCard(nhom);
                 flpMain.Controls.Add(card);
             }
@@ -247,37 +245,4 @@ namespace GUI.modules
             _parentUC.dispkayTatCaCauHoiFromTrungLap();
         }
     }
-
-    //// Nút Lọc & Reset
-    //private void btnLoc_Click(object sender, EventArgs e)
-    //{
-    //    LoadDuLieu();
-    //}
-    //private void btnReset_Click(object sender, EventArgs e)
-    //{
-    //    cboLoaiCauHoi.SelectedIndex = 0;
-    //    cboMonHoc.SelectedIndex = 0;
-    //    LoadDuLieu();
-    //}
-
-    //public void loadTatCauHoi_Click(object sender, EventArgs e)
-    //{
-    //    this.Visible = false;     // ẩn UC_TrungLap
-    //    _parentUC.Visible = true; // hiện UC_CauHoi
-    //    _parentUC.dispkayTatCaCauHoiFromTrungLap(); // load dữ liệu
-    //}
-    //private void label1_Click(object sender, EventArgs e)
-    //{
-
-    //}
-
-    //private void btnTatCaCauHoi_Click(object sender, EventArgs e)
-    //{
-
-    //}
-
-    //private void lblDescription_Click(object sender, EventArgs e)
-    //{
-
-    //}
 }

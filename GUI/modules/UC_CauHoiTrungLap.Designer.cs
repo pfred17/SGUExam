@@ -40,7 +40,7 @@
             cboMonHoc = new ComboBox();
             cboLoaiCauHoi = new ComboBox();
             flpMain = new FlowLayoutPanel();
-            button1 = new Button();
+            //button1 = new Button();
             pnlTop.SuspendLayout();
             pnlFilter.SuspendLayout();
             flpMain.SuspendLayout();
@@ -133,6 +133,7 @@
             btnReset.TabIndex = 7;
             btnReset.Text = "Reset";
             btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += btnReset_Click;
             // 
             // btnLoc
             // 
@@ -145,6 +146,7 @@
             btnLoc.TabIndex = 6;
             btnLoc.Text = "Lọc";
             btnLoc.UseVisualStyleBackColor = false;
+            btnLoc.Click += btnLoc_Click;
             // 
             // cboMonHoc
             // 
@@ -168,7 +170,7 @@
             // 
             flpMain.AutoScroll = true;
             flpMain.BackColor = Color.White;
-            flpMain.Controls.Add(button1);
+            //flpMain.Controls.Add(button1);
             flpMain.Dock = DockStyle.Fill;
             flpMain.FlowDirection = FlowDirection.TopDown;
             flpMain.Location = new Point(0, 187);
@@ -179,12 +181,12 @@
             // 
             // button1
             // 
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            //button1.Location = new Point(3, 3);
+            //button1.Name = "button1";
+            //button1.Size = new Size(94, 29);
+            //button1.TabIndex = 0;
+            //button1.Text = "button1";
+            //button1.UseVisualStyleBackColor = true;
             // 
             // UC_CauHoiTrungLap
             // 
@@ -219,6 +221,7 @@
         private ComboBox cboMonHoc;
         private FlowLayoutPanel flpMain;
         private Button btnTatCaCauHoi;
-        private Button button1;
+        //private Button button1;
     }
 }
+
