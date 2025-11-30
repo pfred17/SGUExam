@@ -95,6 +95,23 @@
             dgvCauHoi.TabIndex = 1;
             dgvCauHoi.CellContentClick += dgvCauHoi_CellContentClick;
             dgvCauHoi.SelectionChanged += dgvCauHoi_SelectionChanged;
+            // Tắt style hệ thống để custom header
+            dgvCauHoi.EnableHeadersVisualStyles = false;
+            dgvCauHoi.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            dgvCauHoi.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvCauHoi.DefaultCellStyle.Font = new Font("Segoe UI", 12F);
+            dgvCauHoi.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 249, 253);
+            dgvCauHoi.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dgvCauHoi.GridColor = Color.FromArgb(235, 240, 245);
+
+            // Custom style table
+            dgvCauHoi.AllowUserToAddRows = false;
+            dgvCauHoi.AllowUserToOrderColumns = false;
+            dgvCauHoi.AllowUserToResizeColumns = false;
+            dgvCauHoi.AllowUserToResizeRows = false;
+            dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCauHoi.MultiSelect = false;
+            dgvCauHoi.ReadOnly = true;
             // 
             // colID
             // 
