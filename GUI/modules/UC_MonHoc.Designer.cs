@@ -283,6 +283,7 @@
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtSearch.Size = new Size(241, 36);
             txtSearch.TabIndex = 1;
+            txtSearch.Enter += txtSearch_Enter;
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Leave += txtSearch_Leave;
             // 

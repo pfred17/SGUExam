@@ -18,19 +18,16 @@ namespace GUI.forms.PhanCong
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
         private readonly PhanCongBLL _phanCongBLL = new PhanCongBLL();
 
-        private List<UserDTO>? listUser;
-        private List<MonHocDTO>? listMonHoc;
-        private BindingList<UserDTO> bindingList; // dùng cho DataSource
-        private Dictionary<string, bool> checkedState = new Dictionary<string, bool>();
-        private List<UserDTO>? filteredList;
+        private BindingList<UserDTO>? bindingList; // dùng cho DataSource
+        private Dictionary<string, bool>? checkedState = new Dictionary<string, bool>();
 
+        private int pageCurrent = 1;      // Trang hiện tại
         private int pageSize = 5;       // Số dòng mỗi trang
-        private int pageNumber = 1;      // Trang hiện tại
         private int totalRecords = 0;    // Tổng số bản ghi
         private int totalPages = 0;      // Tổng số trang
 
-        private System.Threading.Timer _debounceTimer;
-        private const int DebounceDelay = 450;
+        private System.Threading.Timer? _debounceTimer;
+        private const int DebounceDelay = 500;
         public ThemTheoMonHoc()
         {
             InitializeComponent();
@@ -72,17 +69,6 @@ namespace GUI.forms.PhanCong
             dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgv.MultiSelect = false;
         }
-        public void LoadData()
-        {
-            pageNumber = 1;
-            listUser = _userBLL.GetAllUsers();
-            filteredList = null;
-            checkedState.Clear();
-            bindingList = new BindingList<UserDTO>(listUser);
-            dgv.DataSource = bindingList;
-            LoadComboBox();
-            LoadPage();
-        }
         private void ResizeGridToContent()
         {
             // Tính chiều cao
@@ -101,13 +87,8 @@ namespace GUI.forms.PhanCong
         }
         private void LoadComboBox()
         {
-            listMonHoc = _monHocBLL.GetAllMonHoc();
-            MonHocDTO defaultMonHoc = new MonHocDTO
-            {
-                MaMH = 0,
-                TenMH = "Chọn môn học cần phân công"
-            };
-            listMonHoc.Insert(0, defaultMonHoc);
+            var listMonHoc = _monHocBLL.GetAllMonHoc();
+            listMonHoc.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn môn học cần phân công" });
             var displayList = listMonHoc
                 .Select(mh => new
                 {
@@ -115,6 +96,7 @@ namespace GUI.forms.PhanCong
                     Value = mh.MaMH
                 })
                 .ToList();
+
             cbxMonHoc.DataSource = displayList;
             cbxMonHoc.DisplayMember = "Text";
             cbxMonHoc.ValueMember = "Value";
@@ -123,39 +105,27 @@ namespace GUI.forms.PhanCong
             cbxMonHoc.DropDownHeight = cbxMonHoc.ItemHeight * Math.Min(listMonHoc.Count, cbxMonHoc.MaxDropDownItems);
             cbxMonHoc.SelectedIndex = 0;
         }
-        private void LoadPage()
+        public void LoadData()
         {
             SaveCheckedState();
 
-            List<UserDTO> dataToDisplay;
+            string keyword = txtSearch.Text.Trim();
+            if (keyword == "Tìm kiếm giảng viên...") keyword = "";
 
-            if (filteredList == null)
-            {
-                totalRecords = _userBLL.GetTotalUser();
-                totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-                dataToDisplay = totalRecords > 0
-                    ? _userBLL.GetUserPaged(pageNumber, pageSize)
-                    : new List<UserDTO>();
-            }
-            else
-            {
-                totalRecords = filteredList.Count;
-                totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-                dataToDisplay = filteredList
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-            }
+            totalRecords = _phanCongBLL.GetTotalPhanCong(keyword);
+            totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            if (totalPages == 0) totalPages = 1;
+            if (pageCurrent > totalPages) pageCurrent = totalPages;
 
-            bindingList = new BindingList<UserDTO>(dataToDisplay);
+            var data = _userBLL.GetUserPaged(pageCurrent, pageSize, keyword);
+
+            bindingList = new BindingList<UserDTO>(data);
             dgv.DataSource = bindingList;
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
-                if (row.Cells["MSSV"].Value is string MSSV)
-                {
+                if (row.Cells["MSSV"].Value?.ToString() is string MSSV)
                     row.Cells["CheckCol"].Value = checkedState.ContainsKey(MSSV) && checkedState[MSSV];
-                }
             }
 
             if (totalRecords == 0)
@@ -173,9 +143,9 @@ namespace GUI.forms.PhanCong
         }
         private void UpdatePageInfo()
         {
-            lblPage.Text = totalRecords == 0 ? "0" : $"{pageNumber} / {totalPages}";
-            btnPrev.Enabled = pageNumber > 1;
-            btnNext.Enabled = pageNumber < totalPages;
+            lblPage.Text = totalRecords == 0 ? "0" : $"{pageCurrent} / {totalPages}";
+            btnPrev.Enabled = pageCurrent > 1;
+            btnNext.Enabled = pageCurrent < totalPages;
             dgv.Enabled = totalRecords > 0;
         }
         private void SaveCheckedState()
@@ -184,40 +154,21 @@ namespace GUI.forms.PhanCong
             {
                 string MSSV = row.Cells["MSSV"].Value?.ToString() ?? "";
                 bool isChecked = Convert.ToBoolean(row.Cells["CheckCol"].Value ?? false);
-
                 checkedState[MSSV] = isChecked;
             }
         }
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (listUser == null) return;
+            if (_debounceTimer != null)
+                _debounceTimer.Dispose();
 
-            if (txtSearch.Text == "Tìm kiếm giảng viên...")
-            {
-                txtSearch.Text = "";
-            }
-            // Huỷ timer cũ nếu người dùng vẫn đang gõ
-            _debounceTimer?.Dispose();
-
-            // Tạo timer mới (chạy 1 lần sau khi dừng gõ)
             _debounceTimer = new System.Threading.Timer(_ =>
             {
-                this.Invoke((MethodInvoker)delegate
+                this.Invoke(new Action(() =>
                 {
-                    string keyword = txtSearch.Text.Trim().ToLower();
-                    if (string.IsNullOrEmpty(keyword))
-                    {
-                        filteredList = null;
-                    }
-                    else
-                    {
-                        filteredList = listUser
-                            .Where(u => u.HoTen.ToLower().Contains(keyword))
-                            .ToList();
-                    }
-                    pageNumber = 1;
-                    LoadPage();
-                });
+                    pageCurrent = 1;
+                    LoadData();
+                }));
             }, null, DebounceDelay, Timeout.Infinite);
         }
 
@@ -226,40 +177,37 @@ namespace GUI.forms.PhanCong
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = "Tìm kiếm giảng viên...";
-                filteredList = null;
-                pageNumber = 1;
-                LoadPage();
             }
         }
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            if (pageNumber > 1)
+            if (pageCurrent > 1)
             {
-                pageNumber--;
-                LoadPage();
+                pageCurrent--;
+                LoadData();
             }
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if (pageNumber < totalPages)
+            if (pageCurrent < totalPages)
             {
-                pageNumber++;
-                LoadPage();
+                pageCurrent++;
+                LoadData();
             }
         }
 
         private void dgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex != dgv.Columns["CheckCol"].Index) return;
+            if (e.RowIndex < 0 || e.ColumnIndex != dgv.Columns["CheckCol"]?.Index) return;
 
             dgv.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
         private void dgv_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex != dgv.Columns["CheckCol"].Index) return;
+            if (e.RowIndex < 0 || e.ColumnIndex != dgv.Columns["CheckCol"]?.Index) return;
 
             var row = dgv.Rows[e.RowIndex];
             string MSSV = row.Cells["MSSV"].Value?.ToString() ?? "";
@@ -276,17 +224,19 @@ namespace GUI.forms.PhanCong
         private void btnThem_Click(object sender, EventArgs e)
         {
             SaveCheckedState();
+
             if (cbxMonHoc.SelectedIndex == 0)
             {
                 MessageBox.Show("Vui lòng chọn môn học!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            string maMH = cbxMonHoc.SelectedValue.ToString();
+            string maMH = cbxMonHoc.SelectedValue?.ToString() ?? "";
 
-            var sourceList = filteredList ?? listUser;
-            var selectedUser = sourceList.Where(u => checkedState.ContainsKey(u.MSSV) && checkedState[u.MSSV]).ToList();
+            var selectedUser = bindingList?
+                .Where(u => checkedState.ContainsKey(u.MSSV) && checkedState[u.MSSV])
+                .ToList();
 
-            if (selectedUser.Count == 0)
+            if (selectedUser?.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn ít nhất 1 người dùng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -295,20 +245,16 @@ namespace GUI.forms.PhanCong
             {
                 foreach (var u in selectedUser)
                 {
-                    var phanCong = new PhanCongDTO
+                    _phanCongBLL.AddPhanCong(new PhanCongDTO
                     {
                         MaMonHoc = long.Parse(maMH),
                         MaNguoiDung = u.MSSV,
-                    };
-                    _phanCongBLL.AddPhanCong(phanCong);
+                    });
+                    checkedState[u.MSSV] = false;
                 }
 
                 MessageBox.Show($"Đã phân công {selectedUser.Count} giảng viên cho môn học {cbxMonHoc.Text} thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                foreach (var u in selectedUser)
-                    checkedState[u.MSSV] = false;
-                filteredList = null;
-                txtSearch.Text = "Tìm kiếm giảng viên...";
+                pageCurrent = 1;
                 LoadData();
             }
             catch (Exception ex)

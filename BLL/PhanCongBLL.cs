@@ -26,18 +26,22 @@ namespace BLL
         {
             return _dal.DeletePhanCong(maPhanCong);
         }
+        public bool IsPhanCongReferenced(long maPhanCong)
+        {
+            return _dal.IsPhanCongReferenced(maPhanCong);
+        }
         public PhanCongDTO? GetPhanCongById(long  maPhanCong)
         {
             return _dal.GetPhanCongById(maPhanCong);
         }
-        public List<PhanCongDTO> getPhanCongPaged(int page, int pageSize)
+        public List<PhanCongDTO> getPhanCongPaged(int page, int pageSize, string? keyword = null)
         {
-            return _dal.GetPhanCongPaged(page, pageSize);
+            return _dal.GetPhanCongPaged(page, pageSize, keyword);
         }
 
-        public int GetTotalPhanCong()
+        public int GetTotalPhanCong(string? keyword = null)
         {
-            return _dal.GetTotalPhanCong();
+            return _dal.GetTotalPhanCong(keyword);
         }
     }
 }

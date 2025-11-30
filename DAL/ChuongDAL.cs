@@ -72,7 +72,6 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
-
         public bool DeleteChuong(long maChuong)
         {
             string query = @"DELETE FROM chuong WHERE ma_chuong = @ma_chuong";
@@ -85,7 +84,17 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
+        public bool IsChuongReferenced(long maChuong)
+        {
+            string query = @"
+                IF EXISTS (SELECT 1 FROM cau_hoi WHERE ma_chuong = @maChuong)
+                    OR EXISTS (SELECT 1 FROM de_thi_chuong WHERE ma_chuong = @maChuong)
+                SELECT 1 ELSE SELECT 0";
 
+            SqlParameter parameter = new("@maChuong", maChuong);
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameter));
+            return count > 0;
+        }
         public List<ChuongDTO> GetChuongPaged(long maMonHoc, int page, int pageSize)
         {
             string query = @"

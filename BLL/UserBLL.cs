@@ -53,13 +53,13 @@ namespace BLL
                 
             return allUsers.Where(u => u.MSSV != userId).ToList();
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
         {
-            return dal.GetUserPaged(page, pageSize);
+            return dal.GetUserPaged(page, pageSize, keyword);
         }
-        public int GetTotalUser()
+        public int GetTotalUser(string? keyword = null)
         {
-            return dal.GetTotalUser();
+            return dal.GetTotalUser(keyword);
         }
         public bool CreateNewUser(UserDTO userDTO)
         {

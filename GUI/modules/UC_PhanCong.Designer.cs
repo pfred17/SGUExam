@@ -307,6 +307,7 @@
             txtSearch.Size = new Size(241, 36);
             txtSearch.TabIndex = 1;
             txtSearch.TextChanged += txtSearch_TextChanged;
+            txtSearch.Enter += txtSearch_Enter;
             txtSearch.Leave += txtSearch_Leave;
             // 
             // UC_PhanCong

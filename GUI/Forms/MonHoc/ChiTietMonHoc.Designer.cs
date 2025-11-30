@@ -96,7 +96,7 @@
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvChuong.ColumnHeadersHeight = 32;
+            dgvChuong.ColumnHeadersHeight = 40;
             dgvChuong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvChuong.Columns.AddRange(new DataGridViewColumn[] { MaChuong, TenChuong, EditCol, DeleteCol });
             dgvChuong.EnableHeadersVisualStyles = false;
@@ -107,7 +107,7 @@
             dgvChuong.Name = "dgvChuong";
             dgvChuong.ReadOnly = true;
             dgvChuong.RowHeadersVisible = false;
-            dgvChuong.RowHeadersWidth = 51;
+            dgvChuong.RowHeadersWidth = 50;
             dgvChuong.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvChuong.Size = new Size(560, 125);
             dgvChuong.TabIndex = 2;

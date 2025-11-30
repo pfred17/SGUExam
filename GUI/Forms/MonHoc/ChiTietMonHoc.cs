@@ -15,21 +15,19 @@ namespace GUI.forms.MonHoc
     {
         private enum Mode { Add, Edit }
         private Mode currentMode;
-        private readonly MonHocBLL monHocBLL = new MonHocBLL();
-        private readonly ChuongBLL chuongBLL = new ChuongBLL();
+        private readonly ChuongBLL _chuongBLL = new ChuongBLL();
         private List<ChuongDTO>? listChuong;
         private ChuongDTO? editingChuong;
         private long _maMonHoc;
 
+        private int pageCurrent = 1;      // Trang hiện tại
         private int pageSize = 5;       // Số dòng mỗi trang
-        private int pageNumber = 1;      // Trang hiện tại
         private int totalRecords = 0;    // Tổng số bản ghi
         private int totalPages = 0;      // Tổng số trang
-        private List<ChuongDTO>? filteredList = null;
         public ChiTietMonHoc(long maMonHoc)
         {
-            InitializeComponent();
             _maMonHoc = maMonHoc;
+            InitializeComponent();
             SetupDataGridView();
             LoadData();
         }
@@ -48,9 +46,6 @@ namespace GUI.forms.MonHoc
 
             // Dòng xen kẽ
             dgvChuong.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 249, 253);
-
-            // Bỏ viền header
-            //dgvMonHoc.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
             //Border
             dgvChuong.CellBorderStyle = DataGridViewCellBorderStyle.Single;
@@ -80,6 +75,9 @@ namespace GUI.forms.MonHoc
             DeleteCol.Width = 50;
             EditCol.Resizable = DataGridViewTriState.False;
             DeleteCol.Resizable = DataGridViewTriState.False;
+
+            // chiều cao row
+            dgvChuong.RowTemplate.Height = 40;
         }
 
         private void ResizeGridToContent()
@@ -98,7 +96,6 @@ namespace GUI.forms.MonHoc
 
             dgvChuong.Height = totalHeight;
         }
-
         private void DisplayData(List<ChuongDTO> data)
         {
             dgvChuong.Rows.Clear();
@@ -106,7 +103,6 @@ namespace GUI.forms.MonHoc
             foreach (var chuong in data)
             {
                 int rowIndex = dgvChuong.Rows.Add();
-
                 var row = dgvChuong.Rows[rowIndex];
 
                 row.Cells["MaChuong"].Value = chuong.MaChuong;
@@ -114,61 +110,25 @@ namespace GUI.forms.MonHoc
                 row.Cells["EditCol"].Value = Properties.Resources.icon_edit;
                 row.Cells["DeleteCol"].Value = Properties.Resources.icon_delete;
             }
+
             ResizeGridToContent();
         }
-
         private void LoadData()
         {
-            pageNumber = 1;
-            listChuong = chuongBLL.GetChuongByMonHoc(_maMonHoc);   // lấy dữ liệu gốc để TÌM KIẾM
-            filteredList = null;                   // không lọc
-            LoadPage();                            // hiển thị 5 dòng đầu
+            totalRecords = _chuongBLL.GetTotalChuongByMonHoc(_maMonHoc);
+            totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+            if (totalPages == 0) totalPages = 1;
+            if (pageCurrent > totalPages) pageCurrent = totalPages;
+
+            var data = _chuongBLL.GetChuongPaged(_maMonHoc, pageCurrent, pageSize);
+
+            DisplayData(data);
+
+            lblPage.Text = $"{pageCurrent} / {totalPages}";
+            btnPrev.Enabled = pageCurrent > 1;
+            btnNext.Enabled = pageCurrent < totalPages;
         }
-
-        private void LoadPage()
-        {
-            List<ChuongDTO> dataToDisplay;
-
-            // Nếu không có tìm kiếm → phân trang trong DB
-            if (filteredList == null)
-            {
-                totalRecords = chuongBLL.GetTotalChuongByMonHoc(_maMonHoc);
-                totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-
-                dataToDisplay = totalRecords > 0
-                    ? chuongBLL.GetChuongPaged(_maMonHoc, pageNumber, pageSize)
-                    : new List<ChuongDTO>();
-            }
-            else
-            {
-                // Có tìm kiếm → phân trang TRÊN LIST đã lọc
-                totalRecords = filteredList.Count;
-                totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
-
-                dataToDisplay = filteredList
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
-
-            }
-            DisplayData(dataToDisplay);
-            if (totalRecords == 0)
-            {
-                lblPage.Text = "0";
-                btnPrev.Enabled = false;
-                btnNext.Enabled = false;
-                dgvChuong.Enabled = false;
-            }
-            else
-            {
-
-                lblPage.Text = $"{pageNumber} / {totalPages}";
-                btnPrev.Enabled = pageNumber > 1;
-                btnNext.Enabled = pageNumber < totalPages;
-                dgvChuong.Enabled = true;
-            }
-        }
-
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
@@ -193,10 +153,15 @@ namespace GUI.forms.MonHoc
             }
             if (columnName == "DeleteCol")
             {
-                DialogResult confirm = MessageBox.Show($"Xoá chương {tenChuong}?", "Xác nhận", MessageBoxButtons.YesNo);
-                if (confirm == DialogResult.Yes)
+                if (_chuongBLL.IsChuongReferenced(long.Parse(maChuong)))
                 {
-                    chuongBLL.DeleteChuong(long.Parse(maChuong));
+                    MessageBox.Show($"Dữ liệu chương {tenChuong} có liên quan đến thông tin khác. Không thể xóa.", "Cảnh báo");
+                    return;
+                }
+
+                if (MessageBox.Show($"Xoá chương {tenChuong}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    _chuongBLL.DeleteChuong(long.Parse(maChuong));
                     LoadData();
                 }
             }
@@ -266,13 +231,13 @@ namespace GUI.forms.MonHoc
                 {
                     TenChuong = tenChuong
                 };
-                chuongBLL.AddChuong(newChuong, _maMonHoc);
+                _chuongBLL.AddChuong(newChuong, _maMonHoc);
                 LoadData();
             }
             else if (currentMode == Mode.Edit && editingChuong != null)
             {
                 editingChuong.TenChuong = tenChuong;
-                chuongBLL.UpdateChuong(editingChuong);
+                _chuongBLL.UpdateChuong(editingChuong);
             }
 
             LoadData();
@@ -294,7 +259,7 @@ namespace GUI.forms.MonHoc
                 lblError.Text = "Tên chương không được để trống.";
                 lblError.Visible = true;
             }
-            else if (chuongBLL.IsChuongExists(input))
+            else if (_chuongBLL.IsChuongExists(input))
             {
                 lblError.Text = "Tên chương đã tồn tại.";
                 lblError.Visible = true;
@@ -319,19 +284,19 @@ namespace GUI.forms.MonHoc
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            if (pageNumber > 1)
+            if (pageCurrent > 1)
             {
-                pageNumber--;
-                LoadPage();
+                pageCurrent--;
+                LoadData();
             }
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if (pageNumber < totalPages)
+            if (pageCurrent < totalPages)
             {
-                pageNumber++;
-                LoadPage();
+                pageCurrent++;
+                LoadData();
             }
         }
     }

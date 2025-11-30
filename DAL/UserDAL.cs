@@ -178,8 +178,11 @@ namespace DAL
 
             return list;
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
         {
+            int offset = (page - 1) * pageSize;
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+
             string query = @"
                 SELECT 
                     nd.ma_nd,
@@ -189,14 +192,18 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != 'Sinh viên' AND nd.trang_thai = 1
+                WHERE nq.ten_nhom_quyen != 'Sinh viên' 
+                    AND nd.trang_thai = 1
+                    AND @keyword = '' OR nd.ho_ten LIKE '%' + @keyword + '%'            
                 ORDER BY nd.ma_nd
-                OFFSET(@page - 1) * @pageSize ROWS
+                OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
             ";
+
             SqlParameter[] parameters = {
-                new SqlParameter("@page",page),
-                new SqlParameter("@pageSize", pageSize)
+                new("@keyword", keyword),
+                new("@offset", offset),
+                new("@pageSize", pageSize)
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
             List<UserDTO> list = new List<UserDTO>();
@@ -214,19 +221,23 @@ namespace DAL
             return list;
         }
 
-        public int GetTotalUser()
+        public int GetTotalUser(string? keyword = null)
         {
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+
             string query = @"
                 SELECT COUNT(*) 
                 FROM nguoi_dung AS nd
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != 'Sinh viên' 
-                  AND nd.trang_thai = 1;
+                WHERE nq.ten_nhom_quyen != N'Sinh viên' 
+                    AND nd.trang_thai = 1
+                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')            
+;
             ";
 
-            var result = DatabaseHelper.ExecuteScalar(query);
-            return result != null ? Convert.ToInt32(result) : 0;
+            SqlParameter parameters = new("@keyword", keyword);
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
     }
 }

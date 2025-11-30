@@ -35,13 +35,17 @@ namespace BLL
         {
             return _dal.DeleteMonHoc(monHocId);
         }
-        public List<MonHocDTO> GetMonHocPaged(int page, int pageSize)
+        public bool IsMonHocReferenced(long maMH)
         {
-            return _dal.GetMonHocPaged(page, pageSize);
+            return _dal.IsMonHocReferenced(maMH); 
         }
-        public int GetTotalMonHoc()
+        public List<MonHocDTO> GetMonHocPaged(int page, int pageSize, string? keyword = null)
         {
-            return _dal.GetTotalMonHoc();
+            return _dal.GetMonHocPaged(page, pageSize, keyword);
+        }
+        public int GetTotalMonHoc(string? keyword = null)
+        {
+            return _dal.GetTotalMonHoc(keyword);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace GUI.forms.PhanCong
 
         private List<UserDTO> listUser;
         private List<MonHocDTO> listMonHoc;
-        public SuaPhanCong(long maPhanCong, long maMonHoc, string userId)
+        public SuaPhanCong(long maPhanCong, string userId)
         {
             _maPhanCong = maPhanCong;
             _userId = userId;
