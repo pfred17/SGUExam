@@ -43,6 +43,10 @@ namespace BLL
         {
             return dal.getAllUsers();
         }
+        public UserDTO GetUserById(string userId)
+        {
+            return dal.GetUserById(userId);
+        }
         public List<UserDTO> GetAllUserByRole()
         {
             return dal.GetAllUserByRole();

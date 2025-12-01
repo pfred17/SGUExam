@@ -1,5 +1,6 @@
 ﻿using BLL;
 using DTO;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace GUI.forms.PhanCong
         private readonly PhanCongBLL _phanCongBLL = new PhanCongBLL();
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
 
-        private BindingList<MonHocDTO>? bindingList; // dùng cho DataSource
+        private BindingList<MonHocDTO> bindingList = new BindingList<MonHocDTO>();
         private Dictionary<long, bool> checkedState = new Dictionary<long, bool>();
 
         private int pageCurrent = 1;
@@ -76,8 +77,6 @@ namespace GUI.forms.PhanCong
 
         private void LoadData()
         {
-            SaveCheckedState();
-
             string keyword = txtSearch.Text.Trim();
             if (keyword == "Tìm kiếm môn học...") keyword = "";
 
@@ -88,24 +87,43 @@ namespace GUI.forms.PhanCong
 
             var data = _monHocBLL.GetMonHocPaged(pageCurrent, pageSize, keyword);
 
-            bindingList = new BindingList<MonHocDTO>(data);
+            bindingList.Clear();
+
+            if (data.Any())
+            {
+                foreach (var item in data)
+                    bindingList.Add(item);
+            }
+            else
+            {
+                bindingList.Add(new MonHocDTO
+                {
+                    MaMH = -1,
+                    TenMH = "Không tìm thấy kết quả"
+                });
+            }
+            // reload UI
+            dgv.DataSource = null;
             dgv.DataSource = bindingList;
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
-                if (row.Cells["MaMH"].Value is long maMH)
-                    row.Cells["CheckCol"].Value = checkedState.ContainsKey(maMH) && checkedState[maMH];
-            }
-
-            if (totalRecords == 0)
-            {
-                dgv.DataSource = null;
-                dgv.Rows.Clear();
-                var row = dgv.Rows[dgv.Rows.Add()];
-                row.Cells["TenMH"].Value = "Không tìm thấy kết quả";
-                row.Cells["TenMH"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                row.Cells["TenMH"].Style.Font = new Font("Segoe UI", 12F, FontStyle.Italic);
-                row.Cells["TenMH"].Style.ForeColor = Color.Gray;
+                if (row.Cells["MaMonHoc"].Value is long maMH)
+                {
+                    if (maMH == -1) 
+                    {
+                        row.Cells["CheckCol"].ReadOnly = true;
+                        row.Cells["CheckCol"].Value = false;
+                        row.DefaultCellStyle.ForeColor = Color.Gray;
+                        row.DefaultCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Italic);
+                        row.Cells["TenMonHoc"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    }
+                    else 
+                    {
+                        row.Cells["CheckCol"].ReadOnly = false;
+                        row.Cells["CheckCol"].Value = checkedState.ContainsKey(maMH) && checkedState[maMH];
+                    }
+                }
             }
             ResizeGridToContent();
             UpdatePageInfo();
@@ -130,6 +148,7 @@ namespace GUI.forms.PhanCong
 
         private void SaveCheckedState()
         {
+            dgv.EndEdit();
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 if (row.Cells["MaMonHoc"].Value == null) continue;
@@ -141,6 +160,7 @@ namespace GUI.forms.PhanCong
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
+            SaveCheckedState();
             if (pageCurrent > 1)
             {
                 pageCurrent--;
@@ -150,6 +170,7 @@ namespace GUI.forms.PhanCong
 
         private void btnNext_Click(object sender, EventArgs e)
         {
+            SaveCheckedState();
             if (pageCurrent < totalPages)
             {
                 pageCurrent++;
@@ -159,6 +180,8 @@ namespace GUI.forms.PhanCong
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
+            SaveCheckedState();
+
             if (_debounceTimer != null)
                 _debounceTimer.Dispose();
 
@@ -174,11 +197,13 @@ namespace GUI.forms.PhanCong
 
         private void txtSearch_Enter(object sender, EventArgs e)
         {
+            SaveCheckedState();
             if (txtSearch.Text == "Tìm kiếm môn học...") txtSearch.Text = "";
         }
 
         private void txtSearch_Leave(object sender, EventArgs e)
         {
+            SaveCheckedState();
             if (string.IsNullOrWhiteSpace(txtSearch.Text)) txtSearch.Text = "Tìm kiếm môn học...";
         }
 
@@ -201,7 +226,7 @@ namespace GUI.forms.PhanCong
             bool isChecked = Convert.ToBoolean(row.Cells["CheckCol"].Value ?? false);
             checkedState[maMH] = isChecked;
         }
-
+        
         private void btnThem_Click(object sender, EventArgs e)
         {
             SaveCheckedState();
@@ -214,11 +239,12 @@ namespace GUI.forms.PhanCong
 
             string maND = cbxGiangVien.SelectedValue?.ToString() ?? "";
 
-            var selectedMonHoc = bindingList?
-                .Where(mh => checkedState.ContainsKey(mh.MaMH) && checkedState[mh.MaMH])
+            var selectedMaMH = checkedState
+                .Where(x => x.Value)
+                .Select(x => x.Key)
                 .ToList();
 
-            if (selectedMonHoc?.Count == 0)
+            if (selectedMaMH.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn ít nhất 1 môn học!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -226,23 +252,45 @@ namespace GUI.forms.PhanCong
 
             try
             {
-                foreach (var mh in selectedMonHoc)
+                foreach (var maMH in selectedMaMH)
                 {
-                    _phanCongBLL.AddPhanCong(new PhanCongDTO
+                    var mh = _monHocBLL.GetMonHocById(maMH);
+                    if (mh != null)
                     {
-                        MaNguoiDung = maND,
-                        MaMonHoc = mh.MaMH
-                    });
-                    checkedState[mh.MaMH] = false; 
+                        _phanCongBLL.AddPhanCong(new PhanCongDTO
+                        {
+                            MaNguoiDung = maND,
+                            MaMonHoc = mh.MaMH
+                        });
+                    }
+                    checkedState[maMH] = false;
                 }
 
-                MessageBox.Show($"Đã phân công {selectedMonHoc.Count} môn học cho giảng viên {cbxGiangVien.Text}!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                pageCurrent = 1;
+
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    if (row.Cells["CheckCol"] != null)
+                        row.Cells["CheckCol"].Value = false;
+                }
+
                 LoadData();
+
+                MessageBox.Show($"Đã phân công {selectedMaMH.Count} môn học cho giảng viên {cbxGiangVien.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                cbxGiangVien.SelectedIndex = 0;
+                txtSearch.Text = "Tìm kiếm môn học...";
+                pageCurrent = 1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgv_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgv.IsCurrentCellDirty)
+            {
+                dgv.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
         }
     }

@@ -80,10 +80,14 @@ namespace GUI.modules
             var data = _phanCongBLL.getPhanCongPaged(pageCurrent, pageSize, keyword);
 
             DisplayData(data);
-
-            lblPage.Text = $"{pageCurrent} / {totalPages}";
+            UpdatePageInfo();
+        }
+        private void UpdatePageInfo()
+        {
+            lblPage.Text = totalRecords == 0 ? "0" : $"{pageCurrent} / {totalPages}";
             btnPrev.Enabled = pageCurrent > 1;
             btnNext.Enabled = pageCurrent < totalPages;
+            dgvPhanCong.Enabled = totalRecords > 0;
         }
         private void ResizeGridToContent()
         {
@@ -284,6 +288,11 @@ namespace GUI.modules
                     dgvPhanCong.Cursor = Cursors.Default;
                 }
             }
+        }
+
+        private void lblPage_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -123,7 +123,26 @@ namespace DAL
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
+        public UserDTO GetUserById(string userId)
+        {
+            string query = "SELECT * FROM nguoi_dung WHERE ma_nd = @userId";
+            SqlParameter parameter = new("@userId", userId);
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameter);
+            if (dt.Rows.Count == 0) return null;
 
+            DataRow row = dt.Rows[0];
+            return new UserDTO
+            {
+                MSSV = row["ma_nd"].ToString(),
+                TenDangNhap = row["ten_dang_nhap"].ToString(),
+                MatKhau = row["mat_khau"].ToString(),
+                HoTen = row["ho_ten"].ToString(),
+                Email = row["email"].ToString(),
+                Role = row["loai_nd"].ToString(),
+                GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
+                TrangThai = Convert.ToInt32(row["trang_thai"])
+            };
+        }
         private Dictionary<string, UserDTO> users = new Dictionary<string, UserDTO>();
 
         public bool UpdatePassword(string email, string newPassword)
@@ -192,9 +211,9 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != 'Sinh viên' 
+                WHERE nq.ten_nhom_quyen != N'Sinh viên' 
                     AND nd.trang_thai = 1
-                    AND @keyword = '' OR nd.ho_ten LIKE '%' + @keyword + '%'            
+                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')          
                 ORDER BY nd.ma_nd
                 OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;

@@ -116,10 +116,14 @@ namespace GUI.modules
             var data = _monHocBLL.GetMonHocPaged(pageCurrent, pageSize, keyword);
 
             DisplayData(data);
-
-            lblPage.Text = $"{pageCurrent} / {totalPages}";
+            UpdatePageInfo();
+        }
+        private void UpdatePageInfo()
+        {
+            lblPage.Text = totalRecords == 0 ? "0" : $"{pageCurrent} / {totalPages}";
             btnPrev.Enabled = pageCurrent > 1;
             btnNext.Enabled = pageCurrent < totalPages;
+            dgvMonHoc.Enabled = totalRecords > 0;
         }
         private void btnThemMonHoc_Click(object sender, EventArgs e)
         {
