@@ -1,17 +1,6 @@
 ﻿using BLL;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using DocumentFormat.OpenXml.Wordprocessing;
 using DTO;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 namespace GUI.modules
 {
     public partial class UC_CauHoiTrungLap1 : UserControl
@@ -49,17 +38,43 @@ namespace GUI.modules
         }
         private void LoadCauHoiTrungLap()
         {
-            dgvTrungLap.Rows.Clear(); // chỉ xóa dữ liệu, giữ nguyên cột Designer
+            dgvTrungLap.Rows.Clear();
 
             var list = _cauHoiBLL.LayCauHoiTrungLap();
+
+            // Lấy môn học đã chọn
+            long maMH = cboMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
+
+            // Lọc câu theo môn học nếu có chọn
+            if (maMH > 0)
+            {
+                list = list
+                    .Select(g => new CauHoiTrungLapDTO
+                    {
+                        Key = g.Key,
+                        SoLuong = g.SoLuong,
+                        TacGia = g.TacGia,
+                        DanhSach = g.DanhSach.Where(c => c.MaMonHoc == maMH).ToList()
+                    })
+                    .Where(g => g.DanhSach.Count > 1) // chỉ giữ group còn >1 câu trùng
+                    .ToList();
+            }
+
+            // Nếu không còn group nào
             if (!list.Any())
             {
-                dgvTrungLap.Rows.Add("Không tìm thấy câu hỏi trùng lặp!");
+                int rowIndex = dgvTrungLap.Rows.Add();
+                dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Value = "Không tìm thấy câu hỏi trùng lặp!";
+                dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Style.ForeColor = System.Drawing.Color.Gray;
                 return;
             }
 
+            // Thêm các câu trùng vào DataGridView
             foreach (var group in list)
             {
+                if (group.DanhSach.Count <= 1) continue;
+
                 long minMaCauHoi = group.DanhSach.Min(c => c.MaCauHoi);
 
                 foreach (var cau in group.DanhSach)
@@ -67,17 +82,19 @@ namespace GUI.modules
                     string loai = cau.MaCauHoi == minMaCauHoi ? "Bản gốc" : "Bản sao";
 
                     dgvTrungLap.Rows.Add(
-                        cau.MaCauHoi,              // MaCauHoi
-                        cau.NoiDung,               // NoiDung
-                        cau.TenMonHoc,             // MonHoc
-                        cau.DoKho,                 // DoKho
-                        loai,                      // Loai
-                        Properties.Resources.icon_eyes,   // colView (nếu muốn override)
-                        Properties.Resources.icon_delete  // colDelete
+                        cau.MaCauHoi,
+                        cau.NoiDung,
+                        cau.TenMonHoc,
+                        cau.DoKho,
+                        loai,
+                        cau.TacGia,
+                        Properties.Resources.icon_eyes,
+                        Properties.Resources.icon_delete
                     );
                 }
             }
         }
+
 
         private void dgvTrungLap_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -85,12 +102,12 @@ namespace GUI.modules
 
             long maCauHoi = Convert.ToInt64(dgvTrungLap.Rows[e.RowIndex].Cells["MaCauHoi"].Value);
 
-            if (e.ColumnIndex == 5) // Sửa
+            if (e.ColumnIndex == 6) // Sửa
             {
                 frmSuaCauHoi frm = new frmSuaCauHoi(maCauHoi);
                 frm.ShowDialog();
             }
-            else if (e.ColumnIndex == 6) // Xóa
+            else if (e.ColumnIndex == 7) // Xóa
             {
                 if (MessageBox.Show("Bạn có chắc chắn muốn xóa câu hỏi này?", "Xác nhận",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -124,6 +141,11 @@ namespace GUI.modules
                 // Load tất cả câu hỏi
                 _parentUC.dispkayTatCaCauHoiFromTrungLap();
             }
+        }
+
+        private void cbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+                LoadCauHoiTrungLap();
         }
         #endregion
 

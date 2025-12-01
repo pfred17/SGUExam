@@ -96,16 +96,21 @@ namespace BLL
 
         public List<CauHoiTrungLapDTO> LayCauHoiTrungLap()
         {
-            var all = _cauHoiDAL.GetAllForDisplay(); // Lấy tất cả câu hỏi đang hoạt động
+            var all = _cauHoiDAL.GetAllForDisplayTrungLap(); // mỗi câu chỉ xuất hiện 1 lần
 
             var groups = all
-                .GroupBy(ch => Normalize(ch.NoiDung)) // Chuẩn hóa nội dung (bỏ dấu, lower)
-                .Where(g => g.Count() > 1)           // Chỉ lấy nhóm có từ 2 câu trở lên
-                .Select(g => new CauHoiTrungLapDTO
+                .GroupBy(ch => Normalize(ch.NoiDung)) // nhóm theo nội dung chuẩn hóa
+                .Where(g => g.Count() > 1)           // chỉ lấy nhóm > 1
+                .Select(g =>
                 {
-                    Key = g.Key,
-                    SoLuong = g.Count(),
-                    DanhSach = g.OrderByDescending(x => x.MaCauHoi).ToList() // Sắp xếp: câu mới nhất lên đầu
+                    var danhSach = g.OrderByDescending(x => x.MaCauHoi).ToList();
+                    return new CauHoiTrungLapDTO
+                    {
+                        Key = g.Key,
+                        SoLuong = g.Count(),
+                        DanhSach = danhSach,
+                        TacGia = danhSach.First().TacGia // tác giả câu mới nhất
+                    };
                 })
                 .OrderByDescending(g => g.SoLuong)
                 .ThenBy(g => g.DanhSach.First().MaCauHoi)

@@ -153,6 +153,37 @@ namespace DAL
             var param = new SqlParameter("@MaCH", maCauHoi);
             DatabaseHelper.ExecuteNonQuery(query, param);
         }
-        
+
+        public List<CauHoiDTO> GetAllForDisplayTrungLap(long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
+        {
+            var list = new List<CauHoiDTO>();
+            string query = @"
+                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong,
+                    MIN(nd.ho_ten) AS TacGia
+                FROM cau_hoi ch
+                JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
+                JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
+                LEFT JOIN phan_cong pc ON mh.ma_mh = pc.ma_mh
+                LEFT JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
+                WHERE ch.trang_thai = 1
+                GROUP BY ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong
+                ORDER BY ch.ma_cau_hoi;";
+
+            var dt = DatabaseHelper.ExecuteQuery(query);
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                list.Add(new CauHoiDTO
+                {
+                    MaCauHoi = (long)row["ma_cau_hoi"],
+                    NoiDung = (string)row["noi_dung"],
+                    DoKho = (string)row["do_kho"],
+                    MaMonHoc = (long)row["ma_mh"],
+                    MaChuong = (long)row["ma_chuong"],
+                    TenMonHoc = (string)row["ten_mh"],
+                    TacGia = (string)row["TacGia"]
+                });
+            }
+            return list;
+        }
     }
 }

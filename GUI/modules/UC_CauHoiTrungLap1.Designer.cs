@@ -45,6 +45,7 @@ namespace GUI.modules
             MonHoc = new DataGridViewTextBoxColumn();
             DoKho = new DataGridViewTextBoxColumn();
             Loai = new DataGridViewTextBoxColumn();
+            TacGia = new DataGridViewTextBoxColumn();
             colView = new DataGridViewImageColumn();
             colDelete = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dgvTrungLap).BeginInit();
@@ -61,6 +62,7 @@ namespace GUI.modules
             cboMonHoc.Name = "cboMonHoc";
             cboMonHoc.Size = new Size(277, 36);
             cboMonHoc.TabIndex = 0;
+            cboMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
             // 
             // btnTatCaCauHoi
             // 
@@ -93,7 +95,7 @@ namespace GUI.modules
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvTrungLap.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvTrungLap.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTrungLap.Columns.AddRange(new DataGridViewColumn[] { MaCauHoi, NoiDung, MonHoc, DoKho, Loai, colView, colDelete });
+            dgvTrungLap.Columns.AddRange(new DataGridViewColumn[] { MaCauHoi, NoiDung, MonHoc, DoKho, Loai, TacGia, colView, colDelete });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = SystemColors.Window;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
@@ -169,7 +171,7 @@ namespace GUI.modules
             // MaCauHoi
             // 
             MaCauHoi.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            MaCauHoi.FillWeight = 70F;
+            MaCauHoi.FillWeight = 30F;
             MaCauHoi.HeaderText = "ID";
             MaCauHoi.MinimumWidth = 6;
             MaCauHoi.Name = "MaCauHoi";
@@ -178,7 +180,7 @@ namespace GUI.modules
             // NoiDung
             // 
             NoiDung.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            NoiDung.FillWeight = 200F;
+            NoiDung.FillWeight = 195F;
             NoiDung.HeaderText = "Nội dung";
             NoiDung.MinimumWidth = 6;
             NoiDung.Name = "NoiDung";
@@ -187,6 +189,7 @@ namespace GUI.modules
             // MonHoc
             // 
             MonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            MonHoc.FillWeight = 95F;
             MonHoc.HeaderText = "Môn học";
             MonHoc.MinimumWidth = 6;
             MonHoc.Name = "MonHoc";
@@ -204,11 +207,17 @@ namespace GUI.modules
             // Loai
             // 
             Loai.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Loai.FillWeight = 120F;
             Loai.HeaderText = "Bản gốc / Bản sao";
             Loai.MinimumWidth = 6;
             Loai.Name = "Loai";
             Loai.ReadOnly = true;
+            // 
+            // TacGia
+            // 
+            TacGia.HeaderText = "Tác giả ";
+            TacGia.MinimumWidth = 6;
+            TacGia.Name = "TacGia";
+            TacGia.ReadOnly = true;
             // 
             // colView
             // 
@@ -258,6 +267,7 @@ namespace GUI.modules
         private DataGridViewTextBoxColumn MonHoc;
         private DataGridViewTextBoxColumn DoKho;
         private DataGridViewTextBoxColumn Loai;
+        private DataGridViewTextBoxColumn TacGia;
         private DataGridViewImageColumn colView;
         private DataGridViewImageColumn colDelete;
     }

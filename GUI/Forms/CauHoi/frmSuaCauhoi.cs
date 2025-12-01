@@ -32,6 +32,7 @@ namespace GUI
             InitCombos();
             pnlDapAnContainer.Controls.Clear();
             LoadCauHoiForEdit();
+            tabControl1.SelectedIndex = 1; // mở tab "Thêm thủ công"
         }
 
         private void InitCombos()
