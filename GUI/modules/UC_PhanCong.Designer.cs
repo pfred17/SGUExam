@@ -315,7 +315,7 @@
             Controls.Add(pnHeader);
             Controls.Add(pnMain);
             Name = "UC_PhanCong";
-            Size = new Size(1120, 730);
+            Size = new Size(1600, 1217);
             pnMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPhanCong).EndInit();
             pnHeader.ResumeLayout(false);

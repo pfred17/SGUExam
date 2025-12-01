@@ -20,5 +20,10 @@ namespace GUI.modules
             _userId = userId;
             InitializeComponent();
         }
+
+        private void guna2HtmlLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

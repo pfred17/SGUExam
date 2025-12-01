@@ -299,5 +299,10 @@ namespace GUI.forms.MonHoc
                 LoadData();
             }
         }
+
+        private void lblError_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

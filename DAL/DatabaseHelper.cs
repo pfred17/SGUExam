@@ -1,13 +1,17 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL
 {
     public static class DatabaseHelper
     {
+        //public static readonly string connectionString =
+        //     "Data Source=DESKTOP-VNR8V8P\\DUYPHONG;" +
+        //     "Initial Catalog=SGUExam2;Integrated Security=SSPI;" +
+        //     "TrustServerCertificate=True;";
+
         private static readonly string connectionString =
-        "Server=localhost;Database=SGUExam2;Trusted_Connection=True;Encrypt=False;";
+    "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SGUExam2; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
 
         public static SqlConnection GetConnection()
         {

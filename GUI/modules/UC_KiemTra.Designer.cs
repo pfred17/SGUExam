@@ -35,20 +35,23 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(361, 303);
+            guna2HtmlLabel1.Location = new Point(451, 379);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(177, 47);
+            guna2HtmlLabel1.Size = new Size(215, 56);
             guna2HtmlLabel1.TabIndex = 4;
             guna2HtmlLabel1.Text = "UC_KiemTra";
             guna2HtmlLabel1.TextAlignment = ContentAlignment.MiddleCenter;
+            guna2HtmlLabel1.Click += guna2HtmlLabel1_Click;
             // 
             // UC_KiemTra
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_KiemTra";
-            Size = new Size(933, 653);
+            Size = new Size(1166, 816);
             ResumeLayout(false);
             PerformLayout();
         }

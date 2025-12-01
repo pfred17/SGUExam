@@ -1,4 +1,6 @@
-﻿namespace GUI.forms.PhanCong
+﻿using Guna.UI2.WinForms.Suite;
+
+namespace GUI.forms.PhanCong
 {
     partial class ThemTheoMonHoc
     {
@@ -28,17 +30,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lblMonHoc = new Label();
             cbxMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
@@ -69,7 +71,7 @@
             // 
             cbxMonHoc.BackColor = Color.Transparent;
             cbxMonHoc.Cursor = Cursors.Hand;
-            cbxMonHoc.CustomizableEdges = customizableEdges1;
+            cbxMonHoc.CustomizableEdges = customizableEdges11;
             cbxMonHoc.DrawMode = DrawMode.OwnerDrawFixed;
             cbxMonHoc.DropDownStyle = ComboBoxStyle.DropDownList;
             cbxMonHoc.FocusedColor = Color.FromArgb(94, 148, 255);
@@ -88,7 +90,7 @@
             // txtSearch
             // 
             txtSearch.BackColor = SystemColors.Control;
-            txtSearch.CustomizableEdges = customizableEdges3;
+            txtSearch.CustomizableEdges = customizableEdges13;
             txtSearch.DefaultText = "";
             txtSearch.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtSearch.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -119,14 +121,14 @@
             dgv.AllowUserToResizeRows = false;
             dgv.BackgroundColor = Color.White;
             dgv.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(116, 185, 255);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgv.ColumnHeadersHeight = 40;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.Columns.AddRange(new DataGridViewColumn[] { MSSV, HoTen, Email, NhomQuyen, CheckCol });
@@ -208,7 +210,7 @@
             // 
             btnPrev.BackColor = Color.DodgerBlue;
             btnPrev.Cursor = Cursors.Hand;
-            btnPrev.CustomizableEdges = customizableEdges5;
+            btnPrev.CustomizableEdges = customizableEdges15;
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
@@ -238,7 +240,7 @@
             // 
             btnNext.BackColor = Color.DodgerBlue;
             btnNext.Cursor = Cursors.Hand;
-            btnNext.CustomizableEdges = customizableEdges7;
+            btnNext.CustomizableEdges = customizableEdges17;
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
@@ -254,7 +256,7 @@
             // 
             btnThem.BackColor = Color.DodgerBlue;
             btnThem.Cursor = Cursors.Hand;
-            btnThem.CustomizableEdges = customizableEdges9;
+            btnThem.CustomizableEdges = customizableEdges19;
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
             btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThem.ForeColor = Color.White;
@@ -301,5 +303,10 @@
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn NhomQuyen;
         private DataGridViewCheckBoxColumn CheckCol;
+        private CustomizableEdges customizableEdges2;
+        private CustomizableEdges customizableEdges4;
+        private CustomizableEdges customizableEdges6;
+        private CustomizableEdges customizableEdges8;
+        private CustomizableEdges customizableEdges10;
     }
 }
