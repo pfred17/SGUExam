@@ -23,13 +23,15 @@ namespace BLL
         {
             return _dal.AddChuong(chuong, maMonHoc);
         }
+
         public bool UpdateChuong(ChuongDTO chuong)
         {
             return _dal.UpdateChuong(chuong);
         }
-        public bool DeleteChuong(long maChuong)
+
+        public bool DeleteChuong(long chuongId)
         {
-            return _dal.DeleteChuong(maChuong);
+            return _dal.DeleteChuong(chuongId);
         }
         public bool IsChuongReferenced(long maChuong)
         {
@@ -39,6 +41,7 @@ namespace BLL
         {
             return _dal.GetChuongPaged(maMonHoc, page, pageSize);
         }
+
         public int GetTotalChuongByMonHoc(long maMonHoc)
         {
             return _dal.GetTotalChuongByMonHoc(maMonHoc);

@@ -1,9 +1,7 @@
 ﻿using DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -11,7 +9,7 @@ namespace DAL
 {
     public class ChuongDAL
     {
-        public  List<ChuongDTO> GetChuongByMonHoc(long maMonHoc)
+        public List<ChuongDTO> GetChuongByMonHoc(long maMonHoc)
         {
             string query = "SELECT * FROM chuong WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters = {
@@ -19,16 +17,16 @@ namespace DAL
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
             List<ChuongDTO> list = new List<ChuongDTO>();
-                foreach (DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new ChuongDTO
                 {
-                    list.Add(new ChuongDTO
-                    {
-                        MaChuong = Convert.ToInt64(row["ma_chuong"]),
-                        TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
-                        MaMonHoc = Convert.ToInt64(row["ma_mh"])
-                    });
-                }
-                return list;
+                    MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                    TenChuong = row["ten_chuong"]?.ToString() ?? "",
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"])
+                });
+            }
+            return list;
         }
         public bool IsChuongExists(string tenChuong)
         {
@@ -62,22 +60,19 @@ namespace DAL
                 SET ten_chuong = @ten_chuong
                 WHERE ma_chuong = @ma_chuong;
             ";
-
-            SqlParameter[] parameters =
-            {
+            SqlParameter[] parameters = {
                 new SqlParameter("@ma_chuong", chuong.MaChuong),
-                new SqlParameter("@ten_chuong", chuong.TenChuong),
+                new SqlParameter("@ten_chuong", chuong.TenChuong)
             };
 
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
+
         public bool DeleteChuong(long maChuong)
         {
             string query = @"DELETE FROM chuong WHERE ma_chuong = @ma_chuong";
-
-            SqlParameter[] parameters =
-            {
+            SqlParameter[] parameters = {
                 new SqlParameter("@ma_chuong", maChuong)
             };
 
@@ -106,7 +101,7 @@ namespace DAL
             ";
             SqlParameter[] parameters = {
                 new SqlParameter("@ma_mh", maMonHoc),
-                new SqlParameter("@page",page),
+                new SqlParameter("@page", page),
                 new SqlParameter("@pageSize", pageSize)
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
@@ -116,7 +111,7 @@ namespace DAL
                 list.Add(new ChuongDTO
                 {
                     MaChuong = Convert.ToInt64(row["ma_chuong"]),
-                    TenChuong = Convert.ToString(row["ten_chuong"]),
+                    TenChuong = row["ten_chuong"]?.ToString() ?? "",
                     MaMonHoc = Convert.ToInt64(row["ma_mh"])
                 });
             }
@@ -130,7 +125,7 @@ namespace DAL
             SqlParameter[] parameters = {
                 new SqlParameter("@ma_mh", maMonHoc)
             };
-            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query,parameters));
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
     }
 }

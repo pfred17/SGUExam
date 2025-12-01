@@ -1,6 +1,7 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Azure;
 using DTO;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace DAL
 {
@@ -33,6 +34,59 @@ namespace DAL
                 GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
+        }
+
+        // Lấy danh sách người dùng có phân trang
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
+        {
+            int offset = (page - 1) * pageSize;
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+
+            string query = @"
+                SELECT 
+                    nd.ma_nd,
+                    nd.ten_dang_nhap,
+                    nd.mat_khau,
+                    nd.ho_ten,
+                    nd.email,
+                    nd.loai_nd,
+                    nd.gioi_tinh,
+                    nd.trang_thai,
+                    nq.ten_nhom_quyen
+                FROM nguoi_dung AS nd
+                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                WHERE nq.ten_nhom_quyen != N'Sinh viên' 
+                    AND nd.trang_thai = 1
+                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')          
+                ORDER BY nd.ma_nd
+                OFFSET @offset ROWS
+                FETCH NEXT @pageSize ROWS ONLY;
+            ";
+
+            SqlParameter[] parameters = {
+                new("@keyword", keyword),
+                new("@offset", offset),
+                new("@pageSize", pageSize)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            List<UserDTO> list = new List<UserDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new UserDTO
+                {
+                    MSSV = row["ma_nd"].ToString() ?? "",
+                    TenDangNhap = row["ten_dang_nhap"].ToString() ?? "",
+                    MatKhau = row["mat_khau"].ToString() ?? "",
+                    HoTen = row["ho_ten"].ToString() ?? "",
+                    Email = row["email"].ToString() ?? "",
+                    GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
+                    TrangThai = Convert.ToInt32(row["trang_thai"]),
+                    Role = row["ten_nhom_quyen"].ToString() ?? ""
+                });
+            }
+
+            return list;
         }
 
         // Hàm lấy danh sách tất cả người dùng của hệ thống
@@ -239,48 +293,7 @@ namespace DAL
 
             return list;
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
-        {
-            int offset = (page - 1) * pageSize;
-            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
-
-            string query = @"
-                SELECT 
-                    nd.ma_nd,
-                    nd.ho_ten,
-                    nd.email,
-                    nq.ten_nhom_quyen
-                FROM nguoi_dung AS nd
-                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
-                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != N'Sinh viên' 
-                    AND nd.trang_thai = 1
-                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')          
-                ORDER BY nd.ma_nd
-                OFFSET @offset ROWS
-                FETCH NEXT @pageSize ROWS ONLY;
-            ";
-
-            SqlParameter[] parameters = {
-                new("@keyword", keyword),
-                new("@offset", offset),
-                new("@pageSize", pageSize)
-            };
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
-            List<UserDTO> list = new List<UserDTO>();
-            foreach (DataRow row in dt.Rows)
-            {
-                list.Add(new UserDTO
-                {
-                    MSSV = row["ma_nd"].ToString() ?? "",
-                    HoTen = row["ho_ten"].ToString() ?? "",
-                    Email = row["email"].ToString() ?? "",
-                    Role = row["ten_nhom_quyen"].ToString() ?? "",
-                });
-            }
-
-            return list;
-        }
+        
 
         public int GetTotalUser(string? keyword = null)
         {
