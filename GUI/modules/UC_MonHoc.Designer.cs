@@ -69,7 +69,7 @@
             pnMain.Location = new Point(0, 0);
             pnMain.Margin = new Padding(0);
             pnMain.Name = "pnMain";
-            pnMain.Padding = new Padding(20);
+            pnMain.Padding = new Padding(23, 27, 23, 27);
             pnMain.Size = new Size(1120, 730);
             pnMain.TabIndex = 7;
             // 
@@ -94,8 +94,7 @@
             dgvMonHoc.Columns.AddRange(new DataGridViewColumn[] { MaMonHoc, TenMonHoc, SoTinChi, TrangThai, DetailCol, EditCol, DeleteCol });
             dgvMonHoc.EnableHeadersVisualStyles = false;
             dgvMonHoc.GridColor = Color.FromArgb(231, 229, 255);
-            dgvMonHoc.Location = new Point(23, 118);
-            dgvMonHoc.Margin = new Padding(3, 2, 3, 2);
+            dgvMonHoc.Location = new Point(26, 140);
             dgvMonHoc.MultiSelect = false;
             dgvMonHoc.Name = "dgvMonHoc";
             dgvMonHoc.ReadOnly = true;
@@ -103,8 +102,8 @@
             dgvMonHoc.RowHeadersWidth = 51;
             dgvMonHoc.RowTemplate.Height = 40;
             dgvMonHoc.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvMonHoc.Size = new Size(1074, 261);
-            dgvMonHoc.TabIndex = 5;
+            dgvMonHoc.Size = new Size(1068, 348);
+            dgvMonHoc.TabIndex = 0;
             dgvMonHoc.CellContentClick += dgvMonHoc_CellContentClick;
             dgvMonHoc.CellMouseMove += dgvMonHoc_CellMouseMove;
             dgvMonHoc.SelectionChanged += dgvMonHoc_SelectionChanged;
@@ -119,7 +118,7 @@
             MaMonHoc.ReadOnly = true;
             MaMonHoc.Resizable = DataGridViewTriState.False;
             MaMonHoc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MaMonHoc.Width = 76;
+            MaMonHoc.Width = 94;
             // 
             // TenMonHoc
             // 
@@ -142,7 +141,7 @@
             SoTinChi.ReadOnly = true;
             SoTinChi.Resizable = DataGridViewTriState.False;
             SoTinChi.SortMode = DataGridViewColumnSortMode.NotSortable;
-            SoTinChi.Width = 63;
+            SoTinChi.Width = 78;
             // 
             // TrangThai
             // 
@@ -154,7 +153,7 @@
             TrangThai.ReadOnly = true;
             TrangThai.Resizable = DataGridViewTriState.False;
             TrangThai.SortMode = DataGridViewColumnSortMode.NotSortable;
-            TrangThai.Width = 88;
+            TrangThai.Width = 108;
             // 
             // DetailCol
             // 
@@ -193,12 +192,11 @@
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(960, 613);
-            btnPrev.Margin = new Padding(3, 2, 3, 2);
+            btnPrev.Location = new Point(922, 640);
             btnPrev.Name = "btnPrev";
             btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnPrev.Size = new Size(30, 29);
-            btnPrev.TabIndex = 6;
+            btnPrev.Size = new Size(40, 40);
+            btnPrev.TabIndex = 1;
             btnPrev.Text = "<";
             btnPrev.Click += btnPrev_Click;
             // 
@@ -207,11 +205,12 @@
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(993, 613);
+            lblPage.Location = new Point(968, 640);
+            lblPage.Margin = new Padding(3, 4, 3, 4);
             lblPage.Name = "lblPage";
-            lblPage.Size = new Size(50, 29);
-            lblPage.TabIndex = 8;
-            lblPage.Text = "1/1";
+            lblPage.Size = new Size(80, 40);
+            lblPage.TabIndex = 2;
+            lblPage.Text = "1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // btnNext
@@ -222,12 +221,11 @@
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(1046, 613);
-            btnNext.Margin = new Padding(3, 2, 3, 2);
+            btnNext.Location = new Point(1054, 640);
             btnNext.Name = "btnNext";
             btnNext.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnNext.Size = new Size(30, 29);
-            btnNext.TabIndex = 7;
+            btnNext.Size = new Size(40, 40);
+            btnNext.TabIndex = 3;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
             // 
@@ -240,9 +238,9 @@
             pnHeader.Location = new Point(0, 0);
             pnHeader.Margin = new Padding(0);
             pnHeader.Name = "pnHeader";
-            pnHeader.Padding = new Padding(10);
-            pnHeader.Size = new Size(1120, 60);
-            pnHeader.TabIndex = 8;
+            pnHeader.Padding = new Padding(11, 13, 11, 13);
+            pnHeader.Size = new Size(1120, 80);
+            pnHeader.TabIndex = 0;
             // 
             // btnThem
             // 
@@ -252,12 +250,11 @@
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
             btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThem.ForeColor = Color.White;
-            btnThem.Location = new Point(894, 14);
-            btnThem.Margin = new Padding(3, 2, 3, 2);
+            btnThem.Location = new Point(886, 15);
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnThem.Size = new Size(182, 29);
-            btnThem.TabIndex = 3;
+            btnThem.Size = new Size(208, 50);
+            btnThem.TabIndex = 0;
             btnThem.Text = "+THÊM MÔN HỌC";
             btnThem.Click += btnThemMonHoc_Click;
             // 
@@ -274,25 +271,25 @@
             txtSearch.Font = new Font("Segoe UI", 9F);
             txtSearch.ForeColor = Color.Black;
             txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(23, 13);
-            txtSearch.Margin = new Padding(3, 4, 3, 4);
+            txtSearch.Location = new Point(26, 15);
+            txtSearch.Margin = new Padding(3, 5, 3, 5);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderForeColor = Color.Gray;
             txtSearch.PlaceholderText = "Tìm kiếm môn học...";
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtSearch.Size = new Size(241, 36);
-            txtSearch.TabIndex = 6;
+            txtSearch.Size = new Size(275, 50);
+            txtSearch.TabIndex = 1;
             txtSearch.TextChanged += txtSearch_TextChanged;
+            txtSearch.Enter += txtSearch_Enter;
             txtSearch.Leave += txtSearch_Leave;
             // 
             // UC_MonHoc
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(pnHeader);
             Controls.Add(pnMain);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "UC_MonHoc";
             Size = new Size(1120, 730);
             pnMain.ResumeLayout(false);

@@ -40,16 +40,6 @@ namespace DAL
             }
             return list;
         }
-        public bool DeletePhanCong(long maPhanCong)
-        {
-            string query = @"DELETE FROM phan_cong WHERE ma_pc = @ma_pc";
-
-            SqlParameter[] parameters = {
-                new SqlParameter("@ma_pc", maPhanCong)
-            };
-            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
-            return rows > 0;
-        }
         public PhanCongDTO? GetPhanCongById(long maPhanCong)
         {
             string query = @"
@@ -97,8 +87,44 @@ namespace DAL
             object result = DatabaseHelper.ExecuteScalar(query, parameters);
             return Convert.ToInt64(result);
         }
-        public List<PhanCongDTO> GetPhanCongPaged(int page, int pageSize)
+        public bool UpdatePhanCong(PhanCongDTO phanCong)
         {
+            string query = @"
+                UPDATE phan_cong
+                SET ma_mh = @ma_mh,
+                    ma_nd = @ma_nd
+                WHERE ma_pc = @ma_pc;
+            ";
+
+            SqlParameter[] parameters = {
+                new("ma_pc", phanCong.MaPhanCong),
+                new("ma_mh", phanCong.MaMonHoc),
+                new("ma_nd", phanCong.MaNguoiDung),
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+        public bool DeletePhanCong(long maPhanCong)
+        {
+            string query = @"DELETE FROM phan_cong WHERE ma_pc = @maPhanCong";
+
+            SqlParameter parameters = new("@maPhanCong", maPhanCong);
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+        public bool IsPhanCongReferenced(long maPhanCong)
+        {
+            string query = "SELECT COUNT(*) FROM phan_cong WHERE ma_pc = @maPhanCong";
+            SqlParameter parameter = new("@maPhanCong", maPhanCong);
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameter));
+            return count > 0;
+        }
+        public List<PhanCongDTO> GetPhanCongPaged(int page, int pageSize, string? keyword = null)
+        {
+            int offset = (page - 1) * pageSize;
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+
             string query = @"
                 SELECT 
                     pc.ma_pc,
@@ -109,13 +135,18 @@ namespace DAL
                 FROM phan_cong pc
                 INNER JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
                 INNER JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
+                WHERE (@keyword = '' 
+                    OR nd.ho_ten LIKE '%' + @keyword + '%'
+                    OR mh.ten_mh LIKE '%' + @keyword + '%')
                 ORDER BY pc.ma_pc
-                OFFSET(@page - 1) * @pageSize ROWS
+                OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
             ";
+
             SqlParameter[] parameters = {
-                new SqlParameter("@page",page),
-                new SqlParameter("@pageSize", pageSize)
+                new("@keyword", keyword),
+                new("@offset", offset),
+                new("@pageSize", pageSize)
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
             List<PhanCongDTO> list = new List<PhanCongDTO>();
@@ -133,17 +164,22 @@ namespace DAL
 
             return list;
         }
-        public int GetTotalPhanCong()
+        public int GetTotalPhanCong(string? keyword = null)
         {
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+
             string query = @"
             SELECT COUNT(*) 
-            FROM phan_cong AS pc 
+            FROM phan_cong pc 
             INNER JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
-            INNER JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd;
+            INNER JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
+            WHERE (@keyword = '' 
+                OR nd.ho_ten LIKE '%' + @keyword + '%'
+                OR mh.ten_mh LIKE '%' + @keyword + '%') 
             ";
 
-            var result = DatabaseHelper.ExecuteScalar(query);
-            return result != null ? Convert.ToInt32(result) : 0;
+            SqlParameter parameters = new("@keyword", keyword);
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
     }
 }

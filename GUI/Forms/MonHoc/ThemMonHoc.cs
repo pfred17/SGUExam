@@ -21,14 +21,15 @@ namespace GUI.forms.MonHoc
         }
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            txtMaMonHoc_Leave(txtMaMonHoc, null);
-            txtTenMonHoc_Leave(txtTenMonHoc, null);
-            txtSoTinChi_Leave(txtSoTinChi, null);
+            txtMaMonHoc_Leave(sender, e);
+            txtTenMonHoc_Leave(sender, e);
+            txtSoTinChi_Leave(sender, e);
+
             if (HasValidationErrors())
             {
                 FocusFirstError();
-                MessageBox.Show("Vui lòng sửa các lỗi được đánh dấu màu đỏ.",
-                                "Dữ liệu không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("Vui lòng sửa các lỗi được đánh dấu màu đỏ.",
+                //                "Dữ liệu không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -74,19 +75,16 @@ namespace GUI.forms.MonHoc
                    !string.IsNullOrEmpty(lblErrorTenMonHoc.Text) ||
                    !string.IsNullOrEmpty(lblErrorSoTinChi.Text);
         }
-
         private void FocusFirstError()
         {
             if (!string.IsNullOrEmpty(lblErrorMaMonHoc.Text)) txtMaMonHoc.Focus();
             else if (!string.IsNullOrEmpty(lblErrorTenMonHoc.Text)) txtTenMonHoc.Focus();
             else if (!string.IsNullOrEmpty(lblErrorSoTinChi.Text)) txtSoTinChi.Focus();
         }
-
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
         }
-
         private void txtMaMonHoc_TextChanged(object sender, EventArgs e)
         {
             lblErrorMaMonHoc.Visible = false;
@@ -100,12 +98,21 @@ namespace GUI.forms.MonHoc
             }
             else
             {
-                // Kiểm tra xem có phải là số nguyên kiểu long không
-                if (!long.TryParse(txtMaMonHoc.Text.Trim(), out long maMH))
+                if (!long.TryParse(txtMaMonHoc.Text.Trim(), out long maMH) || maMH <= 0)
                 {
-                    lblErrorMaMonHoc.Text = "Mã môn học phải là số nguyên hợp lệ.";
+                    lblErrorMaMonHoc.Text = "Mã môn học phải là số nguyên dương hợp lệ.";
                     lblErrorMaMonHoc.Visible = true;
 
+                }
+                else if (maMH > 999999)
+                {
+                    lblErrorMaMonHoc.Text = "Mã môn học không được vượt quá 6 chữ số.";
+                    lblErrorMaMonHoc.Visible = true;
+                }
+                else if (monHocBLL.IsMonHocExists(maMH))
+                {
+                    lblErrorMaMonHoc.Text = "Mã môn học đã tồn tại!";
+                    lblErrorMaMonHoc.Visible = true;
                 }
                 else
                 {
@@ -114,17 +121,25 @@ namespace GUI.forms.MonHoc
                 }
             }
         }
-
         private void txtTenMonHoc_TextChanged(object sender, EventArgs e)
         {
             lblErrorTenMonHoc.Visible = false;
         }
-
         private void txtTenMonHoc_Leave(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtTenMonHoc.Text))
             {
                 lblErrorTenMonHoc.Text = "Tên môn học không được để trống.";
+                lblErrorTenMonHoc.Visible = true;
+            }
+            else if (txtTenMonHoc.Text.Length < 5)
+            {
+                lblErrorTenMonHoc.Text = "Tên môn học tối thiểu 5 ký tự.";
+                lblErrorTenMonHoc.Visible = true;
+            }
+            else if (txtTenMonHoc.Text.Length > 50)
+            {
+                lblErrorTenMonHoc.Text = "Tên môn học tối đa 50 ký tự.";
                 lblErrorTenMonHoc.Visible = true;
             }
             else
@@ -148,6 +163,11 @@ namespace GUI.forms.MonHoc
             else if (!int.TryParse(txtSoTinChi.Text.Trim(), out int soTC) || soTC <= 0)
             {
                 lblErrorSoTinChi.Text = "Số tín chỉ phải là số nguyên dương.";
+                lblErrorSoTinChi.Visible = true;
+            }
+            else if (soTC > 10)
+            {
+                lblErrorSoTinChi.Text = "Số tín chỉ tối đa là 10!";
                 lblErrorSoTinChi.Visible = true;
             }
             else

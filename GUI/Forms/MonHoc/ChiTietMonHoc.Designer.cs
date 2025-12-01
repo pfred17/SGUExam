@@ -96,7 +96,7 @@
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvChuong.ColumnHeadersHeight = 32;
+            dgvChuong.ColumnHeadersHeight = 40;
             dgvChuong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvChuong.Columns.AddRange(new DataGridViewColumn[] { MaChuong, TenChuong, EditCol, DeleteCol });
             dgvChuong.EnableHeadersVisualStyles = false;
@@ -106,7 +106,7 @@
             dgvChuong.Name = "dgvChuong";
             dgvChuong.ReadOnly = true;
             dgvChuong.RowHeadersVisible = false;
-            dgvChuong.RowHeadersWidth = 51;
+            dgvChuong.RowHeadersWidth = 50;
             dgvChuong.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvChuong.Size = new Size(640, 167);
             dgvChuong.TabIndex = 2;
@@ -203,7 +203,6 @@
             lblError.TabIndex = 7;
             lblError.Text = "Message lỗi";
             lblError.Visible = false;
-            lblError.Click += lblError_Click;
             // 
             // btnSubmit
             // 
@@ -261,10 +260,10 @@
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(518, 359);
+            btnPrev.Location = new Point(500, 356);
             btnPrev.Name = "btnPrev";
             btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnPrev.Size = new Size(34, 39);
+            btnPrev.Size = new Size(40, 40);
             btnPrev.TabIndex = 12;
             btnPrev.Text = "<";
             btnPrev.Click += btnPrev_Click;
@@ -274,11 +273,11 @@
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(555, 359);
+            lblPage.Location = new Point(546, 356);
             lblPage.Margin = new Padding(3, 4, 3, 4);
             lblPage.Name = "lblPage";
-            lblPage.Size = new Size(57, 39);
-            lblPage.TabIndex = 14;
+            lblPage.Size = new Size(60, 40);
+            lblPage.TabIndex = 13;
             lblPage.Text = "1/1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
             // 
@@ -290,11 +289,11 @@
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(616, 359);
+            btnNext.Location = new Point(612, 356);
             btnNext.Name = "btnNext";
             btnNext.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnNext.Size = new Size(34, 39);
-            btnNext.TabIndex = 13;
+            btnNext.Size = new Size(40, 40);
+            btnNext.TabIndex = 14;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
             // 
@@ -302,6 +301,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(667, 615);
             Controls.Add(btnPrev);
             Controls.Add(lblPage);

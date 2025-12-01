@@ -12,8 +12,10 @@ namespace GUI.forms.PhanCong
 {
     public partial class ThemPhanCong : Form
     {
-        public ThemPhanCong()
+        private readonly string _userId;
+        public ThemPhanCong(string userId)
         {
+            _userId = userId;
             InitializeComponent();
         }
         private void ThemPhanCong_Load(object sender, EventArgs e)
@@ -21,7 +23,7 @@ namespace GUI.forms.PhanCong
             pnMain.Controls.Clear();
             lblTheoGiangVien.ForeColor = Color.Black;
             lblTheoMonHoc.ForeColor = Color.DodgerBlue;
-            ThemTheoGiangVien frm = new ThemTheoGiangVien();
+            ThemTheoGiangVien frm = new ThemTheoGiangVien(_userId);
             pnMain.Controls.Add(frm);
         }
         private void lblTheoGiangVien_Click(object sender, EventArgs e)
@@ -29,7 +31,7 @@ namespace GUI.forms.PhanCong
             pnMain.Controls.Clear();
             lblTheoGiangVien.ForeColor = Color.Black;
             lblTheoMonHoc.ForeColor = Color.DodgerBlue;
-            ThemTheoGiangVien frm = new ThemTheoGiangVien();
+            ThemTheoGiangVien frm = new ThemTheoGiangVien(_userId);
             pnMain.Controls.Add(frm);
         }
         private void lblTheoMonHoc_Click(object sender, EventArgs e)
@@ -42,7 +44,12 @@ namespace GUI.forms.PhanCong
         }
         private void lblClose_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -24,13 +24,20 @@ namespace DAL
                     list.Add(new ChuongDTO
                     {
                         MaChuong = Convert.ToInt64(row["ma_chuong"]),
-                        TenChuong = Convert.ToString(row["ten_chuong"]),
+                        TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
                         MaMonHoc = Convert.ToInt64(row["ma_mh"])
                     });
                 }
                 return list;
         }
-
+        public bool IsChuongExists(string tenChuong)
+        {
+            string query = "SELECT COUNT(*) FROM chuong WHERE ten_chuong = @ten_chuong";
+            SqlParameter parameters = new SqlParameter("@ten_chuong", tenChuong);
+            object result = DatabaseHelper.ExecuteScalar(query, parameters);
+            int count = result != null ? Convert.ToInt32(result) : 0;
+            return count > 0;
+        }
         public long AddChuong(ChuongDTO chuong, long maMonHoc)
         {
             string query = @"
@@ -65,7 +72,6 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
-
         public bool DeleteChuong(long maChuong)
         {
             string query = @"DELETE FROM chuong WHERE ma_chuong = @ma_chuong";
@@ -78,7 +84,17 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
+        public bool IsChuongReferenced(long maChuong)
+        {
+            string query = @"
+                IF EXISTS (SELECT 1 FROM cau_hoi WHERE ma_chuong = @maChuong)
+                    OR EXISTS (SELECT 1 FROM de_thi_chuong WHERE ma_chuong = @maChuong)
+                SELECT 1 ELSE SELECT 0";
 
+            SqlParameter parameter = new("@maChuong", maChuong);
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameter));
+            return count > 0;
+        }
         public List<ChuongDTO> GetChuongPaged(long maMonHoc, int page, int pageSize)
         {
             string query = @"

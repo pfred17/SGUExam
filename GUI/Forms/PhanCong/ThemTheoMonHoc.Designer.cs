@@ -59,7 +59,7 @@
             // 
             lblMonHoc.AutoSize = true;
             lblMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMonHoc.Location = new Point(30, 53);
+            lblMonHoc.Location = new Point(30, 43);
             lblMonHoc.Name = "lblMonHoc";
             lblMonHoc.Size = new Size(90, 28);
             lblMonHoc.TabIndex = 13;
@@ -77,11 +77,11 @@
             cbxMonHoc.Font = new Font("Segoe UI", 10F);
             cbxMonHoc.ForeColor = Color.FromArgb(68, 88, 112);
             cbxMonHoc.ItemHeight = 30;
-            cbxMonHoc.Location = new Point(155, 44);
+            cbxMonHoc.Location = new Point(155, 40);
             cbxMonHoc.Margin = new Padding(3, 4, 3, 4);
             cbxMonHoc.MaxDropDownItems = 5;
             cbxMonHoc.Name = "cbxMonHoc";
-            cbxMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            cbxMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges2;
             cbxMonHoc.Size = new Size(671, 36);
             cbxMonHoc.TabIndex = 14;
             // 
@@ -104,10 +104,11 @@
             txtSearch.PlaceholderForeColor = Color.Gray;
             txtSearch.PlaceholderText = "Tìm kiếm giảng viên...";
             txtSearch.SelectedText = "";
-            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtSearch.Size = new Size(798, 48);
             txtSearch.TabIndex = 15;
             txtSearch.TextChanged += txtSearch_TextChanged;
+            txtSearch.Enter += txtSearch_Enter;
             txtSearch.Leave += txtSearch_Leave;
             // 
             // dgv
@@ -211,10 +212,10 @@
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(695, 579);
+            btnPrev.Location = new Point(657, 580);
             btnPrev.Name = "btnPrev";
-            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            btnPrev.Size = new Size(34, 39);
+            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnPrev.Size = new Size(40, 40);
             btnPrev.TabIndex = 17;
             btnPrev.Text = "<";
             btnPrev.Click += btnPrev_Click;
@@ -224,13 +225,14 @@
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(733, 579);
+            lblPage.Location = new Point(702, 580);
             lblPage.Margin = new Padding(3, 4, 3, 4);
             lblPage.Name = "lblPage";
-            lblPage.Size = new Size(57, 39);
+            lblPage.Size = new Size(80, 40);
             lblPage.TabIndex = 19;
-            lblPage.Text = "1/1";
+            lblPage.Text = "1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
+            lblPage.Click += lblPage_Click;
             // 
             // btnNext
             // 
@@ -240,10 +242,10 @@
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(793, 579);
+            btnNext.Location = new Point(787, 580);
             btnNext.Name = "btnNext";
-            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            btnNext.Size = new Size(34, 39);
+            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnNext.Size = new Size(40, 40);
             btnNext.TabIndex = 18;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
@@ -256,10 +258,10 @@
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
             btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThem.ForeColor = Color.White;
-            btnThem.Location = new Point(648, 665);
+            btnThem.Location = new Point(630, 660);
             btnThem.Name = "btnThem";
-            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            btnThem.Size = new Size(179, 39);
+            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnThem.Size = new Size(200, 40);
             btnThem.TabIndex = 20;
             btnThem.Text = "+LƯU PHÂN CÔNG";
             btnThem.Click += btnThem_Click;

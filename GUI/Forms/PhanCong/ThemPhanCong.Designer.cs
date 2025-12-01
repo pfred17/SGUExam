@@ -28,14 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pnHeader = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lblTheoGiangVien = new Label();
             lblTheoMonHoc = new Label();
-            lblClose = new Label();
+            btnClose = new Guna.UI2.WinForms.Guna2Button();
             pnMain = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             pnHeader.SuspendLayout();
             SuspendLayout();
@@ -44,11 +46,11 @@
             // 
             pnHeader.Controls.Add(lblTheoGiangVien);
             pnHeader.Controls.Add(lblTheoMonHoc);
-            pnHeader.Controls.Add(lblClose);
-            pnHeader.CustomizableEdges = customizableEdges1;
+            pnHeader.Controls.Add(btnClose);
+            pnHeader.CustomizableEdges = customizableEdges3;
             pnHeader.Location = new Point(0, 0);
             pnHeader.Name = "pnHeader";
-            pnHeader.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            pnHeader.ShadowDecoration.CustomizableEdges = customizableEdges4;
             pnHeader.Size = new Size(750, 40);
             pnHeader.TabIndex = 0;
             // 
@@ -78,25 +80,30 @@
             lblTheoMonHoc.Text = "Theo môn học";
             lblTheoMonHoc.Click += lblTheoMonHoc_Click;
             // 
-            // lblClose
+            // btnClose
             // 
-            lblClose.AutoSize = true;
-            lblClose.BackColor = Color.Transparent;
-            lblClose.Cursor = Cursors.Hand;
-            lblClose.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblClose.Location = new Point(720, 10);
-            lblClose.Name = "lblClose";
-            lblClose.Size = new Size(19, 21);
-            lblClose.TabIndex = 4;
-            lblClose.Text = "X";
-            lblClose.Click += lblClose_Click;
+            btnClose.BackColor = Color.White;
+            btnClose.Cursor = Cursors.Hand;
+            btnClose.CustomizableEdges = customizableEdges1;
+            btnClose.DefaultAutoSize = true;
+            btnClose.FillColor = Color.Transparent;
+            btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnClose.ForeColor = Color.Black;
+            btnClose.Location = new Point(700, 6);
+            btnClose.Margin = new Padding(3, 2, 3, 2);
+            btnClose.Name = "btnClose";
+            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnClose.Size = new Size(38, 29);
+            btnClose.TabIndex = 24;
+            btnClose.Text = "X";
+            btnClose.Click += btnClose_Click;
             // 
             // pnMain
             // 
-            pnMain.CustomizableEdges = customizableEdges3;
+            pnMain.CustomizableEdges = customizableEdges5;
             pnMain.Location = new Point(0, 40);
             pnMain.Name = "pnMain";
-            pnMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            pnMain.ShadowDecoration.CustomizableEdges = customizableEdges6;
             pnMain.Size = new Size(750, 560);
             pnMain.TabIndex = 1;
             // 
@@ -104,6 +111,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnClose;
             ClientSize = new Size(750, 600);
             Controls.Add(pnHeader);
             Controls.Add(pnMain);
@@ -124,6 +132,6 @@
         private Label lblTheoGiangVien;
         private Label lblTheoMonHoc;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel pnMain;
-        private Label lblClose;
+        private Guna.UI2.WinForms.Guna2Button btnClose;
     }
 }

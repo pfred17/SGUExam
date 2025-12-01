@@ -43,17 +43,27 @@ namespace BLL
         {
             return dal.getAllUsers();
         }
+        public UserDTO GetUserById(string userId)
+        {
+            return dal.GetUserById(userId);
+        }
         public List<UserDTO> GetAllUserByRole()
         {
             return dal.GetAllUserByRole();
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize)
+        public List<UserDTO> GetAllUserByRoleExcluding(string userId)
         {
-            return dal.GetUserPaged(page, pageSize);
+            var allUsers = dal.GetAllUserByRole();
+                
+            return allUsers.Where(u => u.MSSV != userId).ToList();
         }
-        public int GetTotalUser()
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
         {
-            return dal.GetTotalUser();
+            return dal.GetUserPaged(page, pageSize, keyword);
+        }
+        public int GetTotalUser(string? keyword = null)
+        {
+            return dal.GetTotalUser(keyword);
         }
         public bool CreateNewUser(UserDTO userDTO)
         {
