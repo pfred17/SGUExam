@@ -14,6 +14,7 @@ namespace GUI.modules
     public partial class UC_CauHoi : UserControl
     {
         private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
         private readonly CauHoiBLL _cauHoiBLL = new();
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
@@ -33,10 +34,20 @@ namespace GUI.modules
             InitializeComponent();
             SetupDataGridView();
 
+            loadPermission();
+
             // Gán event
             LoadMonHoc();
             LoadDoKho();
             LoadData(1);
+        }
+
+        private void loadPermission()
+        {
+            btnThemMoi.Visible = _permissionBLL.HasPermission(_userId, 2, "Thêm");
+            btnTuDieuChinh.Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
+            //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
+            //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
         }
 
         #region Load dữ liệu
