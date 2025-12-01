@@ -28,35 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // guna2HtmlLabel1
+            // pictureBox1
             // 
-            guna2HtmlLabel1.BackColor = Color.Transparent;
-            guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(370, 321);
-            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
-            guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(402, 56);
-            guna2HtmlLabel1.TabIndex = 0;
-            guna2HtmlLabel1.Text = "ĐÂY LÀ UC_TongQuan";
+            pictureBox1.Dock = DockStyle.Fill;
+            pictureBox1.Image = Properties.Resources.tongquan_img;
+            pictureBox1.InitialImage = Properties.Resources.tongquan_img;
+            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(1120, 730);
+            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
             // 
             // UC_TongQuan
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(guna2HtmlLabel1);
-            Margin = new Padding(4, 4, 4, 4);
+            Controls.Add(pictureBox1);
             Name = "UC_TongQuan";
             Size = new Size(1120, 730);
             Load += UC_TongQuan_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
+        private PictureBox pictureBox1;
     }
 }

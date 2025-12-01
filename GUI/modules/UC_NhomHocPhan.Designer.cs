@@ -28,50 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            btnTiemKiem = new Guna.UI2.WinForms.Guna2Button();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             btnThemUC = new Guna.UI2.WinForms.Guna2Button();
             txtTimKiem = new Guna.UI2.WinForms.Guna2TextBox();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             flowDanhSachNhom = new FlowLayoutPanel();
+            richTextBox1 = new RichTextBox();
+            label1 = new Label();
+            flowDanhSachNhom.SuspendLayout();
             SuspendLayout();
-            // 
-            // btnTiemKiem
-            // 
-            btnTiemKiem.BorderRadius = 6;
-            btnTiemKiem.CustomizableEdges = customizableEdges7;
-            btnTiemKiem.DisabledState.BorderColor = Color.DarkGray;
-            btnTiemKiem.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnTiemKiem.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnTiemKiem.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnTiemKiem.Font = new Font("Segoe UI", 9F);
-            btnTiemKiem.ForeColor = Color.White;
-            btnTiemKiem.Location = new Point(29, 45);
-            btnTiemKiem.Name = "btnTiemKiem";
-            btnTiemKiem.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btnTiemKiem.Size = new Size(179, 50);
-            btnTiemKiem.TabIndex = 2;
-            btnTiemKiem.Text = "Tìm kiếm";
-            btnTiemKiem.Click += btnTiemKiem_Click;
             // 
             // btnThemUC
             // 
             btnThemUC.BorderRadius = 6;
-            btnThemUC.CustomizableEdges = customizableEdges9;
+            btnThemUC.CustomizableEdges = customizableEdges1;
             btnThemUC.DisabledState.BorderColor = Color.DarkGray;
             btnThemUC.DisabledState.CustomBorderColor = Color.DarkGray;
             btnThemUC.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnThemUC.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnThemUC.Font = new Font("Segoe UI", 9F);
             btnThemUC.ForeColor = Color.White;
-            btnThemUC.Location = new Point(869, 45);
+            btnThemUC.Location = new Point(920, 18);
             btnThemUC.Name = "btnThemUC";
-            btnThemUC.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnThemUC.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnThemUC.Size = new Size(179, 50);
             btnThemUC.TabIndex = 4;
             btnThemUC.Text = "Thêm";
@@ -79,8 +61,8 @@
             // 
             // txtTimKiem
             // 
-            txtTimKiem.CustomizableEdges = customizableEdges11;
-            txtTimKiem.DefaultText = "Tìm kiếm...";
+            txtTimKiem.CustomizableEdges = customizableEdges3;
+            txtTimKiem.DefaultText = "";
             txtTimKiem.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtTimKiem.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
             txtTimKiem.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
@@ -88,14 +70,15 @@
             txtTimKiem.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtTimKiem.Font = new Font("Segoe UI", 9F);
             txtTimKiem.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTimKiem.Location = new Point(227, 45);
+            txtTimKiem.Location = new Point(133, 27);
             txtTimKiem.Margin = new Padding(6, 8, 6, 8);
             txtTimKiem.Name = "txtTimKiem";
             txtTimKiem.PlaceholderText = "";
             txtTimKiem.SelectedText = "";
-            txtTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            txtTimKiem.Size = new Size(326, 50);
+            txtTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            txtTimKiem.Size = new Size(367, 41);
             txtTimKiem.TabIndex = 6;
+            txtTimKiem.TextChanged += txtTimKiem_TextChanged;
             // 
             // sqlCommand1
             // 
@@ -105,28 +88,49 @@
             // flowDanhSachNhom
             // 
             flowDanhSachNhom.AutoScroll = true;
-            flowDanhSachNhom.Location = new Point(29, 179);
+            flowDanhSachNhom.Controls.Add(richTextBox1);
+            flowDanhSachNhom.Location = new Point(0, 95);
             flowDanhSachNhom.Name = "flowDanhSachNhom";
-            flowDanhSachNhom.Size = new Size(1070, 531);
+            flowDanhSachNhom.Size = new Size(1120, 635);
             flowDanhSachNhom.TabIndex = 7;
+            flowDanhSachNhom.SizeChanged += flowDanhSachNhom_SizeChanged;
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.Location = new Point(3, 3);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.Size = new Size(8, 8);
+            richTextBox1.TabIndex = 0;
+            richTextBox1.Text = "";
+            // 
+            // label1
+            // 
+            label1.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(14, 27);
+            label1.Name = "label1";
+            label1.Size = new Size(110, 41);
+            label1.TabIndex = 1;
+            label1.Text = "Tìm kiếm";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Click += label1_Click;
             // 
             // UC_NhomHocPhan
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(flowDanhSachNhom);
+            Controls.Add(label1);
             Controls.Add(txtTimKiem);
             Controls.Add(btnThemUC);
-            Controls.Add(btnTiemKiem);
             Margin = new Padding(4, 3, 4, 3);
             Name = "UC_NhomHocPhan";
             Size = new Size(1120, 730);
             Load += UC_NhomHocPhan_Load;
+            flowDanhSachNhom.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-        private Guna.UI2.WinForms.Guna2Button btnTiemKiem;
         private Guna.UI2.WinForms.Guna2Button btnThemUC;
         private Guna.UI2.WinForms.Guna2DataGridView dgvNhomHocPhan;
         private Guna.UI2.WinForms.Guna2TextBox txtTimKiem;
@@ -138,5 +142,7 @@
         private DataGridViewTextBoxColumn dgvNamHoc;
         private DataGridViewTextBoxColumn dgvTrangThai;
         private FlowLayoutPanel flowDanhSachNhom;
+        private RichTextBox richTextBox1;
+        private Label label1;
     }
 }

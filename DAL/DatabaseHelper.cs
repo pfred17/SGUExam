@@ -9,6 +9,7 @@ namespace DAL
         private static readonly string connectionString =
             "Data Source = DESKTOP-U6EVNRO;Initial Catalog = SGUExam2; User ID = sa; Password=12345678;Trust Server Certificate=True";
         
+            //"Data Source=LG8888\\SQLEXPRESS;Initial Catalog=SGUExam;Integrated Security=True;TrustServerCertificate=True";
 
         public static SqlConnection GetConnection()
         {

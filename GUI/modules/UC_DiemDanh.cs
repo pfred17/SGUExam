@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,11 @@ namespace GUI.modules
 {
     public partial class UC_DiemDanh : UserControl
     {
-        public UC_DiemDanh()
+        private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+        public UC_DiemDanh(string userId)
         {
+            _userId = userId;
             InitializeComponent();
         }
     }

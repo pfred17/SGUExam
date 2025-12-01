@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,11 @@ namespace GUI.modules
 {
     public partial class UC_MonHoc : UserControl
     {
-        public UC_MonHoc()
+        private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+        public UC_MonHoc(string userId)
         {
+            _userId = userId;
             InitializeComponent();
         }
     }
