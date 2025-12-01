@@ -1,4 +1,6 @@
-﻿namespace GUI.forms.PhanCong
+﻿using Guna.UI2.WinForms.Suite;
+
+namespace GUI.forms.PhanCong
 {
     partial class ThemTheoMonHoc
     {
@@ -301,5 +303,10 @@
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn NhomQuyen;
         private DataGridViewCheckBoxColumn CheckCol;
+        private CustomizableEdges customizableEdges2;
+        private CustomizableEdges customizableEdges4;
+        private CustomizableEdges customizableEdges6;
+        private CustomizableEdges customizableEdges8;
+        private CustomizableEdges customizableEdges10;
     }
 }

@@ -85,10 +85,5 @@ namespace BLL
         {
             return dal.CreateUser(username, hoten, password, email);
         }
-        public UserDTO GetUserById(string userId)
-        {
-            return dal.GetUserById(userId);
-        }
-
     }
 }

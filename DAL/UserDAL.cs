@@ -125,12 +125,7 @@ namespace DAL
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
-        public UserDTO GetUserById(string userId)
-        {
-            string query = "SELECT * FROM nguoi_dung WHERE ma_nd = @userId";
-            SqlParameter parameter = new("@userId", userId);
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameter);
-            if (dt.Rows.Count == 0) return null;
+
 
         // Hàm cập nhật thông tin người dùng
         public bool UpdateUser(UserDTO user)
