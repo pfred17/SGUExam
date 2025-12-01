@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using DTO;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using MySql.Data.MySqlClient;
+using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace DAL
 {
@@ -17,7 +11,7 @@ namespace DAL
         public List<BaiLamDTO> GetByDeThi(long maDe)
         {
             string query = "SELECT * FROM bai_lam WHERE ma_de = @maDe";
-            var param = new MySqlParameter[] { new("@maDe", maDe) };
+            var param = new SqlParameter[] { new SqlParameter("@maDe", maDe) };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
             var list = new List<BaiLamDTO>();
             foreach (DataRow row in dt.Rows)
@@ -38,7 +32,7 @@ namespace DAL
         public BaiLamDTO GetById(long maBai)
         {
             string query = "SELECT * FROM bai_lam WHERE ma_bai = @maBai";
-            var param = new MySqlParameter[] { new("@maBai", maBai) };
+            var param = new SqlParameter[] { new SqlParameter("@maBai", maBai) };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
             if (dt.Rows.Count == 0) return null;
             var row = dt.Rows[0];
@@ -57,14 +51,14 @@ namespace DAL
         {
             string query = @"INSERT INTO bai_lam (ma_de, ma_nd, thoi_gian_bat_dau, thoi_gian_nop, diem)
                              VALUES (@ma_de, @ma_nd, @batdau, @nop, @diem);
-                             SELECT LAST_INSERT_ID();";
-            var param = new MySqlParameter[]
+                             SELECT SCOPE_IDENTITY();";
+            var param = new SqlParameter[]
             {
-                new("@ma_de", baiLam.MaDe),
-                new("@ma_nd", baiLam.MaNguoiDung),
-                new("@batdau", baiLam.ThoiGianBatDau),
-                new("@nop", baiLam.ThoiGianNop),
-                new("@diem", baiLam.Diem)
+                new SqlParameter("@ma_de", baiLam.MaDe),
+                new SqlParameter("@ma_nd", baiLam.MaNguoiDung),
+                new SqlParameter("@batdau", baiLam.ThoiGianBatDau ?? (object)DBNull.Value),
+                new SqlParameter("@nop", baiLam.ThoiGianNop ?? (object)DBNull.Value),
+                new SqlParameter("@diem", baiLam.Diem ?? (object)DBNull.Value)
             };
             object result = DatabaseHelper.ExecuteScalar(query, param);
             return Convert.ToInt64(result);
@@ -74,16 +68,15 @@ namespace DAL
         {
             string query = @"UPDATE bai_lam SET thoi_gian_bat_dau = @batdau, thoi_gian_nop = @nop, diem = @diem
                              WHERE ma_bai = @ma_bai";
-            var param = new MySqlParameter[]
+            var param = new SqlParameter[]
             {
-                new("@batdau", baiLam.ThoiGianBatDau),
-                new("@nop", baiLam.ThoiGianNop),
-                new("@diem", baiLam.Diem),
-                new("@ma_bai", baiLam.MaBai)
+                new SqlParameter("@batdau", baiLam.ThoiGianBatDau ?? (object)DBNull.Value),
+                new SqlParameter("@nop", baiLam.ThoiGianNop ?? (object)DBNull.Value),
+                new SqlParameter("@diem", baiLam.Diem ?? (object)DBNull.Value),
+                new SqlParameter("@ma_bai", baiLam.MaBai)
             };
             int rows = DatabaseHelper.ExecuteNonQuery(query, param);
             return rows > 0;
         }
     }
 }
-

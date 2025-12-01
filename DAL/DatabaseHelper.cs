@@ -1,131 +1,53 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Data.Common;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL
 {
     public static class DatabaseHelper
     {
         private static readonly string connectionString =
-    "Server=localhost;Database=SGUExam;User ID=root;Password=13376655;SslMode=Disabled;";
+        "Server=localhost;Database=SGUExam;Trusted_Connection=True;Encrypt=False;";
 
-
-        public static MySqlConnection GetConnection()
+        public static SqlConnection GetConnection()
         {
-            return new MySqlConnection(connectionString);
+            return new SqlConnection(connectionString);
         }
 
-        // ---------- Helpers ----------
-        private static void AddParameters(MySqlCommand cmd, params MySqlParameter[] parameters)
+        // Dùng khi cần SELECT
+        public static DataTable ExecuteQuery(string query, params SqlParameter[] parameters)
         {
-            if (parameters == null) return;
-            cmd.Parameters.AddRange(parameters);
+            using SqlConnection conn = GetConnection();
+            SqlCommand cmd = new SqlCommand(query, conn);
+            if (parameters != null)
+                cmd.Parameters.AddRange(parameters);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            return dt;
         }
 
-        private static void AddParameters(MySqlCommand cmd, params DbParameter[] dbParameters)
+        // Thực thi truy vấn không trả về dữ liệu (INSERT, UPDATE, DELETE, ...)
+        public static int ExecuteNonQuery(string query, params SqlParameter[] parameters)
         {
-            if (dbParameters == null) return;
-
-            foreach (var p in dbParameters)
-            {
-                // Nếu bản thân là MySqlParameter (hiếm khi xảy ra khi caller dùng MySql), ta cast luôn
-                if (p is MySqlParameter mp)
-                {
-                    cmd.Parameters.Add(mp);
-                    continue;
-                }
-
-                // Chuyển DbParameter (ví dụ SqlParameter) sang MySqlParameter
-                var newParam = new MySqlParameter
-                {
-                    ParameterName = p.ParameterName,
-                    Value = p.Value ?? DBNull.Value,
-                    DbType = p.DbType,
-                    Direction = p.Direction
-                };
-
-                // Copy kích thước nếu có
-                try
-                {
-                    if (p.Size > 0)
-                        newParam.Size = p.Size;
-                }
-                catch { /* một số DbParameter có thể không hỗ trợ Size - bỏ qua an toàn */ }
-
-                cmd.Parameters.Add(newParam);
-            }
+            using SqlConnection conn = GetConnection();
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(query, conn);
+            if (parameters != null)
+                cmd.Parameters.AddRange(parameters);
+            return cmd.ExecuteNonQuery();
         }
 
-        // ---------- ExecuteQuery overloads ----------
-        public static DataTable ExecuteQuery(string query, params MySqlParameter[] parameters)
+        // Dùng cho truy vấn trả về 1 giá trị (vd: ID mới, COUNT, MAX...)
+        public static object ExecuteScalar(string query, params SqlParameter[] parameters)
         {
-            using (MySqlConnection conn = GetConnection())
-            {
-                using (var cmd = new MySqlCommand(query, conn))
-                {
-                    AddParameters(cmd, parameters);
-                    using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
-                    {
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        return dt;
-                    }
-                }
-            }
-        }
-
-        public static DataTable ExecuteQuery(string query, params DbParameter[] parameters)
-        {
-            using (MySqlConnection conn = GetConnection())
-            {
-                using (var cmd = new MySqlCommand(query, conn))
-                {
-                    AddParameters(cmd, parameters);
-                    using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
-                    {
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        return dt;
-                    }
-                }
-            }
-        }
-
-        // ---------- ExecuteNonQuery overloads ----------
-        public static int ExecuteNonQuery(string query, params MySqlParameter[] parameters)
-        {
-            using (MySqlConnection conn = GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new MySqlCommand(query, conn))
-                {
-                    AddParameters(cmd, parameters);
-                    return cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public static int ExecuteNonQuery(string query, params DbParameter[] parameters)
-        {
-            using (MySqlConnection conn = GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new MySqlCommand(query, conn))
-                {
-                    AddParameters(cmd, parameters);
-                    return cmd.ExecuteNonQuery();
-                }
-            }
-        }
-        public static object ExecuteScalar(string query, params MySqlParameter[] parameters)
-        {
-            using (var connection = GetConnection())
-            using (var command = new MySqlCommand(query, connection))
-            {
-                AddParameters(command, parameters);
-                connection.Open();
-                return command.ExecuteScalar();
-            }
+            using SqlConnection conn = GetConnection();
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand(query, conn);
+            if (parameters != null)
+                cmd.Parameters.AddRange(parameters);
+            return cmd.ExecuteScalar();
         }
     }
 }

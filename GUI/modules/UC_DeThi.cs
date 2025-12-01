@@ -58,7 +58,7 @@ namespace GUI.modules
         {
             var card = new Guna2Panel
             {
-                Width = 1300,
+                Width = 1080,
                 Height = 130,
                 BorderRadius = 8,
                 BorderColor = Color.LightGray,

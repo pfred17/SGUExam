@@ -31,14 +31,17 @@ namespace GUI.forms.dethi
 
         private void BuildUI()
         {
-            this.Size = new Size(900, 600);
+            this.Size = new Size(720, 370);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.FromArgb(240, 243, 249);
 
             var panel = new Panel
             {
                 Size = new Size(700, 350),
-                Location = new Point((this.Width - 700) / 2, 60),
+                Location = new Point(
+        (this.ClientSize.Width - 700) / 2,   // căn giữa theo X
+        (this.ClientSize.Height - 390) / 2   // căn giữa theo Y
+    ),
                 BackColor = Color.White,
                 BorderStyle = BorderStyle.None,
                 Padding = new Padding(20)
@@ -114,7 +117,7 @@ namespace GUI.forms.dethi
                     {
                         var frm = new Form
                         {
-                            Size = new Size(1305, 755),
+                            Size = new Size(1920, 1080),
                             StartPosition = FormStartPosition.CenterScreen
                         };
                         var ucTrangThi = new GUI.modules.UC_TrangThi(deThi.MaDe, _userId);

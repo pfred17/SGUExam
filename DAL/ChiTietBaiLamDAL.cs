@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using DTO;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using MySql.Data.MySqlClient;
+using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace DAL
 {
@@ -17,7 +11,7 @@ namespace DAL
         public List<ChiTietBaiLamDTO> GetByMaBai(long maBai)
         {
             string query = "SELECT * FROM bai_lam_chi_tiet WHERE ma_bai = @maBai";
-            var param = new MySqlParameter[] { new("@maBai", maBai) };
+            var param = new SqlParameter[] { new SqlParameter("@maBai", maBai) };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
             var list = new List<ChiTietBaiLamDTO>();
             foreach (DataRow row in dt.Rows)
@@ -36,11 +30,11 @@ namespace DAL
         {
             string query = @"INSERT INTO bai_lam_chi_tiet (ma_bai, ma_cau_hoi, ma_dap_an_chon)
                              VALUES (@ma_bai, @ma_cau_hoi, @ma_dap_an_chon)";
-            var param = new MySqlParameter[]
+            var param = new SqlParameter[]
             {
-                new("@ma_bai", chiTiet.MaBai),
-                new("@ma_cau_hoi", chiTiet.MaCauHoi),
-                new("@ma_dap_an_chon", chiTiet.MaDapAnChon ?? (object)DBNull.Value)
+                new SqlParameter("@ma_bai", chiTiet.MaBai),
+                new SqlParameter("@ma_cau_hoi", chiTiet.MaCauHoi),
+                new SqlParameter("@ma_dap_an_chon", chiTiet.MaDapAnChon ?? (object)DBNull.Value)
             };
             int rows = DatabaseHelper.ExecuteNonQuery(query, param);
             return rows > 0;
@@ -50,15 +44,14 @@ namespace DAL
         {
             string query = @"UPDATE bai_lam_chi_tiet SET ma_dap_an_chon = @ma_dap_an_chon
                              WHERE ma_bai = @ma_bai AND ma_cau_hoi = @ma_cau_hoi";
-            var param = new MySqlParameter[]
+            var param = new SqlParameter[]
             {
-                new("@ma_dap_an_chon", chiTiet.MaDapAnChon ?? (object)DBNull.Value),
-                new("@ma_bai", chiTiet.MaBai),
-                new("@ma_cau_hoi", chiTiet.MaCauHoi)
+                new SqlParameter("@ma_dap_an_chon", chiTiet.MaDapAnChon ?? (object)DBNull.Value),
+                new SqlParameter("@ma_bai", chiTiet.MaBai),
+                new SqlParameter("@ma_cau_hoi", chiTiet.MaCauHoi)
             };
             int rows = DatabaseHelper.ExecuteNonQuery(query, param);
             return rows > 0;
         }
     }
 }
-

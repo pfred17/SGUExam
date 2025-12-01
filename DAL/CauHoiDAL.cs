@@ -1,6 +1,5 @@
 ﻿using DTO;
 using Microsoft.Data.SqlClient;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 
 namespace DAL
@@ -13,12 +12,10 @@ namespace DAL
         {
             var list = new List<CauHoiDTO>();
             string query = @"
-                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong ,nd.ho_ten AS tac_gia
+                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong 
                 FROM cau_hoi ch
                 JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
                 JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
-                LEFT JOIN phan_cong pc ON mh.ma_mh = pc.ma_mh
-                LEFT JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
                 WHERE ch.trang_thai = 1
                 ORDER BY ch.ma_cau_hoi ASC";
 
@@ -33,7 +30,6 @@ namespace DAL
                     MaMonHoc = (long)row["ma_mh"],
                     MaChuong = (long)row["ma_chuong"],
                     TenMonHoc = (string)row["ten_mh"],
-                    TacGia = row["tac_gia"]?.ToString() ?? "Chưa rõ tác giả",
                 });
             }
             return list;
@@ -75,7 +71,7 @@ namespace DAL
                                     VALUES (@MaChuong, @NoiDung, @DoKho, 1);
                                     SELECT SCOPE_IDENTITY();";
 
-                var cmd = new MySqlCommand(insertCH, conn, tran);
+                var cmd = new SqlCommand(insertCH, conn, tran);
                 cmd.Parameters.AddWithValue("@MaChuong", maChuong);
                 cmd.Parameters.AddWithValue("@NoiDung", noiDung);
                 cmd.Parameters.AddWithValue("@DoKho", doKho);
@@ -85,7 +81,7 @@ namespace DAL
                 string insertDA = "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@MaCH, @NoiDung, @Dung)";
                 foreach (var da in dapAnList)
                 {
-                    var cmdDA = new MySqlCommand(insertDA, conn, tran);
+                    var cmdDA = new SqlCommand(insertDA, conn, tran);
                     cmdDA.Parameters.AddWithValue("@MaCH", maCauHoi);
                     cmdDA.Parameters.AddWithValue("@NoiDung", da.NoiDung);
                     cmdDA.Parameters.AddWithValue("@Dung", da.Dung ? 1 : 0);
@@ -108,7 +104,7 @@ namespace DAL
             conn.Open();
 
             // update câu hỏi
-            using (var cmd = new MySqlCommand(
+            using (var cmd = new SqlCommand(
                 "UPDATE cau_hoi SET ma_chuong=@c, noi_dung=@n, do_kho=@d WHERE ma_cau_hoi=@id", conn))
             {
                 cmd.Parameters.AddWithValue("@id", maCauHoi);
@@ -120,7 +116,7 @@ namespace DAL
 
             // lấy danh sách đáp án cũ (key = ma_dap_an)
             var old = new HashSet<long>();
-            using (var cmd = new MySqlCommand("SELECT ma_dap_an FROM dap_an WHERE ma_cau_hoi=@id", conn))
+            using (var cmd = new SqlCommand("SELECT ma_dap_an FROM dap_an WHERE ma_cau_hoi=@id", conn))
             {
                 cmd.Parameters.AddWithValue("@id", maCauHoi);
                 using var rd = cmd.ExecuteReader();
@@ -132,7 +128,7 @@ namespace DAL
             {
                 if (old.Contains(da.MaDapAn))
                 {
-                    using var u = new MySqlCommand(
+                    using var u = new SqlCommand(
                         "UPDATE dap_an SET noi_dung=@n, dung=@d WHERE ma_dap_an=@id", conn);
                     u.Parameters.AddWithValue("@id", da.MaDapAn);
                     u.Parameters.AddWithValue("@n", da.NoiDung);
@@ -141,7 +137,7 @@ namespace DAL
                 }
                 else
                 {
-                    using var i = new MySqlCommand(
+                    using var i = new SqlCommand(
                         "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@ch, @n, @d)", conn);
                     i.Parameters.AddWithValue("@ch", maCauHoi);
                     i.Parameters.AddWithValue("@n", da.NoiDung);
@@ -157,5 +153,6 @@ namespace DAL
             var param = new SqlParameter("@MaCH", maCauHoi);
             DatabaseHelper.ExecuteNonQuery(query, param);
         }
+
     }
 }

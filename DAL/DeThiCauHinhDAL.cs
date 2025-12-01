@@ -1,6 +1,6 @@
 ﻿using DTO;
 using System.Data;
-using MySql.Data.MySqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace DAL
 {
@@ -9,7 +9,7 @@ namespace DAL
         public DeThiCauHinhDTO? GetByMaDe(long maDe)
         {
             string query = "SELECT * FROM de_thi_cau_hinh WHERE ma_de = @maDe";
-            var dt = DatabaseHelper.ExecuteQuery(query, new MySqlParameter("@maDe", maDe));
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@maDe", maDe));
             if (dt.Rows.Count == 0) return null;
             var row = dt.Rows[0];
             return new DeThiCauHinhDTO
@@ -40,7 +40,7 @@ namespace DAL
                     de_luyen_tap = @dlt,
                     tinh_diem = @td
                 WHERE ma_de = @maDe";
-            var param = new MySqlParameter[]
+            var param = new SqlParameter[]
             {
                 new("@tdl", cauHinh.TuDongLay),
                 new("@xdst", cauHinh.XemDiemSauThi),

@@ -333,5 +333,10 @@ namespace GUI
                 Cursor = Cursors.Hand,
             };
         }
+
+        private void panelMain_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

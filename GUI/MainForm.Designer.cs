@@ -47,16 +47,17 @@
             panelSidebar.Name = "panelSidebar";
             panelSidebar.ShadowDecoration.CustomizableEdges = customizableEdges2;
             panelSidebar.Size = new Size(250, 730);
-            panelSidebar.TabIndex = 0;
+            panelSidebar.TabIndex = 2;
             // 
             // panelMain
             // 
             panelMain.CustomizableEdges = customizableEdges3;
-            panelMain.Location = new Point(247, 74);
+            panelMain.Location = new Point(250, 74);
             panelMain.Name = "panelMain";
             panelMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
             panelMain.Size = new Size(1120, 730);
             panelMain.TabIndex = 1;
+            panelMain.Paint += panelMain_Paint;
             // 
             // panelHeader
             // 
@@ -65,7 +66,7 @@
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1370, 74);
-            panelHeader.TabIndex = 2;
+            panelHeader.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -74,8 +75,8 @@
             AutoValidate = AutoValidate.EnableAllowFocusChange;
             ClientSize = new Size(1370, 803);
             Controls.Add(panelHeader);
-            Controls.Add(panelMain);
             Controls.Add(panelSidebar);
+            Controls.Add(panelMain);
             FormBorderStyle = FormBorderStyle.None;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
