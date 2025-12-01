@@ -1,6 +1,7 @@
 ﻿using BLL;
 using DTO;
 using GUI.modules;
+using GUI.Forms.nhomhocphan;
 using Guna.UI2.WinForms;
 using Microsoft.VisualBasic.ApplicationServices;
 using System;
@@ -55,7 +56,7 @@ namespace GUI
             return new List<ModuleItem>
             {
                 new ModuleItem{ Id=0, Name="TongQuan", DisplayName="Tổng quan", Group="HỆ THỐNG", Icon=Properties.Resources.icon_tongquan, UserControlType=typeof(UC_TongQuan) },
-                new ModuleItem{ Id=1, Name="NhomHocPhan", DisplayName="Nhóm học phần", Group="QUẢN LÝ", Icon=Properties.Resources.icon_nhomhocphan, UserControlType=typeof(UC_NhomHocPhan) },
+                new ModuleItem{ Id=1, Name="NhomHocPhan", DisplayName="Nhóm học phần", Group="QUẢN LÝ", Icon=Properties.Resources.icon_nhomhocphan, UserControlType=typeof(UC_NhomHocPhanUser) },
                 new ModuleItem{ Id=2, Name="CauHoi", DisplayName="Câu hỏi", Group="QUẢN LÝ", Icon=Properties.Resources.icon_cauhoi, UserControlType=typeof(UC_CauHoi) },
                 new ModuleItem{ Id=3, Name="MonHoc", DisplayName="Môn học", Group="QUẢN LÝ", Icon=Properties.Resources.icon_monhoc, UserControlType=typeof(UC_MonHoc) },
                 new ModuleItem{ Id=4, Name="PhanCong", DisplayName="Phân công", Group="QUẢN LÝ", Icon=Properties.Resources.icon_phancong, UserControlType=typeof(UC_PhanCong) },
