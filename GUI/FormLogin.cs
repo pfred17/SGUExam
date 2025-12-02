@@ -27,8 +27,10 @@ namespace GUI
         {
             string username = txtMssv.Text.Trim();
             string password = txtPassword.Text.Trim();
+            //string username = "admin";
+            //string password = "123456";
 
-            UserDTO user = userBLL.Login("bao", "123456");
+            UserDTO user = userBLL.Login("admin", "123456");
 
             if (user == null)
             {
@@ -200,5 +202,9 @@ namespace GUI
                 MessageBox.Show("Đổi mật khẩu thất bại!");
         }
 
+        private void txtMssv_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
