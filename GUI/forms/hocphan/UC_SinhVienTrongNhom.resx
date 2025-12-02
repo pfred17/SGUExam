@@ -117,7 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="sqlCommand1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnNext.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
+        4wAAAOMBD+bfpwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAC0SURBVFhH7ZRL
+        CgJBDAXrJroSxN9CvI8oonh/V34JuGge4mNIi5sUDAMpSF43k4GiKL6zAdZabBgBEy32Iobf389BJTAG
+        LsAN2KrsQZw8hj+Bx4cQ08bH+ychdhLibPxRfBd0SIWoEDrkLyH2soIr4+fi0+iAhfFdA+gVnwb6FK65
+        8ylcc+dTuObOp2g/qE/NnU/hmjufIlanXaW45iE+TQy4fmnufBdmwFKLDeH1L1gUxSBeRIGCIsUPS54A
+        AAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="btnPrev.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAT
+        qwAAE6sBnBsJ0QAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEfSURBVFhH7Zax
+        SgNREEWPJo2CxCqg32CKNCFEEAWt9GPsUlgJgpCYMoSIhUVS6EfYa8BG0EashICliK3hwQjDhcXkrWnC
+        O7CwMJe5h+XtspBIJOJYB/rAGbCkQ8c2cAVUdZCHUP4A/NiVtXwf+LbMnQ5j0fInYEVDUh6upgZiKAH3
+        bukLsKEhYAf4crmOBmJI5bOWX2gghlVg5JaGA1fWELArB66lgVjaU5SvAe/zKA8829JxRnngwJX3dJiX
+        R1v8CWzp0NhzAtd/fBVn5tgt/8iQCOfkzeW6/ymxDNxOIVG3pzQXiQIwFImKhoCGSFwupMQgSQBF4EYk
+        NjVkPyJe4lwDeVCJQw0YXuJVh3kJEifAqd1nUbNX+UgHiUTilwlJboOUXw8FfgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <metadata name="colSTT.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colHoTen.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colMaSinhVien.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colGioiTinh.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="colHanhDong.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
 </root>

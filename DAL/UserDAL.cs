@@ -7,6 +7,12 @@ namespace DAL
 {
     public class UserDAL
     {
+        private static UserDAL instance;
+        public static UserDAL Instance
+        {
+            get { if (instance == null) instance = new UserDAL(); return instance; }
+            private set { instance = value; }
+        }
         private RoleDAL roleDAL = new RoleDAL();
         public UserDTO CheckLogin(string username, string password)
         {

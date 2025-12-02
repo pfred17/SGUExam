@@ -7,9 +7,11 @@ namespace BLL
     public class UserBLL
     {
         private UserDAL dal = new UserDAL();
+        
 
         private EmailService emailService = new EmailService();
         private Dictionary<string, string> codeStorage = new Dictionary<string, string>();
+
         public bool SendVerificationCode(string email)
         {
             //string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
@@ -84,6 +86,11 @@ namespace BLL
         public UserDTO Register(string username,string hoten, string password, string email)
         {
             return dal.CreateUser(username, hoten, password, email);
+        }
+
+        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+        {
+            return dal.GetUserByMSSV(mssv, includeInactive);
         }
     }
 }

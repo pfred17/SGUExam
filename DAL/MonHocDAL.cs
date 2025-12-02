@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Data.SqlClient;
 namespace DAL
 {
     public class MonHocDAL
@@ -15,6 +15,7 @@ namespace DAL
         {
             string query = "SELECT * FROM mon_hoc";
             DataTable dt = DatabaseHelper.ExecuteQuery(query);
+
             List<MonHocDTO> list = new List<MonHocDTO>();
             foreach (DataRow row in dt.Rows)
             {
@@ -41,7 +42,7 @@ namespace DAL
 
             DataRow row = dt.Rows[0];
             return new MonHocDTO
-            {
+        {
                 MaMH = Convert.ToInt64(row["ma_mh"]),
                 TenMH = Convert.ToString(row["ten_mh"]) ?? "",
                 SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
@@ -49,7 +50,7 @@ namespace DAL
             };
         }
         public bool IsMonHocExists(long maMH)
-        {
+            {
             string query = "SELECT COUNT(*) FROM mon_hoc WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters =
             {
@@ -141,10 +142,10 @@ namespace DAL
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(new MonHocDTO
-                {
+            {
                     MaMH = Convert.ToInt64(row["ma_mh"]),
                     TenMH = Convert.ToString(row["ten_mh"]) ?? "",
-                    SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
+                SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
                     TrangThai = Convert.ToByte(row["trang_thai"])
                 });
             }

@@ -46,7 +46,7 @@
             // 
             // UC_TongQuan
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(pictureBox1);
             Name = "UC_TongQuan";

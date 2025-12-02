@@ -30,7 +30,7 @@ namespace GUI
             //string username = "admin";
             //string password = "123456";
 
-            UserDTO user = userBLL.Login(username, password);
+            UserDTO user = userBLL.Login("admin", "123456");
 
             if (user == null)
             {

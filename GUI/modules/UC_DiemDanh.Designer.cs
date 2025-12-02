@@ -35,20 +35,22 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(364, 289);
+            guna2HtmlLabel1.Location = new Point(455, 361);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(214, 47);
+            guna2HtmlLabel1.Size = new Size(259, 56);
             guna2HtmlLabel1.TabIndex = 5;
             guna2HtmlLabel1.Text = "UC_DiemDanh";
             guna2HtmlLabel1.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // UC_DiemDanh
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_DiemDanh";
-            Size = new Size(933, 653);
+            Size = new Size(1120, 730);
             ResumeLayout(false);
             PerformLayout();
         }

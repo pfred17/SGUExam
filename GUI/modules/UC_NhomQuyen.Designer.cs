@@ -35,20 +35,22 @@
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Segoe UI", 20F);
-            guna2HtmlLabel1.Location = new Point(359, 303);
+            guna2HtmlLabel1.Location = new Point(449, 379);
+            guna2HtmlLabel1.Margin = new Padding(4, 4, 4, 4);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(247, 47);
+            guna2HtmlLabel1.Size = new Size(298, 56);
             guna2HtmlLabel1.TabIndex = 6;
             guna2HtmlLabel1.Text = "UC_NhomQuyen";
             guna2HtmlLabel1.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // UC_NhomQuyen
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(guna2HtmlLabel1);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "UC_NhomQuyen";
-            Size = new Size(933, 653);
+            Size = new Size(1120, 730);
             ResumeLayout(false);
             PerformLayout();
         }
