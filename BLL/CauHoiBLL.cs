@@ -34,7 +34,7 @@ namespace BLL
         }
         #endregion
 
-        public static string Normalize(string text)
+        public static string Normalize(string text) // Normalize chuẩn hóa nội dung tiếng Việt:
         {
             if (string.IsNullOrWhiteSpace(text)) return string.Empty;
 
@@ -86,14 +86,14 @@ namespace BLL
             var all = _cauHoiDAL.GetAllForDisplayTrungLap(); 
 
             var groups = all
-                .GroupBy(ch => Normalize(ch.NoiDung)) // nhóm theo nội dung chuẩn hóa
+                .GroupBy(ch => new {Key = Normalize(ch.NoiDung),ch.MaMonHoc}) // nhóm theo nội dung chuẩn hóa
                 .Where(g => g.Count() > 1)           // chỉ lấy nhóm > 1
                 .Select(g =>
                 {
                     var danhSach = g.OrderByDescending(x => x.MaCauHoi).ToList();
                     return new CauHoiTrungLapDTO
                     {
-                        Key = g.Key,
+                        Key = g.Key.Key,// chuỗi nội dung chuẩn hóa
                         SoLuong = g.Count(),
                         DanhSach = danhSach,
                         TacGia = danhSach.First().TacGia 
@@ -112,7 +112,7 @@ namespace BLL
         {
             var all = _cauHoiDAL.GetAllForDisplay();
             var duplicateGroups = all
-                .GroupBy(ch => Normalize(ch.NoiDung))
+                .GroupBy(ch => new {Key = Normalize(ch.NoiDung),ch.MaMonHoc})
                 .Where(g => g.Count() > 1);
 
             int nhomTrung = duplicateGroups.Count();

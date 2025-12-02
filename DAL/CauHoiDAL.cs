@@ -77,54 +77,139 @@ namespace DAL
             return Convert.ToInt64(result);
         }
 
+        //public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> list)
+        //{
+        //    using var conn = DatabaseHelper.GetConnection();
+        //    conn.Open();
+
+        //    // update câu hỏi
+        //    using (var cmd = new SqlCommand(
+        //        "UPDATE cau_hoi SET ma_chuong=@c, noi_dung=@n, do_kho=@d WHERE ma_cau_hoi=@id", conn))
+        //    {
+        //        cmd.Parameters.AddWithValue("@id", maCauHoi);
+        //        cmd.Parameters.AddWithValue("@c", maChuong);
+        //        cmd.Parameters.AddWithValue("@n", noiDung);
+        //        cmd.Parameters.AddWithValue("@d", doKho);
+        //        cmd.ExecuteNonQuery();
+        //    }
+
+        //    // lấy danh sách đáp án cũ (key = ma_dap_an)
+        //    var old = new HashSet<long>();
+        //    using (var cmd = new SqlCommand("SELECT ma_dap_an FROM dap_an WHERE ma_cau_hoi=@id", conn))
+        //    {
+        //        cmd.Parameters.AddWithValue("@id", maCauHoi);
+        //        using var rd = cmd.ExecuteReader();
+        //        while (rd.Read()) old.Add(rd.GetInt64(0));
+        //    }
+
+        //    // update hoặc insert
+        //    foreach (var da in list)
+        //    {
+        //        if (da.MaDapAn > 0 && old.Contains(da.MaDapAn))
+        //        {
+        //            using var u = new SqlCommand(
+        //                "UPDATE dap_an SET noi_dung=@n, dung=@d WHERE ma_dap_an=@id", conn);
+        //            u.Parameters.AddWithValue("@id", da.MaDapAn);
+        //            u.Parameters.AddWithValue("@n", da.NoiDung);
+        //            u.Parameters.AddWithValue("@d", da.Dung ? 1 : 0);
+        //            u.ExecuteNonQuery();
+        //        }
+        //        else
+        //        {
+        //            using var i = new SqlCommand(
+        //                "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@ch, @n, @d)", conn);
+        //            i.Parameters.AddWithValue("@ch", maCauHoi);
+        //            i.Parameters.AddWithValue("@n", da.NoiDung);
+        //            i.Parameters.AddWithValue("@d", da.Dung ? 1 : 0);
+        //            i.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
         public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> list)
         {
             using var conn = DatabaseHelper.GetConnection();
             conn.Open();
+            using var tran = conn.BeginTransaction();
 
-            // update câu hỏi
-            using (var cmd = new SqlCommand(
-                "UPDATE cau_hoi SET ma_chuong=@c, noi_dung=@n, do_kho=@d WHERE ma_cau_hoi=@id", conn))
+            try
             {
-                cmd.Parameters.AddWithValue("@id", maCauHoi);
-                cmd.Parameters.AddWithValue("@c", maChuong);
-                cmd.Parameters.AddWithValue("@n", noiDung);
-                cmd.Parameters.AddWithValue("@d", doKho);
-                cmd.ExecuteNonQuery();
-            }
-
-            // lấy danh sách đáp án cũ (key = ma_dap_an)
-            var old = new HashSet<long>();
-            using (var cmd = new SqlCommand("SELECT ma_dap_an FROM dap_an WHERE ma_cau_hoi=@id", conn))
-            {
-                cmd.Parameters.AddWithValue("@id", maCauHoi);
-                using var rd = cmd.ExecuteReader();
-                while (rd.Read()) old.Add(rd.GetInt64(0));
-            }
-
-            // update hoặc insert
-            foreach (var da in list)
-            {
-                if (old.Contains(da.MaDapAn))
+                // 1. Cập nhật bảng cau_hoi
+                using (var cmd = new SqlCommand(
+                    @"UPDATE cau_hoi 
+                      SET ma_chuong=@chuong, noi_dung=@nd, do_kho=@dk
+                      WHERE ma_cau_hoi=@id", conn, tran))
                 {
-                    using var u = new SqlCommand(
-                        "UPDATE dap_an SET noi_dung=@n, dung=@d WHERE ma_dap_an=@id", conn);
-                    u.Parameters.AddWithValue("@id", da.MaDapAn);
-                    u.Parameters.AddWithValue("@n", da.NoiDung);
-                    u.Parameters.AddWithValue("@d", da.Dung ? 1 : 0);
-                    u.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@id", maCauHoi);
+                    cmd.Parameters.AddWithValue("@chuong", maChuong);
+                    cmd.Parameters.AddWithValue("@nd", noiDung);
+                    cmd.Parameters.AddWithValue("@dk", doKho);
+                    cmd.ExecuteNonQuery();
                 }
-                else
+
+                // 2. Lấy danh sách đáp án hiện tại trong DB
+                HashSet<long> oldAnswerIds = new();
+                using (var cmd = new SqlCommand(
+                    "SELECT ma_dap_an FROM dap_an WHERE ma_cau_hoi=@id", conn, tran))
                 {
-                    using var i = new SqlCommand(
-                        "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@ch, @n, @d)", conn);
-                    i.Parameters.AddWithValue("@ch", maCauHoi);
-                    i.Parameters.AddWithValue("@n", da.NoiDung);
-                    i.Parameters.AddWithValue("@d", da.Dung ? 1 : 0);
-                    i.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@id", maCauHoi);
+                    using var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                        oldAnswerIds.Add(rd.GetInt64(0));
                 }
+
+                // 3. Danh sách đáp án mới gửi từ GUI
+                var newAnswerIds = list
+                    .Where(d => d.MaDapAn > 0)
+                    .Select(d => d.MaDapAn)
+                    .ToHashSet();
+
+                // 4. Xóa đáp án KHÔNG còn trong danh sách mới
+                var toDelete = oldAnswerIds.Except(newAnswerIds);
+                foreach (var del in toDelete)
+                {
+                    using var cmd = new SqlCommand(
+                        "DELETE FROM dap_an WHERE ma_dap_an=@id", conn, tran);
+                    cmd.Parameters.AddWithValue("@id", del);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // 5. Insert hoặc Update đáp án còn lại
+                foreach (var da in list)
+                {
+                    if (da.MaDapAn > 0)
+                    {
+                        // Update đáp án cũ
+                        using var cmd = new SqlCommand(
+                            @"UPDATE dap_an 
+                      SET noi_dung=@nd, dung=@dung
+                      WHERE ma_dap_an=@id", conn, tran);
+                        cmd.Parameters.AddWithValue("@id", da.MaDapAn);
+                        cmd.Parameters.AddWithValue("@nd", da.NoiDung);
+                        cmd.Parameters.AddWithValue("@dung", da.Dung);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        // Insert đáp án mới
+                        using var cmd = new SqlCommand(
+                            @"INSERT INTO dap_an (ma_cau_hoi, noi_dung,dung)
+                      VALUES (@ch, @nd, @dung)", conn, tran);
+                        cmd.Parameters.AddWithValue("@ch", maCauHoi);
+                        cmd.Parameters.AddWithValue("@nd", da.NoiDung);
+                        cmd.Parameters.AddWithValue("@dung", da.Dung);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                tran.Commit();
+            }
+            catch
+            {
+                tran.Rollback();
+                throw;
             }
         }
+
         public void Xoa(long maCauHoi)
         {
             string query = "UPDATE cau_hoi SET trang_thai=0 WHERE ma_cau_hoi=@MaCH";
@@ -181,7 +266,7 @@ namespace DAL
                 SELECT ch.ma_cau_hoi, ch.noi_dung, ch.do_kho,
                        ISNULL(tk.SoLuotLam, 0) AS SoLuotLam,
                        ISNULL(tk.SoLanSai, 0) AS SoLanSai,
-                       CASE WHEN ISNULL(tk.SoLuotLam, 0) = 0 THEN 0
+                       CASE WHEN ISNULL(tk.SoLuotLam, 0) = 0 THEN 0 
                             ELSE CAST(ISNULL(tk.SoLanSai, 0) AS float) / ISNULL(tk.SoLuotLam, 0)
                        END AS TyLeSai
                 FROM cau_hoi ch

@@ -199,9 +199,12 @@ namespace GUI
                 }
                 else
                 {
-                    var dto = new DapAnDTO { MaDapAn = _nextTempId--, MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
-                    if (dto.Dung) _dapAnList.ForEach(d => d.Dung = false);
-                    _dapAnList.Add(dto);
+                    if (!_dapAnList.Any(d => d.MaDapAn < 0 && d.NoiDung == content))
+                    {
+                        var dto = new DapAnDTO { MaDapAn = _nextTempId--, MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
+                        if (dto.Dung) _dapAnList.ForEach(d => d.Dung = false);
+                        _dapAnList.Add(dto);
+                    }
                 }
 
                 RemoveEditor(panel);
@@ -261,11 +264,8 @@ namespace GUI
                 var dtoToEdit = _dapAnList.FirstOrDefault(x => x.MaDapAn == dto.MaDapAn);
                 if (dtoToEdit != null)
                 {
-
-                    pnlDapAnContainer.Controls.Remove(summary); //  để tránh trùng lặp UI khi chỉnh sửa
-                    var editor = CreateEditorPanel(dtoToEdit);
-                    pnlDapAnContainer.Controls.Add(editor);
-                    editor.BringToFront();
+                    pnlDapAnContainer.Controls.Remove(summary); // tránh trùng UI
+                    ShowAnswerEditor(dtoToEdit); // dùng hàm này sẽ quản lý editor đúng hơn
                 }
             };
 

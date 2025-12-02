@@ -79,7 +79,7 @@ namespace GUI.modules
             var keyword = txtTimKiem.Text == PLACEHOLDER ? "" : txtTimKiem.Text.Trim();
 
             filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maCh, doKho, keyword)
-                .GroupBy(x => CauHoiBLL.Normalize(x.NoiDung))
+                 .GroupBy(x => new { Key = CauHoiBLL.Normalize(x.NoiDung), x.MaMonHoc })
                 .Select(g => g.OrderByDescending(x => x.MaCauHoi).First())
                 .ToList();
 

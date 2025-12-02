@@ -9,7 +9,6 @@
         public string DoKho { get; set; } = "";
         public string TenMonHoc { get; set; } = "";
         public string TacGia { get; set; } = "Chưa xác định";
-        public bool IsBanSao { get; set; } // mặc định true
         public int SoLuotLam { get; set; }  
         public double TyLeSai { get; set; }
         public string DoKhoGoiY { get; set; } = ""; 
