@@ -59,9 +59,9 @@ namespace BLL
                 
             return allUsers.Where(u => u.MSSV != userId).ToList();
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, string? option = "Tất cả")
         {
-            return dal.GetUserPaged(page, pageSize, keyword);
+            return dal.GetUserPaged(page, pageSize, keyword, option);
         }
         public int GetTotalUser(string? keyword = null)
         {
@@ -78,9 +78,9 @@ namespace BLL
             return dal.UpdateUser(userDTO);
         }
 
-        public bool LockUser(string userId)
+        public bool LockUser(string userId, int status = 0)
         {
-            return dal.LockUser(userId);
+            return dal.LockUser(userId, status);
         }
 
         public UserDTO Register(string username,string hoten, string password, string email)

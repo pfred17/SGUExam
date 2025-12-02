@@ -43,7 +43,7 @@ namespace DAL
         }
 
         // Lấy danh sách người dùng có phân trang
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, string? option = "Tất cả")
         {
             int offset = (page - 1) * pageSize;
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
@@ -62,9 +62,16 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != N'Sinh viên' 
-                    AND nd.trang_thai = 1
-                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')          
+                WHERE
+                    (
+                        @keyword = '' 
+                        OR nd.ho_ten LIKE N'%' + @keyword + N'%'
+                        OR nd.ten_dang_nhap LIKE N'%' + @keyword + N'%'
+                        OR nd.email LIKE N'%' + @keyword + N'%'
+                        OR nd.loai_nd LIKE N'%' + @keyword + N'%'
+                        OR nq.ten_nhom_quyen LIKE N'%' + @keyword + N'%'
+                    )
+                    AND (@option = N'Tất cả' OR nd.loai_nd = @option)
                 ORDER BY nd.ma_nd
                 OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
@@ -72,6 +79,7 @@ namespace DAL
 
             SqlParameter[] parameters = {
                 new("@keyword", keyword),
+                new("@option", option),
                 new("@offset", offset),
                 new("@pageSize", pageSize)
             };
@@ -213,11 +221,12 @@ namespace DAL
         }
 
         // Hàm khóa người dùng
-        public bool LockUser(string userId)
+        public bool LockUser(string userId, int status)
         {
-            string query = "UPDATE nguoi_dung SET trang_thai = 0 WHERE ma_nd = @id";
+            string query = "UPDATE nguoi_dung SET trang_thai = @status WHERE ma_nd = @id";
             SqlParameter[] param =
             {
+                new SqlParameter("@status", status),
                 new SqlParameter("@id", userId)
             };
             int rows = DatabaseHelper.ExecuteNonQuery(query, param);
