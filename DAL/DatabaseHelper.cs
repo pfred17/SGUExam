@@ -11,7 +11,13 @@ namespace DAL
         //     "TrustServerCertificate=True;";
 
         private static readonly string connectionString =
-    "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SguExam; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
+//<<<<<<< HEAD
+    "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SGUExam3; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
+//=======
+            //"Data Source = DESKTOP-U6EVNRO;Initial Catalog = SGUExam2; User ID = sa; Password=12345678;Trust Server Certificate=True";
+        
+            //"Data Source=LG8888\\SQLEXPRESS;Initial Catalog=SGUExam;Integrated Security=True;TrustServerCertificate=True";
+//>>>>>>> c4c9197f11b5e930a0dd0d03262d10afde32b3ec
 
         public static SqlConnection GetConnection()
         {

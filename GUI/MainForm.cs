@@ -63,7 +63,11 @@ namespace GUI
                 new ModuleItem{ Id=6, Name="DiemDanh", DisplayName="Điểm danh", Group="QUẢN LÝ", Icon=Properties.Resources.icon_diemdanh, UserControlType=typeof(UC_DiemDanh) },
                 new ModuleItem{ Id=7, Name="NhomQuyen", DisplayName="Nhóm quyền", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_phanquyencaidat, UserControlType=typeof(UC_NhomQuyen) },
                 new ModuleItem{ Id=8, Name="NguoiDung", DisplayName="Người dùng", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_nhomnguoidung, UserControlType=typeof(UC_NguoiDung) },
-                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Đề thi", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
+
+                // Thuộc về sinh viên
+                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) },
+                // UC_HocPhanUser của bảo đang làm
+                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
             };
         }
 

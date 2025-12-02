@@ -34,8 +34,8 @@ namespace BLL
             var monCache = all.Select(x => x.MaMH).Distinct()
                 .ToDictionary(id => id, id =>
                 {
-                    var m = monDal.GetById(id);
-                    return m?.TenMonHoc ?? string.Empty;
+                    var m = monDal.GetMonHocById(id);
+                    return m?.TenMH ?? string.Empty;
                 });
 
             var filtered = all.Where(n =>

@@ -157,7 +157,7 @@ namespace GUI.modules
         private void AddItemToFlow(NhomHocPhanDTO nhom)
         {
             MonHocBLL monHocBLL = new MonHocBLL();
-            MonHocDTO monHoc = monHocBLL.GetById(nhom.MaMH);
+            MonHocDTO monHoc = monHocBLL.GetMonHocById(nhom.MaMH);
             UC_ItemNhomHocPhan item = new UC_ItemNhomHocPhan();
             item.SetData(nhom, monHoc);
 
@@ -311,7 +311,7 @@ namespace GUI.modules
             {
                 // Cập nhật lại giao diện item tương ứng
                 MonHocBLL monHocBLL = new MonHocBLL();
-                MonHocDTO monHocMoi = monHocBLL.GetById(updatedNhom.MaMH);
+                MonHocDTO monHocMoi = monHocBLL.GetMonHocById(updatedNhom.MaMH);
                 // Tìm item tương ứng trong flow và update
                 foreach (Control c in flowDanhSachNhom.Controls)
                 {
@@ -338,7 +338,7 @@ namespace GUI.modules
         private void UpdateItemInFlow(NhomHocPhanDTO updatedNhom)
         {
             MonHocBLL monHocBLL = new MonHocBLL();
-            MonHocDTO monHocMoi = monHocBLL.GetById(updatedNhom.MaMH);
+            MonHocDTO monHocMoi = monHocBLL.GetMonHocById(updatedNhom.MaMH);
             foreach (Control c in flowDanhSachNhom.Controls)
             {
                 if (c is UC_ItemNhomHocPhan item)
