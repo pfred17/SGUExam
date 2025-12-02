@@ -68,7 +68,7 @@ namespace GUI.modules
                 // Kiểm tra trùng trong nhóm hiện tại (tránh thêm 2 lần)
                 // Cha sẽ truyền DataGridView hoặc bạn có thể dùng event để cha tự kiểm tra
 
-                if (user.Role != "Sinh viên") // tùy tên role trong DB của bạn
+                if (user.Role != 1) // tùy tên role trong DB của bạn
                 {
                     MessageBox.Show("Đây không phải tài khoản sinh viên!", "Lỗi",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -306,7 +306,7 @@ namespace GUI.modules
                         string matKhau = worksheet.Cell(row, 3).GetString().Trim();
                         string hoTen = worksheet.Cell(row, 4).GetString().Trim();
                         string email = worksheet.Cell(row, 5).GetString().Trim();
-                        string role = worksheet.Cell(row, 6).GetString().Trim();
+                        int role = Convert.ToInt32(worksheet.Cell(row, 6).GetString().Trim());
                         int gioiTinh = worksheet.Cell(row, 7).GetValue<int>();
                         int trangThai = worksheet.Cell(row, 8).GetValue<int>();
 
@@ -317,12 +317,12 @@ namespace GUI.modules
                             loiChiTiet.Add("• Dòng trống hoặc MSSV không hợp lệ");
                             thatBai++;
                             continue;
-                        }
+                        } 
 
                         UserDTO user = userBLL.GetUserByMSSV(mssv, true);
 
                         // 1. CHƯA TỒN TẠI → TẠO MỚI (nếu là Sinh viên)
-                        if (user == null && role == "Sinh viên")
+                        if (user == null && role == 1)
                         {
                             bool taoOK = userBLL.CreateNewUser(new UserDTO
                             {
@@ -368,7 +368,7 @@ namespace GUI.modules
                         }
 
                         // 2. KIỂM TRA ROLE
-                        if (user.Role != "Sinh viên")
+                        if (user.Role != 1)
                         {
                             if (!khongPhaiSinhVien.Contains(mssv))
                             {

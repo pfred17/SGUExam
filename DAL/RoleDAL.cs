@@ -18,6 +18,7 @@ namespace DAL
                 {
                     MaNhomQuyen = Convert.ToInt32(row["ma_nhom_quyen"]),
                     TenNhomQuyen = row["ten_nhom_quyen"].ToString(),
+                    TrangThai = Convert.ToInt32(row["trang_thai"]),
                     Modules = new List<ModulePermissionDTO>(),
                 });
             }
@@ -31,19 +32,22 @@ namespace DAL
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
 
             string query = @"SELECT 
-                                nq.ma_nhom_quyen,
-                                nq.ten_nhom_quyen,
-                                COUNT(ndnq.ma_nd) AS SoNguoiDung
-                            FROM nhom_quyen AS nq
-                            LEFT JOIN nguoi_dung_nhom_quyen AS ndnq
-                                ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                            WHERE (@keyword = '' OR nq.ten_nhom_quyen LIKE N'%' + @keyword + N'%')
-                            GROUP BY 
-                                nq.ma_nhom_quyen,
-                                nq.ten_nhom_quyen
-                            ORDER BY nq.ma_nhom_quyen 
-                            OFFSET @offset ROWS
-                            FETCH NEXT @pageSize ROWS ONLY";
+                        nq.ma_nhom_quyen,
+                        nq.ten_nhom_quyen,
+                        nq.trang_thai,
+                        COUNT(ndnq.ma_nd) AS so_nguoi_dung -- ĐÃ XÓA DẤU PHẨY
+                     FROM nhom_quyen AS nq
+                     LEFT JOIN nguoi_dung_nhom_quyen AS ndnq
+                         ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                     WHERE (@keyword = '' OR nq.ten_nhom_quyen LIKE N'%' + @keyword + N'%') 
+                       AND (nq.trang_thai = 1)
+                     GROUP BY 
+                         nq.ma_nhom_quyen,
+                         nq.ten_nhom_quyen,
+                         nq.trang_thai -- BỔ SUNG: Cột trang_thai cần được thêm vào GROUP BY
+                     ORDER BY nq.ma_nhom_quyen 
+                     OFFSET @offset ROWS
+                     FETCH NEXT @pageSize ROWS ONLY";
             SqlParameter[] parameters =
             {
                 new("@keyword", keyword),
@@ -60,7 +64,8 @@ namespace DAL
                     MaNhomQuyen = Convert.ToInt32(row["ma_nhom_quyen"]),
                     TenNhomQuyen = row["ten_nhom_quyen"].ToString(),
                     Modules = new List<ModulePermissionDTO>(),
-                    SoNguoiDung = Convert.ToInt32(row["SoNguoiDung"]),
+                    SoNguoiDung = Convert.ToInt32(row["so_nguoi_dung"]),
+                    TrangThai = Convert.ToInt32(row["trang_thai"]),
                 });
             }
             return roles;
@@ -77,6 +82,19 @@ namespace DAL
             }
 
             return 1; // Mặc định là SINH VIÊN
+        }
+
+        // Lấy RoleId từ Tên Nhóm Quyền
+        public string getTenNhomQuyenById(int id)
+        {
+            List<RoleDTO> roles = getAllRole();
+            foreach (RoleDTO role in roles)
+            {
+                if (role.MaNhomQuyen == id)
+                    return role.TenNhomQuyen;
+            }
+
+            return ""; // Mặc định là SINH VIÊN
         }
 
         // Tạo nhóm quyền mới

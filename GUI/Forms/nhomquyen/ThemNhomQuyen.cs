@@ -8,7 +8,6 @@ namespace GUI.forms.nhomquyen
 {
     public partial class ThemNhomQuyen : Form
     {
-        // Khai báo BLLs và Event
         public readonly RolePermissionBLL _rolePermissionBLL = new RolePermissionBLL();
         public readonly RoleBLL _roleBLL = new RoleBLL();
         public readonly PermissionBLL _permissionBLL = new PermissionBLL();
@@ -24,7 +23,6 @@ namespace GUI.forms.nhomquyen
             // this.btnLuu.Click += new System.EventHandler(this.btnLuu_Click);
         }
 
-        // Hàm tải dữ liệu (Đã sửa lỗi logic)
         public void loadDataForTable()
         {
             var listChucNang = _chucNangBLL.GetAllChucNang();
@@ -37,6 +35,8 @@ namespace GUI.forms.nhomquyen
 
             foreach (var cn in listChucNang)
             {
+                if (cn.MaChucNang == 9 || cn.MaChucNang == 10) // Bỏ qua Chức Năng Quản Lý Quyền và Quản Lý Người Dùng
+                    continue;
                 // Thêm Mã Chức Năng vào cột đầu tiên (để có thể lấy ID khi lưu)
                 // và Tên Chức Năng vào cột thứ hai
                 tblThem.Rows.Add(
@@ -47,12 +47,10 @@ namespace GUI.forms.nhomquyen
             }
         }
 
-        // --- Hàm trích xuất dữ liệu phân quyền ---
         public List<AddPermissionDTO> LayDanhSachQuyenTuDataGridView(DataGridView dgv)
         {
             List<AddPermissionDTO> danhSachQuyen = new List<AddPermissionDTO>();
 
-            // Định nghĩa các cột Action (Quyền) cần lấy
             string[] actionColumns = { "colXem", "colThem", "colSua", "colXoa" };
 
             foreach (DataGridViewRow row in dgv.Rows)
@@ -60,34 +58,27 @@ namespace GUI.forms.nhomquyen
                 if (row.IsNewRow) continue;
 
                 AddPermissionDTO dto = new AddPermissionDTO();
-                // Khởi tạo Dictionary để theo dõi các quyền được check
                 dto.Quyen_DuocPhep = new Dictionary<int, int>();
 
                 try
                 {
-                    // Lấy MÃ CHỨC NĂNG từ cột đã định nghĩa (Giả sử tên cột là "colId")
                     object maChucNangValue = row.Cells["colId"].Value;
                     if (maChucNangValue == null || maChucNangValue == DBNull.Value) continue;
 
-                    // Chuyển đổi sang int (Đây là Mã Chức Năng)
                     dto.MaChucNang = Convert.ToInt32(maChucNangValue);
 
-                    // 3. Duyệt qua các cột Action và lấy giá trị Checkbox
                     foreach (string colName in actionColumns)
                     {
                         object cellValue = row.Cells[colName].Value;
 
-                        // 1. Ép kiểu an toàn sang boolean
                         bool isChecked = (cellValue != null && cellValue != DBNull.Value) && (bool)cellValue;
 
-                        // 2. Chuyển đổi boolean sang int (1 hoặc 0)
                         int permissionValue = isChecked ? 1 : 0;
 
-                        // CHỈ THÊM VÀO DICTIONARY NẾU QUYỀN ĐÓ ĐƯỢC CHECK (permissionValue == 1)
                         if (permissionValue == 1)
                         {
-                            string actionKey = colName.Substring(3); // Trích xuất tên Action
-                            int maQuyen = GetMaQuyen(actionKey); // Dùng hàm trợ giúp
+                            string actionKey = colName.Substring(3);
+                            int maQuyen = GetMaQuyen(actionKey);
 
                             if (maQuyen > 0)
                             {
@@ -95,15 +86,10 @@ namespace GUI.forms.nhomquyen
                             }
                         }
                     }
-
-                    // ----------------------------------------------------
-                    // 4. KIỂM TRA ĐIỀU KIỆN VÀ THÊM VÀO DANH SÁCH CUỐI CÙNG
-                    // Chỉ thêm DTO vào danh sách nếu nó có ít nhất 1 quyền được check
                     if (dto.Quyen_DuocPhep.Count > 0)
                     {
                         danhSachQuyen.Add(dto);
                     }
-                    // ----------------------------------------------------
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +99,6 @@ namespace GUI.forms.nhomquyen
 
             return danhSachQuyen;
         }
-        // Hàm trợ giúp: Chuyển tên quyền sang Mã Quyền
         private int GetMaQuyen(string actionName)
         {
             switch (actionName)
@@ -126,55 +111,31 @@ namespace GUI.forms.nhomquyen
             }
         }
 
-        // Hàm Format để hiển thị kết quả dễ đọc
-
-        private string GetTenQuyen(int maQuyen)
-        {
-            switch (maQuyen)
-            {
-                case 1: return "Xem";
-                case 2: return "Thêm";
-                case 3: return "Sửa";
-                case 4: return "Xóa";
-                default: return "Khác";
-            }
-        }
-
-
-        public string FormatDanhSachQuyen(List<AddPermissionDTO> danhSachQuyen)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("--- KẾT QUẢ ADDPERMISSIONDTO ---");
-
-            foreach (var dto in danhSachQuyen)
-            {
-                sb.AppendLine($"[Module ID: {dto.MaChucNang}]");
-
-                foreach (var action in dto.Quyen_DuocPhep)
-                {
-                    sb.AppendLine($"  - {action.Key,-5}: {action.Value}");
-                }
-                sb.AppendLine("------------------");
-            }
-
-            return sb.ToString();
-        }
-
-        // Hàm trợ giúp: Chuyển Mã Quyền (1, 2, 3, 4) thành Tên ("Xem", "Them",...)
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Lấy dữ liệu từ DataGridView của Form (tblThem)
             List<AddPermissionDTO> danhSachQuyen = LayDanhSachQuyenTuDataGridView(tblThem);
 
-            // Hiển thị kết quả ra MessageBox để kiểm tra
-            //string ketQua = FormatDanhSachQuyen(danhSachQuyen);
-            //MessageBox.Show(ketQua, "Dữ liệu AddPermissionDTO Trích Xuất", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Bắt đầu logic lưu dữ liệu vào BLL/DB tại đây
-            // ...
-
             string ten_nhom_quyen = txtName.Text;
+
+            if (tsThamGiaThi.Checked)
+            {
+                AddPermissionDTO thamGiaThi = new AddPermissionDTO
+                {
+                    MaChucNang = 9,
+                    Quyen_DuocPhep = new Dictionary<int, int> { { 6, 1 } } // Quyền tham gia thi
+                };
+                danhSachQuyen.Add(thamGiaThi);
+            }
+
+            if (tsThamGiaHocPhan.Checked)
+            {
+                AddPermissionDTO thamGiaHocPhan = new AddPermissionDTO
+                {
+                    MaChucNang = 10,
+                    Quyen_DuocPhep = new Dictionary<int, int> { { 5, 1 } } // Quyền tham gia học phần
+                };
+                danhSachQuyen.Add(thamGiaHocPhan);
+            }
 
             if (!_rolePermissionBLL.CreateRolePermission(ten_nhom_quyen, danhSachQuyen))
             {
@@ -184,7 +145,6 @@ namespace GUI.forms.nhomquyen
             }
             MessageBox.Show("Thêm nhóm quyền thành công!", "Thành công",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-            // Gọi event báo ra ngoài là đã thêm user thành công
             UserAdded?.Invoke(this, EventArgs.Empty);
             this.Close();
         }
@@ -192,6 +152,20 @@ namespace GUI.forms.nhomquyen
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void txtName_Enter(object sender, EventArgs e)
+        {
+            if (txtName.Text == "Nhập tên nhóm quyền...")
+            {
+                txtName.Text = "";
+            }
+        }
+
+        private void txtName_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+                txtName.Text = "Nhập tên nhóm quyền...";
         }
     }
 }

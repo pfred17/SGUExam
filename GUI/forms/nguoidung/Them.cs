@@ -59,7 +59,7 @@ namespace GUI.forms.nguoidung
                 MatKhau = txtPassword.Text.Trim(),
                 HoTen = txtHoVaTen.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
-                Role = cbbNhomQuyen.Text,
+                Role = _roleBLL.GetRoleIdByName(cbbNhomQuyen.Text),
                 GioiTinh = gioiTinh,
                 TrangThai = trangThai
             };

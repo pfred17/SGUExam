@@ -59,7 +59,7 @@ namespace BLL
                 
             return allUsers.Where(u => u.MSSV != userId).ToList();
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, string? option = "Tất cả")
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
         {
             return dal.GetUserPaged(page, pageSize, keyword, option);
         }

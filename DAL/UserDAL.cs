@@ -36,14 +36,14 @@ namespace DAL
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
-                Role = row["loai_nd"].ToString(),
+                Role = Convert.ToInt32(row["ma_nhom_quyen"]),
                 GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
 
         // Lấy danh sách người dùng có phân trang
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, string? option = "Tất cả")
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
         {
             int offset = (page - 1) * pageSize;
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
@@ -55,7 +55,7 @@ namespace DAL
                     nd.mat_khau,
                     nd.ho_ten,
                     nd.email,
-                    nd.loai_nd,
+                    nd.ma_nhom_quyen,
                     nd.gioi_tinh,
                     nd.trang_thai,
                     nq.ten_nhom_quyen
@@ -68,10 +68,9 @@ namespace DAL
                         OR nd.ho_ten LIKE N'%' + @keyword + N'%'
                         OR nd.ten_dang_nhap LIKE N'%' + @keyword + N'%'
                         OR nd.email LIKE N'%' + @keyword + N'%'
-                        OR nd.loai_nd LIKE N'%' + @keyword + N'%'
                         OR nq.ten_nhom_quyen LIKE N'%' + @keyword + N'%'
                     )
-                    AND (@option = N'Tất cả' OR nd.loai_nd = @option)
+                    AND (@option = 0 OR nd.ma_nhom_quyen = @option)
                 ORDER BY nd.ma_nd
                 OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
@@ -96,7 +95,7 @@ namespace DAL
                     Email = row["email"].ToString() ?? "",
                     GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                     TrangThai = Convert.ToInt32(row["trang_thai"]),
-                    Role = row["ten_nhom_quyen"].ToString() ?? ""
+                    Role = Convert.ToInt32(row["ma_nhom_quyen"])
                 });
             }
 
@@ -118,7 +117,7 @@ namespace DAL
                     MatKhau = row["mat_khau"].ToString(),
                     HoTen = row["ho_ten"].ToString(),
                     Email = row["email"].ToString(),
-                    Role = row["loai_nd"].ToString(),
+                    Role = Convert.ToInt32(row["ma_nhom_quyen"]),
                     GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                     TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
@@ -129,14 +128,14 @@ namespace DAL
         // Hàm tạo người dùng mới
         public bool CreateNewUser(UserDTO userDTO)
         {
-            string query = @"INSERT INTO nguoi_dung  (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, loai_nd, trang_thai)
-                     VALUES (@MSSV, @TenDangNhap, @MatKhau, @HoTen, @Email, @GioiTinh, @LoaiNguoiDung, @TrangThai);
+            string query = @"
+                        INSERT INTO nguoi_dung  (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, ma_nhom_quyen, trang_thai)
+                     VALUES (@MSSV, @TenDangNhap, @MatKhau, @HoTen, @Email, @GioiTinh, @MaNhomQuyen, @TrangThai);
                     
                      INSERT INTO nguoi_dung_nhom_quyen (ma_nd, ma_nhom_quyen)
-                    VALUES (@MSSV, @ma_nhom_quyen)
+                    VALUES (@MSSV, @MaNhomQuyen)
                     ";
 
-            long roleId = roleDAL.getRoleIdByTenNhomQuyen(userDTO.Role);
 
 
             SqlParameter[] parameters =
@@ -147,9 +146,8 @@ namespace DAL
                 new SqlParameter("@HoTen", userDTO.HoTen),
                 new SqlParameter("@Email", userDTO.Email),
                 new SqlParameter("@GioiTinh", userDTO.GioiTinh),
-                new SqlParameter("@LoaiNguoiDung", userDTO.Role),
-                new SqlParameter("@TrangThai", userDTO.TrangThai),
-                new SqlParameter("@ma_nhom_quyen", roleId)
+                new SqlParameter("@MaNhomQuyen", userDTO.Role),
+                new SqlParameter("@TrangThai", userDTO.TrangThai)
             };
 
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
@@ -162,8 +160,8 @@ namespace DAL
             // Thêm người dùng mới và set nhóm quyền cho người dùng
 
             string query = @"
-                    INSERT INTO nguoi_dung (ma_nd, ten_dang_nhap, ho_ten, mat_khau, email, loai_nd, trang_thai)
-                    VALUES (@mssv, @u, @h, @p, @e, 'Sinh viên', 1);
+                    INSERT INTO nguoi_dung (ma_nd, ten_dang_nhap, ho_ten, mat_khau, email, ma_nhom_quyen, trang_thai)
+                    VALUES (@mssv, @u, @h, @p, @e, 1, 1);
 
                     INSERT INTO nguoi_dung_nhom_quyen (ma_nd, ma_nhom_quyen)
                     VALUES (@mssv, 1);
@@ -189,7 +187,7 @@ namespace DAL
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
-                Role = row["loai_nd"].ToString(),
+                Role = Convert.ToInt32(row["ma_nhom_quyen"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
@@ -204,7 +202,7 @@ namespace DAL
                                  ho_ten = @HoTen, 
                                  email = @Email, 
                                  gioi_tinh = @GioiTinh, 
-                                 loai_nd = @LoaiNguoiDung
+                                 ma_nhom_quyen = @MaNhomQuyen
                              WHERE ma_nd = @MSSV";
             SqlParameter[] parameters =
             {
@@ -213,8 +211,8 @@ namespace DAL
                 new SqlParameter("@MatKhau", user.MatKhau),
                 new SqlParameter("@HoTen", user.HoTen),
                 new SqlParameter("@Email", user.Email),
+                new SqlParameter("@MaNhomQuyen", user.Role),
                 new SqlParameter("@GioiTinh", user.GioiTinh),
-                new SqlParameter("@LoaiNguoiDung", user.Role),
             };
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
@@ -272,7 +270,7 @@ namespace DAL
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
-                Role = row["loai_nd"].ToString(),
+                Role = Convert.ToInt32(row["ma_nhom_quyen"]),
                 GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
@@ -302,7 +300,7 @@ namespace DAL
                     MSSV = row["ma_nd"].ToString() ?? "",
                     HoTen = row["ho_ten"].ToString() ?? "",
                     Email = row["email"].ToString() ?? "",
-                    Role = row["ten_nhom_quyen"].ToString() ?? "",
+                    Role = Convert.ToInt32(row["ma_nhom_quyen"]),
                 });
             }
 
@@ -337,7 +335,7 @@ namespace DAL
             string cleanMssv = mssv.Trim();
 
             string query = @"
-                SELECT ma_nd, ten_dang_nhap, mat_khau, ho_ten, email, loai_nd, gioi_tinh, trang_thai
+                SELECT ma_nd, ten_dang_nhap, mat_khau, ho_ten, email, ma_nguoi_dung, gioi_tinh, trang_thai
                 FROM nguoi_dung 
                 WHERE TRIM(ma_nd) = @MSSV";
 
@@ -358,7 +356,7 @@ namespace DAL
                 MatKhau = r["mat_khau"].ToString(),
                 HoTen = r["ho_ten"].ToString(),
                 Email = r["email"].ToString(),
-                Role = r["loai_nd"].ToString(),
+                Role = Convert.ToInt32(r["ma_nhom_quyen"]),
                 GioiTinh = r["gioi_tinh"] == DBNull.Value ? 1 : Convert.ToInt32(r["gioi_tinh"]),
                 TrangThai = r["trang_thai"] == DBNull.Value ? 1 : Convert.ToInt32(r["trang_thai"])
             };

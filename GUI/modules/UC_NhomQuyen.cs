@@ -50,7 +50,7 @@ namespace GUI.modules
             tblNhomQuyen.Rows.Clear();
 
             foreach (var role in roles)
-            {
+            { 
 
                 tblNhomQuyen.Rows.Add(
                      role.MaNhomQuyen,

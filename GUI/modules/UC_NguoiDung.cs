@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DTO;
 using GUI.forms.nguoidung;
 using Guna.UI2.WinForms;
+using System.Collections.Generic;
 
 namespace GUI.modules
 {
@@ -46,15 +47,36 @@ namespace GUI.modules
 
         public void loadRoleData()
         {
-            List<String> roles = new List<String>();    
-            List<RoleDTO> roleDTOs = RoleDAL.getAllRole();
+            List<RoleDTO> roles = _roleBLL.getAllRole();
 
-            foreach(var role in roleDTOs)
+            List<RoleDTO> danhSachMoi = new List<RoleDTO>();
+
+            // 1. Thêm mục "Tất cả" vào danh sách mới
+            RoleDTO itemTatCa = new RoleDTO
             {
-                roles.Add(role.TenNhomQuyen);
+                MaNhomQuyen = 0,
+                TenNhomQuyen = "Tất cả"
+            };
+            danhSachMoi.Add(itemTatCa);
+
+            // 2. Thêm tất cả các mục từ danh sách gốc vào sau
+            foreach(var role in roles)
+            {
+                if (role.TrangThai == 1)
+                {
+                    danhSachMoi.Add(role);
+                }
             }
 
-            cbbFilter.DataSource = roles;
+            // 3. Gán danh sách mới cho DataSource
+            cbbFilter.DataSource = danhSachMoi;
+
+            // 4. Thiết lập các thuộc tính hiển thị
+            cbbFilter.DisplayMember = "TenNhomQuyen";
+            cbbFilter.ValueMember = "MaNhomQuyen";
+
+            // 5. Chọn mục đầu tiên ("Tất cả")
+            cbbFilter.SelectedIndex = 0;
         }
 
         private void loadDataForTable()
@@ -63,7 +85,7 @@ namespace GUI.modules
             string keyword = txtSearch.Text.Trim();
             if (keyword == "Tìm kiếm...") keyword = "";
 
-            string option = cbbFilter.GetItemText(cbbFilter.SelectedItem);
+            int option = _roleBLL.GetRoleIdByName(cbbFilter.GetItemText(cbbFilter.SelectedItem));
 
             totalRecords = _userBLL.GetAllUsers().Count;
             totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
@@ -77,9 +99,14 @@ namespace GUI.modules
             foreach (var user in users)
             {
 
+                var roleDto = _roleBLL.GetRoleDTOById(user.Role);
+
+                if (roleDto.TrangThai == 0) continue;
+
+
                 int rowIndex = tableNguoiDung.Rows.Add(
                     user.MSSV, user.HoTen,
-                    user.Email, user.Role,
+                    user.Email, _roleBLL.GetRoleNameById(user.Role),
                     user.TrangThai == 1 ? "Hoạt động" : "Bị khóa",
                     Properties.Resources.icon_edit,
                     Properties.Resources.icon_delete);

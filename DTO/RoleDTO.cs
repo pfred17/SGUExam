@@ -18,6 +18,8 @@ namespace DTO
     
         public long SoNguoiDung { get; set; }
 
-}
+        public int TrangThai{ get; set; }
+
+    }
 
 }

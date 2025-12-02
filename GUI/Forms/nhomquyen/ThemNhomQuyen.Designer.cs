@@ -28,34 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             tblThem = new Guna.UI2.WinForms.Guna2DataGridView();
-            btnAdd = new Guna.UI2.WinForms.Guna2Button();
-            txtName = new Guna.UI2.WinForms.Guna2TextBox();
-            btnCancel = new Guna.UI2.WinForms.Guna2Button();
-            label1 = new Label();
-            label2 = new Label();
-            tsTrangThai = new Guna.UI2.WinForms.Guna2ToggleSwitch();
-            guna2ToggleSwitch1 = new Guna.UI2.WinForms.Guna2ToggleSwitch();
-            lbErrorTenNhomQuyen = new Guna.UI2.WinForms.Guna2HtmlLabel();
             colId = new DataGridViewTextBoxColumn();
             colTenChucNang = new DataGridViewTextBoxColumn();
             colXem = new DataGridViewCheckBoxColumn();
             colThem = new DataGridViewCheckBoxColumn();
             colSua = new DataGridViewCheckBoxColumn();
             colXoa = new DataGridViewCheckBoxColumn();
+            btnAdd = new Guna.UI2.WinForms.Guna2Button();
+            txtName = new Guna.UI2.WinForms.Guna2TextBox();
+            btnCancel = new Guna.UI2.WinForms.Guna2Button();
+            label1 = new Label();
+            label2 = new Label();
+            tsThamGiaThi = new Guna.UI2.WinForms.Guna2ToggleSwitch();
+            tsThamGiaHocPhan = new Guna.UI2.WinForms.Guna2ToggleSwitch();
+            lbErrorTenNhomQuyen = new Guna.UI2.WinForms.Guna2HtmlLabel();
             ((System.ComponentModel.ISupportInitialize)tblThem).BeginInit();
             SuspendLayout();
             // 
@@ -63,27 +63,27 @@
             // 
             tblThem.AllowDrop = true;
             tblThem.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            tblThem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(242, 245, 250);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(242, 245, 250);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Gray;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            tblThem.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            tblThem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(242, 245, 250);
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle5.ForeColor = Color.Gray;
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(242, 245, 250);
+            dataGridViewCellStyle5.SelectionForeColor = Color.Gray;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            tblThem.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             tblThem.ColumnHeadersHeight = 50;
             tblThem.Columns.AddRange(new DataGridViewColumn[] { colId, colTenChucNang, colXem, colThem, colSua, colXoa });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.Padding = new Padding(1);
-            dataGridViewCellStyle3.SelectionBackColor = Color.White;
-            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            tblThem.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = Color.White;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle6.Padding = new Padding(1);
+            dataGridViewCellStyle6.SelectionBackColor = Color.White;
+            dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            tblThem.DefaultCellStyle = dataGridViewCellStyle6;
             tblThem.GridColor = Color.FromArgb(231, 229, 255);
             tblThem.Location = new Point(22, 104);
             tblThem.Name = "tblThem";
@@ -113,136 +113,6 @@
             tblThem.ThemeStyle.RowsStyle.Height = 50;
             tblThem.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             tblThem.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            // 
-            // btnAdd
-            // 
-            btnAdd.BorderRadius = 2;
-            btnAdd.Cursor = Cursors.Hand;
-            btnAdd.CustomizableEdges = customizableEdges1;
-            btnAdd.DisabledState.BorderColor = Color.DarkGray;
-            btnAdd.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnAdd.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnAdd.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnAdd.FillColor = Color.FromArgb(6, 101, 208);
-            btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(565, 557);
-            btnAdd.Name = "btnAdd";
-            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnAdd.Size = new Size(225, 41);
-            btnAdd.TabIndex = 8;
-            btnAdd.Text = "LƯU NHÓM QUYỀN";
-            btnAdd.Click += btnAdd_Click;
-            // 
-            // txtName
-            // 
-            txtName.BorderRadius = 4;
-            txtName.CustomizableEdges = customizableEdges3;
-            txtName.DefaultText = "Nhập tên nhóm quyền...";
-            txtName.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtName.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtName.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtName.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtName.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtName.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtName.Location = new Point(25, 27);
-            txtName.Margin = new Padding(3, 5, 3, 5);
-            txtName.Name = "txtName";
-            txtName.Padding = new Padding(4);
-            txtName.PlaceholderText = "";
-            txtName.SelectedText = "";
-            txtName.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtName.Size = new Size(765, 44);
-            txtName.TabIndex = 9;
-            // 
-            // btnCancel
-            // 
-            btnCancel.BorderRadius = 2;
-            btnCancel.Cursor = Cursors.Hand;
-            btnCancel.CustomizableEdges = customizableEdges5;
-            btnCancel.DisabledState.BorderColor = Color.DarkGray;
-            btnCancel.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnCancel.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnCancel.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnCancel.FillColor = Color.FromArgb(224, 224, 224);
-            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnCancel.ForeColor = Color.Gray;
-            btnCancel.Location = new Point(440, 557);
-            btnCancel.Name = "btnCancel";
-            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnCancel.Size = new Size(106, 41);
-            btnCancel.TabIndex = 10;
-            btnCancel.Text = "HỦY";
-            btnCancel.Click += btnCancel_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(449, 495);
-            label1.Name = "label1";
-            label1.Size = new Size(97, 20);
-            label1.TabIndex = 14;
-            label1.Text = "Tham gia thi";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(648, 494);
-            label2.Name = "label2";
-            label2.Size = new Size(142, 20);
-            label2.TabIndex = 15;
-            label2.Text = "Tham gia học phần";
-            // 
-            // tsTrangThai
-            // 
-            tsTrangThai.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
-            tsTrangThai.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
-            tsTrangThai.CheckedState.InnerBorderColor = Color.White;
-            tsTrangThai.CheckedState.InnerColor = Color.White;
-            tsTrangThai.Cursor = Cursors.Hand;
-            tsTrangThai.CustomizableEdges = customizableEdges7;
-            tsTrangThai.Location = new Point(404, 495);
-            tsTrangThai.Name = "tsTrangThai";
-            tsTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            tsTrangThai.Size = new Size(39, 21);
-            tsTrangThai.TabIndex = 19;
-            tsTrangThai.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
-            tsTrangThai.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
-            tsTrangThai.UncheckedState.InnerBorderColor = Color.White;
-            tsTrangThai.UncheckedState.InnerColor = Color.White;
-            // 
-            // guna2ToggleSwitch1
-            // 
-            guna2ToggleSwitch1.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2ToggleSwitch1.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
-            guna2ToggleSwitch1.CheckedState.InnerBorderColor = Color.White;
-            guna2ToggleSwitch1.CheckedState.InnerColor = Color.White;
-            guna2ToggleSwitch1.Cursor = Cursors.Hand;
-            guna2ToggleSwitch1.CustomizableEdges = customizableEdges9;
-            guna2ToggleSwitch1.Location = new Point(603, 494);
-            guna2ToggleSwitch1.Name = "guna2ToggleSwitch1";
-            guna2ToggleSwitch1.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            guna2ToggleSwitch1.Size = new Size(39, 21);
-            guna2ToggleSwitch1.TabIndex = 20;
-            guna2ToggleSwitch1.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
-            guna2ToggleSwitch1.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
-            guna2ToggleSwitch1.UncheckedState.InnerBorderColor = Color.White;
-            guna2ToggleSwitch1.UncheckedState.InnerColor = Color.White;
-            // 
-            // lbErrorTenNhomQuyen
-            // 
-            lbErrorTenNhomQuyen.BackColor = Color.Transparent;
-            lbErrorTenNhomQuyen.Font = new Font("Segoe UI", 8F);
-            lbErrorTenNhomQuyen.ForeColor = Color.Red;
-            lbErrorTenNhomQuyen.Location = new Point(25, 79);
-            lbErrorTenNhomQuyen.Name = "lbErrorTenNhomQuyen";
-            lbErrorTenNhomQuyen.Size = new Size(172, 19);
-            lbErrorTenNhomQuyen.TabIndex = 22;
-            lbErrorTenNhomQuyen.Text = "Message lỗi tên nhóm quyền";
-            lbErrorTenNhomQuyen.Visible = false;
             // 
             // colId
             // 
@@ -288,14 +158,146 @@
             colXoa.MinimumWidth = 6;
             colXoa.Name = "colXoa";
             // 
+            // btnAdd
+            // 
+            btnAdd.BorderRadius = 2;
+            btnAdd.Cursor = Cursors.Hand;
+            btnAdd.CustomizableEdges = customizableEdges11;
+            btnAdd.DisabledState.BorderColor = Color.DarkGray;
+            btnAdd.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnAdd.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnAdd.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnAdd.FillColor = Color.FromArgb(6, 101, 208);
+            btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(565, 557);
+            btnAdd.Name = "btnAdd";
+            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnAdd.Size = new Size(225, 41);
+            btnAdd.TabIndex = 8;
+            btnAdd.Text = "LƯU NHÓM QUYỀN";
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // txtName
+            // 
+            txtName.BorderRadius = 4;
+            txtName.CustomizableEdges = customizableEdges13;
+            txtName.DefaultText = "Nhập tên nhóm quyền...";
+            txtName.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtName.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtName.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtName.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtName.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtName.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtName.Location = new Point(25, 27);
+            txtName.Margin = new Padding(3, 5, 3, 5);
+            txtName.Name = "txtName";
+            txtName.Padding = new Padding(4);
+            txtName.PlaceholderText = "";
+            txtName.SelectedText = "";
+            txtName.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtName.Size = new Size(765, 44);
+            txtName.TabIndex = 9;
+            txtName.Enter += txtName_Enter;
+            txtName.Leave += txtName_Leave;
+            // 
+            // btnCancel
+            // 
+            btnCancel.BorderRadius = 2;
+            btnCancel.Cursor = Cursors.Hand;
+            btnCancel.CustomizableEdges = customizableEdges15;
+            btnCancel.DisabledState.BorderColor = Color.DarkGray;
+            btnCancel.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnCancel.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnCancel.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnCancel.FillColor = Color.FromArgb(224, 224, 224);
+            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnCancel.ForeColor = Color.Gray;
+            btnCancel.Location = new Point(440, 557);
+            btnCancel.Name = "btnCancel";
+            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnCancel.Size = new Size(106, 41);
+            btnCancel.TabIndex = 10;
+            btnCancel.Text = "HỦY";
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(449, 495);
+            label1.Name = "label1";
+            label1.Size = new Size(97, 20);
+            label1.TabIndex = 14;
+            label1.Text = "Tham gia thi";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(648, 494);
+            label2.Name = "label2";
+            label2.Size = new Size(142, 20);
+            label2.TabIndex = 15;
+            label2.Text = "Tham gia học phần";
+            // 
+            // tsThamGiaThi
+            // 
+            tsThamGiaThi.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
+            tsThamGiaThi.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
+            tsThamGiaThi.CheckedState.InnerBorderColor = Color.White;
+            tsThamGiaThi.CheckedState.InnerColor = Color.White;
+            tsThamGiaThi.Cursor = Cursors.Hand;
+            tsThamGiaThi.CustomizableEdges = customizableEdges17;
+            tsThamGiaThi.Location = new Point(404, 495);
+            tsThamGiaThi.Name = "tsThamGiaThi";
+            tsThamGiaThi.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            tsThamGiaThi.Size = new Size(39, 21);
+            tsThamGiaThi.TabIndex = 19;
+            tsThamGiaThi.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
+            tsThamGiaThi.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
+            tsThamGiaThi.UncheckedState.InnerBorderColor = Color.White;
+            tsThamGiaThi.UncheckedState.InnerColor = Color.White;
+            // 
+            // tsThamGiaHocPhan
+            // 
+            tsThamGiaHocPhan.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
+            tsThamGiaHocPhan.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
+            tsThamGiaHocPhan.CheckedState.InnerBorderColor = Color.White;
+            tsThamGiaHocPhan.CheckedState.InnerColor = Color.White;
+            tsThamGiaHocPhan.Cursor = Cursors.Hand;
+            tsThamGiaHocPhan.CustomizableEdges = customizableEdges19;
+            tsThamGiaHocPhan.Location = new Point(603, 494);
+            tsThamGiaHocPhan.Name = "tsThamGiaHocPhan";
+            tsThamGiaHocPhan.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            tsThamGiaHocPhan.Size = new Size(39, 21);
+            tsThamGiaHocPhan.TabIndex = 20;
+            tsThamGiaHocPhan.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
+            tsThamGiaHocPhan.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
+            tsThamGiaHocPhan.UncheckedState.InnerBorderColor = Color.White;
+            tsThamGiaHocPhan.UncheckedState.InnerColor = Color.White;
+            // 
+            // lbErrorTenNhomQuyen
+            // 
+            lbErrorTenNhomQuyen.BackColor = Color.Transparent;
+            lbErrorTenNhomQuyen.Font = new Font("Segoe UI", 8F);
+            lbErrorTenNhomQuyen.ForeColor = Color.Red;
+            lbErrorTenNhomQuyen.Location = new Point(25, 79);
+            lbErrorTenNhomQuyen.Name = "lbErrorTenNhomQuyen";
+            lbErrorTenNhomQuyen.Size = new Size(172, 19);
+            lbErrorTenNhomQuyen.TabIndex = 22;
+            lbErrorTenNhomQuyen.Text = "Message lỗi tên nhóm quyền";
+            lbErrorTenNhomQuyen.Visible = false;
+            // 
             // ThemNhomQuyen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(812, 623);
             Controls.Add(lbErrorTenNhomQuyen);
-            Controls.Add(guna2ToggleSwitch1);
-            Controls.Add(tsTrangThai);
+            Controls.Add(tsThamGiaHocPhan);
+            Controls.Add(tsThamGiaThi);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(btnCancel);
@@ -319,8 +321,8 @@
         private Guna.UI2.WinForms.Guna2Button btnCancel;
         private Label label1;
         private Label label2;
-        private Guna.UI2.WinForms.Guna2ToggleSwitch tsTrangThai;
-        private Guna.UI2.WinForms.Guna2ToggleSwitch guna2ToggleSwitch1;
+        private Guna.UI2.WinForms.Guna2ToggleSwitch tsThamGiaThi;
+        private Guna.UI2.WinForms.Guna2ToggleSwitch tsThamGiaHocPhan;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbErrorTenNhomQuyen;
         private DataGridViewTextBoxColumn colId;
         private DataGridViewTextBoxColumn colTenChucNang;
