@@ -36,7 +36,7 @@ namespace GUI
 
         private void InitCombos()
         {
-            var monList = _monHocBLL.GetAllMonHoc();
+            var monList = _monHocBLL.GetAllMonHocByStatus(1);
             cbMonHoc.DataSource = new List<MonHocDTO>(monList);
             cbMonHoc.DisplayMember = "TenMH";
             cbMonHoc.ValueMember = "MaMH";
@@ -98,7 +98,7 @@ namespace GUI
 
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMH);
+            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
         }
 
         private void CbChuongFile_SelectedIndexChanged(object? sender, EventArgs e)

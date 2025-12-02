@@ -62,16 +62,6 @@ namespace BLL
                         .Trim();
         }
 
-        /// Search theo từ khóa
-        public List<CauHoiDTO> Search(string keyword)
-        {
-            if (string.IsNullOrWhiteSpace(keyword)) 
-            return _cauHoiDAL.GetAllForDisplay();
-            string keyNorm = Normalize(keyword);
-            return _cauHoiDAL.GetAllForDisplay()
-                             .Where(c => Normalize(c.NoiDung).Contains(keyNorm))
-                             .ToList();
-        }
 
         // 2. Lấy chi tiết 1 câu hỏi
         public CauHoiDTO? GetById(long maCauHoi) =>

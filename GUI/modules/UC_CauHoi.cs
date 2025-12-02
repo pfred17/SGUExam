@@ -73,8 +73,8 @@ namespace GUI.modules
         }
         private void LoadMonHoc()
         {
-            var list = _monHocBLL.GetAllMonHoc();
-            list.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn tất cả môn học" });
+            var list = _monHocBLL.GetAllMonHocByStatus(1);
+            list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
             SetComboBoxData(cbMonHoc, list, "TenMH", "MaMH", cbMonHoc_SelectedIndexChanged);
         }
 
@@ -107,7 +107,7 @@ namespace GUI.modules
         {
             CurrentPage = Math.Max(1, page ?? CurrentPage);
 
-            var maMH = cbMonHoc.SelectedItem is MonHocDTO m && m.MaMH > 0 ? m.MaMH : 0;
+            var maMH = cbMonHoc.SelectedItem is MonHocDTO m && m.MaMonHoc > 0 ? m.MaMonHoc : 0;
             var maCh = cbChuong.SelectedItem is ChuongDTO c && c.MaChuong > 0 ? c.MaChuong : 0;
             var doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text;
             var keyword = txtTimKiem.Text == PLACEHOLDER ? "" : txtTimKiem.Text.Trim();
@@ -201,7 +201,7 @@ namespace GUI.modules
         private void cbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cbMonHoc.SelectedItem is MonHocDTO monHoc)
-                LoadChuongTheoMonHoc(monHoc.MaMH);
+                LoadChuongTheoMonHoc(monHoc.MaMonHoc);
             LoadData(1);
         }
 

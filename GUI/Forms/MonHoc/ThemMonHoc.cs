@@ -37,10 +37,10 @@ namespace GUI.forms.MonHoc
             {
                 MonHocDTO newMH = new MonHocDTO
                 {
-                    MaMH = long.Parse(txtMaMonHoc.Text.Trim()),
-                    TenMH = txtTenMonHoc.Text.Trim(),
+                    MaMonHoc = long.Parse(txtMaMonHoc.Text.Trim()),
+                    TenMonHoc = txtTenMonHoc.Text.Trim(),
                     SoTinChi = int.Parse(txtSoTinChi.Text.Trim()),
-                    TrangThai = tsTrangThai.Checked ? (byte)1 : (byte)0
+                    TrangThai = 1
                 };
 
                 long newId = monHocBLL.AddMonHoc(newMH);
@@ -104,9 +104,9 @@ namespace GUI.forms.MonHoc
                     lblErrorMaMonHoc.Visible = true;
 
                 }
-                else if (maMH > 999999)
+                else if (maMH.ToString().Length != 6)
                 {
-                    lblErrorMaMonHoc.Text = "Mã môn học không được vượt quá 6 chữ số.";
+                    lblErrorMaMonHoc.Text = "Mã môn học phải đủ 6 chữ số.";
                     lblErrorMaMonHoc.Visible = true;
                 }
                 else if (monHocBLL.IsMonHocExists(maMH))

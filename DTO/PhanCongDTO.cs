@@ -13,6 +13,7 @@ namespace DTO
         public string TenMonHoc { get; set; } = "";
         public string MaNguoiDung { get; set; } = "";
         public string TenNguoiDung { get; set; } = "";
+        public int TrangThai {  get; set; }
         public PhanCongDTO() { }
     }
 }

@@ -209,7 +209,7 @@ namespace DAL
             };
         }
 
-        public List<UserDTO> GetAllUserByRole()
+        public List<UserDTO> GetAllUserByRoleExcluding()
         {
             string query = @"
                 SELECT 
@@ -220,7 +220,9 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != 'Sinh viên' AND nd.trang_thai = 1;
+                WHERE nq.ten_nhom_quyen != N'Quản trị' 
+                    AND nq.ten_nhom_quyen != N'Sinh viên' 
+                    AND nd.trang_thai = 1;
             ";
 
             DataTable dt = DatabaseHelper.ExecuteQuery(query);
@@ -239,7 +241,7 @@ namespace DAL
 
             return list;
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? userId = null, string? keyword = null, int? trangThai = null)
         {
             int offset = (page - 1) * pageSize;
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
@@ -254,19 +256,42 @@ namespace DAL
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
                 WHERE nq.ten_nhom_quyen != N'Sinh viên' 
-                    AND nd.trang_thai = 1
-                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')          
+                    AND nq.ten_nhom_quyen != N'Quản trị' 
+                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')      
+            ";
+
+            if(userId != null)
+            {
+                query += "AND nd.ma_nd != @userId";
+            }
+            if (trangThai != null)
+            {
+                query += " AND nd.trang_thai = @trang_thai";
+            }
+
+            query += @"
                 ORDER BY nd.ma_nd
                 OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
             ";
 
-            SqlParameter[] parameters = {
+            List<SqlParameter> parameters = new List<SqlParameter>{
                 new("@keyword", keyword),
                 new("@offset", offset),
                 new("@pageSize", pageSize)
             };
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            if (userId != null)
+            {
+                parameters.Add(new SqlParameter("@userId", userId));
+            }
+
+            if (trangThai != null)
+            {
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters.ToArray());
             List<UserDTO> list = new List<UserDTO>();
             foreach (DataRow row in dt.Rows)
             {
@@ -282,7 +307,7 @@ namespace DAL
             return list;
         }
 
-        public int GetTotalUser(string? keyword = null)
+        public int GetTotalUser(string? userId = null, string? keyword = null, int? trangThai = null)
         {
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
 
@@ -292,13 +317,27 @@ namespace DAL
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
                 WHERE nq.ten_nhom_quyen != N'Sinh viên' 
-                    AND nd.trang_thai = 1
+                    AND nq.ten_nhom_quyen != N'Quản trị' 
                     AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')            
-;
             ";
 
-            SqlParameter parameters = new("@keyword", keyword);
-            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                new("@keyword", keyword)
+            };
+
+            if (userId != null)
+            {
+                query += " AND nd.ma_nd != @userId";
+                parameters.Add(new SqlParameter("userId", userId));
+            }
+
+            if (trangThai != null)
+            {
+                query += " AND trang_thai = @trang_thai";
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters.ToArray()));
         }
     }
 }

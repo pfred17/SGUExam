@@ -39,7 +39,7 @@ namespace GUI.forms.PhanCong
             pnMain.Controls.Clear();
             lblTheoMonHoc.ForeColor = Color.Black;
             lblTheoGiangVien.ForeColor = Color.DodgerBlue;
-            ThemTheoMonHoc frm = new ThemTheoMonHoc();
+            ThemTheoMonHoc frm = new ThemTheoMonHoc(_userId);
             pnMain.Controls.Add(frm);
         }
         private void lblClose_Click(object sender, EventArgs e)

@@ -46,6 +46,7 @@
             dgvChuong = new DataGridView();
             MaChuong = new DataGridViewTextBoxColumn();
             TenChuong = new DataGridViewTextBoxColumn();
+            TrangThai = new DataGridViewTextBoxColumn();
             EditCol = new DataGridViewImageColumn();
             DeleteCol = new DataGridViewImageColumn();
             lblThemChuong = new Label();
@@ -98,7 +99,7 @@
             dgvChuong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvChuong.ColumnHeadersHeight = 40;
             dgvChuong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvChuong.Columns.AddRange(new DataGridViewColumn[] { MaChuong, TenChuong, EditCol, DeleteCol });
+            dgvChuong.Columns.AddRange(new DataGridViewColumn[] { MaChuong, TenChuong, TrangThai, EditCol, DeleteCol });
             dgvChuong.EnableHeadersVisualStyles = false;
             dgvChuong.GridColor = Color.FromArgb(231, 229, 255);
             dgvChuong.Location = new Point(14, 112);
@@ -134,6 +135,15 @@
             TenChuong.ReadOnly = true;
             TenChuong.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
+            // TrangThai
+            // 
+            TrangThai.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            TrangThai.HeaderText = "Trạng thái";
+            TrangThai.MinimumWidth = 6;
+            TrangThai.Name = "TrangThai";
+            TrangThai.ReadOnly = true;
+            TrangThai.Width = 131;
+            // 
             // EditCol
             // 
             EditCol.FillWeight = 152.284286F;
@@ -160,7 +170,7 @@
             lblThemChuong.Cursor = Cursors.Hand;
             lblThemChuong.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblThemChuong.ForeColor = Color.DodgerBlue;
-            lblThemChuong.Location = new Point(14, 393);
+            lblThemChuong.Location = new Point(14, 415);
             lblThemChuong.Name = "lblThemChuong";
             lblThemChuong.Size = new Size(190, 28);
             lblThemChuong.TabIndex = 3;
@@ -180,7 +190,7 @@
             txtInput.Font = new Font("Segoe UI", 9F);
             txtInput.ForeColor = Color.Black;
             txtInput.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtInput.Location = new Point(14, 437);
+            txtInput.Location = new Point(14, 459);
             txtInput.Margin = new Padding(3, 5, 3, 5);
             txtInput.Name = "txtInput";
             txtInput.PlaceholderForeColor = Color.Gray;
@@ -197,7 +207,7 @@
             lblError.BackColor = Color.Transparent;
             lblError.Font = new Font("Segoe UI", 8F);
             lblError.ForeColor = Color.Red;
-            lblError.Location = new Point(14, 492);
+            lblError.Location = new Point(14, 514);
             lblError.Name = "lblError";
             lblError.Size = new Size(74, 19);
             lblError.TabIndex = 7;
@@ -212,7 +222,7 @@
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(465, 437);
+            btnSubmit.Location = new Point(465, 459);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnSubmit.Size = new Size(81, 48);
@@ -228,7 +238,7 @@
             btnCancel.FillColor = Color.Silver;
             btnCancel.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(557, 437);
+            btnCancel.Location = new Point(557, 459);
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnCancel.Size = new Size(73, 48);
@@ -244,7 +254,7 @@
             btnClose.FillColor = Color.FromArgb(6, 101, 208);
             btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = Color.White;
-            btnClose.Location = new Point(555, 552);
+            btnClose.Location = new Point(555, 542);
             btnClose.Name = "btnClose";
             btnClose.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnClose.Size = new Size(98, 48);
@@ -260,7 +270,7 @@
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(500, 356);
+            btnPrev.Location = new Point(500, 378);
             btnPrev.Name = "btnPrev";
             btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnPrev.Size = new Size(40, 40);
@@ -273,7 +283,7 @@
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(546, 356);
+            lblPage.Location = new Point(546, 378);
             lblPage.Margin = new Padding(3, 4, 3, 4);
             lblPage.Name = "lblPage";
             lblPage.Size = new Size(60, 40);
@@ -289,7 +299,7 @@
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(612, 356);
+            btnNext.Location = new Point(612, 378);
             btnNext.Name = "btnNext";
             btnNext.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnNext.Size = new Size(40, 40);
@@ -315,7 +325,7 @@
             Controls.Add(txtInput);
             Controls.Add(btnSubmit);
             Controls.Add(btnCancel);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -338,12 +348,13 @@
         private Guna.UI2.WinForms.Guna2Button btnSubmit;
         private Guna.UI2.WinForms.Guna2Button btnCancel;
         private Guna.UI2.WinForms.Guna2Button btnClose;
-        private DataGridViewTextBoxColumn MaChuong;
-        private DataGridViewTextBoxColumn TenChuong;
-        private DataGridViewImageColumn EditCol;
-        private DataGridViewImageColumn DeleteCol;
         private Guna.UI2.WinForms.Guna2Button btnPrev;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblPage;
         private Guna.UI2.WinForms.Guna2Button btnNext;
+        private DataGridViewTextBoxColumn MaChuong;
+        private DataGridViewTextBoxColumn TenChuong;
+        private DataGridViewTextBoxColumn TrangThai;
+        private DataGridViewImageColumn EditCol;
+        private DataGridViewImageColumn DeleteCol;
     }
 }

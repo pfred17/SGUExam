@@ -13,15 +13,15 @@ namespace BLL
     public class MonHocBLL
     {
         private readonly MonHocDAL _dal = new MonHocDAL();
-        public List<MonHocDTO> GetAllMonHoc()
+        public List<MonHocDTO> GetAllMonHocByStatus(int? trangThai = null)
         {
-            return _dal.GetAllMonHoc();
+            return _dal.GetAllMonHocByStatus(trangThai);
         }
-        public bool IsMonHocExists(long maMH)
+        public bool IsMonHocExists(long maMonHoc)
         {
-            return _dal.IsMonHocExists(maMH);
+            return _dal.IsMonHocExists(maMonHoc);
         }
-        public MonHocDTO? GetMonHocById(long maMonHoc)
+        public MonHocDTO GetMonHocById(long maMonHoc)
         {
             return _dal.GetMonHocById(maMonHoc);
         }
@@ -29,25 +29,33 @@ namespace BLL
         {
             return _dal.AddMonHoc(monHoc);
         }
+        public bool IsMonHocReferenced(long maMonHoc)
+        {
+            return _dal.IsMonHocReferenced(maMonHoc);
+        }
+        public bool UpdateStatus(long maMonHoc, int trangThai)
+        {
+            return _dal.UpdateStatus(maMonHoc, trangThai);  
+        }
+        public int GetStatus(long maMonHoc)
+        {
+            return _dal.GetStatus(maMonHoc);
+        }
         public bool UpdateMonHoc(MonHocDTO monHoc)
         {
             return _dal.UpdateMonHoc(monHoc);
         }
-        public bool DeleteMonHoc(long monHocId)
+        public bool DeleteMonHoc(long maMonHoc)
         {
-            return _dal.DeleteMonHoc(monHocId);
+            return _dal.DeleteMonHoc(maMonHoc);
         }
-        public bool IsMonHocReferenced(long maMH)
+        public List<MonHocDTO> GetMonHocPaged(int page, int pageSize, string? keyword = null, int? trangThai = null)
         {
-            return _dal.IsMonHocReferenced(maMH); 
+            return _dal.GetMonHocPaged(page, pageSize, keyword, trangThai);
         }
-        public List<MonHocDTO> GetMonHocPaged(int page, int pageSize, string? keyword = null)
+        public int GetTotalMonHoc(string? keyword = null, int? trangThai = null)
         {
-            return _dal.GetMonHocPaged(page, pageSize, keyword);
-        }
-        public int GetTotalMonHoc(string? keyword = null)
-        {
-            return _dal.GetTotalMonHoc(keyword);
+            return _dal.GetTotalMonHoc(keyword, trangThai);
         }
     }
 }

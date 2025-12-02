@@ -59,9 +59,9 @@
             // 
             lblMaMonHoc.AutoSize = true;
             lblMaMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMaMonHoc.Location = new Point(51, 84);
+            lblMaMonHoc.Location = new Point(58, 112);
             lblMaMonHoc.Name = "lblMaMonHoc";
-            lblMaMonHoc.Size = new Size(97, 21);
+            lblMaMonHoc.Size = new Size(122, 28);
             lblMaMonHoc.TabIndex = 1;
             lblMaMonHoc.Text = "Mã môn học";
             // 
@@ -79,23 +79,23 @@
             txtMaMonHoc.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtMaMonHoc.ForeColor = Color.Black;
             txtMaMonHoc.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaMonHoc.Location = new Point(54, 108);
-            txtMaMonHoc.Margin = new Padding(3, 4, 3, 4);
+            txtMaMonHoc.Location = new Point(62, 144);
+            txtMaMonHoc.Margin = new Padding(3, 5, 3, 5);
             txtMaMonHoc.Name = "txtMaMonHoc";
             txtMaMonHoc.PlaceholderForeColor = Color.Gray;
             txtMaMonHoc.PlaceholderText = "Nhập mã môn học";
             txtMaMonHoc.SelectedText = "";
             txtMaMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaMonHoc.Size = new Size(479, 41);
+            txtMaMonHoc.Size = new Size(547, 55);
             txtMaMonHoc.TabIndex = 2;
             // 
             // lblThongTinMonHoc
             // 
             lblThongTinMonHoc.AutoSize = true;
             lblThongTinMonHoc.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblThongTinMonHoc.Location = new Point(191, 28);
+            lblThongTinMonHoc.Location = new Point(218, 37);
             lblThongTinMonHoc.Name = "lblThongTinMonHoc";
-            lblThongTinMonHoc.Size = new Size(204, 25);
+            lblThongTinMonHoc.Size = new Size(262, 32);
             lblThongTinMonHoc.TabIndex = 0;
             lblThongTinMonHoc.Text = "THÔNG TIN MÔN HỌC";
             // 
@@ -103,9 +103,9 @@
             // 
             lblTenMonHoc.AutoSize = true;
             lblTenMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTenMonHoc.Location = new Point(51, 181);
+            lblTenMonHoc.Location = new Point(58, 241);
             lblTenMonHoc.Name = "lblTenMonHoc";
-            lblTenMonHoc.Size = new Size(98, 21);
+            lblTenMonHoc.Size = new Size(123, 28);
             lblTenMonHoc.TabIndex = 3;
             lblTenMonHoc.Text = "Tên môn học";
             // 
@@ -114,10 +114,9 @@
             lblErrorTenMonHoc.BackColor = Color.Transparent;
             lblErrorTenMonHoc.Font = new Font("Segoe UI", 8F);
             lblErrorTenMonHoc.ForeColor = Color.Red;
-            lblErrorTenMonHoc.Location = new Point(54, 250);
-            lblErrorTenMonHoc.Margin = new Padding(3, 2, 3, 2);
+            lblErrorTenMonHoc.Location = new Point(62, 333);
             lblErrorTenMonHoc.Name = "lblErrorTenMonHoc";
-            lblErrorTenMonHoc.Size = new Size(132, 15);
+            lblErrorTenMonHoc.Size = new Size(151, 19);
             lblErrorTenMonHoc.TabIndex = 5;
             lblErrorTenMonHoc.Text = "Message lỗi tên môn học";
             lblErrorTenMonHoc.Visible = false;
@@ -135,14 +134,14 @@
             txtTenMonHoc.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtTenMonHoc.ForeColor = Color.Black;
             txtTenMonHoc.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTenMonHoc.Location = new Point(54, 205);
-            txtTenMonHoc.Margin = new Padding(3, 4, 3, 4);
+            txtTenMonHoc.Location = new Point(62, 273);
+            txtTenMonHoc.Margin = new Padding(3, 5, 3, 5);
             txtTenMonHoc.Name = "txtTenMonHoc";
             txtTenMonHoc.PlaceholderForeColor = Color.Gray;
             txtTenMonHoc.PlaceholderText = "Nhập tên môn học";
             txtTenMonHoc.SelectedText = "";
             txtTenMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtTenMonHoc.Size = new Size(479, 41);
+            txtTenMonHoc.Size = new Size(547, 55);
             txtTenMonHoc.TabIndex = 4;
             txtTenMonHoc.TextChanged += txtTenMonHoc_TextChanged;
             txtTenMonHoc.Leave += txtTenMonHoc_Leave;
@@ -151,9 +150,9 @@
             // 
             lblTongSoTinChi.AutoSize = true;
             lblTongSoTinChi.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTongSoTinChi.Location = new Point(51, 281);
+            lblTongSoTinChi.Location = new Point(58, 375);
             lblTongSoTinChi.Name = "lblTongSoTinChi";
-            lblTongSoTinChi.Size = new Size(111, 21);
+            lblTongSoTinChi.Size = new Size(140, 28);
             lblTongSoTinChi.TabIndex = 6;
             lblTongSoTinChi.Text = "Tổng số tín chỉ";
             // 
@@ -170,14 +169,14 @@
             txtSoTinChi.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSoTinChi.ForeColor = Color.Black;
             txtSoTinChi.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSoTinChi.Location = new Point(54, 305);
-            txtSoTinChi.Margin = new Padding(3, 4, 3, 4);
+            txtSoTinChi.Location = new Point(62, 407);
+            txtSoTinChi.Margin = new Padding(3, 5, 3, 5);
             txtSoTinChi.Name = "txtSoTinChi";
             txtSoTinChi.PlaceholderForeColor = Color.Gray;
             txtSoTinChi.PlaceholderText = "Nhập số tín chỉ";
             txtSoTinChi.SelectedText = "";
             txtSoTinChi.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            txtSoTinChi.Size = new Size(479, 41);
+            txtSoTinChi.Size = new Size(547, 55);
             txtSoTinChi.TabIndex = 7;
             txtSoTinChi.TextChanged += txtSoTinChi_TextChanged;
             txtSoTinChi.Leave += txtSoTinChi_Leave;
@@ -187,10 +186,9 @@
             lblErrorSoTinChi.BackColor = Color.Transparent;
             lblErrorSoTinChi.Font = new Font("Segoe UI", 8F);
             lblErrorSoTinChi.ForeColor = Color.Red;
-            lblErrorSoTinChi.Location = new Point(54, 350);
-            lblErrorSoTinChi.Margin = new Padding(3, 2, 3, 2);
+            lblErrorSoTinChi.Location = new Point(62, 467);
             lblErrorSoTinChi.Name = "lblErrorSoTinChi";
-            lblErrorSoTinChi.Size = new Size(114, 15);
+            lblErrorSoTinChi.Size = new Size(130, 19);
             lblErrorSoTinChi.TabIndex = 8;
             lblErrorSoTinChi.Text = "Message lỗi số tín chỉ";
             lblErrorSoTinChi.Visible = false;
@@ -199,9 +197,9 @@
             // 
             lblTrangThai.AutoSize = true;
             lblTrangThai.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTrangThai.Location = new Point(54, 376);
+            lblTrangThai.Location = new Point(62, 501);
             lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(79, 21);
+            lblTrangThai.Size = new Size(98, 28);
             lblTrangThai.TabIndex = 9;
             lblTrangThai.Text = "Trạng thái";
             // 
@@ -213,11 +211,10 @@
             tsTrangThai.CheckedState.InnerColor = Color.White;
             tsTrangThai.Cursor = Cursors.Hand;
             tsTrangThai.CustomizableEdges = customizableEdges7;
-            tsTrangThai.Location = new Point(139, 380);
-            tsTrangThai.Margin = new Padding(3, 2, 3, 2);
+            tsTrangThai.Location = new Point(159, 507);
             tsTrangThai.Name = "tsTrangThai";
             tsTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            tsTrangThai.Size = new Size(34, 16);
+            tsTrangThai.Size = new Size(39, 21);
             tsTrangThai.TabIndex = 10;
             tsTrangThai.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
             tsTrangThai.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
@@ -232,11 +229,10 @@
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(312, 397);
-            btnSubmit.Margin = new Padding(3, 2, 3, 2);
+            btnSubmit.Location = new Point(357, 529);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnSubmit.Size = new Size(112, 36);
+            btnSubmit.Size = new Size(128, 48);
             btnSubmit.TabIndex = 11;
             btnSubmit.Text = "Cập nhật";
             btnSubmit.Click += btnSubmit_Click;
@@ -249,21 +245,20 @@
             btnClose.FillColor = Color.Silver;
             btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = Color.Black;
-            btnClose.Location = new Point(447, 397);
-            btnClose.Margin = new Padding(3, 2, 3, 2);
+            btnClose.Location = new Point(511, 529);
             btnClose.Name = "btnClose";
             btnClose.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnClose.Size = new Size(86, 36);
+            btnClose.Size = new Size(98, 48);
             btnClose.TabIndex = 12;
             btnClose.Text = "Thoát";
             btnClose.Click += btnClose_Click;
             // 
             // SuaMonHoc
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
-            ClientSize = new Size(584, 461);
+            ClientSize = new Size(667, 615);
             Controls.Add(lblMaMonHoc);
             Controls.Add(txtMaMonHoc);
             Controls.Add(lblThongTinMonHoc);
@@ -277,7 +272,8 @@
             Controls.Add(tsTrangThai);
             Controls.Add(btnSubmit);
             Controls.Add(btnClose);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "SuaMonHoc";

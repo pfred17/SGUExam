@@ -13,7 +13,7 @@ namespace GUI.forms.MonHoc
 {
     public partial class SuaMonHoc : Form
     {
-        private readonly MonHocBLL monHocBLL = new MonHocBLL();
+        private readonly MonHocBLL _monHocBLL = new MonHocBLL();
         private long _maMonHoc;
         private MonHocDTO? currentMonHoc;
         public SuaMonHoc(long maMonHoc)
@@ -24,15 +24,15 @@ namespace GUI.forms.MonHoc
         }
         private void LoadData()
         {
-            currentMonHoc = monHocBLL.GetMonHocById(_maMonHoc);
+            currentMonHoc = _monHocBLL.GetMonHocById(_maMonHoc);
 
             if (currentMonHoc == null)
             {
                 MessageBox.Show("Không tìm thấy môn học!");
                 return;
             }
-            txtMaMonHoc.Text = currentMonHoc.MaMH.ToString();
-            txtTenMonHoc.Text = currentMonHoc.TenMH;
+            txtMaMonHoc.Text = currentMonHoc.MaMonHoc.ToString();
+            txtTenMonHoc.Text = currentMonHoc.TenMonHoc;
             txtSoTinChi.Text = currentMonHoc.SoTinChi.ToString();
             tsTrangThai.Checked = currentMonHoc.TrangThai == 1;
         }
@@ -43,50 +43,78 @@ namespace GUI.forms.MonHoc
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (currentMonHoc == null)
-            {
-                MessageBox.Show("Lỗi: Không tìm thấy thông tin môn học để cập nhật!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            txtTenMonHoc_Leave(sender, e);
-            txtSoTinChi_Leave(sender, e);
-
-            if (HasValidationErrors())
-            {
-                FocusFirstError();
-                return;
-            }
-
-            string newTenMonHoc = txtTenMonHoc.Text.Trim();
-            int newSoTinChi = int.Parse(txtSoTinChi.Text.Trim());
-            byte newTrangThai = tsTrangThai.Checked ? (byte)1 : (byte)0;
-
-            if (newTenMonHoc == currentMonHoc.TenMH &&
-                newSoTinChi == currentMonHoc.SoTinChi &&
-                newTrangThai == currentMonHoc.TrangThai)
-            {
-                MessageBox.Show("Bạn chưa thay đổi thông tin nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            currentMonHoc.TenMH = newTenMonHoc;
-            currentMonHoc.SoTinChi = newSoTinChi;
-            currentMonHoc.TrangThai = newTrangThai;
             try
             {
-                bool result = monHocBLL.UpdateMonHoc(currentMonHoc);
-
-                if (result)
+                if (currentMonHoc == null)
                 {
-                    MessageBox.Show("Cập nhật môn học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Lỗi: Không tìm thấy thông tin môn học để cập nhật!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
+                txtTenMonHoc_Leave(sender, e);
+                txtSoTinChi_Leave(sender, e);
+
+                if (HasValidationErrors())
+                {
+                    FocusFirstError();
+                    return;
+                }
+
+                string newTenMonHoc = txtTenMonHoc.Text.Trim();
+                int newSoTinChi = int.Parse(txtSoTinChi.Text.Trim());
+                int newTrangThai = tsTrangThai.Checked ? 1 : 0;
+
+                string oldTenMonHoc = currentMonHoc.TenMonHoc;
+                int oldSoTinChi = currentMonHoc.SoTinChi;
+                int oldTrangThai = currentMonHoc.TrangThai;
+
+                bool isReferenced = _monHocBLL.IsMonHocReferenced(currentMonHoc.MaMonHoc);
+
+                if (newTenMonHoc == oldTenMonHoc &&
+                    newSoTinChi == oldSoTinChi &&
+                    newTrangThai == oldTrangThai)
+                {
+                    MessageBox.Show("Bạn chưa thay đổi thông tin nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (isReferenced)
+                {
+                    if (newTenMonHoc != oldTenMonHoc || newSoTinChi != oldSoTinChi)
+                    {
+                        txtTenMonHoc.Text = oldTenMonHoc;
+                        txtSoTinChi.Text = oldSoTinChi.ToString();
+                        tsTrangThai.Checked = oldTrangThai == 1;
+                        MessageBox.Show("Môn học đang được sử dụng, không thể thay đổi thông tin!\nChỉ được phép cập nhật trạng thái.",
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (_monHocBLL.UpdateStatus(currentMonHoc.MaMonHoc, newTrangThai))
+                    {
+                        MessageBox.Show("Cập nhật trạng thái môn học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cập nhật trạng thái thất bại!", "Lỗi");
+                    }
+                    return;
+                }
+
+                currentMonHoc.TenMonHoc = newTenMonHoc;
+                currentMonHoc.SoTinChi = newSoTinChi;
+                currentMonHoc.TrangThai = newTrangThai;
+
+                if (_monHocBLL.UpdateMonHoc(currentMonHoc))
+                {
+                    MessageBox.Show("Cập nhật môn học thành công!", "Thông báo");
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Cập nhật thất bại. Vui lòng thử lại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Cập nhật thất bại!", "Lỗi");
                 }
             }
             catch (Exception ex)

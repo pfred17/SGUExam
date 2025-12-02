@@ -14,9 +14,7 @@ namespace GUI.forms.PhanCong
     public partial class ThemTheoGiangVien : UserControl
     {
         private readonly string _userId;
-        private readonly UserBLL _userBLL = new UserBLL();
         private readonly PhanCongBLL _phanCongBLL = new PhanCongBLL();
-        private readonly MonHocBLL _monHocBLL = new MonHocBLL();
 
         private BindingList<MonHocDTO> bindingList = new BindingList<MonHocDTO>();
         private Dictionary<long, bool> checkedState = new Dictionary<long, bool>();
@@ -59,7 +57,7 @@ namespace GUI.forms.PhanCong
 
         private void LoadComboBox()
         {
-            var listUser = _userBLL.GetAllUserByRoleExcluding(_userId);
+            var listUser = _phanCongBLL.GetAllUserByRoleExcluding(_userId);
             listUser.Insert(0, new UserDTO { MSSV = "", HoTen = "Chọn giảng viên cần phân công" });
 
             var displayList = listUser
@@ -80,12 +78,12 @@ namespace GUI.forms.PhanCong
             string keyword = txtSearch.Text.Trim();
             if (keyword == "Tìm kiếm môn học...") keyword = "";
 
-            totalRecords = _monHocBLL.GetTotalMonHoc(keyword);
+            totalRecords = _phanCongBLL.GetTotalMonHocForSelection(keyword);
             totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             if (totalPages == 0) totalPages = 1;
             if (pageCurrent > totalPages) pageCurrent = totalPages;
 
-            var data = _monHocBLL.GetMonHocPaged(pageCurrent, pageSize, keyword);
+            var data = _phanCongBLL.GetMonHocForSelection(pageCurrent, pageSize, keyword);
 
             bindingList.Clear();
 
@@ -98,8 +96,8 @@ namespace GUI.forms.PhanCong
             {
                 bindingList.Add(new MonHocDTO
                 {
-                    MaMH = -1,
-                    TenMH = "Không tìm thấy kết quả"
+                    MaMonHoc = -1,
+                    TenMonHoc = "Không tìm thấy kết quả"
                 });
             }
             // reload UI
@@ -254,13 +252,14 @@ namespace GUI.forms.PhanCong
             {
                 foreach (var maMH in selectedMaMH)
                 {
-                    var mh = _monHocBLL.GetMonHocById(maMH);
+                    var mh = _phanCongBLL.GetMonHocById(maMH);
                     if (mh != null)
                     {
                         _phanCongBLL.AddPhanCong(new PhanCongDTO
                         {
                             MaNguoiDung = maND,
-                            MaMonHoc = mh.MaMH
+                            MaMonHoc = mh.MaMonHoc,
+                            TrangThai = 1
                         });
                     }
                     checkedState[maMH] = false;

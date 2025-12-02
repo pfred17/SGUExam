@@ -25,7 +25,8 @@ namespace DAL
                     {
                         MaChuong = Convert.ToInt64(row["ma_chuong"]),
                         TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
-                        MaMonHoc = Convert.ToInt64(row["ma_mh"])
+                        MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                        TrangThai = Convert.ToInt32(row["trang_thai"])
                     });
                 }
                 return list;
@@ -41,14 +42,15 @@ namespace DAL
         public long AddChuong(ChuongDTO chuong, long maMonHoc)
         {
             string query = @"
-                INSERT INTO chuong (ten_chuong, ma_mh)
+                INSERT INTO chuong (ten_chuong, ma_mh, trang_thai)
                 OUTPUT INSERTED.ma_chuong
-                VALUES (@ten_chuong, @ma_mh)
+                VALUES (@ten_chuong, @ma_mh, @trang_thai)
             ";
 
             SqlParameter[] parameters = {
                 new SqlParameter("@ten_chuong", chuong.TenChuong),
-                new SqlParameter("@ma_mh", maMonHoc)
+                new SqlParameter("@ma_mh", maMonHoc),
+                new SqlParameter("@trang_thai", chuong.TrangThai)
             };
 
             object result = DatabaseHelper.ExecuteScalar(query, parameters);
@@ -59,39 +61,65 @@ namespace DAL
         {
             string query = @"
                 UPDATE chuong
-                SET ten_chuong = @ten_chuong
+                SET ten_chuong = @ten_chuong,
+                    trang_thai = @trang_thai
                 WHERE ma_chuong = @ma_chuong;
             ";
 
             SqlParameter[] parameters =
             {
-                new SqlParameter("@ma_chuong", chuong.MaChuong),
-                new SqlParameter("@ten_chuong", chuong.TenChuong),
+                new ("@ma_chuong", chuong.MaChuong),
+                new ("@ten_chuong", chuong.TenChuong),
+                new ("@trang_thai", chuong.TrangThai)
             };
 
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
-        public bool DeleteChuong(long maChuong)
+        public bool UpdateStatus(long maChuong, int trangThai)
         {
-            string query = @"DELETE FROM chuong WHERE ma_chuong = @ma_chuong";
+            string query = @"
+                UPDATE chuong
+                SET trang_thai = @trang_thai
+                WHERE ma_chuong = @ma_chuong;
+            ";
 
-            SqlParameter[] parameters =
-            {
-                new SqlParameter("@ma_chuong", maChuong)
+            SqlParameter[] parameters = {
+                new("@ma_chuong", maChuong),
+                new("@trang_thai", trangThai)
             };
 
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+        public int GetStatus(long maChuong)
+        {
+            string query = "SELECT trang_thai FROM chuong WHERE ma_chuong = @ma_chuong";
+            SqlParameter parameter = new("@ma_chuong", maChuong);
+            object result = DatabaseHelper.ExecuteScalar(query, parameter);
+            return Convert.ToInt32(result);
+        }
+        public bool DeleteChuong(long maChuong)
+        {
+            string query = @"
+                UPDATE chuong 
+                SET trang_thai = 0 
+                WHERE ma_chuong = @ma_chuong";
+
+            SqlParameter parameter = new("@ma_chuong", maChuong);
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameter);
             return rows > 0;
         }
         public bool IsChuongReferenced(long maChuong)
         {
             string query = @"
-                IF EXISTS (SELECT 1 FROM cau_hoi WHERE ma_chuong = @maChuong)
-                    OR EXISTS (SELECT 1 FROM de_thi_chuong WHERE ma_chuong = @maChuong)
-                SELECT 1 ELSE SELECT 0";
+                IF EXISTS (SELECT 1 FROM cau_hoi WHERE ma_chuong = @ma_chuong)
+                    OR EXISTS (SELECT 1 FROM de_thi_chuong WHERE ma_chuong = @ma_chuong)
+                SELECT 1 ELSE SELECT 0;
+            ";
 
-            SqlParameter parameter = new("@maChuong", maChuong);
+            SqlParameter parameter = new("@ma_chuong", maChuong);
             int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameter));
             return count > 0;
         }
@@ -116,8 +144,9 @@ namespace DAL
                 list.Add(new ChuongDTO
                 {
                     MaChuong = Convert.ToInt64(row["ma_chuong"]),
-                    TenChuong = Convert.ToString(row["ten_chuong"]),
-                    MaMonHoc = Convert.ToInt64(row["ma_mh"])
+                    TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]), 
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
             }
 

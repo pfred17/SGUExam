@@ -83,7 +83,8 @@ namespace GUI.modules
                 row.Cells["MaMonHoc"].Value = "";
                 row.Cells["SoTinChi"].Value = "";
                 row.Cells["TrangThai"].Value = "";
-
+                row.Cells["EditCol"].Value = null;
+                row.Cells["DeleteCol"].Value = null;
             }
 
             foreach (var mh in data)
@@ -91,10 +92,10 @@ namespace GUI.modules
                 int rowIndex = dgvMonHoc.Rows.Add();
                 var row = dgvMonHoc.Rows[rowIndex];
 
-                row.Cells["MaMonHoc"].Value = mh.MaMH;
-                row.Cells["TenMonHoc"].Value = mh.TenMH;
+                row.Cells["MaMonHoc"].Value = mh.MaMonHoc;
+                row.Cells["TenMonHoc"].Value = mh.TenMonHoc;
                 row.Cells["SoTinChi"].Value = mh.SoTinChi;
-                row.Cells["TrangThai"].Value = mh.TrangThai == 1 ? "Hoạt động" : "Chưa mở";
+                row.Cells["TrangThai"].Value = mh.TrangThai == 1 ? "Hoạt động" : "Đang khóa";
                 row.Cells["DetailCol"].Value = Properties.Resources.icon_detail;
                 row.Cells["EditCol"].Value = Properties.Resources.icon_edit;
                 row.Cells["DeleteCol"].Value = Properties.Resources.icon_delete;
@@ -158,13 +159,14 @@ namespace GUI.modules
 
             else if (col == "DeleteCol")
             {
-                if (_monHocBLL.IsMonHocReferenced(maMH))
+                if (_monHocBLL.GetStatus(maMH) == 0)
                 {
-                    MessageBox.Show($"Dữ liệu môn {tenMon} có liên quan đến thông tin khác. Không thể xóa.", "Cảnh báo");
+                    MessageBox.Show($"Môn học đã bị khóa.", "Thông báo!");
                     return;
                 }
+                if
+                   (MessageBox.Show($"Khóa môn học {tenMon}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
 
-                if (MessageBox.Show($"Xoá môn học {tenMon}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     _monHocBLL.DeleteMonHoc(maMH);
                     LoadData();

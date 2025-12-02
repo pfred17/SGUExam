@@ -32,7 +32,7 @@ namespace GUI.modules
 
             cboMonHoc.Items.Clear();
             cboMonHoc.Items.Add("Tất cả môn học");
-            cboMonHoc.Items.AddRange(_monHocBLL.GetAllMonHoc().Select(x => x.TenMH).ToArray());
+            cboMonHoc.Items.AddRange(_monHocBLL.GetAllMonHocByStatus(1).Select(x => x.TenMonHoc).ToArray());
             cboMonHoc.SelectedIndex = 0;
         }
 

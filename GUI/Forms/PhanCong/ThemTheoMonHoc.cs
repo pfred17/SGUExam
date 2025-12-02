@@ -14,8 +14,7 @@ namespace GUI.forms.PhanCong
 {
     public partial class ThemTheoMonHoc : UserControl
     {
-        private readonly UserBLL _userBLL = new UserBLL();
-        private readonly MonHocBLL _monHocBLL = new MonHocBLL();
+        private readonly string _userId;
         private readonly PhanCongBLL _phanCongBLL = new PhanCongBLL();
 
         private BindingList<UserDTO> bindingList = new BindingList<UserDTO>();
@@ -28,8 +27,9 @@ namespace GUI.forms.PhanCong
 
         private System.Threading.Timer? _debounceTimer;
         private const int DebounceDelay = 500;
-        public ThemTheoMonHoc()
+        public ThemTheoMonHoc(string userId)
         {
+            _userId = userId;
             InitializeComponent();
             SetupDataGridView();
             LoadComboBox();
@@ -88,13 +88,13 @@ namespace GUI.forms.PhanCong
         }
         private void LoadComboBox()
         {
-            var listMonHoc = _monHocBLL.GetAllMonHoc();
-            listMonHoc.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn môn học cần phân công" });
+            var listMonHoc = _phanCongBLL.GetAllMonHocByStatus(1);
+            listMonHoc.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn môn học cần phân công" });
             var displayList = listMonHoc
                 .Select(mh => new
                 {
-                    Text = mh.MaMH == 0 ? mh.TenMH : $"{mh.MaMH} - {mh.TenMH}",
-                    Value = mh.MaMH
+                    Text = mh.MaMonHoc == 0 ? mh.TenMonHoc : $"{mh.MaMonHoc} - {mh.TenMonHoc}",
+                    Value = mh.MaMonHoc
                 })
                 .ToList();
 
@@ -111,12 +111,12 @@ namespace GUI.forms.PhanCong
             string keyword = txtSearch.Text.Trim();
             if (keyword == "Tìm kiếm giảng viên...") keyword = "";
 
-            totalRecords = _userBLL.GetTotalUser(keyword);
+            totalRecords = _phanCongBLL.GetTotalUserForSelection(_userId, keyword);
             totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
             if (totalPages == 0) totalPages = 1;
             if (pageCurrent > totalPages) pageCurrent = totalPages;
 
-            var data = _userBLL.GetUserPaged(pageCurrent, pageSize, keyword);
+            var data = _phanCongBLL.GetUSerForSelection(pageCurrent, pageSize, _userId, keyword);
 
             bindingList.Clear();
 
@@ -275,12 +275,13 @@ namespace GUI.forms.PhanCong
             {
                 foreach(var userId in selectedUser)
                 {
-                    var user = _userBLL.GetUserById(userId);
+                    var user = _phanCongBLL.GetUserById(userId);
                     if (user != null)
                         _phanCongBLL.AddPhanCong(new PhanCongDTO
                         {
                             MaMonHoc = long.Parse(maMH),
                             MaNguoiDung = user.MSSV,
+                            TrangThai = 1
                         });
                     checkedState[user.MSSV] = false;
                 }
