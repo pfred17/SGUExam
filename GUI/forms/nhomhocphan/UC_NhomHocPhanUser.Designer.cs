@@ -34,7 +34,7 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             guna2TextBox1 = new Guna.UI2.WinForms.Guna2TextBox();
             guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            flpNhomHocPhan = new FlowLayoutPanel();
             SuspendLayout();
             // 
             // guna2TextBox1
@@ -82,24 +82,25 @@
             guna2Button1.Size = new Size(200, 45);
             guna2Button1.TabIndex = 1;
             guna2Button1.Text = "THAM GIA NHÓM";
+            guna2Button1.Click += guna2Button1_Click;
             // 
-            // flowLayoutPanel1
+            // flpNhomHocPhan
             // 
-            flowLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            flowLayoutPanel1.AutoScroll = true;
-            flowLayoutPanel1.BackColor = Color.WhiteSmoke;
-            flowLayoutPanel1.Location = new Point(30, 95);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Padding = new Padding(10);
-            flowLayoutPanel1.Size = new Size(870, 530);
-            flowLayoutPanel1.TabIndex = 2;
+            flpNhomHocPhan.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            flpNhomHocPhan.AutoScroll = true;
+            flpNhomHocPhan.BackColor = Color.White;
+            flpNhomHocPhan.Location = new Point(30, 95);
+            flpNhomHocPhan.Name = "flpNhomHocPhan";
+            flpNhomHocPhan.Padding = new Padding(10);
+            flpNhomHocPhan.Size = new Size(870, 530);
+            flpNhomHocPhan.TabIndex = 2;
             // 
             // UC_NhomHocPhanUser
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            Controls.Add(flowLayoutPanel1);
+            BackColor = Color.WhiteSmoke;
+            Controls.Add(flpNhomHocPhan);
             Controls.Add(guna2Button1);
             Controls.Add(guna2TextBox1);
             Name = "UC_NhomHocPhanUser";
@@ -112,6 +113,6 @@
 
         private Guna.UI2.WinForms.Guna2TextBox guna2TextBox1;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flpNhomHocPhan;
     }
 }

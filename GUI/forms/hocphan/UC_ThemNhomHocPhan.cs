@@ -44,8 +44,8 @@ namespace GUI.modules
                 // Gộp ma_mh + ten_mh thành 1 chuỗi để hiển thị
                 var dsHienThi = dsMonHoc.Select(mh => new
                 {
-                    MaMonHoc = mh.MaMonHoc,
-                    TenHienThi = mh.MaMonHoc + " - " + mh.TenMonHoc
+                    MaMonHoc = mh.MaMH,
+                    TenHienThi = mh.MaMH + " - " + mh.TenMH
                 }).ToList();
 
                 cbMonHoc.DataSource = dsHienThi;
@@ -127,7 +127,7 @@ namespace GUI.modules
 
                 NhomHocPhanDTO nhom = new NhomHocPhanDTO
                 {
-                    MaMH = Convert.ToInt64(cbMonHoc.SelectedValue),
+                    MaPc = Convert.ToInt64(cbMonHoc.SelectedValue),
                     TenNhom = tbTenNhom.Text.Trim(),
                     GhiChu = tbGhiChu.Text.Trim(),
                     HocKy = cbHocKy.Text,
@@ -246,7 +246,7 @@ namespace GUI.modules
             // Gán dữ liệu lên form
             tbTenNhom.Text = nhom.TenNhom;
             tbGhiChu.Text = nhom.GhiChu;
-            cbMonHoc.SelectedValue = nhom.MaMH;
+            cbMonHoc.SelectedValue = nhom.MaPc;
             cbHocKy.Text = nhom.HocKy;
             cbNamHoc.Text = nhom.NamHoc;
         }

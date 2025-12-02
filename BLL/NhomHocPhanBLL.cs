@@ -31,11 +31,11 @@ namespace BLL
             var all = dal.GetAll();
 
             // Cache tên môn để tránh gọi DB nhiều lần
-            var monCache = all.Select(x => x.MaMH).Distinct()
+            var monCache = all.Select(x => x.MaPc).Distinct()
                 .ToDictionary(id => id, id =>
                 {
-                    var m = monDal.GetById(id);
-                    return m?.TenMonHoc ?? string.Empty;
+                    var m = monDal.GetMonHocById(id);
+                    return m?.TenMH ?? string.Empty;
                 });
 
             var filtered = all.Where(n =>
@@ -43,7 +43,7 @@ namespace BLL
                 string tenNhom = RemoveDiacritics(n.TenNhom ?? string.Empty).ToUpperInvariant();
                 string hocKy = RemoveDiacritics(n.HocKy ?? string.Empty).ToUpperInvariant();
                 string namHoc = RemoveDiacritics(n.NamHoc ?? string.Empty).ToUpperInvariant();
-                string tenMon = monCache.ContainsKey(n.MaMH) ? RemoveDiacritics(monCache[n.MaMH] ?? string.Empty).ToUpperInvariant() : string.Empty;
+                string tenMon = monCache.ContainsKey(n.MaPc) ? RemoveDiacritics(monCache[n.MaPc] ?? string.Empty).ToUpperInvariant() : string.Empty;
 
                 return tenNhom.Contains(q) || hocKy.Contains(q) || namHoc.Contains(q) || tenMon.Contains(q);
             }).ToList();
@@ -124,7 +124,15 @@ namespace BLL
 
             return all;
         }
-
+        // bll của bảo phan
+        public List<NhomHocPhanDTO> GetNhomHocPhanByUserId(string userId)
+        {
+            return dal.GetNhomHocPhanByUserId(userId);
+        }
+        public string GetTenMonHocByMaNhom(long maNhom)
+        {
+            return dal.GetTenMonHocByMaNhom(maNhom);
+        }
 
     }
 }

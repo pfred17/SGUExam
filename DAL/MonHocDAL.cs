@@ -165,5 +165,6 @@ namespace DAL
             SqlParameter parameters = new("@keyword", keyword);
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
+        
     }
 }

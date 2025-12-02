@@ -319,5 +319,40 @@ namespace DAL
             SqlParameter parameters = new("@keyword", keyword);
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
+
+        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+        {
+
+            if (string.IsNullOrWhiteSpace(mssv)) return null;
+
+            string cleanMssv = mssv.Trim();
+
+            string query = @"
+                SELECT ma_nd, ten_dang_nhap, mat_khau, ho_ten, email, loai_nd, gioi_tinh, trang_thai
+                FROM nguoi_dung 
+                WHERE TRIM(ma_nd) = @MSSV";
+
+            if (!includeInactive)
+                query += " AND trang_thai = 1";
+
+            var param = new SqlParameter("@MSSV", cleanMssv);
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
+
+            if (dt.Rows.Count == 0) return null;
+
+            DataRow r = dt.Rows[0];
+            return new UserDTO
+            {
+                MSSV = r["ma_nd"].ToString().Trim(),
+                TenDangNhap = r["ten_dang_nhap"].ToString(),
+                MatKhau = r["mat_khau"].ToString(),
+                HoTen = r["ho_ten"].ToString(),
+                Email = r["email"].ToString(),
+                Role = r["loai_nd"].ToString(),
+                GioiTinh = r["gioi_tinh"] == DBNull.Value ? 1 : Convert.ToInt32(r["gioi_tinh"]),
+                TrangThai = r["trang_thai"] == DBNull.Value ? 1 : Convert.ToInt32(r["trang_thai"])
+            };
+        }
     }
 }

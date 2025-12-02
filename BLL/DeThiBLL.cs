@@ -32,5 +32,17 @@ namespace BLL
         {
             return _dal.GetSoLuongCauHoiTheoDe(maDe);
         }
+        // dal của bảo phan
+        public List <DeThiDTO> GetDeKiemTraByMaNhom (long maNhom)
+        {
+            return _dal.GetDeKiemTraByMaNhom(maNhom);
+        }
+
+        public List<DeThiDTO> GetDeLuyenTapByMaNhom(long maNhom)
+        {
+            return _dal.GetDeLuyenTapByMaNhom(maNhom);
+        }
+
+
     }
 }

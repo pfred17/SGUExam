@@ -56,7 +56,7 @@ namespace GUI
             return new List<ModuleItem>
             {
                 new ModuleItem{ Id=0, Name="TongQuan", DisplayName="Tổng quan", Group="HỆ THỐNG", Icon=Properties.Resources.icon_tongquan, UserControlType=typeof(UC_TongQuan) },
-                new ModuleItem{ Id=1, Name="NhomHocPhan", DisplayName="Nhóm học phần", Group="QUẢN LÝ", Icon=Properties.Resources.icon_nhomhocphan, UserControlType=typeof(UC_NhomHocPhanUser) },
+                new ModuleItem{ Id=1, Name="NhomHocPhan", DisplayName="Nhóm học phần", Group="QUẢN LÝ", Icon=Properties.Resources.icon_nhomhocphan, UserControlType=typeof(UC_NhomHocPhan) },
                 new ModuleItem{ Id=2, Name="CauHoi", DisplayName="Câu hỏi", Group="QUẢN LÝ", Icon=Properties.Resources.icon_cauhoi, UserControlType=typeof(UC_CauHoi) },
                 new ModuleItem{ Id=3, Name="MonHoc", DisplayName="Môn học", Group="QUẢN LÝ", Icon=Properties.Resources.icon_monhoc, UserControlType=typeof(UC_MonHoc) },
                 new ModuleItem{ Id=4, Name="PhanCong", DisplayName="Phân công", Group="QUẢN LÝ", Icon=Properties.Resources.icon_phancong, UserControlType=typeof(UC_PhanCong) },
@@ -64,7 +64,10 @@ namespace GUI
                 new ModuleItem{ Id=6, Name="DiemDanh", DisplayName="Điểm danh", Group="QUẢN LÝ", Icon=Properties.Resources.icon_diemdanh, UserControlType=typeof(UC_DiemDanh) },
                 new ModuleItem{ Id=7, Name="NhomQuyen", DisplayName="Nhóm quyền", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_phanquyencaidat, UserControlType=typeof(UC_NhomQuyen) },
                 new ModuleItem{ Id=8, Name="NguoiDung", DisplayName="Người dùng", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_nhomnguoidung, UserControlType=typeof(UC_NguoiDung) },
-                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Đề thi", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
+                // Thuộc về sinh viên
+                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) },
+                // UC_HocPhanUser của bảo đang làm
+                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Học phần", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_nhomhocphan, UserControlType=typeof(UC_NhomHocPhanUser) }
             };
         }
 
