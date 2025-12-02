@@ -63,7 +63,7 @@
             tableNguoiDung.AllowUserToAddRows = false;
             dataGridViewCellStyle1.BackColor = Color.White;
             tableNguoiDung.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(242, 245, 250);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle2.ForeColor = Color.Gray;
@@ -74,7 +74,7 @@
             tableNguoiDung.ColumnHeadersHeight = 50;
             tableNguoiDung.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             tableNguoiDung.Columns.AddRange(new DataGridViewColumn[] { MaNguoiDung, HoVaTen, Email, Role, TrangThai, editCol, deleteCol });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);

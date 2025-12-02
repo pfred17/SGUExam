@@ -1,6 +1,7 @@
 ﻿using BLL;
 using DAL;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DTO;
 using GUI.forms.nguoidung;
 using Guna.UI2.WinForms;
 
@@ -11,6 +12,7 @@ namespace GUI.modules
 
         private readonly string _userId;
         private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+        private readonly RoleBLL _roleBLL = new RoleBLL();
         private readonly UserBLL _userBLL = new UserBLL();
 
         private System.Threading.Timer? _debounceTimer;
@@ -30,6 +32,7 @@ namespace GUI.modules
         private void UC_NguoiDung_Load(object sender, EventArgs e)
         {
             loadPermission();
+            loadRoleData();
             loadDataForTable();
         }
 
@@ -39,6 +42,19 @@ namespace GUI.modules
             //btnEdit.Visible = _permissionBLL.HasPermission(_userId, 8, "Sửa");
             //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
             //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
+        }
+
+        public void loadRoleData()
+        {
+            List<String> roles = new List<String>();    
+            List<RoleDTO> roleDTOs = RoleDAL.getAllRole();
+
+            foreach(var role in roleDTOs)
+            {
+                roles.Add(role.TenNhomQuyen);
+            }
+
+            cbbFilter.DataSource = roles;
         }
 
         private void loadDataForTable()
@@ -60,12 +76,6 @@ namespace GUI.modules
             tableNguoiDung.Rows.Clear();
             foreach (var user in users)
             {
-                Guna2Button btnEdit = new Guna2Button
-                {
-                    Tag = user.MSSV,
-                    Image = Properties.Resources.icon_dekiemtra,
-                    Size = new Size(30, 30),
-                };
 
                 int rowIndex = tableNguoiDung.Rows.Add(
                     user.MSSV, user.HoTen,

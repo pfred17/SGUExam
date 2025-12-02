@@ -1,4 +1,5 @@
 ﻿using BLL;
+using BLL.Validator;
 using DTO;
 using Guna.UI2.WinForms;
 using System;
@@ -21,6 +22,7 @@ namespace GUI
         public FormLogin()
         {
             InitializeComponent();
+            this.AcceptButton = btnLogin;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -28,12 +30,18 @@ namespace GUI
             string username = txtMssv.Text.Trim();
             string password = txtPassword.Text.Trim();
 
-            //UserDTO user = userBLL.Login(username, password);
-            UserDTO user = userBLL.Login("admin", "123456");
+            UserDTO user = userBLL.Login(username, password);
+            //UserDTO user = userBLL.Login("canh", "123456");
 
             if (user == null)
             {
                 MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!");
+                return;
+            }
+
+            if (user.TrangThai == 0)
+            {
+                MessageBox.Show("Tài khoản đã bị khóa!");
                 return;
             }
 
@@ -203,7 +211,21 @@ namespace GUI
 
         private void txtMssv_TextChanged(object sender, EventArgs e)
         {
+            //lbErrorMSSV.Visible = false;
+        }
 
+        private void txtMssv_Leave(object sender, EventArgs e)
+        {
+            //if (!InputValidator.IsValidMSSV(txtMssv.Text))
+            //{
+            //    lbErrorMSSV.Text = "MSSV phải có đúng 10 ký tự!";
+            //    lbErrorMSSV.Visible = true;
+            //}
+            //else
+            //{
+            //    lbErrorMSSV.Text = "";
+            //    lbErrorMSSV.Visible = false;
+            //}
         }
     }
 }

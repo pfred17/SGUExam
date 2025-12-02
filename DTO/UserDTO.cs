@@ -7,7 +7,7 @@
         public string MatKhau { get; set; }
         public string HoTen { get; set; }
         public string Email { get; set; }
-        public string Role { get; set; }
+        public int Role { get; set; }
         public int GioiTinh { get; set; }
         public int TrangThai { get; set; }
     }

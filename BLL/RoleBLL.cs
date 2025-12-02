@@ -11,5 +11,10 @@ namespace BLL
         {
             return RoleDAL.getAllRole();
         }
+
+        public List<RoleDTO> getAllRolePaged(int page, int pageSize, string? keyword = null)
+        {
+            return roleDAL.getAllRolePaged(page, pageSize, keyword);
+        }
     }
 }
