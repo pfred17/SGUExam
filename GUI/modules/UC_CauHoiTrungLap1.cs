@@ -27,12 +27,11 @@ namespace GUI.modules
         private void LoadMonHoc()
         {
             var list = _monHocBLL.GetAllMonHoc();
-            list.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn tất cả môn học" });
+            list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
 
-            // Gán DataSource 
             cboMonHoc.DataSource = list;
-            cboMonHoc.DisplayMember = "TenMH"; // tên hiển thị cb
-            cboMonHoc.ValueMember = "MaMH";    // giá trị ẩn
+            cboMonHoc.DisplayMember = "TenMonHoc"; 
+            cboMonHoc.ValueMember = "MaMonHoc";  
             // Reset chọn item đầu tiên (Chọn tất cả môn học)
             cboMonHoc.SelectedIndex = 0;
         }
@@ -43,7 +42,7 @@ namespace GUI.modules
             var list = _cauHoiBLL.LayCauHoiTrungLap();
 
             // Lấy môn học đã chọn
-            long maMH = cboMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMH : 0;
+            long maMH = cboMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMonHoc : 0;
 
             // Lọc câu theo môn học nếu có chọn
             if (maMH > 0)

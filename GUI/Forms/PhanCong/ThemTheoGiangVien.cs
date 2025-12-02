@@ -234,7 +234,7 @@ namespace GUI.forms.PhanCong
                     else
                     {
                         filteredList = listMonHoc
-                            .Where(mh => mh.TenMH.ToLower().Contains(keyword))
+                            .Where(mh => mh.TenMonHoc.ToLower().Contains(keyword))
                             .ToList();
                     }
                     pageNumber = 1;
@@ -270,7 +270,7 @@ namespace GUI.forms.PhanCong
             string maND = cbxGiangVien.SelectedValue.ToString();
 
             var sourceList = filteredList ?? listMonHoc;
-            var selectedMonHoc = sourceList.Where(mh => checkedState.ContainsKey(mh.MaMH) && checkedState[mh.MaMH]).ToList();
+            var selectedMonHoc = sourceList.Where(mh => checkedState.ContainsKey(mh.MaMonHoc) && checkedState[mh.MaMonHoc]).ToList();
 
             if (selectedMonHoc.Count == 0)
             {
@@ -284,7 +284,7 @@ namespace GUI.forms.PhanCong
                     var phanCong = new PhanCongDTO
                     {
                         MaNguoiDung = maND,
-                        MaMonHoc = mh.MaMH,
+                        MaMonHoc = mh.MaMonHoc,
                     };
                     _phanCongBLL.AddPhanCong(phanCong);
                 }
@@ -292,7 +292,7 @@ namespace GUI.forms.PhanCong
                 MessageBox.Show($"Đã phân công {selectedMonHoc.Count} môn học cho giảng viên {cbxGiangVien.Text} thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 foreach (var mh in selectedMonHoc)
-                    checkedState[mh.MaMH] = false;
+                    checkedState[mh.MaMonHoc] = false;
                 filteredList = null;
                 txtSearch.Text = "Tìm kiếm môn học...";
                 LoadData();

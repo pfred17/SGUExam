@@ -104,15 +104,15 @@ namespace GUI.forms.PhanCong
             listMonHoc = _monHocBLL.GetAllMonHoc();
             MonHocDTO defaultMonHoc = new MonHocDTO
             {
-                MaMH = 0,
-                TenMH = "Chọn môn học cần phân công"
+                MaMonHoc = 0,
+                TenMonHoc = "Chọn môn học cần phân công"
             };
             listMonHoc.Insert(0, defaultMonHoc);
             var displayList = listMonHoc
                 .Select(mh => new
                 {
-                    Text = mh.MaMH == 0 ? mh.TenMH : $"{mh.MaMH} - {mh.TenMH}",
-                    Value = mh.MaMH
+                    Text = mh.MaMonHoc == 0 ? mh.TenMonHoc : $"{mh.MaMonHoc} - {mh.TenMonHoc}",
+                    Value = mh.MaMonHoc
                 })
                 .ToList();
             cbxMonHoc.DataSource = displayList;

@@ -50,8 +50,8 @@ namespace GUI.forms.PhanCong
             var displayList = listMonHoc
                 .Select(mh => new
                 {
-                    Text = mh.MaMH == 0 ? mh.TenMH : $"{mh.MaMH} - {mh.TenMH}",
-                    Value = mh.MaMH
+                    Text = mh.MaMonHoc == 0 ? mh.TenMonHoc : $"{mh.MaMonHoc} - {mh.TenMonHoc}",
+                    Value = mh.MaMonHoc
                 })
                 .ToList();
             cbxMonHoc.DataSource = displayList;

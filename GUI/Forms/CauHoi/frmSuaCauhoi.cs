@@ -39,12 +39,12 @@ namespace GUI
         {
             var monList = _monHocBLL.GetAllMonHoc();
             cbMonHoc.DataSource = new List<MonHocDTO>(monList);
-            cbMonHoc.DisplayMember = "TenMH";
-            cbMonHoc.ValueMember = "MaMH";
+            cbMonHoc.DisplayMember = "TenMonHoc";
+            cbMonHoc.ValueMember = "MaMonHoc";
 
             cbMonHocFile.DataSource = new List<MonHocDTO>(monList);
-            cbMonHocFile.DisplayMember = "TenMH";
-            cbMonHocFile.ValueMember = "MaMH";
+            cbMonHocFile.DisplayMember = "TenMonHoc";
+            cbMonHocFile.ValueMember = "MaMonHoc";
 
             LoadDoKhoToCombo(cbDoKho);
         }
@@ -99,7 +99,7 @@ namespace GUI
 
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMH);
+            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
         }
 
         private void CbChuongFile_SelectedIndexChanged(object? sender, EventArgs e)
@@ -286,6 +286,7 @@ namespace GUI
             pnlDapAnContainer.Controls.Clear();
             foreach (var dto in _dapAnList.AsEnumerable().Reverse())
                 AddAnswerSummary(dto); // AddAnswerSummary là hàm tạo UI cho mỗi đáp án
+            btnSuaCauHoi.Enabled = (_dapAnList.Count == 4 && _dapAnList.Any(d => d.Dung));
         }
 
         // Lưu câu hỏi -> gọi BLL
@@ -301,7 +302,7 @@ namespace GUI
 
             try
             {
-                _cauHoiBLL.CapNhat(_maCauHoi,maChuong, noiDung, doKho, _dapAnList);
+                _cauHoiBLL.CapNhat(_maCauHoi, maChuong, noiDung, doKho, _dapAnList);
                 MessageBox.Show($"Sữa câu hỏi thành công (ID: {_maCauHoi})", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();

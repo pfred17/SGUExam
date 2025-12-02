@@ -1,101 +1,80 @@
 ﻿using DTO;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Data;
 
 namespace DAL
 {
     public class CauHoiDAL
     {
-        private readonly DapAnDAL _dapAnDAL = new DapAnDAL();
-
-        public List<CauHoiDTO> GetAllForDisplay(long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
+        public List<CauHoiDTO> GetAllForDisplay()
         {
             var list = new List<CauHoiDTO>();
             string query = @"
-                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong 
-                FROM cau_hoi ch
-                JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
-                JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
-                WHERE ch.trang_thai = 1
-                ORDER BY ch.ma_cau_hoi ASC";
+            SELECT ch.ma_cau_hoi, ch.noi_dung, ch.do_kho,cg.ma_chuong, mh.ma_mh, mh.ten_mh
+            FROM cau_hoi ch
+            JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
+            JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
+            WHERE ch.trang_thai = 1
+            ORDER BY ch.ma_cau_hoi ASC";
 
             var dt = DatabaseHelper.ExecuteQuery(query);
-            foreach (System.Data.DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 list.Add(new CauHoiDTO
                 {
-                    MaCauHoi = (long)row["ma_cau_hoi"],
-                    NoiDung = (string)row["noi_dung"],
-                    DoKho = (string)row["do_kho"],
-                    MaMonHoc = (long)row["ma_mh"],
-                    MaChuong = (long)row["ma_chuong"],        
-                    TenMonHoc = (string)row["ten_mh"],
+                    MaCauHoi = Convert.ToInt64(row["ma_cau_hoi"]),
+                    NoiDung = row["noi_dung"].ToString(),
+                    DoKho = row["do_kho"].ToString(),
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                    MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                    TenMonHoc = row["ten_mh"].ToString()
                 });
             }
+
             return list;
         }
         public CauHoiDTO? GetById(long maCauHoi)
         {
             string query = @"
-                SELECT ch.*, cg.ma_mh, mh.ten_mh, cg.ten_chuong
-                FROM cau_hoi ch
-                JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
-                JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
-                WHERE ch.ma_cau_hoi = @MaCH";
+            SELECT ch.*, cg.ma_mh, mh.ten_mh
+            FROM cau_hoi ch
+            JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
+            JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
+            WHERE ch.ma_cau_hoi = @MaCH";
 
             var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@MaCH", maCauHoi));
-            if (dt.Rows.Count > 0)
+
+            if (dt.Rows.Count == 0) return null;
+
+            var row = dt.Rows[0];
+            return new CauHoiDTO
             {
-                var row = dt.Rows[0];
-                return new CauHoiDTO
-                {
-                    MaCauHoi = Convert.ToInt64(row["ma_cau_hoi"]),
-                    MaChuong = Convert.ToInt64(row["ma_chuong"]),
-                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
-                    NoiDung = row["noi_dung"]?.ToString() ?? "",
-                    DoKho = row["do_kho"]?.ToString() ?? "",
-                    TenMonHoc = row["ten_mh"]?.ToString() ?? "",
-                };
-            }
-            return null;
+                MaCauHoi = Convert.ToInt64(row["ma_cau_hoi"]),
+                MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                NoiDung = row["noi_dung"].ToString(),
+                DoKho = row["do_kho"].ToString(),
+                TenMonHoc = row["ten_mh"].ToString(),
+            };
         }
 
+
+       
         public long ThemMoi(long maChuong, string noiDung, string doKho, List<DapAnDTO> dapAnList)
         {
-            using var conn = DatabaseHelper.GetConnection();
-            conn.Open();
-            using var tran = conn.BeginTransaction(); // BeginTransaction là bắt đầu một giao dịch
-            try
-            {
-                string insertCH = @"INSERT INTO cau_hoi (ma_chuong, noi_dung, do_kho, trang_thai)
-                                    VALUES (@MaChuong, @NoiDung, @DoKho, 1);
-                                    SELECT SCOPE_IDENTITY();";
+            string query = @"
+            INSERT INTO cau_hoi (ma_chuong, noi_dung, do_kho, trang_thai)
+            VALUES (@c, @n, @d, 1);
+            SELECT SCOPE_IDENTITY();";
 
-                var cmd = new SqlCommand(insertCH, conn, tran);
-                cmd.Parameters.AddWithValue("@MaChuong", maChuong);
-                cmd.Parameters.AddWithValue("@NoiDung", noiDung);
-                cmd.Parameters.AddWithValue("@DoKho", doKho);
-                long maCauHoi = Convert.ToInt64(cmd.ExecuteScalar());
+            object result = DatabaseHelper.ExecuteScalar(query,
+                new SqlParameter("@c", maChuong),
+                new SqlParameter("@n", noiDung),
+                new SqlParameter("@d", doKho)
+            );
 
-                // thêm đáp án cho câu hỏi vừa tạo dùng transaction
-                string insertDA = "INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung) VALUES (@MaCH, @NoiDung, @Dung)";
-                foreach (var da in dapAnList)
-                {
-                    var cmdDA = new SqlCommand(insertDA, conn, tran);
-                    cmdDA.Parameters.AddWithValue("@MaCH", maCauHoi);
-                    cmdDA.Parameters.AddWithValue("@NoiDung", da.NoiDung);
-                    cmdDA.Parameters.AddWithValue("@Dung", da.Dung ? 1 : 0);
-                    cmdDA.ExecuteNonQuery();
-                }
-
-                tran.Commit(); // Nếu tất cả các lệnh trên thành công, commit transaction
-                return maCauHoi;
-            }
-            catch
-            {
-                tran.Rollback();
-                throw;
-            }
+            return Convert.ToInt64(result);
         }
 
         public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> list)
@@ -146,20 +125,21 @@ namespace DAL
                 }
             }
         }
-
-        public void Xoa(long maCauHoi) // Xóa mềm
+        public void Xoa(long maCauHoi)
         {
             string query = "UPDATE cau_hoi SET trang_thai=0 WHERE ma_cau_hoi=@MaCH";
-            var param = new SqlParameter("@MaCH", maCauHoi);
-            DatabaseHelper.ExecuteNonQuery(query, param);
+            DatabaseHelper.ExecuteNonQuery(query, new SqlParameter("@MaCH", maCauHoi));
         }
 
-        public List<CauHoiDTO> GetAllForDisplayTrungLap(long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
+
+        public List<CauHoiDTO> GetAllForDisplayTrungLap()
         {
             var list = new List<CauHoiDTO>();
+
             string query = @"
-                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong,
-                    MIN(nd.ho_ten) AS TacGia
+                SELECT ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh,
+                       ch.do_kho, cg.ma_chuong,
+                       MIN(nd.ho_ten) AS TacGia
                 FROM cau_hoi ch
                 JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
                 JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
@@ -167,23 +147,68 @@ namespace DAL
                 LEFT JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
                 WHERE ch.trang_thai = 1
                 GROUP BY ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong
-                ORDER BY ch.ma_cau_hoi;";
+                ORDER BY ch.ma_cau_hoi";
 
             var dt = DatabaseHelper.ExecuteQuery(query);
-            foreach (System.Data.DataRow row in dt.Rows)
+
+            foreach (DataRow row in dt.Rows)
             {
                 list.Add(new CauHoiDTO
                 {
                     MaCauHoi = (long)row["ma_cau_hoi"],
-                    NoiDung = (string)row["noi_dung"],
-                    DoKho = (string)row["do_kho"],
+                    NoiDung = row["noi_dung"].ToString(),
+                    DoKho = row["do_kho"].ToString(),
                     MaMonHoc = (long)row["ma_mh"],
                     MaChuong = (long)row["ma_chuong"],
-                    TenMonHoc = (string)row["ten_mh"],
-                    TacGia = (string)row["TacGia"]
+                    TenMonHoc = row["ten_mh"].ToString(),
+                    TacGia = row["TacGia"].ToString()
                 });
             }
             return list;
+        }
+
+        public List<CauHoiDTO> LayThongKeDoKho(long maMonHoc)
+        {
+            string query = @"
+                        WITH ThongKe AS (
+                SELECT ct.ma_cau_hoi,
+                       SUM(CASE WHEN da.dung = 0 THEN 1 ELSE 0 END) AS SoLanSai,
+                       COUNT(*) AS SoLuotLam
+                FROM bai_lam_chi_tiet ct
+                JOIN dap_an da ON ct.ma_dap_an_chon = da.ma_dap_an
+                GROUP BY ct.ma_cau_hoi
+                )
+                SELECT ch.ma_cau_hoi, ch.noi_dung, ch.do_kho,
+                       ISNULL(tk.SoLuotLam, 0) AS SoLuotLam,
+                       ISNULL(tk.SoLanSai, 0) AS SoLanSai,
+                       CASE WHEN ISNULL(tk.SoLuotLam, 0) = 0 THEN 0
+                            ELSE CAST(ISNULL(tk.SoLanSai, 0) AS float) / ISNULL(tk.SoLuotLam, 0)
+                       END AS TyLeSai
+                FROM cau_hoi ch
+                JOIN chuong cg ON ch.ma_chuong = cg.ma_chuong
+                JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
+                LEFT JOIN ThongKe tk ON ch.ma_cau_hoi = tk.ma_cau_hoi
+                WHERE ch.trang_thai = 1 AND (@MaMH = 0 OR mh.ma_mh = @MaMH)
+                ORDER BY ch.ma_cau_hoi";
+
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@MaMH", maMonHoc));
+
+            return dt.AsEnumerable().Select(row => new CauHoiDTO
+            {
+                MaCauHoi = Convert.ToInt64(row["ma_cau_hoi"]),
+                NoiDung = row["noi_dung"].ToString(),
+                DoKho = row["do_kho"].ToString(),
+                SoLuotLam = Convert.ToInt32(row["SoLuotLam"]),
+                TyLeSai = Convert.ToDouble(row["TyLeSai"])
+            }).ToList();
+        }
+
+        public void CapNhatDoKho(long maCauHoi, string doKhoMoi)
+        {
+            string query = "UPDATE cau_hoi SET do_kho=@d WHERE ma_cau_hoi=@id";
+            DatabaseHelper.ExecuteNonQuery(query,
+                new SqlParameter("@d", doKhoMoi),
+                new SqlParameter("@id", maCauHoi));
         }
     }
 }

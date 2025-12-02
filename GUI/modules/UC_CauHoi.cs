@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
+using GUI.Forms.CauHoi;
 
 namespace GUI.modules
 {
@@ -31,7 +32,6 @@ namespace GUI.modules
         {
             _userId = userId;
             InitializeComponent();
-            // Gán event
             LoadMonHoc();
             LoadDoKho();
             LoadData(1);
@@ -41,8 +41,8 @@ namespace GUI.modules
         private void LoadMonHoc()
         {
             var list = _monHocBLL.GetAllMonHoc();
-            list.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn tất cả môn học" });
-            SetComboBoxData(cbMonHoc, list, "TenMH", "MaMH", cbMonHoc_SelectedIndexChanged);
+            list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
+            SetComboBoxData(cbMonHoc, list, "TenMonHoc", "MaMonHoc", cbMonHoc_SelectedIndexChanged);
         }
 
         private void LoadDoKho()
@@ -57,7 +57,6 @@ namespace GUI.modules
             var list = new List<ChuongDTO> { new ChuongDTO { MaChuong = 0, TenChuong = "Chọn tất cả chương" } };
             if (maMH > 0)
                 list.AddRange(_chuongBLL.GetChuongByMonHoc(maMH));
-
             SetComboBoxData(cbChuong, list, "TenChuong", "MaChuong", cbChuong_SelectedIndexChanged);
         }
 
@@ -65,16 +64,16 @@ namespace GUI.modules
         {
             combo.SelectedIndexChanged -= eventHandler;  // Tạm thời bỏ event để tránh gọi LoadData thừa khi gán DataSource
             combo.DataSource = list;                     // Gán danh sách dữ liệu vào ComboBox
-            combo.DisplayMember = displayMember;         // Thuộc tính hiển thị trên ComboBox (vd: "TenMH")
-            combo.ValueMember = valueMember;             // Thuộc tính giá trị ẩn (vd: "MaMH")
-            combo.SelectedIndex = 0;                     // Mặc định chọn phần tử đầu tiên
+            combo.DisplayMember = displayMember;      
+            combo.ValueMember = valueMember;           
+            combo.SelectedIndex = 0;          
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
         private void LoadData(int? page = null)
         {
             CurrentPage = Math.Max(1, page ?? CurrentPage);
 
-            var maMH = cbMonHoc.SelectedItem is MonHocDTO m && m.MaMH > 0 ? m.MaMH : 0;
+            var maMH = cbMonHoc.SelectedItem is MonHocDTO m && m.MaMonHoc > 0 ? m.MaMonHoc : 0;
             var maCh = cbChuong.SelectedItem is ChuongDTO c && c.MaChuong > 0 ? c.MaChuong : 0;
             var doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text;
             var keyword = txtTimKiem.Text == PLACEHOLDER ? "" : txtTimKiem.Text.Trim();
@@ -168,7 +167,7 @@ namespace GUI.modules
         private void cbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cbMonHoc.SelectedItem is MonHocDTO monHoc)
-                LoadChuongTheoMonHoc(monHoc.MaMH);
+                LoadChuongTheoMonHoc(monHoc.MaMonHoc);
             LoadData(1);
         }
 
@@ -195,8 +194,9 @@ namespace GUI.modules
 
         private void btnTuDieuChinh_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Chức năng này đang phát triển...", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var frm = new frmDieuChinhDoKho();
+            if(frm.ShowDialog()== DialogResult.OK)
+                LoadData();
         }
 
         private void dgvCauHoi_CellContentClick(object? sender, DataGridViewCellEventArgs e)
@@ -257,7 +257,6 @@ namespace GUI.modules
                     parent.Controls.Add(_ucTrungLap);
             }
             _ucTrungLap.Visible = true;
-          //  _ucTrungLap.LoadDuLieu(); // Đảm bảo load lại dữ liệu khi chuyển view
         }
 
         #endregion

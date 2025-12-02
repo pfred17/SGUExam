@@ -37,12 +37,12 @@ namespace GUI
         {
             var monList = _monHocBLL.GetAllMonHoc();
             cbMonHoc.DataSource = new List<MonHocDTO>(monList);
-            cbMonHoc.DisplayMember = "TenMH";
-            cbMonHoc.ValueMember = "MaMH";
+            cbMonHoc.DisplayMember = "TenMonHoc";
+            cbMonHoc.ValueMember = "MaMonHoc";
 
             cbMonHocFile.DataSource = new List<MonHocDTO>(monList);
-            cbMonHocFile.DisplayMember = "TenMH";
-            cbMonHocFile.ValueMember = "MaMH";
+            cbMonHocFile.DisplayMember = "TenMonHoc";
+            cbMonHocFile.ValueMember = "MaMonHoc";
 
             LoadDoKhoToCombo(cbDoKho);
 
@@ -69,27 +69,26 @@ namespace GUI
 
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMH);
+            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
         }
-
-        //private void CbChuongFile_SelectedIndexChanged(object? sender, EventArgs e)
-        //{
-        //    // placeholder nếu cần
-        //}
-
         private void BtnChonFile_Click(object? sender, EventArgs e)
         {
             openFileDialog1.Filter = "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls|All Files (*.*)|*.*";
             if (openFileDialog1.ShowDialog() == DialogResult.OK) txtDuongDan.Text = openFileDialog1.FileName;
         }
-        private List<(string NoiDung, String DoKho, long MaChuong, List<DapAnDTO> DapAnlist)> ReadExcelFile(string path, long maMonHoc)
+
+        private List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)> ReadExcelFile(string path, long maMonHoc, out List<string> logErrors)
         {
             var result = new List<(string, string, long, List<DapAnDTO>)>();
-            if (!File.Exists(path)) throw new FileNotFoundException("File Excel câu hỏi không tồn tại", path);
+            logErrors = new List<string>();
+
+            if (!File.Exists(path))
+                throw new FileNotFoundException("File Excel câu hỏi không tồn tại", path);
 
             using var wb = new XLWorkbook(path);
             var ws = wb.Worksheets.First();
-            int row = 2; // header dòng 1
+            int row = 2; // bắt đầu từ dòng 2 (dòng 1 header)
+
             while (!ws.Cell(row, 1).IsEmpty())
             {
                 try
@@ -98,10 +97,15 @@ namespace GUI
                     string doKho = ws.Cell(row, 2).GetString().Trim();
                     string tenChuong = ws.Cell(row, 3).GetString().Trim();
 
-                    if (string.IsNullOrEmpty(noiDung) || string.IsNullOrEmpty(tenChuong))
+                    if (string.IsNullOrEmpty(noiDung))
                     {
-                        row++;
-                        continue;
+                        logErrors.Add($"Dòng {row}: Nội dung câu hỏi trống");
+                        row++; continue;
+                    }
+                    if (string.IsNullOrEmpty(tenChuong))
+                    {
+                        logErrors.Add($"Dòng {row}: Tên chương trống");
+                        row++; continue;
                     }
 
                     // Kiểm tra chương, nếu không có thì tạo mới
@@ -111,7 +115,7 @@ namespace GUI
                     if (chuong == null)
                     {
                         var newChuong = new ChuongDTO { MaChuong = 0, MaMonHoc = maMonHoc, TenChuong = tenChuong };
-                        maChuong = _chuongBLL.AddChuong(newChuong, maMonHoc); // trả về ID chương mới
+                        maChuong = _chuongBLL.AddChuong(newChuong, maMonHoc);
                     }
                     else
                     {
@@ -121,23 +125,36 @@ namespace GUI
                     // 4 đáp án
                     var dapAnList = new List<DapAnDTO>();
                     int dapAnDung = 0;
-                    int.TryParse(ws.Cell(row, 8).GetString().Trim(), out dapAnDung); // cột 8 = đáp án đúng (1-4)
+                    if (!int.TryParse(ws.Cell(row, 8).GetString().Trim(), out dapAnDung) || dapAnDung < 1 || dapAnDung > 4)
+                    {
+                        logErrors.Add($"Dòng {row}: Cột đáp án đúng (8) bị lỗi hoặc không hợp lệ");
+                        row++; continue;
+                    }
 
+                    bool hasEmptyAnswer = false;
                     for (int i = 0; i < 4; i++)
                     {
-                        string daNoiDung = ws.Cell(row, 4 + i).GetString().Trim(); // cột 4-7
+                        string daNoiDung = ws.Cell(row, 4 + i).GetString().Trim();
+                        if (string.IsNullOrEmpty(daNoiDung)) hasEmptyAnswer = true;
                         bool dung = (i + 1) == dapAnDung;
                         dapAnList.Add(new DapAnDTO { MaCauHoi = 0, NoiDung = daNoiDung, Dung = dung });
                     }
 
+                    if (hasEmptyAnswer)
+                    {
+                        logErrors.Add($"Dòng {row}: Có đáp án trống");
+                        row++; continue;
+                    }
+
                     result.Add((noiDung, doKho, maChuong, dapAnList));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // bỏ qua dòng lỗi
+                    logErrors.Add($"Dòng {row}: Lỗi đọc Excel - {ex.Message}");
                 }
                 row++;
             }
+
             return result;
         }
         private void BtnThemVaoHeThong_Click(object? sender, EventArgs e)
@@ -156,23 +173,41 @@ namespace GUI
 
             try
             {
-                var list = ReadExcelFile(path, monHoc.MaMH);
-                int count = 0;
+                var list = ReadExcelFile(path, monHoc.MaMonHoc, out var errors);
 
+                // Nếu có lỗi → báo lỗi và KHÔNG import
+                if (errors.Any())
+                {
+                    MessageBox.Show(
+                        "File Excel có lỗi, không thể import.\n" +
+                        string.Join("\n", errors),
+                        "Lỗi dữ liệu",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                    return; // dừng lại KHÔNG import
+                }
+
+                // Chỉ import khi file HOÀN TOÀN hợp lệ
+                int count = 0;
                 foreach (var item in list)
                 {
-                    if (item.MaChuong == 0) continue;
                     _cauHoiBLL.ThemMoi(item.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
                     count++;
                 }
 
-                MessageBox.Show($"Import thành công {count} câu hỏi từ Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Import thành công {count} câu hỏi từ Excel.",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Import thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         // Thêm editor panel (gộp trong form để giảm file)
         private void BtnThemCauTraLoi_Click(object? sender, EventArgs e)
@@ -332,6 +367,7 @@ namespace GUI
             pnlDapAnContainer.Controls.Clear();
             foreach (var dto in _dapAnList.AsEnumerable().Reverse())
                 AddAnswerSummary(dto); // AddAnswerSummary là hàm tạo UI cho mỗi đáp án
+            btnLuuCauHoi.Enabled = (_dapAnList.Count == 4 && _dapAnList.Any(d => d.Dung));
         }
 
         // Lưu câu hỏi -> gọi BLL

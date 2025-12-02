@@ -23,22 +23,48 @@ namespace DAL
             }
             return list;
         }
-
-        // Sử dụng transaction nếu được truyền vào, nếu không thì dùng DatabaseHelper
-        public void XoaTheoCauHoi(long maCauHoi, SqlTransaction? tran = null)
+        public void ThemDapAn(List<DapAnDTO> dapAnList)
         {
-            string query = "DELETE FROM dap_an WHERE ma_cau_hoi = @MaCH";
-            //string query = "UPDATE dap_an WHERE ma_cau_hoi = @MaCH";
-            if (tran != null && tran.Connection != null) // kiểm tra xem transaction có hợp lệ không
-            { 
-                using var cmd = new SqlCommand(query, tran.Connection, tran); // là tạo một đối tượng SqlCommand để thực thi câu lệnh SQL trong một giao dịch đã được bắt đầu trước đó.
-                cmd.Parameters.AddWithValue("@MaCH", maCauHoi);
-                cmd.ExecuteNonQuery();
-            }
-            else
+            foreach (var da in dapAnList)
             {
-                DatabaseHelper.ExecuteNonQuery(query, new SqlParameter("@MaCH", maCauHoi)); // không có transaction, sử dụng DatabaseHelper
+                string query = @"
+                    INSERT INTO dap_an (ma_cau_hoi, noi_dung, dung)
+                    VALUES (@MaCH, @NoiDung, @Dung)";
+                DatabaseHelper.ExecuteNonQuery(query,
+                    new SqlParameter("@MaCH", da.MaCauHoi),
+                    new SqlParameter("@NoiDung", da.NoiDung),
+                    new SqlParameter("@Dung", da.Dung));
             }
+        }
+        public void CapNhat(DapAnDTO da)
+        {
+            string query = @"
+                UPDATE dap_an 
+                SET noi_dung=@NoiDung, dung=@Dung
+                WHERE ma_dap_an=@MaDA";
+
+            DatabaseHelper.ExecuteNonQuery(query,
+                new SqlParameter("@NoiDung", da.NoiDung),
+                new SqlParameter("@Dung", da.Dung),
+                new SqlParameter("@MaDA", da.MaDapAn));
+        }
+        public void Xoa(long maDapAn)
+        {
+            string query = "DELETE FROM dap_an WHERE ma_dap_an=@MaDA";
+            DatabaseHelper.ExecuteNonQuery(query, new SqlParameter("@MaDA", maDapAn));
+        }
+        public void XoaTheoCauHoi(long maCauHoi)
+        {
+            // Xóa các đáp án chưa được sử dụng trong bai_lam_chi_tiet
+            string query = @"
+                DELETE FROM dap_an
+                WHERE ma_cau_hoi = @MaCH
+                  AND ma_dap_an NOT IN (
+                      SELECT DISTINCT ma_dap_an_chon 
+                      FROM bai_lam_chi_tiet
+                  )";
+
+            DatabaseHelper.ExecuteNonQuery(query, new SqlParameter("@MaCH", maCauHoi));
         }
     }
 }

@@ -113,8 +113,8 @@ namespace GUI.modules
                     int rowIndex = dgvMonHoc.Rows.Add();
                     var row = dgvMonHoc.Rows[rowIndex];
 
-                    row.Cells["MaMonHoc"].Value = mh.MaMH;
-                    row.Cells["TenMonHoc"].Value = mh.TenMH;
+                    row.Cells["MaMonHoc"].Value = mh.MaMonHoc;
+                    row.Cells["TenMonHoc"].Value = mh.TenMonHoc;
                     row.Cells["SoTinChi"].Value = mh.SoTinChi;
                     row.Cells["TrangThai"].Value = mh.TrangThai == 1 ? "Hoạt động" : "Chưa mở";
                     row.Cells["DetailCol"].Value = Properties.Resources.icon_detail;
@@ -216,7 +216,7 @@ namespace GUI.modules
                     else
                     {
                         filteredList = listMonHoc
-                            .Where(mh => mh.TenMH.ToLower().Contains(keyword))
+                            .Where(mh => mh.TenMonHoc.ToLower().Contains(keyword))
                             .ToList();
                     }
 

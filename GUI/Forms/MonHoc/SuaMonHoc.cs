@@ -31,8 +31,8 @@ namespace GUI.forms.MonHoc
                 MessageBox.Show("Không tìm thấy môn học!");
                 return;
             }
-            txtMaMonHoc.Text = currentMonHoc.MaMH.ToString();
-            txtTenMonHoc.Text = currentMonHoc.TenMH;
+            txtMaMonHoc.Text = currentMonHoc.MaMonHoc.ToString();
+            txtTenMonHoc.Text = currentMonHoc.TenMonHoc;
             txtSoTinChi.Text = currentMonHoc.SoTinChi.ToString();
             tsTrangThai.Checked = currentMonHoc.TrangThai == 1;
         }
