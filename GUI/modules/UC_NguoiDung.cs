@@ -16,6 +16,11 @@ namespace GUI.modules
         private readonly RoleBLL _roleBLL = new RoleBLL();
         private readonly UserBLL _userBLL = new UserBLL();
 
+        private bool _hasPermissionView;
+        private bool _hasPermissionAdd;
+        private bool _hasPermissionUpdate;
+        private bool _hasPermissionDelete;
+
         private System.Threading.Timer? _debounceTimer;
         private const int DebounceDelay = 500;
 
@@ -39,10 +44,10 @@ namespace GUI.modules
 
         private void loadPermission()
         {
-            //btnAdd.Visible = _permissionBLL.HasPermission(_userId, 8, "Thêm");
-            //btnEdit.Visible = _permissionBLL.HasPermission(_userId, 8, "Sửa");
-            //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
-            //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
+            _hasPermissionView = _permissionBLL.HasPermission(_userId, 8, "Xem");
+            _hasPermissionAdd = _permissionBLL.HasPermission(_userId, 8, "Thêm");
+            _hasPermissionUpdate = _permissionBLL.HasPermission(_userId, 8, "Sửa");
+            _hasPermissionDelete = _permissionBLL.HasPermission(_userId, 8, "Xóa");
         }
 
         public void loadRoleData()
@@ -153,6 +158,13 @@ namespace GUI.modules
             // === Khi click vào icon SỬA ===
             if (columnName == "editCol")
             {
+
+                if (!_hasPermissionUpdate)
+                {
+                    MessageBox.Show("Bạn không có quyền sửa thông tin người dùng.", "Lỗi",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 Sua formSua = new Sua(userId);
 
                 // Đăng ký lắng nghe sự kiện UserAdded từ form Them
@@ -167,6 +179,12 @@ namespace GUI.modules
             // === Khi click vào icon XÓA ===
             else if (columnName == "deleteCol")
             {
+                if (!_hasPermissionDelete)
+                {
+                    MessageBox.Show("Bạn không có quyền xóa người dùng.", "Lỗi",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 if (status == "Hoạt động")
                 {
                     var result = MessageBox.Show(
@@ -237,6 +255,13 @@ namespace GUI.modules
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
+
+            if (!_hasPermissionAdd)
+            {
+                MessageBox.Show("Bạn không có quyền thêm người dùng.", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             Them formThem = new Them();
 
             // Đăng ký lắng nghe sự kiện UserAdded từ form Them

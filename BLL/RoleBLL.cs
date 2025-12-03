@@ -56,5 +56,12 @@ namespace BLL
 
             return 0;
         }
+    
+
+
+        public bool BlockRole(long ma_nhom_quyen)
+        {
+            return roleDAL.BlockRole(ma_nhom_quyen);
+        }
     }
 }

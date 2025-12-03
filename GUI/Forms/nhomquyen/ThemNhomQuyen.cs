@@ -41,8 +41,7 @@ namespace GUI.forms.nhomquyen
                 // và Tên Chức Năng vào cột thứ hai
                 tblThem.Rows.Add(
                     cn.MaChucNang, // Giá trị cột 0: Mã Chức Năng (ID)
-                    cn.TenChucNang // Giá trị cột 1: Tên Chức Năng (Hiển thị)
-                                   // ... các cột checkbox sẽ là False mặc định
+                    cn.TenChucNang
                 );
             }
         }

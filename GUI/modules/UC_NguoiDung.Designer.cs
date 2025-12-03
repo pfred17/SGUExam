@@ -78,8 +78,8 @@
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.White;
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             tableNguoiDung.DefaultCellStyle = dataGridViewCellStyle3;
             tableNguoiDung.GridColor = Color.FromArgb(231, 229, 255);
@@ -253,7 +253,6 @@
             btnPrev.Size = new Size(32, 32);
             btnPrev.TabIndex = 4;
             btnPrev.Text = "<";
-            btnPrev.Click += btnPrev_Click;
             // 
             // lblPage
             // 

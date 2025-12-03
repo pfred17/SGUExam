@@ -119,11 +119,46 @@ namespace DAL
                 return new RoleDTO
                 {
                     MaNhomQuyen = ma_nhom_quyen,
-                    TenNhomQuyen = tenNhomQuyen 
+                    TenNhomQuyen = tenNhomQuyen
                 };
             }
 
             return null;
+        }
+
+        public bool UpdateRoleName(long ma_nhom_quyen, string ten_nhom_quyen_moi)
+        {
+            string query = @"
+                                UPDATE nhom_quyen
+                                SET ten_nhom_quyen = @ten_nhom_quyen_moi
+                                WHERE ma_nhom_quyen = @ma_nhom_quyen
+                            ";
+            SqlParameter[] parameters = {
+                                    new SqlParameter("@ten_nhom_quyen_moi", ten_nhom_quyen_moi),
+                                    new SqlParameter("@ma_nhom_quyen", ma_nhom_quyen)
+            };
+
+            int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+
+            return result > 0;
+
+        }
+
+        public bool BlockRole(long ma_nhom_quyen)
+        {
+            string query = @"
+                                UPDATE nhom_quyen
+                                SET trang_thai = 0
+                                WHERE ma_nhom_quyen = @ma_nhom_quyen
+                            ";
+            SqlParameter[] parameters = {
+                                    new SqlParameter("@ma_nhom_quyen", ma_nhom_quyen)
+            };
+
+            int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+
+            return result > 0;
+
         }
     }
 }

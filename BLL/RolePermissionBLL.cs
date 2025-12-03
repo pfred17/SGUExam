@@ -12,35 +12,24 @@ namespace BLL
 
         public bool CreateRolePermission(string ten_nhom_quyen, List<AddPermissionDTO> listAddPermission)
         {
-            // 1. Tạo Nhóm Quyền Mới (Role)
-            // Giả định _roleDAL.CreateRole(string) trả về RoleDTO chứa Mã Nhóm Quyền (MaNhomQuyen)
             var role = _roleDAL.CreateRole(ten_nhom_quyen);
 
             if (role == null)
             {
-                // Tạo nhóm quyền thất bại
                 return false;
             }
 
-            // 2. KIỂM TRA: Nếu Nhóm Quyền được tạo thành công
             if (role != null && listAddPermission != null && listAddPermission.Count > 0)
             {
-                // Lấy Mã Nhóm Quyền (MaNhomQuyen) vừa được tạo (Khóa chính mới)
                 int ma_nhom_quyen = (int)role.MaNhomQuyen;
 
-                // 3. Lặp qua danh sách Module có quyền được check
                 foreach (var addPermission in listAddPermission)
                 {
                     int ma_chuc_nang = addPermission.MaChucNang;
 
-                    // 4. Lặp qua các quyền (Xem, Thêm, Sửa, Xóa) trong từng Module
                     foreach (var quyen in addPermission.Quyen_DuocPhep)
                     {
-                        // quyen.Key là Mã Quyền (1, 2, 3, 4)
-                        // quyen.Value là Trạng thái (1 hoặc 0, nhưng do bạn đã lọc nên chỉ là 1)
 
-                        // Thực hiện thêm chi tiết quyền vào bảng RolePermission
-                        // Tham số: (Mã Nhóm Quyền MỚI, Mã Chức Năng, Mã Quyền, Trạng thái)
                         var result = _rolePermissionDAL.CreateRolePermission(ma_nhom_quyen, ma_chuc_nang, quyen.Key, quyen.Value);
 
                         if (!result) return false;
@@ -48,8 +37,62 @@ namespace BLL
                 }
             }
 
-            // Trả về đối tượng Role vừa tạo (hoặc null nếu lỗi ở bước 1)
             return true;
         }
+        public bool UpdateRolePermission(long ma_nhom_quyen, string ten_nhom_quyen_moi, List<AddPermissionDTO> listAddPermission)
+        {
+            if (!_roleDAL.UpdateRoleName(ma_nhom_quyen, ten_nhom_quyen_moi))
+            {
+                return false;
+            }
+
+            bool success = true; // Theo dõi trạng thái thành công của việc cập nhật quyền
+
+            // 1. Lặp qua từng Chức Năng (Module)
+            foreach (var addPermission in listAddPermission)
+            {
+                int ma_chuc_nang = addPermission.MaChucNang;
+
+                // 2. Lặp qua từng Quyền (Xem, Thêm, Sửa, Xóa, Tham gia,...)
+                foreach (var quyen in addPermission.Quyen_DuocPhep)
+                {
+                    int ma_quyen = quyen.Key; // Mã Quyền (1, 2, 3, 4, 5, 6,...)
+                    int duoc_phep = quyen.Value; // Trạng thái (1: Được phép | 0: Bị từ chối)
+
+                    bool result = false;
+
+                    if (_rolePermissionDAL.CheckExistPermission(ma_nhom_quyen, ma_chuc_nang, ma_quyen))
+                    {
+                        // Nếu tồn tại: Dùng UPDATE
+                        result = _rolePermissionDAL.UpdateRolePermission(ma_nhom_quyen, ma_chuc_nang, ma_quyen, duoc_phep);
+                    }
+                    else
+                    {
+                        // Nếu chưa tồn tại: Dùng INSERT
+                        result = _rolePermissionDAL.CreateRolePermission(ma_nhom_quyen, ma_chuc_nang, ma_quyen, duoc_phep);
+                    }
+
+                    // Nếu bất kỳ thao tác DAL nào thất bại, ghi nhận thất bại nhưng tiếp tục cập nhật các quyền khác
+                    if (!result)
+                    {
+                        success = false;
+                        // Nếu bạn muốn dừng ngay khi có lỗi, hãy thêm 'break;' hoặc 'return false;' ở đây
+                    }
+                }
+            }
+
+            // Trả về true nếu tên nhóm quyền được cập nhật và tất cả quyền được Upsert thành công
+            return success;
+        }
+
+        public bool BlockRolePermission(long roleId)
+        {
+            return _roleDAL.BlockRole(roleId);
+        }
+
+        public List<PermissionDTO> GetAllPermissionAviableByRoleId(long roleId)
+        {
+            return _rolePermissionDAL.GetAllPermissionAviableByRoleId(roleId);
+        }   
     }
 }
