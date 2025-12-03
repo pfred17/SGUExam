@@ -1,5 +1,6 @@
 ﻿using BLL;
 using BLL.Validator;
+using DAL;
 using DTO;
 
 namespace GUI.forms.nguoidung
@@ -7,10 +8,25 @@ namespace GUI.forms.nguoidung
     public partial class Them : Form
     {
         private readonly UserBLL _userBLL = new UserBLL();
+        private readonly RoleBLL _roleBLL = new RoleBLL();
         public event EventHandler UserAdded;
         public Them()
         {
             InitializeComponent();
+            loadRoleData();
+        }
+
+        public void loadRoleData()
+        {
+            List<String> roles = new List<String>();
+            List<RoleDTO> roleDTOs = _roleBLL.getAllRole();
+
+            foreach (var role in roleDTOs)
+            {
+                roles.Add(role.TenNhomQuyen);
+            }
+
+            cbbNhomQuyen.DataSource = roles;
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -43,7 +59,7 @@ namespace GUI.forms.nguoidung
                 MatKhau = txtPassword.Text.Trim(),
                 HoTen = txtHoVaTen.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
-                Role = cbbNhomQuyen.Text,
+                Role = _roleBLL.GetRoleIdByName(cbbNhomQuyen.Text),
                 GioiTinh = gioiTinh,
                 TrangThai = trangThai
             };
@@ -157,6 +173,11 @@ namespace GUI.forms.nguoidung
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
             lbErrorPassowrd.Visible = false;
+        }
+
+        private void lbErrorEmail_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

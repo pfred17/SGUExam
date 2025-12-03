@@ -7,9 +7,11 @@ namespace BLL
     public class UserBLL
     {
         private UserDAL dal = new UserDAL();
+        
 
         private EmailService emailService = new EmailService();
         private Dictionary<string, string> codeStorage = new Dictionary<string, string>();
+
         public bool SendVerificationCode(string email)
         {
             //string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
@@ -39,20 +41,50 @@ namespace BLL
         {
             return dal.CheckLogin(username, password);
         }
-
         public List<UserDTO> GetAllUsers()
         {
             return dal.getAllUsers();
         }
-
+        public UserDTO GetUserById(string userId)
+        {
+            return dal.GetUserById(userId);
+        }
+        public List<UserDTO> GetAllUserByRoleExcluding(string userId)
+        {
+            return dal.GetAllUserByRoleExcluding().Where(u => u.MSSV != userId).ToList();
+        }
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
+        {
+            return dal.GetUserPaged(page, pageSize, keyword, option);
+        }
+        public int GetTotalUser(string? userId, string? keyword = null, int? trangThai = null)
+        {
+            return dal.GetTotalUser(userId, keyword, trangThai);
+        }
         public bool CreateNewUser(UserDTO userDTO)
         {
             bool isCreated = dal.CreateNewUser(userDTO);
             return isCreated;
         }
+
+        public bool UpdateUser(UserDTO userDTO)
+        {
+            return dal.UpdateUser(userDTO);
+        }
+
+        public bool LockUser(string userId, int status = 0)
+        {
+            return dal.LockUser(userId, status);
+        }
+
         public UserDTO Register(string username,string hoten, string password, string email)
         {
             return dal.CreateUser(username, hoten, password, email);
+        }
+
+        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+        {
+            return dal.GetUserByMSSV(mssv, includeInactive);
         }
     }
 }

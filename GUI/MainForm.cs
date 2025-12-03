@@ -2,13 +2,6 @@
 using DTO;
 using GUI.modules;
 using Guna.UI2.WinForms;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using Guna.UI2.AnimatorNS;
 
 namespace GUI
 {
@@ -35,7 +28,6 @@ namespace GUI
         private void Form2_Load(object sender, EventArgs e)
         {
             //  Lấy toàn bộ quyền của user
-            _permissions = _permissionBLL.GetUserPermissions(_userId);
             //{
             //    "Môn học": { "Xem": true, "Thêm": true, "Sửa": false, "Xóa": false },
             //    "Người dùng": { "Xem": true, "Thêm": false, "Sửa": false, "Xóa": false }
@@ -49,6 +41,7 @@ namespace GUI
 
             // Dropdown
             InitDropdown();
+            
         }
 
         private List<ModuleItem> InitializeModules()
@@ -61,14 +54,13 @@ namespace GUI
                 new ModuleItem{ Id=3, Name="MonHoc", DisplayName="Môn học", Group="QUẢN LÝ", Icon=Properties.Resources.icon_monhoc, UserControlType=typeof(UC_MonHoc) },
                 new ModuleItem{ Id=4, Name="PhanCong", DisplayName="Phân công", Group="QUẢN LÝ", Icon=Properties.Resources.icon_phancong, UserControlType=typeof(UC_PhanCong) },
                 new ModuleItem{ Id=5, Name="DeKiemTra", DisplayName="Đề kiểm tra", Group="QUẢN LÝ", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_KiemTra) },
-                new ModuleItem{ Id=6, Name="DiemDanh", DisplayName="Điểm danh", Group="QUẢN LÝ", Icon=Properties.Resources.icon_diemdanh, UserControlType=typeof(UC_DiemDanh) },
-                new ModuleItem{ Id=7, Name="NhomQuyen", DisplayName="Nhóm quyền", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_phanquyencaidat, UserControlType=typeof(UC_NhomQuyen) },
+                new ModuleItem{ Id=7, Name="NhomQuyen", DisplayName="Nhóm quyền", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_phanquyencaidat, UserControlType=typeof(UC_PhanQuyen) },
                 new ModuleItem{ Id=8, Name="NguoiDung", DisplayName="Người dùng", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_nhomnguoidung, UserControlType=typeof(UC_NguoiDung) },
 
                 // Thuộc về sinh viên
-                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) },
+                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) },
                 // UC_HocPhanUser của bảo đang làm
-                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
+                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Học phần", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
             };
         }
 
@@ -128,32 +120,17 @@ namespace GUI
             ActivateButton(btnTongQuan);
             LoadModule(typeof(UC_TongQuan));
 
-            // --- 2. Phân nhóm và thêm các Module còn lại ---
 
-            int top = 80; // Bắt đầu từ vị trí dưới label Role
-
-            // Lấy danh sách các module có quyền truy cập, ngoại trừ "TongQuan"
-            var accessibleModules = GetAccessibleModules().Where(m => m.Name != "TongQuan");
-
-            // PHÂN NHÓM: Nhóm các module theo Group, và sắp xếp theo Group Name (Tùy chọn)
-            var groupedModules = accessibleModules
-                                    .GroupBy(m => m.Group)
-                                    .OrderBy(g => g.Key);
-
-            foreach (var group in groupedModules)
+            var lblRole = new Label
             {
-                // === Chèn tiêu đề Group (Ví dụ: "QUẢN LÝ") ===
-                var lblGroup = new Label
-                {
-                    Text = group.Key, // Tên Group (QUẢN LÝ, QUẢN TRỊ,...)
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                    ForeColor = Color.Gray,
-                    Location = new Point(28, top),
-                    Margin = new Padding(0, 5, 0, 5) // Tạo khoảng cách
-                };
-                panelSidebar.Controls.Add(lblGroup);
-                top += lblGroup.Height + 5; // Cập nhật vị trí cho nút đầu tiên
+                Text = _userDTO.Role.ToUpper(),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Margin = new Padding(0, 10, 0, 0),
+                Location = new Point(28, 80)
+            };
+            panelSidebar.Controls.Add(lblRole);
 
                 // === Thêm các nút Module trong Group này ===
                 foreach (var mod in group.OrderBy(m => m.Id)) // Sắp xếp theo ID module
@@ -229,7 +206,7 @@ namespace GUI
                     var screenPoint = panelHeader.PointToScreen(picAvatar.Location);
                     var formPoint = this.PointToClient(screenPoint);
                     pnlDropdown.Location = new Point(
-                        1200,   
+                        1200,
                         formPoint.Y + picAvatar.Height + 5
                     );
                     pnlDropdown.BringToFront();
@@ -313,7 +290,7 @@ namespace GUI
         private void ModuleButton_Click(object sender, EventArgs e)
         {
             if (sender is Guna2Button btn && btn.Tag is ModuleItem module)
-            {   
+            {
                 ActivateButton(btn);
                 LoadModule(module.UserControlType);
             }
@@ -364,7 +341,9 @@ namespace GUI
         }
         private IEnumerable<ModuleItem> GetAccessibleModules()
         {
-            var accessibleNames = _permissions
+            var latestPermissions = _permissionBLL.GetUserPermissions(_userId);
+
+            var accessibleNames = latestPermissions
                 .GroupBy(p => p.MaChucNang)
                 .Where(g => g.Any(p => p.DuocPhep))
                 .Select(g => g.Key)

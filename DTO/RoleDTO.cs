@@ -15,6 +15,11 @@ namespace DTO
         // helper: nhanh lấy actions của 1 module
         public ModulePermissionDTO GetModule(string moduleName)
             => Modules.FirstOrDefault(m => string.Equals(m.ModuleName, moduleName, StringComparison.OrdinalIgnoreCase));
+    
+        public long SoNguoiDung { get; set; }
+
+        public int TrangThai{ get; set; }
+
     }
 
 }

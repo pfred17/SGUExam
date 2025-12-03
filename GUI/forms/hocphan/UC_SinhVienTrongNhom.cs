@@ -1,0 +1,547 @@
+﻿using BLL;
+using ClosedXML.Excel;
+using DAL;
+using DTO;
+using GUI.forms.hocphan;
+using GUI.modules;
+using Guna.UI2.WinForms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+namespace GUI
+{
+    public partial class UC_SinhVienTrongNhom : UserControl
+    {
+        private int _currentPage = 1;
+        private const int PageSize = 10;
+        private int _totalRecords = 0;
+        private List<DataRow> _allRows = new List<DataRow>(); // lưu toàn bộ dữ liệu (gốc + tìm kiếm)
+        private UC_ThemSVVaoNhom ucThemSV;
+        private NhomHocPhanDTO _nhom;
+        private MonHocDTO _mon;
+        public void SetGroupInfo(NhomHocPhanDTO nhom, MonHocDTO monHoc)
+        {
+            _nhom = nhom;
+            _mon = monHoc;
+            lbThongTinNhom.Text = $"{monHoc.MaMH} - {monHoc.TenMH} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
+            LoadDanhSachSinhVien(); // ← Tự động load lại danh sách thành viên
+        }
+
+
+        public UC_SinhVienTrongNhom()
+        {
+            InitializeComponent();
+            SetupDataGridView(); // ← GỌI Ở ĐÂY
+            dgvSinhVien.CellContentClick += dgvSinhVien_CellContentClick;
+            // Tự động tìm khi gõ
+            tbTimKiem.TextChanged += tbTimKiem_TextChanged;
+        }
+
+        private void btnXemDiem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2CustomGradientPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void SetupDataGridView()
+        {
+            // === CHỈ CẦN GỌI 1 LẦN TRONG CONSTRUCTOR HOẶC LOAD ===
+            // Tắt style hệ thống để custom header
+            dgvSinhVien.EnableHeadersVisualStyles = false;
+
+            // Custom Header (đẹp như phần mềm xịn)
+            dgvSinhVien.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            dgvSinhVien.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(50, 50, 50);
+            dgvSinhVien.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 245, 255);
+            dgvSinhVien.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvSinhVien.ColumnHeadersHeight = 45;
+            dgvSinhVien.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+
+            // Custom Cell
+            dgvSinhVien.DefaultCellStyle.Font = new Font("Segoe UI", 10.5F);
+            dgvSinhVien.DefaultCellStyle.ForeColor = Color.FromArgb(40, 40, 40);
+            dgvSinhVien.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 120, 215);
+            dgvSinhVien.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // Dòng xen kẽ (rất đẹp mắt)
+            dgvSinhVien.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 252, 255);
+            dgvSinhVien.RowsDefaultCellStyle.BackColor = Color.White;
+
+            // Border & Grid
+            dgvSinhVien.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvSinhVien.GridColor = Color.FromArgb(225, 235, 245);
+            dgvSinhVien.BorderStyle = BorderStyle.None;
+
+            // Căn giữa cột STT và Giới tính, nút Xóa
+            dgvSinhVien.Columns["colSTT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvSinhVien.Columns["colGioiTinh"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvSinhVien.Columns["colHanhDong"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Tối ưu trải nghiệm người dùng
+            dgvSinhVien.AllowUserToAddRows = false;
+            dgvSinhVien.AllowUserToDeleteRows = false;
+            dgvSinhVien.AllowUserToOrderColumns = false;
+            dgvSinhVien.AllowUserToResizeColumns = false;
+            dgvSinhVien.AllowUserToResizeRows = false;
+            dgvSinhVien.ReadOnly = true;
+            dgvSinhVien.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSinhVien.MultiSelect = false;
+            dgvSinhVien.RowHeadersVisible = false;
+
+            // Hover effect khi di chuột (rất xịn)
+            dgvSinhVien.AdvancedCellBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Single;
+        }
+        private void btnThemSV_Click(object sender, EventArgs e)
+        {
+            if (ucThemSV == null)
+            {
+                ucThemSV = new UC_ThemSVVaoNhom(_nhom.MaNhom);
+                ucThemSV.Width = 644;
+                ucThemSV.Height = 347;
+
+                // Hiển thị overlay giống form thêm nhóm
+                ucThemSV.Location = new Point((this.Width - ucThemSV.Width) / 2, 50);
+                this.Controls.Add(ucThemSV);
+                // Đăng ký nhận sự kiện khi thêm sinh viên thành công
+                ucThemSV.SinhVienAdded += UcThemSV_SinhVienAdded;
+            }
+
+            ucThemSV.Visible = true;
+            ucThemSV.BringToFront();
+        }
+        private void UcThemSV_SinhVienAdded(object sender, UserDTO user)
+        {
+            long maNhom = _nhom.MaNhom; // ← Đây là mã nhóm hiện tại (BIGINT)
+
+            // 1. Kiểm tra đã tồn tại trong CSDL chưa (quan trọng nhất)
+            if (ChiTietNhomHocPhanBLL.DaTonTaiTrongNhom(user.MSSV, maNhom))
+            {
+                MessageBox.Show("Sinh viên này đã có trong nhóm rồi!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // 2. Lưu vào SQL
+            bool success = ChiTietNhomHocPhanBLL.ThemSinhVienVaoNhom(user.MSSV, maNhom);
+            if (!success)
+            {
+                MessageBox.Show("Thêm thất bại! Sinh viên có thể đã tồn tại.", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 3. Nếu lưu thành công → mới thêm vào DataGridView
+            int stt = dgvSinhVien.Rows.Count + 1;
+            dgvSinhVien.Rows.Add(stt, user.HoTen, user.MSSV,
+                                  user.GioiTinh == 0 ? "Nam" : "Nữ", "Xóa");
+
+            MessageBox.Show("Đã thêm sinh viên vào nhóm thành công!", "Thành công",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LoadDanhSachSinhVien();
+        }
+
+        private void UC_SinhVienTrongNhom_Load(object sender, EventArgs e)
+        {
+            if (_nhom != null)
+                LoadDanhSachSinhVien();
+        }
+
+        private void dgvSinhVien_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Kiểm tra có phải nhấn vào cột "Xóa" không
+            if (e.RowIndex >= 0 && e.ColumnIndex == dgvSinhVien.Columns["colHanhDong"].Index)
+            {
+                // Lấy MSSV từ dòng hiện tại
+                string mssv = dgvSinhVien.Rows[e.RowIndex].Cells["colMaSinhVien"]?.Value?.ToString()
+                              ?? dgvSinhVien.Rows[e.RowIndex].Cells[2].Value?.ToString(); // cột 2 là MSSV
+
+                if (string.IsNullOrEmpty(mssv))
+                {
+                    MessageBox.Show("Không xác định được sinh viên!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Xác nhận xóa
+                var confirm = MessageBox.Show(
+                    $"Bạn có chắc muốn xóa sinh viên {mssv} khỏi nhóm này không?",
+                    "Xác nhận xóa",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirm == DialogResult.Yes)
+                {
+                    long maNhom = _nhom.MaNhom;
+
+                    // XÓA TRONG SQL
+                    bool deleted = ChiTietNhomHocPhanBLL.XoaSinhVienKhoiNhom(mssv, maNhom);
+
+                    if (deleted)
+                    {
+                        MessageBox.Show("Đã xóa sinh viên khỏi nhóm thành công!", "Thành công",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // SIÊU ĐƠN GIẢN: Load lại toàn bộ danh sách → tự động cập nhật phân trang + STT + tìm kiếm
+                        LoadDanhSachSinhVien();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa thất bại! Vui lòng thử lại.", "Lỗi",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                }
+            }
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            TimKiemSinhVien(tbTimKiem.Text.Trim());
+        }
+        // Bonus: Tìm ngay khi đang gõ (trải nghiệm siêu mượt!)
+        private void tbTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            TimKiemSinhVien(tbTimKiem.Text.Trim());
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+        // Phân trang
+        public void LoadDanhSachSinhVien()
+        {
+            if (_nhom == null) return;
+
+            var dt = ChiTietNhomHocPhanBLL.LayDanhSachSinhVienTrongNhom(_nhom.MaNhom);
+            _allRows = dt.AsEnumerable().ToList();
+            _totalRecords = _allRows.Count;
+
+            _currentPage = 1;
+            HienThiTrangHienTai();
+            CapNhatPhanTrang();
+        }
+        private void TimKiemSinhVien(string tuKhoa)
+        {
+            if (_nhom == null) return;
+
+            if (string.IsNullOrWhiteSpace(tuKhoa))
+            {
+                LoadDanhSachSinhVien(); // load lại toàn bộ
+                return;
+            }
+
+            var dt = ChiTietNhomHocPhanBLL.LayDanhSachSinhVienTrongNhom(_nhom.MaNhom);
+
+            var rowsTimThay = dt.AsEnumerable()
+                .Where(row =>
+                    row["HoTen"].ToString().RemoveDiacritics()
+                        .IndexOf(tuKhoa.RemoveDiacritics(), StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    row["MSSV"].ToString()
+                        .IndexOf(tuKhoa, StringComparison.OrdinalIgnoreCase) >= 0
+                ).ToList();
+
+            _allRows = rowsTimThay;
+            _totalRecords = _allRows.Count;
+            _currentPage = 1;
+
+            HienThiTrangHienTai();
+            CapNhatPhanTrang();
+
+            //if (_totalRecords == 0)
+            //{
+            //    MessageBox.Show("Không tìm thấy sinh viên nào phù hợp!", "Thông báo",
+            //                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+        }
+        private void HienThiTrangHienTai()
+        {
+            dgvSinhVien.Rows.Clear();
+
+            var pageData = _allRows
+                .Skip((_currentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            int stt = (_currentPage - 1) * PageSize + 1;
+            foreach (var row in pageData)
+            {
+                dgvSinhVien.Rows.Add(
+                    stt++,
+                    row["HoTen"].ToString(),
+                    row["MSSV"].ToString(),
+                    Convert.ToInt32(row["GioiTinh"]) == 0 ? "Nam" : "Nữ",
+                    "Xóa"
+                );
+            }
+        }
+
+        private void CapNhatPhanTrang()
+        {
+            int totalPages = (int)Math.Ceiling((double)_totalRecords / PageSize);
+            if (totalPages == 0) totalPages = 1;
+
+            lblPagination.Text = $"Trang {_currentPage} / {totalPages}    (Tổng: {_totalRecords} sinh viên)";
+
+            btnPrev.Enabled = _currentPage > 1;
+            btnNext.Enabled = _currentPage < totalPages;
+
+            flpPage.Controls.Clear();
+
+
+
+            // 1. Nếu tổng ≤ 3 trang → hiện hết
+            if (totalPages <= 3)
+            {
+                for (int i = 1; i <= totalPages; i++)
+                    AddPageButton(i);
+                return;
+            }
+
+            // 2. Trường hợp bình thường (tổng > 3 trang)
+
+            // --- Trang 1 ---
+            if (_currentPage == 1)
+            {
+                AddPageButton(1);
+                AddPageButton(2);
+                AddEllipsis();
+                AddPageButton(totalPages);
+            }
+            // --- Trang 2 ---
+            else if (_currentPage == 2)
+            {
+                AddPageButton(2);
+                AddPageButton(3);
+                AddEllipsis();
+                AddPageButton(totalPages);
+            }
+            // --- Trang 3 đến (tổng - 2) ---
+            else if (_currentPage >= 3 && _currentPage <= totalPages - 2)
+            {
+                AddPageButton(_currentPage);
+                AddPageButton(_currentPage + 1);
+                AddEllipsis();
+                AddPageButton(totalPages);
+            }
+            // --- Trang (tổng - 1) ---
+            else if (_currentPage == totalPages - 1)
+            {
+                AddPageButton(totalPages - 2);
+                AddPageButton(totalPages - 1);
+                AddEllipsis();
+                AddPageButton(totalPages);
+            }
+            // --- Trang cuối ---
+            else if (_currentPage == totalPages)
+            {
+                AddPageButton(totalPages - 2);
+                AddPageButton(totalPages - 1);
+                AddEllipsis();
+                AddPageButton(totalPages);
+            }
+
+            // ========== HELPER FUNCTIONS ==========
+            void AddPageButton(int page)
+            {
+                if (flpPage.Controls.Cast<Control>().Any(c => c is Guna2Button b && (int?)b.Tag == page)) return;
+
+                var btn = new Guna2Button
+                {
+                    Text = page.ToString(),
+                    Width = 40,
+                    Height = 30,
+                    Margin = new Padding(4),
+                    FillColor = page == _currentPage ? Color.FromArgb(0, 120, 215) : Color.FromArgb(245, 245, 245),
+                    ForeColor = page == _currentPage ? Color.White : Color.Black,
+                    BorderRadius = 8,
+                    Tag = page
+                };
+                btn.Click += (s, e) =>
+                {
+                    _currentPage = page;
+                    HienThiTrangHienTai();
+                    CapNhatPhanTrang();
+                };
+                flpPage.Controls.Add(btn);
+            }
+
+            void AddEllipsis()
+            {
+                if (flpPage.Controls.Count > 0 && flpPage.Controls[flpPage.Controls.Count - 1] is Label l && l.Text == "...")
+                    return;
+
+                var lbl = new Label
+                {
+                    Text = "...",
+                    AutoSize = true,
+                    Margin = new Padding(10, 10, 10, 0),
+                    ForeColor = Color.Gray,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold)
+                };
+                flpPage.Controls.Add(lbl);
+            }
+        }
+
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                HienThiTrangHienTai();
+                CapNhatPhanTrang();
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            int totalPages = (int)Math.Ceiling((double)_totalRecords / PageSize);
+
+            if (_currentPage < totalPages) // ← ĐÚNG: chỉ được bấm nếu chưa phải trang cuối
+            {
+                _currentPage++; // ← TĂNG trang lên
+                HienThiTrangHienTai();
+                CapNhatPhanTrang();
+            }
+        }
+
+        private void BtnPage_Click(object sender, EventArgs e)
+        {
+            if (sender is Guna2Button btn && btn.Tag is int page)
+            {
+                _currentPage = page;
+                HienThiTrangHienTai();
+                CapNhatPhanTrang();
+            }
+        }
+
+        private void lblPagination_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void flpPage_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dgvSinhVien_SelectionChanged(object sender, EventArgs e)
+        {
+            dgvSinhVien.ClearSelection();
+        }
+
+        private void btnXuatDL_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_nhom == null)
+                {
+                    MessageBox.Show("Không có nhóm để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Lấy toàn bộ danh sách sinh viên trong nhóm (not paged)
+                var dt = ChiTietNhomHocPhanBLL.LayDanhSachSinhVienTrongNhom(_nhom.MaNhom);
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using var sfd = new SaveFileDialog
+                {
+                    Filter = "Excel Workbook (*.xlsx)|*.xlsx",
+                    FileName = $"{_nhom?.TenNhom ?? "DanhSach"}_{DateTime.Now:yyyyMMdd}.xlsx",
+                    Title = "Lưu file Excel",
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                };
+
+                if (sfd.ShowDialog() != DialogResult.OK) return;
+                string path = sfd.FileName;
+
+                // Tạo workbook và worksheet, ghi dữ liệu
+                using (var wb = new ClosedXML.Excel.XLWorkbook())
+                {
+                    var ws = wb.Worksheets.Add("DanhSachSinhVien");
+
+                    // Header cố định (thay / mở rộng nếu cần)
+                    ws.Cell(1, 1).Value = "STT";
+                    ws.Cell(1, 2).Value = "Họ tên";
+                    ws.Cell(1, 3).Value = "MSSV";
+                    ws.Cell(1, 4).Value = "Giới tính";
+                    ws.Range(1, 1, 1, 4).Style.Font.SetBold();
+
+                    int r = 2;
+                    int stt = 1;
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string hoTen = row["HoTen"]?.ToString() ?? string.Empty;
+                        string mssv = row["MSSV"]?.ToString() ?? string.Empty;
+                        int gioiTinh = 0;
+                        if (row.Table.Columns.Contains("GioiTinh") && row["GioiTinh"] != DBNull.Value)
+                        {
+                            int.TryParse(row["GioiTinh"].ToString(), out gioiTinh);
+                        }
+
+                        ws.Cell(r, 1).Value = stt++;
+                        ws.Cell(r, 2).Value = hoTen;
+
+                        // Đặt MSSV là Text để giữ leading zeros
+                        var cellMSSV = ws.Cell(r, 3);
+
+                        // Write the MSSV as text and force Excel cell format to Text so leading zeros are preserved
+                        cellMSSV.Value = mssv;
+                        cellMSSV.Style.NumberFormat.Format = "@";
+
+                        ws.Cell(r, 4).Value = gioiTinh == 0 ? "Nam" : "Nữ";
+
+                        r++;
+                    }
+
+                    ws.Columns().AdjustToContents();
+                    wb.SaveAs(path);
+                }
+
+                // Mở Explorer và chọn file vừa lưu, đồng thời copy đường dẫn vào clipboard
+                try
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{path}\"");
+                    Clipboard.SetText(path);
+                }
+                catch
+                {
+                    // fallback: thử mở file trực tiếp
+                    try
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = path,
+                            UseShellExecute = true
+                        });
+                    }
+                    catch { /* ignore */ }
+                }
+
+                MessageBox.Show($"Xuất thành công.\nFile đã lưu: {path}\nĐường dẫn đã được copy vào clipboard.", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xuất dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}

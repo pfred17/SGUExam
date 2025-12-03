@@ -1,6 +1,5 @@
 ﻿using Guna.UI2.WinForms;
 using System.Drawing.Drawing2D;
-using System.Drawing.Drawing2D;
 namespace GUI
 {
     partial class FormLogin
@@ -33,6 +32,14 @@ namespace GUI
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges35 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges36 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -45,14 +52,6 @@ namespace GUI
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges33 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges34 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -68,6 +67,15 @@ namespace GUI
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges31 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges32 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pnBackgroundLogin = new Guna2Panel();
+            pnLogin = new Guna2Panel();
+            lblTitle = new Label();
+            lblaccount = new Label();
+            txtMssv = new Guna2TextBox();
+            lblPassword = new Label();
+            txtPassword = new Guna2TextBox();
+            btnLogin = new Guna2Button();
+            linkForgotPassword = new LinkLabel();
+            linkSignup = new LinkLabel();
             pnRegainPassword = new Guna2Panel();
             linkBackToLogin = new LinkLabel();
             btnSave = new Guna2Button();
@@ -78,15 +86,6 @@ namespace GUI
             label1 = new Label();
             btnSendCode = new Guna2Button();
             txtEmailFP = new Guna2TextBox();
-            pnLogin = new Guna2Panel();
-            lblTitle = new Label();
-            lblaccount = new Label();
-            txtMssv = new Guna2TextBox();
-            lblPassword = new Label();
-            txtPassword = new Guna2TextBox();
-            btnLogin = new Guna2Button();
-            linkForgotPassword = new LinkLabel();
-            linkSignup = new LinkLabel();
             pnRegister = new Guna2Panel();
             linkLogin = new LinkLabel();
             btnRegister = new Guna2Button();
@@ -101,9 +100,11 @@ namespace GUI
             txtRegisterPassword = new Guna2TextBox();
             txtRegisterMssv = new Guna2TextBox();
             titleRegister = new Label();
+            lbErrorMSSV = new Guna2HtmlLabel();
+            lbErrorMatKhau = new Guna2HtmlLabel();
             pnBackgroundLogin.SuspendLayout();
-            pnRegainPassword.SuspendLayout();
             pnLogin.SuspendLayout();
+            pnRegainPassword.SuspendLayout();
             pnRegister.SuspendLayout();
             SuspendLayout();
             // 
@@ -124,6 +125,189 @@ namespace GUI
             pnBackgroundLogin.ShadowDecoration.CustomizableEdges = customizableEdges36;
             pnBackgroundLogin.Size = new Size(982, 553);
             pnBackgroundLogin.TabIndex = 13;
+            // 
+            // pnLogin
+            // 
+            pnLogin.BackColor = Color.Transparent;
+            pnLogin.BorderColor = Color.White;
+            pnLogin.BorderRadius = 20;
+            pnLogin.Controls.Add(lbErrorMatKhau);
+            pnLogin.Controls.Add(lbErrorMSSV);
+            pnLogin.Controls.Add(lblTitle);
+            pnLogin.Controls.Add(lblaccount);
+            pnLogin.Controls.Add(txtMssv);
+            pnLogin.Controls.Add(lblPassword);
+            pnLogin.Controls.Add(txtPassword);
+            pnLogin.Controls.Add(btnLogin);
+            pnLogin.Controls.Add(linkForgotPassword);
+            pnLogin.Controls.Add(linkSignup);
+            pnLogin.CustomizableEdges = customizableEdges7;
+            pnLogin.FillColor = Color.FromArgb(200, 245, 250, 255);
+            pnLogin.ForeColor = Color.FromArgb(40, 40, 40);
+            pnLogin.Location = new Point(291, 52);
+            pnLogin.Name = "pnLogin";
+            pnLogin.ShadowDecoration.BorderRadius = 20;
+            pnLogin.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            pnLogin.ShadowDecoration.Depth = 15;
+            pnLogin.ShadowDecoration.Enabled = true;
+            pnLogin.ShadowDecoration.Shadow = new Padding(5, 5, 8, 8);
+            pnLogin.Size = new Size(400, 451);
+            pnLogin.TabIndex = 0;
+            pnLogin.TabStop = true;
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.BackColor = Color.Transparent;
+            lblTitle.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.ForeColor = Color.FromArgb(0, 90, 180);
+            lblTitle.Location = new Point(120, 40);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(169, 41);
+            lblTitle.TabIndex = 23;
+            lblTitle.Text = "Đăng nhập";
+            // 
+            // lblaccount
+            // 
+            lblaccount.AutoSize = true;
+            lblaccount.BackColor = Color.Transparent;
+            lblaccount.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblaccount.ForeColor = Color.FromArgb(30, 30, 30);
+            lblaccount.Location = new Point(50, 86);
+            lblaccount.Name = "lblaccount";
+            lblaccount.Size = new Size(146, 28);
+            lblaccount.TabIndex = 29;
+            lblaccount.Text = "Mã số sinh viên";
+            lblaccount.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // txtMssv
+            // 
+            txtMssv.BackColor = Color.Transparent;
+            txtMssv.BorderRadius = 10;
+            txtMssv.Cursor = Cursors.IBeam;
+            txtMssv.CustomizableEdges = customizableEdges1;
+            txtMssv.DefaultText = "";
+            txtMssv.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtMssv.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtMssv.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtMssv.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtMssv.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtMssv.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtMssv.ForeColor = Color.Black;
+            txtMssv.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtMssv.IconLeft = Properties.Resources.icon_user;
+            txtMssv.IconLeftSize = new Size(50, 50);
+            txtMssv.Location = new Point(50, 117);
+            txtMssv.Margin = new Padding(5, 4, 5, 4);
+            txtMssv.Name = "txtMssv";
+            txtMssv.PlaceholderText = "Nhập mã số sinh viên";
+            txtMssv.SelectedText = "";
+            txtMssv.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            txtMssv.Size = new Size(299, 55);
+            txtMssv.TabIndex = 0;
+            txtMssv.TextChanged += txtMssv_TextChanged;
+            txtMssv.Leave += txtMssv_Leave;
+            // 
+            // lblPassword
+            // 
+            lblPassword.AutoSize = true;
+            lblPassword.BackColor = Color.Transparent;
+            lblPassword.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPassword.ForeColor = Color.FromArgb(30, 30, 30);
+            lblPassword.Location = new Point(50, 203);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(94, 28);
+            lblPassword.TabIndex = 24;
+            lblPassword.Text = "Mật khẩu";
+            lblPassword.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // txtPassword
+            // 
+            txtPassword.BackColor = Color.Transparent;
+            txtPassword.BorderRadius = 10;
+            txtPassword.Cursor = Cursors.IBeam;
+            txtPassword.CustomizableEdges = customizableEdges3;
+            txtPassword.DefaultText = "";
+            txtPassword.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtPassword.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtPassword.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtPassword.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtPassword.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtPassword.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPassword.ForeColor = Color.Black;
+            txtPassword.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtPassword.IconLeft = Properties.Resources.password;
+            txtPassword.IconLeftSize = new Size(40, 40);
+            txtPassword.IconRight = Properties.Resources.icon_blinds;
+            txtPassword.IconRightCursor = Cursors.Hand;
+            txtPassword.IconRightSize = new Size(50, 40);
+            txtPassword.Location = new Point(50, 232);
+            txtPassword.Margin = new Padding(5, 4, 5, 4);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '•';
+            txtPassword.PlaceholderText = "Nhập mật khẩu";
+            txtPassword.SelectedText = "";
+            txtPassword.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            txtPassword.Size = new Size(299, 55);
+            txtPassword.TabIndex = 1;
+            txtPassword.IconRightClick += txtPassword_IconRightClick;
+            // 
+            // btnLogin
+            // 
+            btnLogin.BackColor = Color.Transparent;
+            btnLogin.BorderRadius = 20;
+            btnLogin.Cursor = Cursors.Hand;
+            btnLogin.CustomizableEdges = customizableEdges5;
+            btnLogin.FillColor = Color.FromArgb(0, 120, 215);
+            btnLogin.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogin.ForeColor = Color.WhiteSmoke;
+            btnLogin.HoverState.FillColor = Color.FromArgb(0, 100, 190);
+            btnLogin.Location = new Point(50, 318);
+            btnLogin.Name = "btnLogin";
+            btnLogin.ShadowDecoration.BorderRadius = 20;
+            btnLogin.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnLogin.ShadowDecoration.Depth = 10;
+            btnLogin.ShadowDecoration.Enabled = true;
+            btnLogin.Size = new Size(299, 45);
+            btnLogin.TabIndex = 2;
+            btnLogin.TabStop = false;
+            btnLogin.Text = "Đăng nhập";
+            btnLogin.Click += btnLogin_Click;
+            // 
+            // linkForgotPassword
+            // 
+            linkForgotPassword.ActiveLinkColor = Color.DarkBlue;
+            linkForgotPassword.AutoSize = true;
+            linkForgotPassword.BackColor = Color.Transparent;
+            linkForgotPassword.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            linkForgotPassword.LinkBehavior = LinkBehavior.NeverUnderline;
+            linkForgotPassword.LinkColor = SystemColors.HotTrack;
+            linkForgotPassword.Location = new Point(210, 369);
+            linkForgotPassword.Name = "linkForgotPassword";
+            linkForgotPassword.Size = new Size(134, 25);
+            linkForgotPassword.TabIndex = 3;
+            linkForgotPassword.TabStop = true;
+            linkForgotPassword.Text = "Quên mật khẩu";
+            linkForgotPassword.TextAlign = ContentAlignment.MiddleCenter;
+            linkForgotPassword.LinkClicked += linkForgotPassword_LinkClicked;
+            // 
+            // linkSignup
+            // 
+            linkSignup.ActiveLinkColor = Color.DarkBlue;
+            linkSignup.AutoSize = true;
+            linkSignup.BackColor = Color.Transparent;
+            linkSignup.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            linkSignup.ForeColor = Color.Transparent;
+            linkSignup.LinkBehavior = LinkBehavior.NeverUnderline;
+            linkSignup.LinkColor = SystemColors.HotTrack;
+            linkSignup.Location = new Point(89, 406);
+            linkSignup.Name = "linkSignup";
+            linkSignup.Size = new Size(255, 23);
+            linkSignup.TabIndex = 4;
+            linkSignup.TabStop = true;
+            linkSignup.Text = "Bạn chưa có tài khoản? Đăng ký";
+            linkSignup.TextAlign = ContentAlignment.MiddleCenter;
+            linkSignup.LinkClicked += linkSignup_LinkClicked;
             // 
             // pnRegainPassword
             // 
@@ -147,7 +331,7 @@ namespace GUI
             // linkBackToLogin
             // 
             linkBackToLogin.AutoSize = true;
-            linkBackToLogin.Location = new Point(244, 441);
+            linkBackToLogin.Location = new Point(245, 441);
             linkBackToLogin.Name = "linkBackToLogin";
             linkBackToLogin.Size = new Size(108, 28);
             linkBackToLogin.TabIndex = 8;
@@ -175,7 +359,7 @@ namespace GUI
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(68, 261);
+            label3.Location = new Point(69, 261);
             label3.Name = "label3";
             label3.Size = new Size(185, 28);
             label3.TabIndex = 6;
@@ -192,8 +376,8 @@ namespace GUI
             txtNewPassword.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtNewPassword.Font = new Font("Segoe UI", 9F);
             txtNewPassword.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNewPassword.Location = new Point(68, 293);
-            txtNewPassword.Margin = new Padding(3, 4, 3, 4);
+            txtNewPassword.Location = new Point(69, 293);
+            txtNewPassword.Margin = new Padding(3, 5, 3, 5);
             txtNewPassword.Name = "txtNewPassword";
             txtNewPassword.PlaceholderText = "";
             txtNewPassword.SelectedText = "";
@@ -204,7 +388,7 @@ namespace GUI
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(68, 170);
+            label2.Location = new Point(69, 171);
             label2.Name = "label2";
             label2.Size = new Size(93, 28);
             label2.TabIndex = 4;
@@ -221,8 +405,8 @@ namespace GUI
             txtCode.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtCode.Font = new Font("Segoe UI", 9F);
             txtCode.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtCode.Location = new Point(70, 210);
-            txtCode.Margin = new Padding(3, 4, 3, 4);
+            txtCode.Location = new Point(70, 211);
+            txtCode.Margin = new Padding(3, 5, 3, 5);
             txtCode.Name = "txtCode";
             txtCode.PlaceholderText = "";
             txtCode.SelectedText = "";
@@ -233,7 +417,7 @@ namespace GUI
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(70, 10);
+            label1.Location = new Point(70, 11);
             label1.Name = "label1";
             label1.Size = new Size(112, 28);
             label1.TabIndex = 2;
@@ -248,7 +432,7 @@ namespace GUI
             btnSendCode.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnSendCode.Font = new Font("Segoe UI", 9F);
             btnSendCode.ForeColor = Color.White;
-            btnSendCode.Location = new Point(127, 102);
+            btnSendCode.Location = new Point(127, 101);
             btnSendCode.Name = "btnSendCode";
             btnSendCode.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnSendCode.Size = new Size(130, 56);
@@ -267,193 +451,14 @@ namespace GUI
             txtEmailFP.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtEmailFP.Font = new Font("Segoe UI", 9F);
             txtEmailFP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtEmailFP.Location = new Point(68, 54);
-            txtEmailFP.Margin = new Padding(3, 4, 3, 4);
+            txtEmailFP.Location = new Point(69, 53);
+            txtEmailFP.Margin = new Padding(3, 5, 3, 5);
             txtEmailFP.Name = "txtEmailFP";
             txtEmailFP.PlaceholderText = "";
             txtEmailFP.SelectedText = "";
             txtEmailFP.ShadowDecoration.CustomizableEdges = customizableEdges18;
             txtEmailFP.Size = new Size(286, 39);
             txtEmailFP.TabIndex = 0;
-            // 
-            // pnLogin
-            // 
-            pnLogin.BackColor = Color.Transparent;
-            pnLogin.BorderColor = Color.White;
-            pnLogin.BorderRadius = 20;
-            pnLogin.Controls.Add(lblTitle);
-            pnLogin.Controls.Add(lblaccount);
-            pnLogin.Controls.Add(txtMssv);
-            pnLogin.Controls.Add(lblPassword);
-            pnLogin.Controls.Add(txtPassword);
-            pnLogin.Controls.Add(btnLogin);
-            pnLogin.Controls.Add(linkForgotPassword);
-            pnLogin.Controls.Add(linkSignup);
-            pnLogin.CustomizableEdges = customizableEdges7;
-            pnLogin.FillColor = Color.FromArgb(200, 245, 250, 255);
-            pnLogin.ForeColor = Color.FromArgb(40, 40, 40);
-            pnLogin.Location = new Point(291, 52);
-            pnLogin.Name = "pnLogin";
-            pnLogin.ShadowDecoration.BorderRadius = 20;
-            pnLogin.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            pnLogin.ShadowDecoration.Depth = 15;
-            pnLogin.ShadowDecoration.Enabled = true;
-            pnLogin.ShadowDecoration.Shadow = new Padding(5, 5, 8, 8);
-            pnLogin.Size = new Size(400, 450);
-            pnLogin.TabIndex = 0;
-            pnLogin.TabStop = true;
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.BackColor = Color.Transparent;
-            lblTitle.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.ForeColor = Color.FromArgb(0, 90, 180);
-            lblTitle.Location = new Point(120, 40);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(169, 41);
-            lblTitle.TabIndex = 23;
-            lblTitle.Text = "Đăng nhập";
-            // 
-            // lblaccount
-            // 
-            lblaccount.AutoSize = true;
-            lblaccount.BackColor = Color.Transparent;
-            lblaccount.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblaccount.ForeColor = Color.FromArgb(30, 30, 30);
-            lblaccount.Location = new Point(50, 100);
-            lblaccount.Name = "lblaccount";
-            lblaccount.Size = new Size(146, 28);
-            lblaccount.TabIndex = 29;
-            lblaccount.Text = "Mã số sinh viên";
-            lblaccount.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // txtMssv
-            // 
-            txtMssv.BackColor = Color.Transparent;
-            txtMssv.BorderRadius = 10;
-            txtMssv.Cursor = Cursors.IBeam;
-            txtMssv.CustomizableEdges = customizableEdges1;
-            txtMssv.DefaultText = "";
-            txtMssv.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtMssv.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtMssv.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtMssv.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtMssv.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMssv.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMssv.ForeColor = Color.Black;
-            txtMssv.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMssv.IconLeft = Properties.Resources.icon_user;
-            txtMssv.IconLeftSize = new Size(50, 50);
-            txtMssv.Location = new Point(50, 130);
-            txtMssv.Margin = new Padding(4);
-            txtMssv.Name = "txtMssv";
-            txtMssv.PlaceholderText = "Nhập mã số sinh viên";
-            txtMssv.SelectedText = "";
-            txtMssv.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMssv.Size = new Size(300, 55);
-            txtMssv.TabIndex = 0;
-            // 
-            // lblPassword
-            // 
-            lblPassword.AutoSize = true;
-            lblPassword.BackColor = Color.Transparent;
-            lblPassword.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPassword.ForeColor = Color.FromArgb(30, 30, 30);
-            lblPassword.Location = new Point(50, 200);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(94, 28);
-            lblPassword.TabIndex = 24;
-            lblPassword.Text = "Mật khẩu";
-            lblPassword.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // txtPassword
-            // 
-            txtPassword.BackColor = Color.Transparent;
-            txtPassword.BorderRadius = 10;
-            txtPassword.Cursor = Cursors.IBeam;
-            txtPassword.CustomizableEdges = customizableEdges3;
-            txtPassword.DefaultText = "";
-            txtPassword.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtPassword.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtPassword.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtPassword.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtPassword.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPassword.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtPassword.ForeColor = Color.Black;
-            txtPassword.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPassword.IconLeft = Properties.Resources.password;
-            txtPassword.IconLeftSize = new Size(40, 40);
-            txtPassword.IconRight = Properties.Resources.icon_blinds;
-            txtPassword.IconRightCursor = Cursors.Hand;
-            txtPassword.IconRightSize = new Size(50, 40);
-            txtPassword.Location = new Point(50, 230);
-            txtPassword.Margin = new Padding(4);
-            txtPassword.Name = "txtPassword";
-            txtPassword.PasswordChar = '•';
-            txtPassword.PlaceholderText = "Nhập mật khẩu";
-            txtPassword.SelectedText = "";
-            txtPassword.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtPassword.Size = new Size(300, 55);
-            txtPassword.TabIndex = 1;
-            txtPassword.IconRightClick += txtPassword_IconRightClick;
-            // 
-            // btnLogin
-            // 
-            btnLogin.BackColor = Color.Transparent;
-            btnLogin.BorderRadius = 20;
-            btnLogin.Cursor = Cursors.Hand;
-            btnLogin.CustomizableEdges = customizableEdges5;
-            btnLogin.FillColor = Color.FromArgb(0, 120, 215);
-            btnLogin.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLogin.ForeColor = Color.WhiteSmoke;
-            btnLogin.HoverState.FillColor = Color.FromArgb(0, 100, 190);
-            btnLogin.Location = new Point(50, 310);
-            btnLogin.Name = "btnLogin";
-            btnLogin.ShadowDecoration.BorderRadius = 20;
-            btnLogin.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnLogin.ShadowDecoration.Depth = 10;
-            btnLogin.ShadowDecoration.Enabled = true;
-            btnLogin.Size = new Size(300, 45);
-            btnLogin.TabIndex = 2;
-            btnLogin.TabStop = false;
-            btnLogin.Text = "Đăng nhập";
-            btnLogin.Click += btnLogin_Click;
-            // 
-            // linkForgotPassword
-            // 
-            linkForgotPassword.ActiveLinkColor = Color.DarkBlue;
-            linkForgotPassword.AutoSize = true;
-            linkForgotPassword.BackColor = Color.Transparent;
-            linkForgotPassword.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            linkForgotPassword.LinkBehavior = LinkBehavior.NeverUnderline;
-            linkForgotPassword.LinkColor = SystemColors.HotTrack;
-            linkForgotPassword.Location = new Point(50, 360);
-            linkForgotPassword.Name = "linkForgotPassword";
-            linkForgotPassword.Size = new Size(134, 25);
-            linkForgotPassword.TabIndex = 3;
-            linkForgotPassword.TabStop = true;
-            linkForgotPassword.Text = "Quên mật khẩu";
-            linkForgotPassword.TextAlign = ContentAlignment.MiddleCenter;
-            linkForgotPassword.LinkClicked += linkForgotPassword_LinkClicked;
-            // 
-            // linkSignup
-            // 
-            linkSignup.ActiveLinkColor = Color.DarkBlue;
-            linkSignup.AutoSize = true;
-            linkSignup.BackColor = Color.Transparent;
-            linkSignup.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            linkSignup.ForeColor = Color.Transparent;
-            linkSignup.LinkBehavior = LinkBehavior.NeverUnderline;
-            linkSignup.LinkColor = SystemColors.HotTrack;
-            linkSignup.Location = new Point(50, 410);
-            linkSignup.Name = "linkSignup";
-            linkSignup.Size = new Size(255, 23);
-            linkSignup.TabIndex = 4;
-            linkSignup.TabStop = true;
-            linkSignup.Text = "Bạn chưa có tài khoản? Đăng ký";
-            linkSignup.TextAlign = ContentAlignment.MiddleCenter;
-            linkSignup.LinkClicked += linkSignup_LinkClicked;
             // 
             // pnRegister
             // 
@@ -508,7 +513,7 @@ namespace GUI
             btnRegister.Location = new Point(70, 435);
             btnRegister.Name = "btnRegister";
             btnRegister.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            btnRegister.Size = new Size(300, 40);
+            btnRegister.Size = new Size(299, 40);
             btnRegister.TabIndex = 17;
             btnRegister.TabStop = false;
             btnRegister.Text = "Đăng ký";
@@ -518,7 +523,7 @@ namespace GUI
             // 
             lblEmailRegister.AutoSize = true;
             lblEmailRegister.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblEmailRegister.Location = new Point(70, 350);
+            lblEmailRegister.Location = new Point(70, 349);
             lblEmailRegister.Name = "lblEmailRegister";
             lblEmailRegister.Size = new Size(51, 23);
             lblEmailRegister.TabIndex = 16;
@@ -540,7 +545,7 @@ namespace GUI
             // 
             lblPasswordRegister.AutoSize = true;
             lblPasswordRegister.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPasswordRegister.Location = new Point(70, 210);
+            lblPasswordRegister.Location = new Point(70, 211);
             lblPasswordRegister.Name = "lblPasswordRegister";
             lblPasswordRegister.Size = new Size(82, 23);
             lblPasswordRegister.TabIndex = 14;
@@ -563,13 +568,13 @@ namespace GUI
             txtFullname.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtFullname.IconLeft = Properties.Resources.fullname;
             txtFullname.IconLeftSize = new Size(40, 32);
-            txtFullname.Location = new Point(70, 170);
-            txtFullname.Margin = new Padding(3, 4, 3, 4);
+            txtFullname.Location = new Point(70, 171);
+            txtFullname.Margin = new Padding(3, 5, 3, 5);
             txtFullname.Name = "txtFullname";
             txtFullname.PlaceholderText = "Nhập họ tên sinh viên";
             txtFullname.SelectedText = "";
             txtFullname.ShadowDecoration.CustomizableEdges = customizableEdges24;
-            txtFullname.Size = new Size(300, 36);
+            txtFullname.Size = new Size(299, 36);
             txtFullname.TabIndex = 2;
             // 
             // lblFullname
@@ -587,7 +592,7 @@ namespace GUI
             // 
             lblMssv.AutoSize = true;
             lblMssv.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMssv.Location = new Point(70, 70);
+            lblMssv.Location = new Point(70, 69);
             lblMssv.Name = "lblMssv";
             lblMssv.Size = new Size(128, 23);
             lblMssv.TabIndex = 11;
@@ -611,12 +616,12 @@ namespace GUI
             txtRegisterEmail.IconLeft = Properties.Resources.email;
             txtRegisterEmail.IconLeftSize = new Size(30, 30);
             txtRegisterEmail.Location = new Point(70, 380);
-            txtRegisterEmail.Margin = new Padding(3, 4, 3, 4);
+            txtRegisterEmail.Margin = new Padding(3, 5, 3, 5);
             txtRegisterEmail.Name = "txtRegisterEmail";
             txtRegisterEmail.PlaceholderText = "Nhập email";
             txtRegisterEmail.SelectedText = "";
             txtRegisterEmail.ShadowDecoration.CustomizableEdges = customizableEdges26;
-            txtRegisterEmail.Size = new Size(300, 36);
+            txtRegisterEmail.Size = new Size(299, 36);
             txtRegisterEmail.TabIndex = 5;
             // 
             // txtRegisterConfirmPassword
@@ -634,14 +639,14 @@ namespace GUI
             txtRegisterConfirmPassword.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtRegisterConfirmPassword.IconLeft = Properties.Resources.confirmpassword;
             txtRegisterConfirmPassword.IconLeftSize = new Size(30, 30);
-            txtRegisterConfirmPassword.Location = new Point(70, 310);
-            txtRegisterConfirmPassword.Margin = new Padding(3, 4, 3, 4);
+            txtRegisterConfirmPassword.Location = new Point(70, 309);
+            txtRegisterConfirmPassword.Margin = new Padding(3, 5, 3, 5);
             txtRegisterConfirmPassword.Name = "txtRegisterConfirmPassword";
             txtRegisterConfirmPassword.PasswordChar = '•';
             txtRegisterConfirmPassword.PlaceholderText = "Xác nhận mật khẩu";
             txtRegisterConfirmPassword.SelectedText = "";
             txtRegisterConfirmPassword.ShadowDecoration.CustomizableEdges = customizableEdges28;
-            txtRegisterConfirmPassword.Size = new Size(300, 36);
+            txtRegisterConfirmPassword.Size = new Size(299, 36);
             txtRegisterConfirmPassword.TabIndex = 4;
             // 
             // txtRegisterPassword
@@ -663,13 +668,13 @@ namespace GUI
             txtRegisterPassword.IconRightCursor = Cursors.Hand;
             txtRegisterPassword.IconRightSize = new Size(40, 32);
             txtRegisterPassword.Location = new Point(70, 240);
-            txtRegisterPassword.Margin = new Padding(3, 4, 3, 4);
+            txtRegisterPassword.Margin = new Padding(3, 5, 3, 5);
             txtRegisterPassword.Name = "txtRegisterPassword";
             txtRegisterPassword.PasswordChar = '•';
             txtRegisterPassword.PlaceholderText = "Nhập mật khẩu";
             txtRegisterPassword.SelectedText = "";
             txtRegisterPassword.ShadowDecoration.CustomizableEdges = customizableEdges30;
-            txtRegisterPassword.Size = new Size(300, 36);
+            txtRegisterPassword.Size = new Size(299, 36);
             txtRegisterPassword.TabIndex = 3;
             txtRegisterPassword.IconRightClick += txtRegisterPassword_IconRightClick;
             // 
@@ -690,12 +695,12 @@ namespace GUI
             txtRegisterMssv.IconLeft = Properties.Resources.icon_user;
             txtRegisterMssv.IconLeftSize = new Size(35, 35);
             txtRegisterMssv.Location = new Point(70, 100);
-            txtRegisterMssv.Margin = new Padding(3, 4, 3, 4);
+            txtRegisterMssv.Margin = new Padding(3, 5, 3, 5);
             txtRegisterMssv.Name = "txtRegisterMssv";
             txtRegisterMssv.PlaceholderText = "Nhập mã số sinh viên";
             txtRegisterMssv.SelectedText = "";
             txtRegisterMssv.ShadowDecoration.CustomizableEdges = customizableEdges32;
-            txtRegisterMssv.Size = new Size(300, 36);
+            txtRegisterMssv.Size = new Size(299, 36);
             txtRegisterMssv.TabIndex = 0;
             // 
             // titleRegister
@@ -704,12 +709,36 @@ namespace GUI
             titleRegister.BackColor = Color.Transparent;
             titleRegister.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             titleRegister.ForeColor = Color.FromArgb(0, 90, 180);
-            titleRegister.Location = new Point(96, 10);
+            titleRegister.Location = new Point(96, 11);
             titleRegister.Name = "titleRegister";
             titleRegister.Size = new Size(258, 38);
             titleRegister.TabIndex = 0;
             titleRegister.Text = "Đăng ký tài khoản";
             titleRegister.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lbErrorMSSV
+            // 
+            lbErrorMSSV.BackColor = Color.Transparent;
+            lbErrorMSSV.Font = new Font("Segoe UI", 8F);
+            lbErrorMSSV.ForeColor = Color.Red;
+            lbErrorMSSV.Location = new Point(50, 180);
+            lbErrorMSSV.Name = "lbErrorMSSV";
+            lbErrorMSSV.Size = new Size(107, 19);
+            lbErrorMSSV.TabIndex = 30;
+            lbErrorMSSV.Text = "Message lỗi mssv";
+            lbErrorMSSV.Visible = false;
+            // 
+            // lbErrorMatKhau
+            // 
+            lbErrorMatKhau.BackColor = Color.Transparent;
+            lbErrorMatKhau.Font = new Font("Segoe UI", 8F);
+            lbErrorMatKhau.ForeColor = Color.Red;
+            lbErrorMatKhau.Location = new Point(50, 293);
+            lbErrorMatKhau.Name = "lbErrorMatKhau";
+            lbErrorMatKhau.Size = new Size(131, 19);
+            lbErrorMatKhau.TabIndex = 31;
+            lbErrorMatKhau.Text = "Message lỗi mật khẩu";
+            lbErrorMatKhau.Visible = false;
             // 
             // FormLogin
             // 
@@ -723,10 +752,10 @@ namespace GUI
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
             pnBackgroundLogin.ResumeLayout(false);
-            pnRegainPassword.ResumeLayout(false);
-            pnRegainPassword.PerformLayout();
             pnLogin.ResumeLayout(false);
             pnLogin.PerformLayout();
+            pnRegainPassword.ResumeLayout(false);
+            pnRegainPassword.PerformLayout();
             pnRegister.ResumeLayout(false);
             pnRegister.PerformLayout();
             ResumeLayout(false);
@@ -767,6 +796,8 @@ namespace GUI
         private Guna2Button btnSave;
         private Label label3;
         private Guna2TextBox txtNewPassword;
+        private Guna2HtmlLabel lbErrorMatKhau;
+        private Guna2HtmlLabel lbErrorMSSV;
     }
 
 }
