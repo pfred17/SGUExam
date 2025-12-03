@@ -15,8 +15,9 @@ namespace DTO
     public class ChuongDTO
     {
         public long MaChuong { get; set; }
-        public string TenChuong { get; set; } = "";
         public long MaMonHoc { get; set; }
+        public string TenChuong { get; set; } = "";
+        public int TrangThai { get; set; }
         public ChuongDTO() { }
     }
 }

@@ -35,7 +35,7 @@ namespace GUI
         // --- Init helpers (gọn, rõ) ---
         private void InitCombos()
         {
-            var monList = _monHocBLL.GetAllMonHoc();
+            var monList = _monHocBLL.GetAllMonHocByStatus(1);
             cbMonHoc.DataSource = new List<MonHocDTO>(monList);
             cbMonHoc.DisplayMember = "TenMH";
             cbMonHoc.ValueMember = "MaMH";

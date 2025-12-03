@@ -16,7 +16,7 @@ namespace GUI.forms.MonHoc
         private enum Mode { Add, Edit }
         private Mode currentMode;
         private readonly ChuongBLL _chuongBLL = new ChuongBLL();
-        private List<ChuongDTO>? listChuong;
+        private List<ChuongDTO> listChuong = new List<ChuongDTO>();
         private ChuongDTO? editingChuong;
         private long _maMonHoc;
 
@@ -107,6 +107,7 @@ namespace GUI.forms.MonHoc
 
                 row.Cells["MaChuong"].Value = chuong.MaChuong;
                 row.Cells["TenChuong"].Value = chuong.TenChuong;
+                row.Cells["TrangThai"].Value = chuong.TrangThai == 1 ? "Hoạt động" : "Đang khóa";
                 row.Cells["EditCol"].Value = Properties.Resources.icon_edit;
                 row.Cells["DeleteCol"].Value = Properties.Resources.icon_delete;
             }
@@ -121,9 +122,9 @@ namespace GUI.forms.MonHoc
             if (totalPages == 0) totalPages = 1;
             if (pageCurrent > totalPages) pageCurrent = totalPages;
 
-            var data = _chuongBLL.GetChuongPaged(_maMonHoc, pageCurrent, pageSize);
+            listChuong = _chuongBLL.GetChuongPaged(_maMonHoc, pageCurrent, pageSize);
 
-            DisplayData(data);
+            DisplayData(listChuong);
 
             lblPage.Text = $"{pageCurrent} / {totalPages}";
             btnPrev.Enabled = pageCurrent > 1;
@@ -146,6 +147,10 @@ namespace GUI.forms.MonHoc
             // Lấy ID của chương
             var maChuong = dgvChuong.Rows[e.RowIndex].Cells["MaChuong"].Value?.ToString();
             var tenChuong = dgvChuong.Rows[e.RowIndex].Cells["TenChuong"].Value?.ToString();
+            var strTrangThai = dgvChuong.Rows[e.RowIndex].Cells["TrangThai"].Value?.ToString();
+
+            int oldTrangThai = strTrangThai == "Hoạt động" ? 1 : 0;
+            int newTrangThai = (oldTrangThai == 0 ? 1 : 0);
 
             if (columnName == "EditCol")
             {
@@ -153,15 +158,21 @@ namespace GUI.forms.MonHoc
             }
             if (columnName == "DeleteCol")
             {
-                if (_chuongBLL.IsChuongReferenced(long.Parse(maChuong)))
+                txtInput.Text = "";
+
+                if (_chuongBLL.GetStatus(long.Parse(maChuong)) == 0)
                 {
-                    MessageBox.Show($"Dữ liệu chương {tenChuong} có liên quan đến thông tin khác. Không thể xóa.", "Cảnh báo");
+                    if(MessageBox.Show($"Mở khóa chương {tenChuong}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        _chuongBLL.UpdateStatus(long.Parse(maChuong), newTrangThai);
+                        LoadData();
+                    }
                     return;
                 }
 
-                if (MessageBox.Show($"Xoá chương {tenChuong}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show($"Khóa chương {tenChuong}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    _chuongBLL.DeleteChuong(long.Parse(maChuong));
+                    _chuongBLL.UpdateStatus(long.Parse(maChuong), newTrangThai);
                     LoadData();
                 }
             }
@@ -229,18 +240,28 @@ namespace GUI.forms.MonHoc
             {
                 ChuongDTO newChuong = new ChuongDTO
                 {
-                    TenChuong = tenChuong
+                    TenChuong = tenChuong,
+                    TrangThai = 1
                 };
                 _chuongBLL.AddChuong(newChuong, _maMonHoc);
                 LoadData();
             }
             else if (currentMode == Mode.Edit && editingChuong != null)
             {
+                if (_chuongBLL.IsChuongReferenced(editingChuong.MaChuong))
+                {
+                    txtInput.Text = "";
+                    MessageBox.Show(
+                          "Chương này đang được sử dụng. Không thể thay đổi thông tin!\n", 
+                          "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning
+                      );
+                    return;
+                }
                 editingChuong.TenChuong = tenChuong;
                 _chuongBLL.UpdateChuong(editingChuong);
+                LoadData();
             }
 
-            LoadData();
             txtInput.Text = "";
             btnSubmit.Text = "Thêm";
             currentMode = Mode.Add;
@@ -259,7 +280,19 @@ namespace GUI.forms.MonHoc
                 lblError.Text = "Tên chương không được để trống.";
                 lblError.Visible = true;
             }
-            else if (_chuongBLL.IsChuongExists(input))
+            if(input.Length < 5)
+            {
+                lblError.Text = "Tên chương tối thiểu 5 ký tự.";
+                lblError.Visible = true;
+            }
+            else if (currentMode == Mode.Add && _chuongBLL.IsChuongExists(input))
+            {
+                lblError.Text = "Tên chương đã tồn tại.";
+                lblError.Visible = true;
+            }
+            else if (currentMode == Mode.Edit && editingChuong != null &&
+             input != editingChuong.TenChuong && // Tên đã bị thay đổi
+             _chuongBLL.IsChuongExists(input))   // Và tên mới bị trùng
             {
                 lblError.Text = "Tên chương đã tồn tại.";
                 lblError.Visible = true;

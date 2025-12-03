@@ -126,6 +126,7 @@ namespace GUI.modules
                 row.Cells["MaMon"].Value = "";
                 row.Cells["MaGiangVien"].Value = "";
                 row.Cells["TenGiangVien"].Value = "";
+                row.Cells["TrangThai"].Value = "";
                 row.Cells["EditCol"].Value = null;
                 row.Cells["DeleteCol"].Value = null;
             }
@@ -142,6 +143,7 @@ namespace GUI.modules
                 row.Cells["MonHoc"].Value = pc.TenMonHoc;
                 row.Cells["MaGiangVien"].Value = pc.MaNguoiDung;
                 row.Cells["TenGiangVien"].Value = pc.TenNguoiDung;
+                row.Cells["TrangThai"].Value = pc.TrangThai == 1 ? "Hoạt động" : "Đang khóa";
                 row.Cells["EditCol"].Value = Properties.Resources.icon_edit;
                 row.Cells["DeleteCol"].Value = Properties.Resources.icon_delete;
             }
@@ -212,13 +214,12 @@ namespace GUI.modules
 
                     if (col == "DeleteCol")
                     {
-                        if (_phanCongBLL.IsPhanCongReferenced(maPC))
+                        if (_phanCongBLL.GetStatus(maPC) == 0)
                         {
-                            MessageBox.Show($"Dữ liệu phân công có liên quan đến thông tin khác. Không thể xóa.", "Cảnh báo");
+                            MessageBox.Show($"Phân công đã bị khóa.", "Thông báo!");
                             return;
                         }
-
-                        if (MessageBox.Show($"Xoá mã phân công {maPC}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (MessageBox.Show($"Khóa mã phân công {maPC}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             _phanCongBLL.DeletePhanCong(maPC);
                             LoadData();

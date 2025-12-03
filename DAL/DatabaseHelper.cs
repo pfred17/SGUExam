@@ -5,19 +5,11 @@ namespace DAL
 {
     public static class DatabaseHelper
     {
-        //public static readonly string connectionString =
-        //     "Data Source=DESKTOP-VNR8V8P\\DUYPHONG;" +
-        //     "Initial Catalog=SGUExam2;Integrated Security=SSPI;" +
-        //     "TrustServerCertificate=True;";
-
         private static readonly string connectionString =
-//<<<<<<< HEAD
     "Data Source = MSI\\SQLEXPRESS;Initial Catalog = SGUExam; User ID = sa; Password=kaka3135134162;Trust Server Certificate=True";
-//=======
             //"Data Source = DESKTOP-U6EVNRO;Initial Catalog = SGUExam2; User ID = sa; Password=12345678;Trust Server Certificate=True";
         
             //"Data Source=LG8888\\SQLEXPRESS;Initial Catalog=SGUExam;Integrated Security=True;TrustServerCertificate=True";
-//>>>>>>> c4c9197f11b5e930a0dd0d03262d10afde32b3ec
 
         public static SqlConnection GetConnection()
         {

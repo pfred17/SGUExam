@@ -11,12 +11,22 @@ namespace DAL
 {
     public class MonHocDAL
     {
-        public List<MonHocDTO> GetAllMonHoc()
+        public List<MonHocDTO> GetAllMonHocByStatus(int? trangThai = null)
         {
-            string query = "SELECT * FROM mon_hoc";
-            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+            string query = "SELECT mh.ma_mh, mh.ten_mh, mh.so_tin_chi, mh.trang_thai FROM mon_hoc mh";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (trangThai != null)
+            {
+                // Chỉ định rõ cột trang_thai thuộc về bảng mh
+                query += " WHERE mh.trang_thai = @trang_thai";
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters.ToArray());
 
             List<MonHocDTO> list = new List<MonHocDTO>();
+
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(new MonHocDTO
@@ -24,13 +34,12 @@ namespace DAL
                     MaMH = Convert.ToInt64(row["ma_mh"]),
                     TenMH = Convert.ToString(row["ten_mh"]) ?? "",
                     SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
-                    TrangThai = Convert.ToByte(row["trang_thai"])
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
             }
-
             return list;
         }
-        public MonHocDTO? GetMonHocById(long maMonHoc)
+        public MonHocDTO GetMonHocById(long maMonHoc)
         {
             string query = "SELECT * FROM mon_hoc WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters =  {
@@ -42,19 +51,19 @@ namespace DAL
 
             DataRow row = dt.Rows[0];
             return new MonHocDTO
-        {
+            {
                 MaMH = Convert.ToInt64(row["ma_mh"]),
                 TenMH = Convert.ToString(row["ten_mh"]) ?? "",
                 SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
-                TrangThai = Convert.ToByte(row["trang_thai"])
+                TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
-        public bool IsMonHocExists(long maMH)
-            {
+        public bool IsMonHocExists(long maMonHoc)
+        {
             string query = "SELECT COUNT(*) FROM mon_hoc WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters =
             {
-                new ("@ma_mh", maMH)
+                new ("@ma_mh", maMonHoc)
             };
             object result = DatabaseHelper.ExecuteScalar(query, parameters);
             int count = result != null ? Convert.ToInt32(result) : 0;
@@ -100,26 +109,52 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
-        public bool DeleteMonHoc(long maMH)
+        public bool IsMonHocReferenced(long maMonHoc)
         {
-            string query = @"DELETE FROM mon_hoc WHERE ma_mh = @ma_mh";
-            SqlParameter parameters = new("@ma_mh", maMH);
+            string query = @"
+                IF EXISTS (SELECT 1 FROM phan_cong WHERE ma_mh = @ma_mh)
+                    OR EXISTS (SELECT 1 FROM chuong WHERE ma_mh = @ma_mh)
+                SELECT 1 ELSE SELECT 0;
+            ";
+            SqlParameter param = new("@ma_mh", maMonHoc);
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, param));
+            return count > 0;
+        }
+        public bool DeleteMonHoc(long maMonHoc)
+        {
+            string query = @"
+                UPDATE mon_hoc
+                SET trang_thai = 0
+                WHERE ma_mh = @ma_mh;
+            ";
+            SqlParameter parameters = new("@ma_mh", maMonHoc);
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
-        public bool IsMonHocReferenced(long maMH)
+        public int GetStatus(long maMonHoc)
+        {
+            string query = "SELECT trang_thai FROM mon_hoc WHERE ma_mh = @ma_mh";
+            SqlParameter parameter = new("@ma_mh", maMonHoc);
+            object result = DatabaseHelper.ExecuteScalar(query, parameter);
+            return Convert.ToInt32(result); 
+        }
+        public bool UpdateStatus(long maMonHoc, int trangThai)
         {
             string query = @"
-                SELECT
-                    (SELECT COUNT(*) FROM phan_cong WHERE ma_mh = @ma_mh) +
-                    (SELECT COUNT(*) FROM nhom_hoc_phan WHERE ma_mh = @ma_mh) +
-                    (SELECT COUNT(*) FROM chuong WHERE ma_mh = @ma_mh) 
+                UPDATE mon_hoc
+                SET trang_thai = @trang_thai
+                WHERE ma_mh = @ma_mh;
             ";
-            SqlParameter parameter = new("@ma_mh", maMH);
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameter));
-            return count > 0;
+
+            SqlParameter[] parameters = {
+                new("@ma_mh", maMonHoc),
+                new("@trang_thai", trangThai)
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
         }
-        public List<MonHocDTO> GetMonHocPaged(int page, int pageSize, string? keyword = null)
+        public List<MonHocDTO> GetMonHocPaged(int page, int pageSize, string? keyword = null, int? trangThai = null)
         {
             int offset = (page - 1) * pageSize;
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
@@ -127,33 +162,47 @@ namespace DAL
             string query = @"
                 SELECT * FROM mon_hoc
                 WHERE (@keyword = '' OR ten_mh LIKE '%' + @keyword + '%')
+            ";
+
+            if(trangThai != null)
+            {
+                query += " AND trang_thai = @trang_thai";
+            }
+
+            query += @"
                 ORDER BY ma_mh
                 OFFSET @offset ROWS
                 FETCH NEXT @pageSize ROWS ONLY;
             ";
 
-            SqlParameter[] parameters = {
+            List<SqlParameter> parameters = new List<SqlParameter>{
                 new("@keyword", keyword),
                 new("@offset", offset),
                 new("@pageSize", pageSize)
             };
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            if(trangThai != null)
+            {
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters.ToArray());
             List<MonHocDTO> list = new List<MonHocDTO>();
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(new MonHocDTO
-            {
+                {
                     MaMH = Convert.ToInt64(row["ma_mh"]),
                     TenMH = Convert.ToString(row["ten_mh"]) ?? "",
-                SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
-                    TrangThai = Convert.ToByte(row["trang_thai"])
+                    SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
             }
 
             return list;
         }
 
-        public int GetTotalMonHoc(string? keyword = null)
+        public int GetTotalMonHoc(string? keyword = null, int? trangThai = null)
         {
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
 
@@ -162,8 +211,17 @@ namespace DAL
                 WHERE (@keyword = '' OR ten_mh LIKE '%' + @keyword + '%')
             ";
 
-            SqlParameter parameters = new("@keyword", keyword);
-            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                new("@keyword", keyword)
+            };
+
+            if (trangThai != null)
+            {
+                query += " AND trang_thai = @trang_thai";
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters.ToArray()));
         }
     }
 }

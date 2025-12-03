@@ -29,7 +29,7 @@ namespace GUI.modules
             currentData = nhom;
             lbTenNhom.Text = nhom.TenNhom;
             //lbMonHoc.Text = $"{monHoc.MaMonHoc} - {monHoc.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
-            lbMonHoc.Text =$" {monHoc.TenMH} - {nhom.HocKy} - {nhom.NamHoc}";
+            lbMonHoc.Text =$" {monHoc.MaMH} - {nhom.HocKy} - {nhom.NamHoc}";
 
             lbGhiChu.Text = nhom.GhiChu;
         }

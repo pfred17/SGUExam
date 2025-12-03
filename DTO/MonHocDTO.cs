@@ -11,7 +11,7 @@ namespace DTO
         public long MaMH {  get; set; }
         public string TenMH { get; set; } = "";
         public int SoTinChi { get; set; }
-        public byte TrangThai { get; set; }
+        public int TrangThai { get; set; }
         public MonHocDTO() { }
     }
 }

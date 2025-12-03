@@ -39,6 +39,12 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pnMain = new Panel();
             dgvMonHoc = new DataGridView();
+            btnPrev = new Guna.UI2.WinForms.Guna2Button();
+            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            btnNext = new Guna.UI2.WinForms.Guna2Button();
+            pnHeader = new Panel();
+            btnThem = new Guna.UI2.WinForms.Guna2Button();
+            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             MaMonHoc = new DataGridViewTextBoxColumn();
             TenMonHoc = new DataGridViewTextBoxColumn();
             SoTinChi = new DataGridViewTextBoxColumn();
@@ -46,12 +52,6 @@
             DetailCol = new DataGridViewImageColumn();
             EditCol = new DataGridViewImageColumn();
             DeleteCol = new DataGridViewImageColumn();
-            btnPrev = new Guna.UI2.WinForms.Guna2Button();
-            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            btnNext = new Guna.UI2.WinForms.Guna2Button();
-            pnHeader = new Panel();
-            btnThem = new Guna.UI2.WinForms.Guna2Button();
-            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             pnMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMonHoc).BeginInit();
             pnHeader.SuspendLayout();
@@ -108,17 +108,117 @@
             dgvMonHoc.CellMouseMove += dgvMonHoc_CellMouseMove;
             dgvMonHoc.SelectionChanged += dgvMonHoc_SelectionChanged;
             // 
+            // btnPrev
+            // 
+            btnPrev.BackColor = Color.DodgerBlue;
+            btnPrev.Cursor = Cursors.Hand;
+            btnPrev.CustomizableEdges = customizableEdges1;
+            btnPrev.FillColor = Color.FromArgb(6, 101, 208);
+            btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPrev.ForeColor = Color.White;
+            btnPrev.Location = new Point(922, 640);
+            btnPrev.Name = "btnPrev";
+            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnPrev.Size = new Size(40, 40);
+            btnPrev.TabIndex = 1;
+            btnPrev.Text = "<";
+            btnPrev.Click += btnPrev_Click;
+            // 
+            // lblPage
+            // 
+            lblPage.AutoSize = false;
+            lblPage.BackColor = Color.Transparent;
+            lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPage.Location = new Point(968, 640);
+            lblPage.Margin = new Padding(3, 4, 3, 4);
+            lblPage.Name = "lblPage";
+            lblPage.Size = new Size(80, 40);
+            lblPage.TabIndex = 2;
+            lblPage.Text = "1";
+            lblPage.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
+            // btnNext
+            // 
+            btnNext.BackColor = Color.DodgerBlue;
+            btnNext.Cursor = Cursors.Hand;
+            btnNext.CustomizableEdges = customizableEdges3;
+            btnNext.FillColor = Color.FromArgb(6, 101, 208);
+            btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNext.ForeColor = Color.White;
+            btnNext.Location = new Point(1054, 640);
+            btnNext.Name = "btnNext";
+            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnNext.Size = new Size(40, 40);
+            btnNext.TabIndex = 3;
+            btnNext.Text = ">";
+            btnNext.Click += btnNext_Click;
+            // 
+            // pnHeader
+            // 
+            pnHeader.BackColor = Color.WhiteSmoke;
+            pnHeader.Controls.Add(btnThem);
+            pnHeader.Controls.Add(txtSearch);
+            pnHeader.Dock = DockStyle.Top;
+            pnHeader.Location = new Point(0, 0);
+            pnHeader.Margin = new Padding(0);
+            pnHeader.Name = "pnHeader";
+            pnHeader.Padding = new Padding(11, 13, 11, 13);
+            pnHeader.Size = new Size(1120, 80);
+            pnHeader.TabIndex = 0;
+            // 
+            // btnThem
+            // 
+            btnThem.BorderRadius = 15;
+            btnThem.Cursor = Cursors.Hand;
+            btnThem.CustomizableEdges = customizableEdges5;
+            btnThem.FillColor = Color.FromArgb(6, 101, 208);
+            btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnThem.ForeColor = Color.White;
+            btnThem.Location = new Point(886, 15);
+            btnThem.Name = "btnThem";
+            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnThem.Size = new Size(210, 50);
+            btnThem.TabIndex = 0;
+            btnThem.Text = "+THÊM MÔN HỌC";
+            btnThem.Click += btnThemMonHoc_Click;
+            // 
+            // txtSearch
+            // 
+            txtSearch.BackColor = SystemColors.Control;
+            txtSearch.CustomizableEdges = customizableEdges7;
+            txtSearch.DefaultText = "";
+            txtSearch.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtSearch.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtSearch.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtSearch.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtSearch.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearch.Font = new Font("Segoe UI", 9F);
+            txtSearch.ForeColor = Color.Black;
+            txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearch.Location = new Point(26, 15);
+            txtSearch.Margin = new Padding(3, 5, 3, 5);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderForeColor = Color.Gray;
+            txtSearch.PlaceholderText = "Tìm kiếm môn học...";
+            txtSearch.SelectedText = "";
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            txtSearch.Size = new Size(275, 50);
+            txtSearch.TabIndex = 1;
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            txtSearch.Enter += txtSearch_Enter;
+            txtSearch.Leave += txtSearch_Leave;
+            // 
             // MaMonHoc
             // 
             MaMonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             MaMonHoc.FillWeight = 74.3705139F;
-            MaMonHoc.HeaderText = "Mã môn";
+            MaMonHoc.HeaderText = "#";
             MaMonHoc.MinimumWidth = 6;
             MaMonHoc.Name = "MaMonHoc";
             MaMonHoc.ReadOnly = true;
             MaMonHoc.Resizable = DataGridViewTriState.False;
             MaMonHoc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MaMonHoc.Width = 94;
+            MaMonHoc.Width = 30;
             // 
             // TenMonHoc
             // 
@@ -183,106 +283,6 @@
             DeleteCol.ReadOnly = true;
             DeleteCol.Resizable = DataGridViewTriState.False;
             DeleteCol.Width = 50;
-            // 
-            // btnPrev
-            // 
-            btnPrev.BackColor = Color.DodgerBlue;
-            btnPrev.Cursor = Cursors.Hand;
-            btnPrev.CustomizableEdges = customizableEdges1;
-            btnPrev.FillColor = Color.FromArgb(6, 101, 208);
-            btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(922, 640);
-            btnPrev.Name = "btnPrev";
-            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnPrev.Size = new Size(40, 40);
-            btnPrev.TabIndex = 1;
-            btnPrev.Text = "<";
-            btnPrev.Click += btnPrev_Click;
-            // 
-            // lblPage
-            // 
-            lblPage.AutoSize = false;
-            lblPage.BackColor = Color.Transparent;
-            lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(968, 640);
-            lblPage.Margin = new Padding(3, 4, 3, 4);
-            lblPage.Name = "lblPage";
-            lblPage.Size = new Size(80, 40);
-            lblPage.TabIndex = 2;
-            lblPage.Text = "1";
-            lblPage.TextAlignment = ContentAlignment.MiddleCenter;
-            // 
-            // btnNext
-            // 
-            btnNext.BackColor = Color.DodgerBlue;
-            btnNext.Cursor = Cursors.Hand;
-            btnNext.CustomizableEdges = customizableEdges3;
-            btnNext.FillColor = Color.FromArgb(6, 101, 208);
-            btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(1054, 640);
-            btnNext.Name = "btnNext";
-            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnNext.Size = new Size(40, 40);
-            btnNext.TabIndex = 3;
-            btnNext.Text = ">";
-            btnNext.Click += btnNext_Click;
-            // 
-            // pnHeader
-            // 
-            pnHeader.BackColor = Color.WhiteSmoke;
-            pnHeader.Controls.Add(btnThem);
-            pnHeader.Controls.Add(txtSearch);
-            pnHeader.Dock = DockStyle.Top;
-            pnHeader.Location = new Point(0, 0);
-            pnHeader.Margin = new Padding(0);
-            pnHeader.Name = "pnHeader";
-            pnHeader.Padding = new Padding(11, 13, 11, 13);
-            pnHeader.Size = new Size(1120, 80);
-            pnHeader.TabIndex = 0;
-            // 
-            // btnThem
-            // 
-            btnThem.BackColor = Color.DodgerBlue;
-            btnThem.Cursor = Cursors.Hand;
-            btnThem.CustomizableEdges = customizableEdges5;
-            btnThem.FillColor = Color.FromArgb(6, 101, 208);
-            btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnThem.ForeColor = Color.White;
-            btnThem.Location = new Point(886, 15);
-            btnThem.Name = "btnThem";
-            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnThem.Size = new Size(208, 50);
-            btnThem.TabIndex = 0;
-            btnThem.Text = "+THÊM MÔN HỌC";
-            btnThem.Click += btnThemMonHoc_Click;
-            // 
-            // txtSearch
-            // 
-            txtSearch.BackColor = SystemColors.Control;
-            txtSearch.CustomizableEdges = customizableEdges7;
-            txtSearch.DefaultText = "";
-            txtSearch.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtSearch.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtSearch.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtSearch.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtSearch.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Font = new Font("Segoe UI", 9F);
-            txtSearch.ForeColor = Color.Black;
-            txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(26, 15);
-            txtSearch.Margin = new Padding(3, 5, 3, 5);
-            txtSearch.Name = "txtSearch";
-            txtSearch.PlaceholderForeColor = Color.Gray;
-            txtSearch.PlaceholderText = "Tìm kiếm môn học...";
-            txtSearch.SelectedText = "";
-            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtSearch.Size = new Size(275, 50);
-            txtSearch.TabIndex = 1;
-            txtSearch.TextChanged += txtSearch_TextChanged;
-            txtSearch.Enter += txtSearch_Enter;
-            txtSearch.Leave += txtSearch_Leave;
             // 
             // UC_MonHoc
             // 

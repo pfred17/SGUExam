@@ -18,7 +18,8 @@ namespace DAL
                     mh.ma_mh,
                     mh.ten_mh,
                     nd.ma_nd,
-                    nd.ho_ten
+                    nd.ho_ten,
+                    pc.trang_thai
                 FROM 
 	                phan_cong as pc
 	                INNER JOIN mon_hoc as mh ON pc.ma_mh = mh.ma_mh
@@ -35,7 +36,8 @@ namespace DAL
                     MaMonHoc = Convert.ToInt64(row["ma_mh"]),
                     TenMonHoc = Convert.ToString(row["ten_mh"]) ?? "",
                     MaNguoiDung = Convert.ToString(row["ma_nd"]) ?? "",
-                    TenNguoiDung = Convert.ToString(row["ho_ten"]) ?? ""
+                    TenNguoiDung = Convert.ToString(row["ho_ten"]) ?? "",
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
             }
             return list;
@@ -48,7 +50,8 @@ namespace DAL
                     mh.ma_mh,
                     mh.ten_mh,
                     nd.ma_nd,
-                    nd.ho_ten
+                    nd.ho_ten,
+                    pc.trang_thai
                 FROM 
 	                phan_cong as pc
 	                INNER JOIN mon_hoc as mh ON pc.ma_mh = mh.ma_mh
@@ -69,20 +72,22 @@ namespace DAL
                 MaMonHoc = Convert.ToInt64(row["ma_mh"]),
                 TenMonHoc = Convert.ToString(row["ten_mh"]) ?? "",
                 MaNguoiDung = Convert.ToString(row["ma_nd"]) ?? "",
-                TenNguoiDung = Convert.ToString(row["ho_ten"]) ?? ""
+                TenNguoiDung = Convert.ToString(row["ho_ten"]) ?? "",
+                TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
         public long AddPhanCong(PhanCongDTO phanCong)
         {
             string query = @"
-                INSERT INTO phan_cong (ma_mh, ma_nd)
+                INSERT INTO phan_cong (ma_mh, ma_nd, trang_thai)
                 OUTPUT INSERTED.ma_pc
-                VALUES (@ma_mh, @ma_nd);
+                VALUES (@ma_mh, @ma_nd, @trang_thai);
             ";
 
             SqlParameter[] parameters = {
-                new("ma_mh", phanCong.MaMonHoc),
-                new("ma_nd",phanCong.MaNguoiDung)
+                new("@ma_mh", phanCong.MaMonHoc),
+                new("@ma_nd",phanCong.MaNguoiDung),
+                new("@trang_thai", phanCong.TrangThai)
             };
             object result = DatabaseHelper.ExecuteScalar(query, parameters);
             return Convert.ToInt64(result);
@@ -92,22 +97,51 @@ namespace DAL
             string query = @"
                 UPDATE phan_cong
                 SET ma_mh = @ma_mh,
-                    ma_nd = @ma_nd
+                    ma_nd = @ma_nd,
+                    trang_thai = @trang_thai
                 WHERE ma_pc = @ma_pc;
             ";
 
             SqlParameter[] parameters = {
-                new("ma_pc", phanCong.MaPhanCong),
-                new("ma_mh", phanCong.MaMonHoc),
-                new("ma_nd", phanCong.MaNguoiDung),
+                new("@ma_pc", phanCong.MaPhanCong),
+                new("@ma_mh", phanCong.MaMonHoc),
+                new("@ma_nd", phanCong.MaNguoiDung),
+                new("@trang_thai", phanCong.TrangThai),
             };
 
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
+        public bool UpdateStatus(long maPhanCong, int trangThai)
+        {
+            string query = @"
+                UPDATE phan_cong
+                SET trang_thai = @trang_thai
+                WHERE ma_pc = @ma_pc;
+            ";
+
+            SqlParameter[] parameters = {
+                new("@ma_pc", maPhanCong),
+                new("@trang_thai", trangThai)
+            };
+
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
+        public int GetStatus(long maPhanCong)
+        {
+            string query = "SELECT trang_thai FROM phan_cong WHERE ma_pc = @maPhanCong";
+            SqlParameter parameter = new("@maPhanCong", maPhanCong);
+            object result = DatabaseHelper.ExecuteScalar(query, parameter);
+            return Convert.ToInt32(result);
+        }
         public bool DeletePhanCong(long maPhanCong)
         {
-            string query = @"DELETE FROM phan_cong WHERE ma_pc = @maPhanCong";
+            string query = @"
+                UPDATE phan_cong 
+                SET trang_thai = 0
+                WHERE ma_pc = @maPhanCong
+            ";
 
             SqlParameter parameters = new("@maPhanCong", maPhanCong);
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
@@ -115,9 +149,9 @@ namespace DAL
         }
         public bool IsPhanCongReferenced(long maPhanCong)
         {
-            string query = "SELECT COUNT(*) FROM phan_cong WHERE ma_pc = @maPhanCong";
-            SqlParameter parameter = new("@maPhanCong", maPhanCong);
-            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameter));
+            string query = "SELECT 1 FROM nhom_hoc_phan WHERE ma_pc = @ma_pc";
+            SqlParameter param = new("@ma_pc", maPhanCong);
+            int count = Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, param));
             return count > 0;
         }
         public List<PhanCongDTO> GetPhanCongPaged(int page, int pageSize, string? keyword = null)
@@ -131,7 +165,8 @@ namespace DAL
                     pc.ma_mh,
                     mh.ten_mh,
                     pc.ma_nd,
-                    nd.ho_ten
+                    nd.ho_ten,
+                    pc.trang_thai
                 FROM phan_cong pc
                 INNER JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
                 INNER JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
@@ -158,7 +193,8 @@ namespace DAL
                     MaMonHoc = Convert.ToInt64(row["ma_mh"]),
                     TenMonHoc = Convert.ToString(row["ten_mh"]) ?? "",
                     MaNguoiDung = Convert.ToString(row["ma_nd"]) ?? "",
-                    TenNguoiDung = Convert.ToString(row["ho_ten"]) ?? ""
+                    TenNguoiDung = Convert.ToString(row["ho_ten"]) ?? "",
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
             }
 

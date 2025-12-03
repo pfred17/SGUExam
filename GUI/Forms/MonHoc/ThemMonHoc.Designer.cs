@@ -38,15 +38,11 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lblTenMonHoc = new Label();
             lblThongTinMonHoc = new Label();
             lblTongSoTinChi = new Label();
             txtTenMonHoc = new Guna.UI2.WinForms.Guna2TextBox();
             txtSoTinChi = new Guna.UI2.WinForms.Guna2TextBox();
-            lblTrangThai = new Label();
-            tsTrangThai = new Guna.UI2.WinForms.Guna2ToggleSwitch();
             lblErrorSoTinChi = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lblErrorTenMonHoc = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lblMaMonHoc = new Label();
@@ -60,9 +56,9 @@
             // 
             lblTenMonHoc.AutoSize = true;
             lblTenMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTenMonHoc.Location = new Point(50, 179);
+            lblTenMonHoc.Location = new Point(57, 239);
             lblTenMonHoc.Name = "lblTenMonHoc";
-            lblTenMonHoc.Size = new Size(98, 21);
+            lblTenMonHoc.Size = new Size(123, 28);
             lblTenMonHoc.TabIndex = 4;
             lblTenMonHoc.Text = "Tên môn học";
             // 
@@ -70,9 +66,9 @@
             // 
             lblThongTinMonHoc.AutoSize = true;
             lblThongTinMonHoc.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblThongTinMonHoc.Location = new Point(190, 25);
+            lblThongTinMonHoc.Location = new Point(217, 33);
             lblThongTinMonHoc.Name = "lblThongTinMonHoc";
-            lblThongTinMonHoc.Size = new Size(204, 25);
+            lblThongTinMonHoc.Size = new Size(262, 32);
             lblThongTinMonHoc.TabIndex = 0;
             lblThongTinMonHoc.Text = "THÔNG TIN MÔN HỌC";
             // 
@@ -80,9 +76,9 @@
             // 
             lblTongSoTinChi.AutoSize = true;
             lblTongSoTinChi.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTongSoTinChi.Location = new Point(50, 278);
+            lblTongSoTinChi.Location = new Point(57, 371);
             lblTongSoTinChi.Name = "lblTongSoTinChi";
-            lblTongSoTinChi.Size = new Size(111, 21);
+            lblTongSoTinChi.Size = new Size(140, 28);
             lblTongSoTinChi.TabIndex = 7;
             lblTongSoTinChi.Text = "Tổng số tín chỉ";
             // 
@@ -99,13 +95,14 @@
             txtTenMonHoc.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtTenMonHoc.ForeColor = Color.Black;
             txtTenMonHoc.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTenMonHoc.Location = new Point(53, 203);
+            txtTenMonHoc.Location = new Point(61, 271);
+            txtTenMonHoc.Margin = new Padding(3, 5, 3, 5);
             txtTenMonHoc.Name = "txtTenMonHoc";
             txtTenMonHoc.PlaceholderForeColor = Color.Gray;
             txtTenMonHoc.PlaceholderText = "Nhập tên môn học";
             txtTenMonHoc.SelectedText = "";
             txtTenMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtTenMonHoc.Size = new Size(479, 41);
+            txtTenMonHoc.Size = new Size(547, 55);
             txtTenMonHoc.TabIndex = 5;
             txtTenMonHoc.TextChanged += txtTenMonHoc_TextChanged;
             txtTenMonHoc.Leave += txtTenMonHoc_Leave;
@@ -123,55 +120,26 @@
             txtSoTinChi.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSoTinChi.ForeColor = Color.Black;
             txtSoTinChi.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSoTinChi.Location = new Point(53, 302);
+            txtSoTinChi.Location = new Point(61, 403);
+            txtSoTinChi.Margin = new Padding(3, 5, 3, 5);
             txtSoTinChi.Name = "txtSoTinChi";
             txtSoTinChi.PlaceholderForeColor = Color.Gray;
             txtSoTinChi.PlaceholderText = "Nhập số tín chỉ";
             txtSoTinChi.SelectedText = "";
             txtSoTinChi.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtSoTinChi.Size = new Size(479, 41);
+            txtSoTinChi.Size = new Size(547, 55);
             txtSoTinChi.TabIndex = 8;
             txtSoTinChi.TextChanged += txtSoTinChi_TextChanged;
             txtSoTinChi.Leave += txtSoTinChi_Leave;
-            // 
-            // lblTrangThai
-            // 
-            lblTrangThai.AutoSize = true;
-            lblTrangThai.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTrangThai.Location = new Point(53, 373);
-            lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(79, 21);
-            lblTrangThai.TabIndex = 10;
-            lblTrangThai.Text = "Trạng thái";
-            // 
-            // tsTrangThai
-            // 
-            tsTrangThai.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
-            tsTrangThai.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
-            tsTrangThai.CheckedState.InnerBorderColor = Color.White;
-            tsTrangThai.CheckedState.InnerColor = Color.White;
-            tsTrangThai.Cursor = Cursors.Hand;
-            tsTrangThai.CustomizableEdges = customizableEdges5;
-            tsTrangThai.Location = new Point(138, 377);
-            tsTrangThai.Margin = new Padding(3, 2, 3, 2);
-            tsTrangThai.Name = "tsTrangThai";
-            tsTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            tsTrangThai.Size = new Size(34, 16);
-            tsTrangThai.TabIndex = 11;
-            tsTrangThai.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
-            tsTrangThai.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
-            tsTrangThai.UncheckedState.InnerBorderColor = Color.White;
-            tsTrangThai.UncheckedState.InnerColor = Color.White;
             // 
             // lblErrorSoTinChi
             // 
             lblErrorSoTinChi.BackColor = Color.Transparent;
             lblErrorSoTinChi.Font = new Font("Segoe UI", 8F);
             lblErrorSoTinChi.ForeColor = Color.Red;
-            lblErrorSoTinChi.Location = new Point(53, 347);
-            lblErrorSoTinChi.Margin = new Padding(3, 2, 3, 2);
+            lblErrorSoTinChi.Location = new Point(61, 463);
             lblErrorSoTinChi.Name = "lblErrorSoTinChi";
-            lblErrorSoTinChi.Size = new Size(114, 15);
+            lblErrorSoTinChi.Size = new Size(130, 19);
             lblErrorSoTinChi.TabIndex = 9;
             lblErrorSoTinChi.Text = "Message lỗi số tín chỉ";
             lblErrorSoTinChi.Visible = false;
@@ -181,10 +149,9 @@
             lblErrorTenMonHoc.BackColor = Color.Transparent;
             lblErrorTenMonHoc.Font = new Font("Segoe UI", 8F);
             lblErrorTenMonHoc.ForeColor = Color.Red;
-            lblErrorTenMonHoc.Location = new Point(53, 247);
-            lblErrorTenMonHoc.Margin = new Padding(3, 2, 3, 2);
+            lblErrorTenMonHoc.Location = new Point(61, 329);
             lblErrorTenMonHoc.Name = "lblErrorTenMonHoc";
-            lblErrorTenMonHoc.Size = new Size(132, 15);
+            lblErrorTenMonHoc.Size = new Size(151, 19);
             lblErrorTenMonHoc.TabIndex = 6;
             lblErrorTenMonHoc.Text = "Message lỗi tên môn học";
             lblErrorTenMonHoc.Visible = false;
@@ -193,9 +160,9 @@
             // 
             lblMaMonHoc.AutoSize = true;
             lblMaMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMaMonHoc.Location = new Point(50, 81);
+            lblMaMonHoc.Location = new Point(57, 108);
             lblMaMonHoc.Name = "lblMaMonHoc";
-            lblMaMonHoc.Size = new Size(97, 21);
+            lblMaMonHoc.Size = new Size(122, 28);
             lblMaMonHoc.TabIndex = 1;
             lblMaMonHoc.Text = "Mã môn học";
             // 
@@ -204,10 +171,9 @@
             lblErrorMaMonHoc.BackColor = Color.Transparent;
             lblErrorMaMonHoc.Font = new Font("Segoe UI", 8F);
             lblErrorMaMonHoc.ForeColor = Color.Red;
-            lblErrorMaMonHoc.Location = new Point(53, 149);
-            lblErrorMaMonHoc.Margin = new Padding(3, 2, 3, 2);
+            lblErrorMaMonHoc.Location = new Point(61, 199);
             lblErrorMaMonHoc.Name = "lblErrorMaMonHoc";
-            lblErrorMaMonHoc.Size = new Size(130, 15);
+            lblErrorMaMonHoc.Size = new Size(151, 19);
             lblErrorMaMonHoc.TabIndex = 3;
             lblErrorMaMonHoc.Text = "Message lỗi mã môn học";
             lblErrorMaMonHoc.Visible = false;
@@ -215,7 +181,7 @@
             // txtMaMonHoc
             // 
             txtMaMonHoc.BackColor = SystemColors.Control;
-            txtMaMonHoc.CustomizableEdges = customizableEdges7;
+            txtMaMonHoc.CustomizableEdges = customizableEdges5;
             txtMaMonHoc.DefaultText = "";
             txtMaMonHoc.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtMaMonHoc.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -225,13 +191,14 @@
             txtMaMonHoc.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtMaMonHoc.ForeColor = Color.Black;
             txtMaMonHoc.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaMonHoc.Location = new Point(53, 105);
+            txtMaMonHoc.Location = new Point(61, 140);
+            txtMaMonHoc.Margin = new Padding(3, 5, 3, 5);
             txtMaMonHoc.Name = "txtMaMonHoc";
             txtMaMonHoc.PlaceholderForeColor = Color.Gray;
             txtMaMonHoc.PlaceholderText = "Nhập mã môn học";
             txtMaMonHoc.SelectedText = "";
-            txtMaMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtMaMonHoc.Size = new Size(479, 41);
+            txtMaMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtMaMonHoc.Size = new Size(547, 55);
             txtMaMonHoc.TabIndex = 2;
             txtMaMonHoc.TextChanged += txtMaMonHoc_TextChanged;
             txtMaMonHoc.Leave += txtMaMonHoc_Leave;
@@ -240,15 +207,14 @@
             // 
             btnSubmit.BackColor = Color.DodgerBlue;
             btnSubmit.Cursor = Cursors.Hand;
-            btnSubmit.CustomizableEdges = customizableEdges9;
+            btnSubmit.CustomizableEdges = customizableEdges7;
             btnSubmit.FillColor = Color.FromArgb(6, 101, 208);
             btnSubmit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(341, 394);
-            btnSubmit.Margin = new Padding(3, 2, 3, 2);
+            btnSubmit.Location = new Point(390, 525);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnSubmit.Size = new Size(89, 36);
+            btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnSubmit.Size = new Size(102, 48);
             btnSubmit.TabIndex = 13;
             btnSubmit.Text = "Lưu";
             btnSubmit.Click += btnSubmit_Click;
@@ -257,25 +223,24 @@
             // 
             btnClose.BackColor = Color.DodgerBlue;
             btnClose.Cursor = Cursors.Hand;
-            btnClose.CustomizableEdges = customizableEdges11;
+            btnClose.CustomizableEdges = customizableEdges9;
             btnClose.FillColor = Color.Silver;
             btnClose.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClose.ForeColor = Color.Black;
-            btnClose.Location = new Point(446, 394);
-            btnClose.Margin = new Padding(3, 2, 3, 2);
+            btnClose.Location = new Point(510, 525);
             btnClose.Name = "btnClose";
-            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnClose.Size = new Size(86, 36);
+            btnClose.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnClose.Size = new Size(98, 48);
             btnClose.TabIndex = 14;
             btnClose.Text = "Thoát";
             btnClose.Click += btnClose_Click;
             // 
             // ThemMonHoc
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnClose;
-            ClientSize = new Size(584, 461);
+            ClientSize = new Size(667, 615);
             Controls.Add(lblMaMonHoc);
             Controls.Add(txtMaMonHoc);
             Controls.Add(lblErrorMaMonHoc);
@@ -286,11 +251,10 @@
             Controls.Add(lblTongSoTinChi);
             Controls.Add(txtSoTinChi);
             Controls.Add(lblErrorSoTinChi);
-            Controls.Add(lblTrangThai);
-            Controls.Add(tsTrangThai);
             Controls.Add(btnSubmit);
             Controls.Add(btnClose);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ThemMonHoc";
@@ -306,8 +270,6 @@
         private Label lblTongSoTinChi;
         private Guna.UI2.WinForms.Guna2TextBox txtTenMonHoc;
         private Guna.UI2.WinForms.Guna2TextBox txtSoTinChi;
-        private Label lblTrangThai;
-        private Guna.UI2.WinForms.Guna2ToggleSwitch tsTrangThai;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblErrorSoTinChi;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblErrorTenMonHoc;
         private Label lblMaMonHoc;

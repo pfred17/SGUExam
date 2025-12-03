@@ -2,13 +2,6 @@
 using DTO;
 using GUI.modules;
 using Guna.UI2.WinForms;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using Guna.UI2.AnimatorNS;
 
 namespace GUI
 {
@@ -35,7 +28,6 @@ namespace GUI
         private void Form2_Load(object sender, EventArgs e)
         {
             //  Lấy toàn bộ quyền của user
-            _permissions = _permissionBLL.GetUserPermissions(_userId);
             //{
             //    "Môn học": { "Xem": true, "Thêm": true, "Sửa": false, "Xóa": false },
             //    "Người dùng": { "Xem": true, "Thêm": false, "Sửa": false, "Xóa": false }
@@ -49,6 +41,7 @@ namespace GUI
 
             // Dropdown
             InitDropdown();
+            
         }
 
         private List<ModuleItem> InitializeModules()
@@ -72,45 +65,6 @@ namespace GUI
             };
         }
 
-        //private void GenerateSidebarModules()
-        //{
-        //    panelSidebar.Controls.Clear();
-
-        //    // === Nút Tổng quan ===
-        //    var tongQuan = modules.First(m => m.Name == "TongQuan");
-        //    var btnTongQuan = CreateSidebarButton("Tổng quan", tongQuan.Icon, 20);
-        //    btnTongQuan.Tag = tongQuan;
-        //    btnTongQuan.Click += ModuleButton_Click;
-        //    panelSidebar.Controls.Add(btnTongQuan);
-
-        //    currentButton = btnTongQuan;
-        //    ActivateButton(btnTongQuan);
-        //    LoadModule(typeof(UC_TongQuan));
-
-
-        //    var lblRole = new Label
-        //    {
-        //        Text = _roleBLL.GetRoleNameById(_userDTO.Role).ToUpper(),
-        //        AutoSize = true,
-        //        Font = new Font("Segoe UI", 10, FontStyle.Bold),
-        //        TextAlign = ContentAlignment.MiddleCenter,
-        //        Margin = new Padding(0, 10, 0, 0),
-        //        Location = new Point(28, 80)
-        //    };
-        //    panelSidebar.Controls.Add(lblRole);
-
-        //    // === Các module khác ===
-        //    int top = 120;
-        //    foreach (var mod in GetAccessibleModules().Where(m => m.Name != "TongQuan"))
-        //    {
-        //        var btn = CreateSidebarButton(mod.DisplayName, mod.Icon, top);
-        //        btn.Tag = mod;
-        //        btn.Click += ModuleButton_Click;
-        //        panelSidebar.Controls.Add(btn);
-        //        top += 55;
-        //    }
-        //}
-
         private void GenerateSidebarModules()
         {
             panelSidebar.Controls.Clear();
@@ -133,6 +87,7 @@ namespace GUI
             int top = 80; // Bắt đầu từ vị trí dưới label Role
 
             // Lấy danh sách các module có quyền truy cập, ngoại trừ "TongQuan"
+
             var accessibleModules = GetAccessibleModules().Where(m => m.Name != "TongQuan");
 
             // PHÂN NHÓM: Nhóm các module theo Group, và sắp xếp theo Group Name (Tùy chọn)
@@ -364,7 +319,9 @@ namespace GUI
         }
         private IEnumerable<ModuleItem> GetAccessibleModules()
         {
-            var accessibleNames = _permissions
+            var latestPermissions = _permissionBLL.GetUserPermissions(_userId);
+
+            var accessibleNames = latestPermissions
                 .GroupBy(p => p.MaChucNang)
                 .Where(g => g.Any(p => p.DuocPhep))
                 .Select(g => g.Key)
@@ -396,11 +353,6 @@ namespace GUI
                 Location = new Point(28, top),
                 Cursor = Cursors.Hand,
             };
-        }
-
-        private void panelMain_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

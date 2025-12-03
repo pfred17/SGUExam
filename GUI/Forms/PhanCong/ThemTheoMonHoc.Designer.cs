@@ -30,17 +30,17 @@ namespace GUI.forms.PhanCong
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            CustomizableEdges customizableEdges1 = new CustomizableEdges();
+            CustomizableEdges customizableEdges2 = new CustomizableEdges();
+            CustomizableEdges customizableEdges3 = new CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            CustomizableEdges customizableEdges4 = new CustomizableEdges();
+            CustomizableEdges customizableEdges5 = new CustomizableEdges();
+            CustomizableEdges customizableEdges6 = new CustomizableEdges();
+            CustomizableEdges customizableEdges7 = new CustomizableEdges();
+            CustomizableEdges customizableEdges8 = new CustomizableEdges();
+            CustomizableEdges customizableEdges9 = new CustomizableEdges();
+            CustomizableEdges customizableEdges10 = new CustomizableEdges();
             lblMonHoc = new Label();
             cbxMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
@@ -60,18 +60,20 @@ namespace GUI.forms.PhanCong
             // lblMonHoc
             // 
             lblMonHoc.AutoSize = true;
-            lblMonHoc.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMonHoc.Location = new Point(30, 43);
+            lblMonHoc.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblMonHoc.ForeColor = Color.DimGray;
+            lblMonHoc.Location = new Point(30, 25);
             lblMonHoc.Name = "lblMonHoc";
-            lblMonHoc.Size = new Size(90, 28);
+            lblMonHoc.Size = new Size(125, 23);
             lblMonHoc.TabIndex = 13;
-            lblMonHoc.Text = "Môn học";
+            lblMonHoc.Text = "Chọn môn học";
             // 
             // cbxMonHoc
             // 
             cbxMonHoc.BackColor = Color.Transparent;
-            cbxMonHoc.Cursor = Cursors.Hand;
-            cbxMonHoc.CustomizableEdges = customizableEdges11;
+            cbxMonHoc.BorderColor = Color.FromArgb(213, 218, 223);
+            cbxMonHoc.BorderRadius = 15;
+            cbxMonHoc.CustomizableEdges = customizableEdges1;
             cbxMonHoc.DrawMode = DrawMode.OwnerDrawFixed;
             cbxMonHoc.DropDownStyle = ComboBoxStyle.DropDownList;
             cbxMonHoc.FocusedColor = Color.FromArgb(94, 148, 255);
@@ -79,18 +81,17 @@ namespace GUI.forms.PhanCong
             cbxMonHoc.Font = new Font("Segoe UI", 10F);
             cbxMonHoc.ForeColor = Color.FromArgb(68, 88, 112);
             cbxMonHoc.ItemHeight = 30;
-            cbxMonHoc.Location = new Point(155, 40);
-            cbxMonHoc.Margin = new Padding(3, 4, 3, 4);
-            cbxMonHoc.MaxDropDownItems = 5;
+            cbxMonHoc.Location = new Point(30, 55);
             cbxMonHoc.Name = "cbxMonHoc";
             cbxMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            cbxMonHoc.Size = new Size(671, 36);
+            cbxMonHoc.Size = new Size(350, 36);
             cbxMonHoc.TabIndex = 14;
             // 
             // txtSearch
             // 
-            txtSearch.BackColor = SystemColors.Control;
-            txtSearch.CustomizableEdges = customizableEdges13;
+            txtSearch.BorderRadius = 20;
+            txtSearch.Cursor = Cursors.IBeam;
+            txtSearch.CustomizableEdges = customizableEdges3;
             txtSearch.DefaultText = "";
             txtSearch.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtSearch.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -98,17 +99,16 @@ namespace GUI.forms.PhanCong
             txtSearch.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtSearch.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSearch.Font = new Font("Segoe UI", 9F);
-            txtSearch.ForeColor = Color.Black;
             txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(30, 123);
-            txtSearch.Margin = new Padding(3, 5, 3, 5);
+            txtSearch.Location = new Point(418, 50);
+            txtSearch.Margin = new Padding(3, 4, 3, 4);
             txtSearch.Name = "txtSearch";
-            txtSearch.PlaceholderForeColor = Color.Gray;
-            txtSearch.PlaceholderText = "Tìm kiếm giảng viên...";
+            txtSearch.PlaceholderText = "🔍 Tìm kiếm giảng viên...";
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtSearch.Size = new Size(798, 48);
+            txtSearch.Size = new Size(410, 45);
             txtSearch.TabIndex = 15;
+            txtSearch.TextOffset = new Point(10, 0);
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Enter += txtSearch_Enter;
             txtSearch.Leave += txtSearch_Leave;
@@ -121,25 +121,25 @@ namespace GUI.forms.PhanCong
             dgv.AllowUserToResizeRows = false;
             dgv.BackgroundColor = Color.White;
             dgv.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            dataGridViewCellStyle2.SelectionForeColor = Color.White;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgv.ColumnHeadersHeight = 40;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(116, 185, 255);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgv.ColumnHeadersHeight = 45;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.Columns.AddRange(new DataGridViewColumn[] { MSSV, HoTen, Email, NhomQuyen, CheckCol });
             dgv.EnableHeadersVisualStyles = false;
             dgv.GridColor = Color.FromArgb(231, 229, 255);
-            dgv.Location = new Point(30, 199);
+            dgv.Location = new Point(30, 140);
             dgv.MultiSelect = false;
             dgv.Name = "dgv";
             dgv.RowHeadersVisible = false;
             dgv.RowHeadersWidth = 51;
-            dgv.RowTemplate.Height = 40;
+            dgv.RowTemplate.Height = 50;
             dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgv.Size = new Size(798, 280);
             dgv.TabIndex = 16;
@@ -210,11 +210,11 @@ namespace GUI.forms.PhanCong
             // 
             btnPrev.BackColor = Color.DodgerBlue;
             btnPrev.Cursor = Cursors.Hand;
-            btnPrev.CustomizableEdges = customizableEdges15;
+            btnPrev.CustomizableEdges = customizableEdges5;
             btnPrev.FillColor = Color.FromArgb(6, 101, 208);
             btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(657, 580);
+            btnPrev.Location = new Point(657, 490);
             btnPrev.Name = "btnPrev";
             btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnPrev.Size = new Size(40, 40);
@@ -227,7 +227,7 @@ namespace GUI.forms.PhanCong
             lblPage.AutoSize = false;
             lblPage.BackColor = Color.Transparent;
             lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(702, 580);
+            lblPage.Location = new Point(702, 490);
             lblPage.Margin = new Padding(3, 4, 3, 4);
             lblPage.Name = "lblPage";
             lblPage.Size = new Size(80, 40);
@@ -240,11 +240,11 @@ namespace GUI.forms.PhanCong
             // 
             btnNext.BackColor = Color.DodgerBlue;
             btnNext.Cursor = Cursors.Hand;
-            btnNext.CustomizableEdges = customizableEdges17;
+            btnNext.CustomizableEdges = customizableEdges7;
             btnNext.FillColor = Color.FromArgb(6, 101, 208);
             btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(787, 580);
+            btnNext.Location = new Point(787, 490);
             btnNext.Name = "btnNext";
             btnNext.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnNext.Size = new Size(40, 40);
@@ -254,18 +254,19 @@ namespace GUI.forms.PhanCong
             // 
             // btnThem
             // 
-            btnThem.BackColor = Color.DodgerBlue;
+            btnThem.BorderRadius = 22;
             btnThem.Cursor = Cursors.Hand;
-            btnThem.CustomizableEdges = customizableEdges19;
+            btnThem.CustomizableEdges = customizableEdges9;
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
-            btnThem.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnThem.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnThem.ForeColor = Color.White;
-            btnThem.Location = new Point(630, 660);
+            btnThem.HoverState.FillColor = Color.FromArgb(0, 110, 220);
+            btnThem.Location = new Point(608, 552);
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnThem.Size = new Size(200, 40);
+            btnThem.Size = new Size(220, 45);
             btnThem.TabIndex = 20;
-            btnThem.Text = "+LƯU PHÂN CÔNG";
+            btnThem.Text = "LƯU PHÂN CÔNG";
             btnThem.Click += btnThem_Click;
             // 
             // ThemTheoMonHoc
@@ -282,7 +283,7 @@ namespace GUI.forms.PhanCong
             Controls.Add(btnThem);
             Margin = new Padding(3, 4, 3, 4);
             Name = "ThemTheoMonHoc";
-            Size = new Size(857, 747);
+            Size = new Size(857, 650);
             ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -303,10 +304,5 @@ namespace GUI.forms.PhanCong
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn NhomQuyen;
         private DataGridViewCheckBoxColumn CheckCol;
-        private CustomizableEdges customizableEdges2;
-        private CustomizableEdges customizableEdges4;
-        private CustomizableEdges customizableEdges6;
-        private CustomizableEdges customizableEdges8;
-        private CustomizableEdges customizableEdges10;
     }
 }

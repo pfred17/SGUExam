@@ -73,7 +73,7 @@ namespace GUI.modules
         }
         private void LoadMonHoc()
         {
-            var list = _monHocBLL.GetAllMonHoc();
+            var list = _monHocBLL.GetAllMonHocByStatus(1);
             list.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn tất cả môn học" });
             SetComboBoxData(cbMonHoc, list, "TenMH", "MaMH", cbMonHoc_SelectedIndexChanged);
         }

@@ -60,8 +60,7 @@ namespace DAL
                     nd.trang_thai,
                     nq.ten_nhom_quyen
                 FROM nguoi_dung AS nd
-                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
-                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
                 WHERE
                     (
                         @keyword = '' 
@@ -129,13 +128,9 @@ namespace DAL
         public bool CreateNewUser(UserDTO userDTO)
         {
             string query = @"
-                        INSERT INTO nguoi_dung  (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, ma_nhom_quyen, trang_thai)
-                     VALUES (@MSSV, @TenDangNhap, @MatKhau, @HoTen, @Email, @GioiTinh, @MaNhomQuyen, @TrangThai);
-                    
-                     INSERT INTO nguoi_dung_nhom_quyen (ma_nd, ma_nhom_quyen)
-                    VALUES (@MSSV, @MaNhomQuyen)
-                    ";
-
+                        INSERT INTO nguoi_dung  
+                                        (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, ma_nhom_quyen, trang_thai)
+                        VALUES (@MSSV, @TenDangNhap, @MatKhau, @HoTen, @Email, @GioiTinh, @MaNhomQuyen, @TrangThai)";
 
 
             SqlParameter[] parameters =
@@ -275,9 +270,11 @@ namespace DAL
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
-
-        public List<UserDTO> GetAllUserByRole()
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? userId = null, string? keyword = null, int? trangThai = null)
         {
+            int offset = (page - 1) * pageSize;
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+
             string query = @"
                 SELECT 
                     nd.ma_nd,
@@ -287,12 +284,44 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
-                WHERE nq.ten_nhom_quyen != 'Sinh viên' AND nd.trang_thai = 1;
+                WHERE nq.ten_nhom_quyen != N'Sinh viên' 
+                    AND nq.ten_nhom_quyen != N'Quản trị' 
+                    AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')      
             ";
 
-            DataTable dt = DatabaseHelper.ExecuteQuery(query);
-            List<UserDTO> list = new List<UserDTO>();
+            if(userId != null)
+            {
+                query += "AND nd.ma_nd != @userId";
+            }
+            if (trangThai != null)
+            {
+                query += " AND nd.trang_thai = @trang_thai";
+            }
 
+            query += @"
+                ORDER BY nd.ma_nd
+                OFFSET @offset ROWS
+                FETCH NEXT @pageSize ROWS ONLY;
+            ";
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                new("@keyword", keyword),
+                new("@offset", offset),
+                new("@pageSize", pageSize)
+            };
+
+            if (userId != null)
+            {
+                parameters.Add(new SqlParameter("@userId", userId));
+            }
+
+            if (trangThai != null)
+            {
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters.ToArray());
+            List<UserDTO> list = new List<UserDTO>();
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(new UserDTO
@@ -300,15 +329,14 @@ namespace DAL
                     MSSV = row["ma_nd"].ToString() ?? "",
                     HoTen = row["ho_ten"].ToString() ?? "",
                     Email = row["email"].ToString() ?? "",
-                    Role = Convert.ToInt32(row["ma_nhom_quyen"]),
+                    Role =  Convert.ToInt32(row["ten_nhom_quyen"].ToString())
                 });
             }
 
             return list;
         }
-        
 
-        public int GetTotalUser(string? keyword = null)
+        public int GetTotalUser(string? userId = null, string? keyword = null, int? trangThai = null)
         {
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
 
@@ -318,13 +346,27 @@ namespace DAL
                 JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
                 WHERE nq.ten_nhom_quyen != N'Sinh viên' 
-                    AND nd.trang_thai = 1
+                    AND nq.ten_nhom_quyen != N'Quản trị' 
                     AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')            
-;
             ";
 
-            SqlParameter parameters = new("@keyword", keyword);
-            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                new("@keyword", keyword)
+            };
+
+            if (userId != null)
+            {
+                query += " AND nd.ma_nd != @userId";
+                parameters.Add(new SqlParameter("userId", userId));
+            }
+
+            if (trangThai != null)
+            {
+                query += " AND trang_thai = @trang_thai";
+                parameters.Add(new SqlParameter("@trang_thai", trangThai));
+            }
+
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters.ToArray()));
         }
 
         public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
@@ -360,6 +402,36 @@ namespace DAL
                 GioiTinh = r["gioi_tinh"] == DBNull.Value ? 1 : Convert.ToInt32(r["gioi_tinh"]),
                 TrangThai = r["trang_thai"] == DBNull.Value ? 1 : Convert.ToInt32(r["trang_thai"])
             };
+        }
+
+        public List<UserDTO> GetAllUserByRoleExcluding()
+        {
+            string query = @"
+                SELECT 
+                    nd.ma_nd,
+                    nd.ho_ten,
+                    nd.email,
+                    nd.ma_nhom_quyen
+                FROM nguoi_dung AS nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
+                WHERE nq.ten_nhom_quyen = N'Giảng viên'
+            ";
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+            List<UserDTO> list = new List<UserDTO>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new UserDTO
+                {
+                    MSSV = row["ma_nd"].ToString() ?? "",
+                    HoTen = row["ho_ten"].ToString() ?? "",
+                    Email = row["email"].ToString() ?? "",
+                    Role =  Convert.ToInt32(row["ma_nhom_quyen"].ToString()),
+                });
+            }
+
+            return list;
         }
     }
 }

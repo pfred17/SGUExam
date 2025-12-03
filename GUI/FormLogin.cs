@@ -31,7 +31,6 @@ namespace GUI
             string password = txtPassword.Text.Trim();
 
             UserDTO user = userBLL.Login(username, password);
-            //UserDTO user = userBLL.Login("canh", "123456");
 
             if (user == null)
             {

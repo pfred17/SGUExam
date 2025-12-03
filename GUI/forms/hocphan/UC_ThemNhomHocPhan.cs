@@ -39,7 +39,7 @@ namespace GUI.modules
         {
             try
             {
-                var dsMonHoc = monHocBLL.GetAllMonHoc();
+                var dsMonHoc = monHocBLL.GetAllMonHocByStatus();
 
                 // Gộp ma_mh + ten_mh thành 1 chuỗi để hiển thị
                 var dsHienThi = dsMonHoc.Select(mh => new

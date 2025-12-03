@@ -28,14 +28,21 @@ namespace BLL
         {
             return _dal.UpdateChuong(chuong);
         }
-
-        public bool DeleteChuong(long chuongId)
-        {
-            return _dal.DeleteChuong(chuongId);
-        }
         public bool IsChuongReferenced(long maChuong)
         {
             return _dal.IsChuongReferenced(maChuong);
+        }
+        public bool UpdateStatus(long maChuong, int trangThai)
+        {
+            return _dal.UpdateStatus(maChuong, trangThai);
+        }
+        public int GetStatus(long maChuong)
+        {
+            return _dal.GetStatus(maChuong);
+        }
+        public bool DeleteChuong(long maChuong)
+        {
+            return _dal.DeleteChuong(maChuong);
         }
         public List<ChuongDTO> GetChuongPaged(long maMonHoc, int page, int pageSize)
         {
