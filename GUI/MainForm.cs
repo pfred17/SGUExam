@@ -153,7 +153,7 @@ namespace GUI
                     Margin = new Padding(0, 5, 0, 5) // Tạo khoảng cách
                 };
                 panelSidebar.Controls.Add(lblGroup);
-                top += lblGroup.Height + 5; // Cập nhật vị trí cho nút đầu tiên
+                top += lblGroup.Height + 15; // Cập nhật vị trí cho nút đầu tiên
 
                 // === Thêm các nút Module trong Group này ===
                 foreach (var mod in group.OrderBy(m => m.Id)) // Sắp xếp theo ID module
