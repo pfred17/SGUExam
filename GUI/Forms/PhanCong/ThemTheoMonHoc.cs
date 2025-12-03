@@ -273,7 +273,7 @@ namespace GUI.forms.PhanCong
 
             try
             {
-                foreach(var userId in selectedUser)
+                foreach (var userId in selectedUser)
                 {
                     var user = _phanCongBLL.GetUserById(userId);
                     if (user != null)
@@ -304,11 +304,5 @@ namespace GUI.forms.PhanCong
                 MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void lblPage_Click(object sender, EventArgs e)
-        {
-
-        }
-  
     }
 }

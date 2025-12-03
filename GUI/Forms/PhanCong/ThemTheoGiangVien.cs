@@ -108,7 +108,7 @@ namespace GUI.forms.PhanCong
             {
                 if (row.Cells["MaMonHoc"].Value is long maMH)
                 {
-                    if (maMH == -1) 
+                    if (maMH == -1)
                     {
                         row.Cells["CheckCol"].ReadOnly = true;
                         row.Cells["CheckCol"].Value = false;
@@ -116,7 +116,7 @@ namespace GUI.forms.PhanCong
                         row.DefaultCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Italic);
                         row.Cells["TenMonHoc"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     }
-                    else 
+                    else
                     {
                         row.Cells["CheckCol"].ReadOnly = false;
                         row.Cells["CheckCol"].Value = checkedState.ContainsKey(maMH) && checkedState[maMH];
@@ -224,7 +224,7 @@ namespace GUI.forms.PhanCong
             bool isChecked = Convert.ToBoolean(row.Cells["CheckCol"].Value ?? false);
             checkedState[maMH] = isChecked;
         }
-        
+
         private void btnThem_Click(object sender, EventArgs e)
         {
             SaveCheckedState();

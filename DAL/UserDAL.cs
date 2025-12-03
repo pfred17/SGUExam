@@ -29,7 +29,7 @@ namespace DAL
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
-                Role = row["loai_nd"].ToString(),
+                Role = row["ma_nhom_quyen"].ToString(),
                 GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
@@ -50,7 +50,7 @@ namespace DAL
                     MatKhau = row["mat_khau"].ToString(),
                     HoTen = row["ho_ten"].ToString(),
                     Email = row["email"].ToString(),
-                    Role = row["loai_nd"].ToString(),
+                    Role = row["ma_nhom_quyen"].ToString(),
                     GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                     TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
@@ -203,7 +203,7 @@ namespace DAL
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
-                Role = row["loai_nd"].ToString(),
+                Role = row["ma_nhom_quyen"].ToString(),
                 GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
@@ -253,8 +253,7 @@ namespace DAL
                     nd.email,
                     nq.ten_nhom_quyen
                 FROM nguoi_dung AS nd
-                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
-                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
                 WHERE nq.ten_nhom_quyen != N'Sinh viên' 
                     AND nq.ten_nhom_quyen != N'Quản trị' 
                     AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')      
@@ -314,8 +313,7 @@ namespace DAL
             string query = @"
                 SELECT COUNT(*) 
                 FROM nguoi_dung AS nd
-                JOIN nguoi_dung_nhom_quyen AS ndnq ON ndnq.ma_nd = nd.ma_nd
-                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = ndnq.ma_nhom_quyen
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
                 WHERE nq.ten_nhom_quyen != N'Sinh viên' 
                     AND nq.ten_nhom_quyen != N'Quản trị' 
                     AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')            
@@ -333,7 +331,7 @@ namespace DAL
 
             if (trangThai != null)
             {
-                query += " AND trang_thai = @trang_thai";
+                query += " AND nd.trang_thai = @trang_thai";
                 parameters.Add(new SqlParameter("@trang_thai", trangThai));
             }
 

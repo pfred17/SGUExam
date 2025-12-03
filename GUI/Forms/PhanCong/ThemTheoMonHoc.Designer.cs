@@ -33,8 +33,8 @@ namespace GUI.forms.PhanCong
             CustomizableEdges customizableEdges1 = new CustomizableEdges();
             CustomizableEdges customizableEdges2 = new CustomizableEdges();
             CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             CustomizableEdges customizableEdges4 = new CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             CustomizableEdges customizableEdges5 = new CustomizableEdges();
             CustomizableEdges customizableEdges6 = new CustomizableEdges();
             CustomizableEdges customizableEdges7 = new CustomizableEdges();
@@ -234,7 +234,6 @@ namespace GUI.forms.PhanCong
             lblPage.TabIndex = 19;
             lblPage.Text = "1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
-            lblPage.Click += lblPage_Click;
             // 
             // btnNext
             // 
@@ -254,17 +253,17 @@ namespace GUI.forms.PhanCong
             // 
             // btnThem
             // 
-            btnThem.BorderRadius = 22;
+            btnThem.BorderRadius = 10;
             btnThem.Cursor = Cursors.Hand;
             btnThem.CustomizableEdges = customizableEdges9;
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
             btnThem.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnThem.ForeColor = Color.White;
             btnThem.HoverState.FillColor = Color.FromArgb(0, 110, 220);
-            btnThem.Location = new Point(608, 552);
+            btnThem.Location = new Point(608, 550);
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnThem.Size = new Size(220, 45);
+            btnThem.Size = new Size(220, 50);
             btnThem.TabIndex = 20;
             btnThem.Text = "LƯU PHÂN CÔNG";
             btnThem.Click += btnThem_Click;

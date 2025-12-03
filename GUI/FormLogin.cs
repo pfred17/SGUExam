@@ -28,7 +28,7 @@ namespace GUI
             //string username = txtMssv.Text.Trim();
             //string password = txtPassword.Text.Trim();
             string username = "admin";
-            string password = "123456";
+            string password = "admin";
 
             UserDTO user = userBLL.Login(username, password);
 
