@@ -133,6 +133,9 @@ namespace BLL
         {
             return dal.GetTenMonHocByMaNhom(maNhom);
         }
-
+        public List<NhomHocPhanDTO> SearchNhomHocPhan(string userId,string keyword)
+        {
+            return dal.SearchNhomHocPhan(userId,keyword);
+        }
     }
 }

@@ -104,6 +104,7 @@ namespace GUI.Forms.nhomhocphan
             linkDeKiemTra.AutoSize = true;
             linkDeKiemTra.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             linkDeKiemTra.LinkBehavior = LinkBehavior.HoverUnderline;
+            linkDeKiemTra.LinkColor = Color.DodgerBlue;
             linkDeKiemTra.Location = new Point(25, 20);
             linkDeKiemTra.Name = "linkDeKiemTra";
             linkDeKiemTra.Size = new Size(127, 28);

@@ -226,6 +226,37 @@ namespace DAL
             return result != null ? result.ToString() : string.Empty;
         }
 
+        public List<NhomHocPhanDTO> SearchNhomHocPhan(string userId, string keyword)
+        {
+            List<NhomHocPhanDTO> list = new List<NhomHocPhanDTO>();
+            string query = @"
+        SELECT * FROM nhom_hoc_phan nhp
+        INNER JOIN phan_cong pc ON pc.ma_pc = nhp.ma_pc
+        INNER JOIN mon_hoc mh ON mh.ma_mh = pc.ma_mh
+        INNER JOIN chi_tiet_nhom_hoc_phan cthp ON cthp.ma_nhom = nhp.ma_nhom
+        WHERE cthp.ma_nd = @userId AND mh.ten_mh LIKE '%'+@keyword+'%'";
+
+            SqlParameter[] parameters = {
+        new SqlParameter("@keyword", keyword),
+        new SqlParameter("@userId", userId)
+    };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new NhomHocPhanDTO
+                {
+                    MaNhom = Convert.ToInt64(row["ma_nhom"]),
+                    MaPc = Convert.ToInt64(row["ma_pc"]),
+                    TenNhom = row["ten_nhom"].ToString(),
+                    GhiChu = row["ghi_chu"].ToString(),
+                    HocKy = row["hoc_ky"].ToString(),
+                    NamHoc = row["nam_hoc"].ToString(),
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
+                });
+            }
+            return list;
+        }
 
     }
 }

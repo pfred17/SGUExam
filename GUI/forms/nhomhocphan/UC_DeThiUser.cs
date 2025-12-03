@@ -9,6 +9,8 @@ namespace GUI.Forms.nhomhocphan
 
         private readonly string _userId;
 
+        public event EventHandler? BackButtonClicked;
+
         public UC_DeThiUser(long maNhom, string userId)
         {
             _maNhom = maNhom;
@@ -51,14 +53,12 @@ namespace GUI.Forms.nhomhocphan
 
         }
 
-        private void tabKiemTra_Click(object sender, EventArgs e)
-        {
+    
 
-        }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            BackButtonClicked?.Invoke(this, EventArgs.Empty);
 
         }
     }

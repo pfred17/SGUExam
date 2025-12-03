@@ -19,8 +19,12 @@
             }
             base.Dispose(disposing);
         }
+
+        #region Component Designer generated code
+
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -28,19 +32,22 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pnlMain = new Guna.UI2.WinForms.Guna2ShadowPanel();
-            btnThoat = new Guna.UI2.WinForms.Guna2Button();
+            btnSetting = new Guna.UI2.WinForms.Guna2Button();
             colorStrip = new Guna.UI2.WinForms.Guna2Panel();
             btnDetails = new Guna.UI2.WinForms.Guna2Button();
             lblTenNhom = new Label();
             lblThoiGian = new Label();
             lblTenMonHoc = new Label();
+            contextMenuStripThoat = new ContextMenuStrip(components);
+            thoatNhomToolStripMenuItem = new ToolStripMenuItem();
             pnlMain.SuspendLayout();
+            contextMenuStripThoat.SuspendLayout();
             SuspendLayout();
             // 
             // pnlMain
             // 
             pnlMain.BackColor = Color.Transparent;
-            pnlMain.Controls.Add(btnThoat);
+            pnlMain.Controls.Add(btnSetting);
             pnlMain.Controls.Add(colorStrip);
             pnlMain.Controls.Add(btnDetails);
             pnlMain.Controls.Add(lblTenNhom);
@@ -57,26 +64,27 @@
             pnlMain.Size = new Size(260, 160);
             pnlMain.TabIndex = 0;
             // 
-            // btnThoat
+            // btnSetting
             // 
-            btnThoat.BorderRadius = 15;
-            btnThoat.Cursor = Cursors.Hand;
-            btnThoat.CustomizableEdges = customizableEdges1;
-            btnThoat.DisabledState.BorderColor = Color.DarkGray;
-            btnThoat.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnThoat.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnThoat.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnThoat.FillColor = Color.Transparent;
-            btnThoat.Font = new Font("Segoe UI", 9F);
-            btnThoat.ForeColor = Color.White;
-            btnThoat.HoverState.FillColor = Color.FromArgb(255, 230, 230);
-            btnThoat.Image = Properties.Resources.icon_phanquyencaidat;
-            btnThoat.ImageSize = new Size(18, 18);
-            btnThoat.Location = new Point(220, 10);
-            btnThoat.Name = "btnThoat";
-            btnThoat.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnThoat.Size = new Size(30, 30);
-            btnThoat.TabIndex = 6;
+            btnSetting.BorderRadius = 15;
+            btnSetting.Cursor = Cursors.Hand;
+            btnSetting.CustomizableEdges = customizableEdges1;
+            btnSetting.DisabledState.BorderColor = Color.DarkGray;
+            btnSetting.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSetting.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnSetting.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnSetting.FillColor = Color.Transparent;
+            btnSetting.Font = new Font("Segoe UI", 9F);
+            btnSetting.ForeColor = Color.White;
+            btnSetting.HoverState.FillColor = Color.FromArgb(255, 230, 230);
+            btnSetting.Image = Properties.Resources.settings;
+            btnSetting.ImageSize = new Size(18, 18);
+            btnSetting.Location = new Point(220, 10);
+            btnSetting.Name = "btnSetting";
+            btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnSetting.Size = new Size(30, 30);
+            btnSetting.TabIndex = 6;
+            btnSetting.Click += btnSetting_Click;
             // 
             // colorStrip
             // 
@@ -145,6 +153,19 @@
             lblTenMonHoc.Text = "Lập trình trên Windows";
             lblTenMonHoc.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // contextMenuStripThoat
+            // 
+            contextMenuStripThoat.ImageScalingSize = new Size(20, 20);
+            contextMenuStripThoat.Items.AddRange(new ToolStripItem[] { thoatNhomToolStripMenuItem });
+            contextMenuStripThoat.Name = "contextMenuStripThoat";
+            contextMenuStripThoat.Size = new Size(159, 28);
+            // 
+            // thoatNhomToolStripMenuItem
+            // 
+            thoatNhomToolStripMenuItem.Name = "thoatNhomToolStripMenuItem";
+            thoatNhomToolStripMenuItem.Size = new Size(158, 24);
+            thoatNhomToolStripMenuItem.Text = "Thoát nhóm";
+            // 
             // UC_NhomHocPhanItem
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -156,25 +177,23 @@
             Size = new Size(260, 160);
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();
+            contextMenuStripThoat.ResumeLayout(false);
             ResumeLayout(false);
         }
-        // Khai báo biến (Thêm vào class, bên ngoài hàm InitializeComponent)
+
+        #endregion
+
+        // Khai báo biến
         private Guna.UI2.WinForms.Guna2ShadowPanel pnlMain;
         private System.Windows.Forms.Label lblTenMonHoc;
         private System.Windows.Forms.Label lblThoiGian;
         private System.Windows.Forms.Label lblTenNhom;
         private Guna.UI2.WinForms.Guna2Button btnDetails;
         private Guna.UI2.WinForms.Guna2Panel colorStrip;
-        #region Component Designer generated code
+        private Guna.UI2.WinForms.Guna2Button btnSetting;
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
-
-
-        #endregion
-
-        private Guna.UI2.WinForms.Guna2Button btnThoat;
+        // Khai báo ContextMenuStrip
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripThoat;
+        private System.Windows.Forms.ToolStripMenuItem thoatNhomToolStripMenuItem;
     }
 }

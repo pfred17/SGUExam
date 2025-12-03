@@ -15,6 +15,8 @@
 
         #region Component Designer generated code
 
+        // Trong UC_DeThiUser.Designer.cs
+
         private void InitializeComponent()
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -43,18 +45,18 @@
             tabMain.TabButtonHoverState.ForeColor = Color.White;
             tabMain.TabButtonHoverState.InnerColor = Color.DodgerBlue;
             tabMain.TabButtonIdleState.BorderColor = Color.Empty;
-            tabMain.TabButtonIdleState.FillColor = Color.FromArgb(41, 58, 81);
+            tabMain.TabButtonIdleState.FillColor = Color.White;
             tabMain.TabButtonIdleState.Font = new Font("Segoe UI Semibold", 10F);
-            tabMain.TabButtonIdleState.ForeColor = Color.FromArgb(156, 160, 167);
-            tabMain.TabButtonIdleState.InnerColor = Color.FromArgb(41, 58, 81);
+            tabMain.TabButtonIdleState.ForeColor = Color.Gray;
+            tabMain.TabButtonIdleState.InnerColor = Color.White;
             tabMain.TabButtonSelectedState.BorderColor = Color.Empty;
-            tabMain.TabButtonSelectedState.FillColor = Color.FromArgb(41, 58, 81);
+            tabMain.TabButtonSelectedState.FillColor = Color.White;
             tabMain.TabButtonSelectedState.Font = new Font("Segoe UI Semibold", 10F);
-            tabMain.TabButtonSelectedState.ForeColor = Color.White;
+            tabMain.TabButtonSelectedState.ForeColor = Color.DodgerBlue;
             tabMain.TabButtonSelectedState.InnerColor = Color.DodgerBlue;
             tabMain.TabButtonSize = new Size(247, 40);
             tabMain.TabIndex = 0;
-            tabMain.TabMenuBackColor = Color.FromArgb(41, 58, 81);
+            tabMain.TabMenuBackColor = Color.White;
             tabMain.TabMenuOrientation = Guna.UI2.WinForms.TabMenuOrientation.HorizontalTop;
             // 
             // tabKiemTra
@@ -76,15 +78,16 @@
             // btnBack
             // 
             btnBack.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBack.BackColor = Color.Transparent;
             btnBack.Cursor = Cursors.Hand;
             btnBack.CustomizableEdges = customizableEdges1;
-            btnBack.FillColor = Color.Transparent;
-            btnBack.Font = new Font("Segoe UI", 9F);
-            btnBack.ForeColor = Color.Black;
-            btnBack.Location = new Point(455, 5);
+            btnBack.FillColor = Color.Red;
+            btnBack.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnBack.ForeColor = Color.White;
+            btnBack.Location = new Point(453, 0);
             btnBack.Name = "btnBack";
             btnBack.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnBack.Size = new Size(40, 40);
+            btnBack.Size = new Size(47, 47);
             btnBack.TabIndex = 2;
             btnBack.Text = "X";
             btnBack.Click += btnBack_Click;
@@ -94,7 +97,7 @@
             lblTenNhom.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblTenNhom.BackColor = Color.Transparent;
             lblTenNhom.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblTenNhom.ForeColor = Color.FromArgb(30, 30, 45);
+            lblTenNhom.ForeColor = Color.DodgerBlue;
             lblTenNhom.Location = new Point(0, 3);
             lblTenNhom.Name = "lblTenNhom";
             lblTenNhom.Size = new Size(317, 33);
@@ -117,6 +120,7 @@
         }
 
         #endregion
+
 
         private Guna.UI2.WinForms.Guna2TabControl tabMain;
         private TabPage tabKiemTra;

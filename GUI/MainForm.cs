@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Guna.UI2.AnimatorNS;
+using GUI.Forms.nguoidung;
 
 namespace GUI
 {
@@ -243,7 +244,11 @@ namespace GUI
             };
 
             btnLogout.Click += (s, e) => handleLogout();
-
+            btnProfile.Click += (s, e) =>
+            {
+                Info infoForm = new Info(_userId);
+                infoForm.ShowDialog();
+            };
             pnlDropdown.Controls.Add(btnLogout);
             pnlDropdown.Controls.Add(spacing);
             pnlDropdown.Controls.Add(btnProfile);

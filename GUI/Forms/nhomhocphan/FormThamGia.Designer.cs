@@ -125,6 +125,7 @@
             btnCancel.Size = new Size(90, 40);
             btnCancel.TabIndex = 6;
             btnCancel.Text = "Hủy";
+            btnCancel.Click += btnCancel_Click;
             // 
             // btnJoin
             // 
@@ -140,6 +141,7 @@
             btnJoin.Size = new Size(119, 40);
             btnJoin.TabIndex = 7;
             btnJoin.Text = "Tham Gia";
+            btnJoin.Click += btnJoin_Click;
             // 
             // FormThamGia
             // 
