@@ -64,8 +64,6 @@ namespace GUI.modules
             {
                 int rowIndex = dgvTrungLap.Rows.Add();
                 dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Value = "Không tìm thấy câu hỏi trùng lặp!";
-                dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Style.ForeColor = System.Drawing.Color.Gray;
                 return;
             }
 

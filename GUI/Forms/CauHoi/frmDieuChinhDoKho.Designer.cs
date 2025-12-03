@@ -322,7 +322,7 @@
             Controls.Add(pnlInput);
             Font = new Font("Segoe UI", 9F);
             MinimumSize = new Size(850, 550);
-            Name = "frmDieuChinhDoKho";
+            Name = "frmDieuChinhDoKhos";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Gợi ý điều chỉnh độ khó tự động";
             pnlInput.ResumeLayout(false);
