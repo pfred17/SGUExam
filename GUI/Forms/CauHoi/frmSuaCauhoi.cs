@@ -18,8 +18,7 @@ namespace GUI
 
         private readonly long _maCauHoi; // ID câu hỏi cần sửa
         private readonly List<DapAnDTO> _dapAnList = new(); // danh sách đáp án tạm thời
-        private int _nextTempId = -1; // ID tạm cho đáp án mới
-
+        private Dictionary<long, bool> _dapAnUsedMap = new(); //để lưu trạng thái “đã dùng” của đáp án
         public frmSuaCauHoi(long maCauHoi)
         {
             InitializeComponent();
@@ -63,18 +62,21 @@ namespace GUI
             cbMonHoc.SelectedIndexChanged -= CbMonHoc_SelectedIndexChanged;
             cbMonHoc.SelectedValue = cauHoi.MaMonHoc;
             LoadChuongToCombo(cbChuong, cauHoi.MaMonHoc);
-            // Set chương đúng
             cbChuong.SelectedValue = cauHoi.MaChuong;
-
-            // Delay chọn chương, đảm bảo combo đã có dữ liệu
-
             cbDoKho.SelectedItem = cbDoKho.Items.Contains(cauHoi.DoKho) ? cauHoi.DoKho : cbDoKho.Items[0];
             rtbNoiDung.Text = cauHoi.NoiDung;
 
             _dapAnList.Clear();
-            _dapAnList.AddRange(_cauHoiBLL.GetDapAn(_maCauHoi));
-            RefreshAnswerListUI();
+            _dapAnUsedMap.Clear();
+            // Gọi BLL lấy danh sách đáp án + trạng thái
+            var dapAns = _cauHoiBLL.GetDapAnWithUsage(_maCauHoi);
+            foreach (var (da, daSuDung) in dapAns)
+            {
+                _dapAnList.Add(da);
+                _dapAnUsedMap[da.MaDapAn] = daSuDung; // lưu trạng thái tạm
+            }
 
+            RefreshAnswerListUI();
             cbMonHoc.SelectedIndexChanged += CbMonHoc_SelectedIndexChanged;
         }
 
@@ -201,7 +203,7 @@ namespace GUI
                 {
                     if (!_dapAnList.Any(d => d.MaDapAn < 0 && d.NoiDung == content))
                     {
-                        var dto = new DapAnDTO { MaDapAn = _nextTempId--, MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
+                        var dto = new DapAnDTO { MaDapAn = 0 , MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
                         if (dto.Dung) _dapAnList.ForEach(d => d.Dung = false);
                         _dapAnList.Add(dto);
                     }
@@ -230,50 +232,47 @@ namespace GUI
                 panel.Dispose();
             }
         }
-
-        // Thêm summary panel UI (gọn) cho mỗi đáp án
         private void AddAnswerSummary(DapAnDTO dto)
         {
-            var summary = new Panel { Width = pnlDapAnContainer.ClientSize.Width - 8, Height = 80, BorderStyle = BorderStyle.FixedSingle, BackColor = sysDraw.Color.FromArgb(250, 250, 250), Padding = new Padding(8), Tag = dto.MaDapAn };
+            bool isUsed = _dapAnUsedMap.ContainsKey(dto.MaDapAn) && _dapAnUsedMap[dto.MaDapAn];
+
+            var summary = new Panel { Width = pnlDapAnContainer.ClientSize.Width - 8, Height = 80, BorderStyle = BorderStyle.FixedSingle, BackColor = sysDraw.Color.FromArgb(250, 250, 250), Padding = new Padding(8), Tag = dto };
 
             var lbl = new Label { AutoSize = false, Width = summary.Width - 200, Height = 48, Left = 8, Top = 8, Text = TruncatePlainText(dto.NoiDung, 300) };
+            if (isUsed) lbl.Text += " (Đã sử dụng)";
             summary.Controls.Add(lbl);
 
-            var rb = new RadioButton { Text = "Đáp án đúng", Checked = dto.Dung, Left = lbl.Right + 8, Top = 8, AutoSize = true };
+            var rb = new RadioButton { Text = "Đáp án đúng", Checked = dto.Dung, Left = lbl.Right + 8, Top = 8, AutoSize = true, Enabled = !isUsed };
             summary.Controls.Add(rb);
 
-            var btnEdit = new Button { Text = "Sửa", Left = lbl.Right + 8, Top = rb.Bottom + 6, Width = 60 };
+            var btnEdit = new Button { Text = "Sửa", Left = lbl.Right + 8, Top = rb.Bottom + 6, Width = 60, Enabled = !isUsed };
             summary.Controls.Add(btnEdit);
 
-            var btnDelete = new Button { Text = "Xóa", Left = btnEdit.Right + 8, Top = btnEdit.Top, Width = 60, BackColor = sysDraw.Color.IndianRed, ForeColor = sysDraw.Color.White };
+            var btnDelete = new Button { Text = "Xóa", Left = btnEdit.Right + 8, Top = btnEdit.Top, Width = 60, BackColor = sysDraw.Color.IndianRed, ForeColor = sysDraw.Color.White, Enabled = !isUsed };
             summary.Controls.Add(btnDelete);
 
+            // Sự kiện
             rb.CheckedChanged += (s, e) =>
             {
                 if (rb.Checked)
                 {
                     _dapAnList.ForEach(d => d.Dung = false);
-                    var target = _dapAnList.FirstOrDefault(x => x.MaDapAn == dto.MaDapAn);
-                    if (target != null) target.Dung = true;
+                    dto.Dung = true;
                     RefreshAnswerListUI();
                 }
             };
 
             btnEdit.Click += (s, e) =>
             {
-                var dtoToEdit = _dapAnList.FirstOrDefault(x => x.MaDapAn == dto.MaDapAn);
-                if (dtoToEdit != null)
-                {
-                    pnlDapAnContainer.Controls.Remove(summary); // tránh trùng UI
-                    ShowAnswerEditor(dtoToEdit); // dùng hàm này sẽ quản lý editor đúng hơn
-                }
+                pnlDapAnContainer.Controls.Remove(summary);
+                ShowAnswerEditor(dto);
             };
 
             btnDelete.Click += (s, e) =>
             {
                 if (MessageBox.Show("Xóa đáp án này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    _dapAnList.RemoveAll(x => x.MaDapAn == dto.MaDapAn);
+                    _dapAnList.Remove(dto);
                     RefreshAnswerListUI();
                 }
             };

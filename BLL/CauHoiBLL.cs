@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+
 namespace BLL
 {
     public class CauHoiBLL
@@ -13,7 +14,6 @@ namespace BLL
         private readonly DapAnDAL _dapAnDAL = new();
         private readonly ChuongBLL _chuongBLL = new();
 
-        #region Get/Filter Câu hỏi
         public List<CauHoiDTO> GetAllForDisplay(long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
         {
             var list = _cauHoiDAL.GetAllForDisplay();
@@ -21,9 +21,7 @@ namespace BLL
 
             HashSet<long>? dsChuong = null;
             if (maMH > 0)
-                dsChuong = _chuongBLL.GetChuongByMonHoc(maMH)
-                                     .Select(ch => ch.MaChuong)
-                                     .ToHashSet();
+                dsChuong = _chuongBLL.GetChuongByMonHoc(maMH).Select(ch => ch.MaChuong).ToHashSet();
 
             return list.Where(c =>
                 (dsChuong == null || dsChuong.Contains(c.MaChuong)) &&
@@ -32,96 +30,100 @@ namespace BLL
                 (string.IsNullOrEmpty(keywordNormalized) || Normalize(c.NoiDung).Contains(keywordNormalized))
             ).ToList();
         }
-        #endregion
 
-        public static string Normalize(string text) // Normalize chuẩn hóa nội dung tiếng Việt:
+        public static string Normalize(string text)
         {
             if (string.IsNullOrWhiteSpace(text)) return string.Empty;
 
-            // Bỏ dấu tiếng Việt
             text = text.Normalize(NormalizationForm.FormD);
             var sb = new StringBuilder();
             foreach (var c in text)
             {
-                var category = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (category != UnicodeCategory.NonSpacingMark)
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                     sb.Append(c);
             }
             text = sb.ToString().Normalize(NormalizationForm.FormC);
-
-            // Chuẩn hóa: chữ thường, bỏ khoảng trắng, bỏ ký tự đặc biệt
-            return Regex.Replace(text, @"[^\p{L}\p{N}]", "")  // xóa hết ký tự không phải chữ/số
-                        .ToLowerInvariant()
-                        .Trim();
+            return Regex.Replace(text, @"[^\p{L}\p{N}]", "").ToLowerInvariant().Trim();
         }
 
-        public CauHoiDTO? GetById(long maCauHoi) =>_cauHoiDAL.GetById(maCauHoi);
+        public CauHoiDTO? GetById(long maCauHoi) => _cauHoiDAL.GetById(maCauHoi);
+        public List<DapAnDTO> GetDapAn(long maCauHoi) => _dapAnDAL.GetByCauHoi(maCauHoi);
 
-        public List<DapAnDTO> GetDapAn(long maCauHoi) =>_dapAnDAL.GetByCauHoi(maCauHoi);
+        // Lấy danh sách đáp án kèm thông tin có dùng trong bài làm chi tiết hay không
+        public List<(DapAnDTO DapAn, bool DaDuocSuDung)> GetDapAnWithUsage(long maCauHoi)
+        {
+            var dapAns = _dapAnDAL.GetByCauHoi(maCauHoi); // chỉ DapAnDTO
+            var result = new List<(DapAnDTO, bool)>();
+            foreach (var da in dapAns)
+            {
+                bool used = _dapAnDAL.CheckDapAnSuDung(da.MaDapAn); // DAL check
+                result.Add((da, used));
+            }
+            return result;
+        }
         public long ThemMoi(long maChuong, string noiDung, string doKho, List<DapAnDTO> dapAnList)
         {
             long maCauHoi = _cauHoiDAL.ThemMoi(maChuong, noiDung, doKho, dapAnList);
-            if (dapAnList != null && dapAnList.Count > 0)
+            if (dapAnList?.Count > 0)
             {
-                foreach (var da in dapAnList)
-                    da.MaCauHoi = maCauHoi;
-
+                foreach (var da in dapAnList) da.MaCauHoi = maCauHoi;
                 _dapAnDAL.ThemDapAn(dapAnList);
             }
-
             return maCauHoi;
         }
 
-        public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> dapAnList) =>
-            _cauHoiDAL.CapNhat(maCauHoi, maChuong, noiDung, doKho, dapAnList);
+        public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> dapAnList)
+        {
+            try
+            {
+                _cauHoiDAL.CapNhat(maCauHoi, maChuong, noiDung, doKho, dapAnList);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Cập nhật thất bại: {ex.Message}");
+            }
+        }
 
+        public void Xoa(long maCauHoi) => _cauHoiDAL.Xoa(maCauHoi);
 
-        // 6. Xóa mềm
-        public void Xoa(long maCauHoi) =>
-            _cauHoiDAL.Xoa(maCauHoi);
-
-        #region cau hoi trung lap 
+        // Trùng lặp
         public List<CauHoiTrungLapDTO> LayCauHoiTrungLap()
         {
-            var all = _cauHoiDAL.GetAllForDisplayTrungLap(); 
-
+            var all = _cauHoiDAL.GetAllForDisplayTrungLap();
             var groups = all
-                .GroupBy(ch => new {Key = Normalize(ch.NoiDung),ch.MaMonHoc}) // nhóm theo nội dung chuẩn hóa
-                .Where(g => g.Count() > 1)           // chỉ lấy nhóm > 1
+                .GroupBy(ch => new { Key = Normalize(ch.NoiDung), ch.MaMonHoc })
+                .Where(g => g.Count() > 1)
                 .Select(g =>
                 {
                     var danhSach = g.OrderByDescending(x => x.MaCauHoi).ToList();
                     return new CauHoiTrungLapDTO
                     {
-                        Key = g.Key.Key,// chuỗi nội dung chuẩn hóa
+                        Key = g.Key.Key,
                         SoLuong = g.Count(),
                         DanhSach = danhSach,
-                        TacGia = danhSach.First().TacGia 
+                        TacGia = danhSach.First().TacGia
                     };
                 })
                 .OrderByDescending(g => g.SoLuong)
                 .ThenBy(g => g.DanhSach.First().MaCauHoi)
                 .ToList();
-
             return groups;
         }
 
-
-        /// Thống kê nhanh: số nhóm trùng, số câu trùng, số câu duy nhất
         public (int nhomTrung, int cauTrung, int cauDuyNhat) LayThongKeTrungLap()
         {
             var all = _cauHoiDAL.GetAllForDisplay();
             var duplicateGroups = all
-                .GroupBy(ch => new {Key = Normalize(ch.NoiDung),ch.MaMonHoc})
+                .GroupBy(ch => new { Key = Normalize(ch.NoiDung), ch.MaMonHoc })
                 .Where(g => g.Count() > 1);
 
             int nhomTrung = duplicateGroups.Count();
-            int cauTrung = duplicateGroups.Sum(g => g.Count() - 1); // trừ đi 1 câu giữ lại
+            int cauTrung = duplicateGroups.Sum(g => g.Count() - 1);
             int cauDuyNhat = all.Count - (nhomTrung + cauTrung);
             return (nhomTrung, cauTrung, cauDuyNhat);
         }
-        #endregion
-        #region Điều chỉnh độ khó
+
+        // Độ khó
         private string LayDoKhoGoiY(double tyLeSai, int nguongDeMaxSai, int nguongKhoMinSai)
         {
             if (tyLeSai <= nguongDeMaxSai) return "Dễ";
@@ -144,6 +146,5 @@ namespace BLL
             if (string.IsNullOrEmpty(doKhoMoi)) throw new ArgumentException("Độ khó mới không được để trống.");
             _cauHoiDAL.CapNhatDoKho(maCauHoi, doKhoMoi);
         }
-        #endregion
     }
 }

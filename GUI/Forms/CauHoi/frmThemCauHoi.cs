@@ -18,10 +18,7 @@ namespace GUI
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
         private readonly CauHoiBLL _cauHoiBLL = new();
-
-        // In-memory answers
         private readonly List<DapAnDTO> _dapAnList = new();
-        private int _nextTempId = -1; // tạo ID tạm cho đáp án mới (âm để tránh trùng)
         #endregion
 
         #region Constructor & Load
@@ -149,7 +146,8 @@ namespace GUI
         {
             if (!ValidateBeforeSave(out string noiDung, out long maChuong, out string doKho)) return;
 
-            foreach (var da in _dapAnList) da.MaCauHoi = 0;
+            // tất cả đáp án chưa có ID, MaCauHoi = 0
+            _dapAnList.ForEach(d => d.MaCauHoi = 0);
 
             btnLuuCauHoi.Enabled = false;
             var prevCursor = Cursor.Current;
@@ -242,7 +240,7 @@ namespace GUI
                 }
                 else
                 {
-                    var dto = new DapAnDTO { MaDapAn = _nextTempId--, MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
+                    var dto = new DapAnDTO {MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
                     if (dto.Dung) _dapAnList.ForEach(d => d.Dung = false);
                     _dapAnList.Add(dto);
                 }
