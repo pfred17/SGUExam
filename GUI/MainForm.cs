@@ -16,6 +16,7 @@ namespace GUI
     {
         private UserDTO _userDTO;
         private readonly string _userId;
+        private readonly RoleBLL _roleBLL = new RoleBLL();
         private readonly PermissionBLL _permissionBLL = new PermissionBLL();
         private List<PermissionDTO> _permissions;
         private List<ModuleItem> modules;
@@ -62,15 +63,61 @@ namespace GUI
                 new ModuleItem{ Id=5, Name="DeKiemTra", DisplayName="Đề kiểm tra", Group="QUẢN LÝ", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_KiemTra) },
                 new ModuleItem{ Id=6, Name="DiemDanh", DisplayName="Điểm danh", Group="QUẢN LÝ", Icon=Properties.Resources.icon_diemdanh, UserControlType=typeof(UC_DiemDanh) },
                 new ModuleItem{ Id=7, Name="NhomQuyen", DisplayName="Nhóm quyền", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_phanquyencaidat, UserControlType=typeof(UC_NhomQuyen) },
-                new ModuleItem{ Id=8, Name="NguoiDung", DisplayName="Người dùng", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_nhomnguoidung, UserControlType=typeof(UC_NguoiDung) }
+                new ModuleItem{ Id=8, Name="NguoiDung", DisplayName="Người dùng", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_nhomnguoidung, UserControlType=typeof(UC_NguoiDung) },
+
+                // Thuộc về sinh viên
+                new ModuleItem{ Id=9, Name="DeThi", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) },
+                // UC_HocPhanUser của bảo đang làm
+                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Đề thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
             };
         }
+
+        //private void GenerateSidebarModules()
+        //{
+        //    panelSidebar.Controls.Clear();
+
+        //    // === Nút Tổng quan ===
+        //    var tongQuan = modules.First(m => m.Name == "TongQuan");
+        //    var btnTongQuan = CreateSidebarButton("Tổng quan", tongQuan.Icon, 20);
+        //    btnTongQuan.Tag = tongQuan;
+        //    btnTongQuan.Click += ModuleButton_Click;
+        //    panelSidebar.Controls.Add(btnTongQuan);
+
+        //    currentButton = btnTongQuan;
+        //    ActivateButton(btnTongQuan);
+        //    LoadModule(typeof(UC_TongQuan));
+
+
+        //    var lblRole = new Label
+        //    {
+        //        Text = _roleBLL.GetRoleNameById(_userDTO.Role).ToUpper(),
+        //        AutoSize = true,
+        //        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+        //        TextAlign = ContentAlignment.MiddleCenter,
+        //        Margin = new Padding(0, 10, 0, 0),
+        //        Location = new Point(28, 80)
+        //    };
+        //    panelSidebar.Controls.Add(lblRole);
+
+        //    // === Các module khác ===
+        //    int top = 120;
+        //    foreach (var mod in GetAccessibleModules().Where(m => m.Name != "TongQuan"))
+        //    {
+        //        var btn = CreateSidebarButton(mod.DisplayName, mod.Icon, top);
+        //        btn.Tag = mod;
+        //        btn.Click += ModuleButton_Click;
+        //        panelSidebar.Controls.Add(btn);
+        //        top += 55;
+        //    }
+        //}
 
         private void GenerateSidebarModules()
         {
             panelSidebar.Controls.Clear();
 
-            // === Nút Tổng quan ===
+            // --- 1. Xử lý Nút Tổng quan và Vai trò (Không thay đổi) ---
+
+            // Nút Tổng quan (Module 0) luôn được hiển thị và kích hoạt mặc định
             var tongQuan = modules.First(m => m.Name == "TongQuan");
             var btnTongQuan = CreateSidebarButton("Tổng quan", tongQuan.Icon, 20);
             btnTongQuan.Tag = tongQuan;
@@ -81,27 +128,45 @@ namespace GUI
             ActivateButton(btnTongQuan);
             LoadModule(typeof(UC_TongQuan));
 
+            // --- 2. Phân nhóm và thêm các Module còn lại ---
 
-            var lblRole = new Label
-            {
-                Text = _userDTO.Role.ToUpper(),
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Margin = new Padding(0, 10, 0, 0),
-                Location = new Point(28, 80)
-            };
-            panelSidebar.Controls.Add(lblRole);
+            int top = 80; // Bắt đầu từ vị trí dưới label Role
 
-            // === Các module khác ===
-            int top = 120;
-            foreach (var mod in GetAccessibleModules().Where(m => m.Name != "TongQuan"))
+            // Lấy danh sách các module có quyền truy cập, ngoại trừ "TongQuan"
+            var accessibleModules = GetAccessibleModules().Where(m => m.Name != "TongQuan");
+
+            // PHÂN NHÓM: Nhóm các module theo Group, và sắp xếp theo Group Name (Tùy chọn)
+            var groupedModules = accessibleModules
+                                    .GroupBy(m => m.Group)
+                                    .OrderBy(g => g.Key);
+
+            foreach (var group in groupedModules)
             {
-                var btn = CreateSidebarButton(mod.DisplayName, mod.Icon, top);
-                btn.Tag = mod;
-                btn.Click += ModuleButton_Click;
-                panelSidebar.Controls.Add(btn);
-                top += 55;
+                // === Chèn tiêu đề Group (Ví dụ: "QUẢN LÝ") ===
+                var lblGroup = new Label
+                {
+                    Text = group.Key, // Tên Group (QUẢN LÝ, QUẢN TRỊ,...)
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                    ForeColor = Color.Gray,
+                    Location = new Point(28, top),
+                    Margin = new Padding(0, 5, 0, 5) // Tạo khoảng cách
+                };
+                panelSidebar.Controls.Add(lblGroup);
+                top += lblGroup.Height + 5; // Cập nhật vị trí cho nút đầu tiên
+
+                // === Thêm các nút Module trong Group này ===
+                foreach (var mod in group.OrderBy(m => m.Id)) // Sắp xếp theo ID module
+                {
+                    var btn = CreateSidebarButton(mod.DisplayName, mod.Icon, top);
+                    btn.Tag = mod;
+                    btn.Click += ModuleButton_Click;
+                    panelSidebar.Controls.Add(btn);
+                    top += 45; // Tăng vị trí cho nút tiếp theo (40 Height + 5 margin)
+                }
+
+                // Thêm khoảng trống sau mỗi Group
+                top += 15;
             }
         }
 

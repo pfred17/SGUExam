@@ -29,7 +29,6 @@ namespace DAL
                 MatKhau = row["mat_khau"].ToString(),
                 HoTen = row["ho_ten"].ToString(),
                 Email = row["email"].ToString(),
-                Role = row["loai_nd"].ToString(),
                 GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
