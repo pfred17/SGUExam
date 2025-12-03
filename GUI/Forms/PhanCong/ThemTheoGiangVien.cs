@@ -1,4 +1,5 @@
 ﻿using BLL;
+//using DocumentFormat.OpenXml.Spreadsheet;
 using DTO;
 using Microsoft.VisualBasic.ApplicationServices;
 using System;
@@ -57,7 +58,7 @@ namespace GUI.forms.PhanCong
 
         private void LoadComboBox()
         {
-            var listUser = _phanCongBLL.GetAllUserByRoleExcluding(_userId);
+            var listUser = _phanCongBLL.GetAllAssignableUsers().Where(u => u.MSSV != _userId).ToList();
             listUser.Insert(0, new UserDTO { MSSV = "", HoTen = "Chọn giảng viên cần phân công" });
 
             var displayList = listUser
@@ -274,7 +275,7 @@ namespace GUI.forms.PhanCong
 
                 LoadData();
 
-                MessageBox.Show($"Đã phân công {selectedMaMH.Count} môn học cho giảng viên {cbxGiangVien.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Đã phân công {selectedMaMH.Count} môn học cho giảng viên\n {cbxGiangVien.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 cbxGiangVien.SelectedIndex = 0;
                 txtSearch.Text = "Tìm kiếm môn học...";
                 pageCurrent = 1;

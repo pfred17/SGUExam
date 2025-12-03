@@ -6,20 +6,23 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Data.SqlClient;
 namespace DAL
 {
     public class MonHocDAL
     {
         public List<MonHocDTO> GetAllMonHocByStatus(int? trangThai = null)
         {
-            string query = "SELECT * FROM mon_hoc";
+            string query = "SELECT mh.ma_mh, mh.ten_mh, mh.so_tin_chi, mh.trang_thai FROM mon_hoc mh";
             List<SqlParameter> parameters = new List<SqlParameter>();
+
             if (trangThai != null)
             {
-                query += " WHERE trang_thai = @trang_thai";
+                // Chỉ định rõ cột trang_thai thuộc về bảng mh
+                query += " WHERE mh.trang_thai = @trang_thai";
                 parameters.Add(new SqlParameter("@trang_thai", trangThai));
             }
+
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters.ToArray());
 
             List<MonHocDTO> list = new List<MonHocDTO>();

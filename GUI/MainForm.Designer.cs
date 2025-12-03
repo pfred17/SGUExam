@@ -57,7 +57,6 @@
             panelMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
             panelMain.Size = new Size(1120, 730);
             panelMain.TabIndex = 1;
-            panelMain.Paint += panelMain_Paint;
             // 
             // panelHeader
             // 

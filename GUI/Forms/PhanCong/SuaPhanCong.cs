@@ -48,7 +48,7 @@ namespace GUI.forms.PhanCong
         }
         private void LoadCbxGiangVien()
         {
-            listUser = _phanCongBLL.GetAllUserByRoleExcluding(_userId);
+            listUser = _phanCongBLL.GetAllAssignableUsers();
             var displayList = listUser
                 .Select(u => new
                 {
@@ -140,8 +140,6 @@ namespace GUI.forms.PhanCong
                 MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi");
             }
         }
-
-
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();

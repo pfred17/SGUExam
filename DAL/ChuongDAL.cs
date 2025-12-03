@@ -1,9 +1,7 @@
 ﻿using DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -11,7 +9,7 @@ namespace DAL
 {
     public class ChuongDAL
     {
-        public  List<ChuongDTO> GetChuongByMonHoc(long maMonHoc)
+        public List<ChuongDTO> GetChuongByMonHoc(long maMonHoc)
         {
             string query = "SELECT * FROM chuong WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters = {
@@ -134,7 +132,7 @@ namespace DAL
             ";
             SqlParameter[] parameters = {
                 new SqlParameter("@ma_mh", maMonHoc),
-                new SqlParameter("@page",page),
+                new SqlParameter("@page", page),
                 new SqlParameter("@pageSize", pageSize)
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
@@ -159,7 +157,7 @@ namespace DAL
             SqlParameter[] parameters = {
                 new SqlParameter("@ma_mh", maMonHoc)
             };
-            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query,parameters));
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
     }
 }

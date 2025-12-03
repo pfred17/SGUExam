@@ -45,15 +45,15 @@ namespace GUI.forms.PhanCong
             cbxMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             dgv = new DataGridView();
+            btnPrev = new Guna.UI2.WinForms.Guna2Button();
+            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            btnNext = new Guna.UI2.WinForms.Guna2Button();
+            btnThem = new Guna.UI2.WinForms.Guna2Button();
             MSSV = new DataGridViewTextBoxColumn();
             HoTen = new DataGridViewTextBoxColumn();
             Email = new DataGridViewTextBoxColumn();
             NhomQuyen = new DataGridViewTextBoxColumn();
             CheckCol = new DataGridViewCheckBoxColumn();
-            btnPrev = new Guna.UI2.WinForms.Guna2Button();
-            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            btnNext = new Guna.UI2.WinForms.Guna2Button();
-            btnThem = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             SuspendLayout();
             // 
@@ -147,65 +147,6 @@ namespace GUI.forms.PhanCong
             dgv.CellValueChanged += dgv_CellValueChanged;
             dgv.SelectionChanged += dgv_SelectionChanged;
             // 
-            // MSSV
-            // 
-            MSSV.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MSSV.DataPropertyName = "MSSV";
-            MSSV.FillWeight = 74.3705139F;
-            MSSV.HeaderText = "Mã giảng viên";
-            MSSV.MinimumWidth = 6;
-            MSSV.Name = "MSSV";
-            MSSV.ReadOnly = true;
-            MSSV.Resizable = DataGridViewTriState.False;
-            MSSV.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MSSV.Width = 147;
-            // 
-            // HoTen
-            // 
-            HoTen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            HoTen.DataPropertyName = "HoTen";
-            HoTen.FillWeight = 74.3705139F;
-            HoTen.HeaderText = "Tên giảng viên";
-            HoTen.MinimumWidth = 6;
-            HoTen.Name = "HoTen";
-            HoTen.ReadOnly = true;
-            HoTen.Resizable = DataGridViewTriState.False;
-            HoTen.SortMode = DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Email
-            // 
-            Email.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            Email.DataPropertyName = "Email";
-            Email.FillWeight = 74.3705139F;
-            Email.HeaderText = "Email";
-            Email.MinimumWidth = 6;
-            Email.Name = "Email";
-            Email.ReadOnly = true;
-            Email.Resizable = DataGridViewTriState.False;
-            Email.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Email.Width = 66;
-            // 
-            // NhomQuyen
-            // 
-            NhomQuyen.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            NhomQuyen.DataPropertyName = "Role";
-            NhomQuyen.HeaderText = "Nhóm quyền";
-            NhomQuyen.MinimumWidth = 6;
-            NhomQuyen.Name = "NhomQuyen";
-            NhomQuyen.ReadOnly = true;
-            NhomQuyen.Resizable = DataGridViewTriState.False;
-            NhomQuyen.SortMode = DataGridViewColumnSortMode.NotSortable;
-            NhomQuyen.Width = 138;
-            // 
-            // CheckCol
-            // 
-            CheckCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            CheckCol.HeaderText = "Chọn";
-            CheckCol.MinimumWidth = 6;
-            CheckCol.Name = "CheckCol";
-            CheckCol.Resizable = DataGridViewTriState.False;
-            CheckCol.Width = 66;
-            // 
             // btnPrev
             // 
             btnPrev.BackColor = Color.DodgerBlue;
@@ -267,6 +208,65 @@ namespace GUI.forms.PhanCong
             btnThem.TabIndex = 20;
             btnThem.Text = "LƯU PHÂN CÔNG";
             btnThem.Click += btnThem_Click;
+            // 
+            // MSSV
+            // 
+            MSSV.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MSSV.DataPropertyName = "MSSV";
+            MSSV.FillWeight = 74.3705139F;
+            MSSV.HeaderText = "Mã giảng viên";
+            MSSV.MinimumWidth = 6;
+            MSSV.Name = "MSSV";
+            MSSV.ReadOnly = true;
+            MSSV.Resizable = DataGridViewTriState.False;
+            MSSV.SortMode = DataGridViewColumnSortMode.NotSortable;
+            MSSV.Width = 147;
+            // 
+            // HoTen
+            // 
+            HoTen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            HoTen.DataPropertyName = "HoTen";
+            HoTen.FillWeight = 74.3705139F;
+            HoTen.HeaderText = "Tên giảng viên";
+            HoTen.MinimumWidth = 6;
+            HoTen.Name = "HoTen";
+            HoTen.ReadOnly = true;
+            HoTen.Resizable = DataGridViewTriState.False;
+            HoTen.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Email
+            // 
+            Email.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Email.DataPropertyName = "Email";
+            Email.FillWeight = 74.3705139F;
+            Email.HeaderText = "Email";
+            Email.MinimumWidth = 6;
+            Email.Name = "Email";
+            Email.ReadOnly = true;
+            Email.Resizable = DataGridViewTriState.False;
+            Email.SortMode = DataGridViewColumnSortMode.NotSortable;
+            Email.Width = 66;
+            // 
+            // NhomQuyen
+            // 
+            NhomQuyen.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            NhomQuyen.DataPropertyName = "TenNhomQuyen";
+            NhomQuyen.HeaderText = "Nhóm quyền";
+            NhomQuyen.MinimumWidth = 6;
+            NhomQuyen.Name = "NhomQuyen";
+            NhomQuyen.ReadOnly = true;
+            NhomQuyen.Resizable = DataGridViewTriState.False;
+            NhomQuyen.SortMode = DataGridViewColumnSortMode.NotSortable;
+            NhomQuyen.Width = 138;
+            // 
+            // CheckCol
+            // 
+            CheckCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            CheckCol.HeaderText = "Chọn";
+            CheckCol.MinimumWidth = 6;
+            CheckCol.Name = "CheckCol";
+            CheckCol.Resizable = DataGridViewTriState.False;
+            CheckCol.Width = 66;
             // 
             // ThemTheoMonHoc
             // 

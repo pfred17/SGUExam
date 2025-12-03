@@ -296,7 +296,7 @@ namespace GUI.forms.PhanCong
 
                 LoadData();
 
-                MessageBox.Show($"Đã phân công {selectedUser.Count} giảng viên cho môn học {cbxMonHoc.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Đã phân công {selectedUser.Count} giảng viên cho môn học\n {cbxMonHoc.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 cbxMonHoc.SelectedIndex = 0;
             }
             catch (Exception ex)

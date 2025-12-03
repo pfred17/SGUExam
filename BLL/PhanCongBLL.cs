@@ -77,9 +77,9 @@ namespace BLL
         {
             return _monHocBLL.GetTotalMonHoc(keyword, 1);
         }
-        public List<UserDTO> GetAllUserByRoleExcluding(string userId)
+        public List<UserDTO> GetAllAssignableUsers()
         {
-            return _userBLL.GetAllUserByRoleExcluding(userId);
+            return _userBLL.GetAllAssignableUsers();
         }
         public UserDTO GetUserById(string userId)
         {
@@ -87,11 +87,11 @@ namespace BLL
         }
         public List<UserDTO> GetUSerForSelection(int page, int pageSize, string userId, string? keyword = null)
         {
-            return _userBLL.GetUserPaged(page, pageSize, userId, keyword, 1);
+            return _userBLL.GetAssignableUsersPaged(page, pageSize, userId, keyword);
         }
         public int GetTotalUserForSelection(string userId, string? keyword = null)
         {
-            return _userBLL.GetTotalUser(userId, keyword, 1);
+            return _userBLL.GetTotalAssignableUsers(userId, keyword);
                
         }
     }

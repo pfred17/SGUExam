@@ -23,6 +23,7 @@ namespace BLL
         {
             return _dal.AddChuong(chuong, maMonHoc);
         }
+
         public bool UpdateChuong(ChuongDTO chuong)
         {
             return _dal.UpdateChuong(chuong);
@@ -47,6 +48,7 @@ namespace BLL
         {
             return _dal.GetChuongPaged(maMonHoc, page, pageSize);
         }
+
         public int GetTotalChuongByMonHoc(long maMonHoc)
         {
             return _dal.GetTotalChuongByMonHoc(maMonHoc);

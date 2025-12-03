@@ -1,7 +1,10 @@
 ﻿using BLL;
 using DAL;
+using DocumentFormat.OpenXml.Wordprocessing;
+using DTO;
 using GUI.forms.nguoidung;
 using Guna.UI2.WinForms;
+using System.Collections.Generic;
 
 namespace GUI.modules
 {
@@ -10,7 +13,17 @@ namespace GUI.modules
 
         private readonly string _userId;
         private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+        private readonly RoleBLL _roleBLL = new RoleBLL();
         private readonly UserBLL _userBLL = new UserBLL();
+
+        private System.Threading.Timer? _debounceTimer;
+        private const int DebounceDelay = 500;
+
+        private int pageCurrent = 1;
+        private int pageSize = 10;
+        private int totalRecords = 0;
+        private int totalPages = 0;
+
         public UC_NguoiDung(string userId)
         {
             _userId = userId;
@@ -20,25 +33,80 @@ namespace GUI.modules
         private void UC_NguoiDung_Load(object sender, EventArgs e)
         {
             loadPermission();
+            loadRoleData();
             loadDataForTable();
+        }
+
+        private void loadPermission()
+        {
+            //btnAdd.Visible = _permissionBLL.HasPermission(_userId, 8, "Thêm");
+            //btnEdit.Visible = _permissionBLL.HasPermission(_userId, 8, "Sửa");
+            //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
+            //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
+        }
+
+        public void loadRoleData()
+        {
+            List<RoleDTO> roles = _roleBLL.getAllRole();
+
+            List<RoleDTO> danhSachMoi = new List<RoleDTO>();
+
+            // 1. Thêm mục "Tất cả" vào danh sách mới
+            RoleDTO itemTatCa = new RoleDTO
+            {
+                MaNhomQuyen = 0,
+                TenNhomQuyen = "Tất cả"
+            };
+            danhSachMoi.Add(itemTatCa);
+
+            // 2. Thêm tất cả các mục từ danh sách gốc vào sau
+            foreach(var role in roles)
+            {
+                if (role.TrangThai == 1)
+                {
+                    danhSachMoi.Add(role);
+                }
+            }
+
+            // 3. Gán danh sách mới cho DataSource
+            cbbFilter.DataSource = danhSachMoi;
+
+            // 4. Thiết lập các thuộc tính hiển thị
+            cbbFilter.DisplayMember = "TenNhomQuyen";
+            cbbFilter.ValueMember = "MaNhomQuyen";
+
+            // 5. Chọn mục đầu tiên ("Tất cả")
+            cbbFilter.SelectedIndex = 0;
         }
 
         private void loadDataForTable()
         {
-            List<DTO.UserDTO> users = _userBLL.GetAllUsers();
+
+            string keyword = txtSearch.Text.Trim();
+            if (keyword == "Tìm kiếm...") keyword = "";
+
+            int option = _roleBLL.GetRoleIdByName(cbbFilter.GetItemText(cbbFilter.SelectedItem));
+
+            totalRecords = _userBLL.GetAllUsers().Count;
+            totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+            if (totalPages == 0) totalPages = 1;
+            if (pageCurrent > totalPages) pageCurrent = totalPages;
+
+            var users = _userBLL.GetUserPaged(pageCurrent, pageSize, keyword, option);
+
             tableNguoiDung.Rows.Clear();
             foreach (var user in users)
             {
-                Guna2Button btnEdit = new Guna2Button
-                {
-                    Tag = user.MSSV,
-                    Image = Properties.Resources.icon_dekiemtra,
-                    Size = new Size(30, 30),
-                };
+
+                var roleDto = _roleBLL.GetRoleDTOById(user.Role);
+
+                if (roleDto.TrangThai == 0) continue;
+
 
                 int rowIndex = tableNguoiDung.Rows.Add(
                     user.MSSV, user.HoTen,
-                    user.Email, user.Role,
+                    user.Email, _roleBLL.GetRoleNameById(user.Role),
                     user.TrangThai == 1 ? "Hoạt động" : "Bị khóa",
                     Properties.Resources.icon_edit,
                     Properties.Resources.icon_delete);
@@ -48,23 +116,24 @@ namespace GUI.modules
 
                 if (user.TrangThai == 1)
                 {
-                    cellTrangThai.Style.ForeColor = Color.Green;
-                    cellTrangThai.Style.Font = new Font(tableNguoiDung.Font, FontStyle.Bold);
+                    cellTrangThai.Style.ForeColor = System.Drawing.Color.Green;
+                    cellTrangThai.Style.Font = new System.Drawing.Font(tableNguoiDung.Font, FontStyle.Bold);
                 }
                 else
                 {
-                    cellTrangThai.Style.ForeColor = Color.Red;
-                    cellTrangThai.Style.Font = new Font(tableNguoiDung.Font, FontStyle.Bold);
+                    cellTrangThai.Style.ForeColor = System.Drawing.Color.Red;
+                    cellTrangThai.Style.Font = new System.Drawing.Font(tableNguoiDung.Font, FontStyle.Bold);
                 }
             }
+            UpdatePageInfo();
         }
 
-        private void loadPermission()
+        private void UpdatePageInfo()
         {
-            //btnAdd.Visible = _permissionBLL.HasPermission(_userId, 8, "Thêm");
-            //btnEdit.Visible = _permissionBLL.HasPermission(_userId, 8, "Sửa");
-            //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
-            //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
+            lblPage.Text = totalRecords == 0 ? "0" : $"{pageCurrent} / {totalPages}";
+            btnPrev.Enabled = pageCurrent > 1;
+            btnNext.Enabled = pageCurrent < totalPages;
+            tableNguoiDung.Enabled = totalRecords > 0;
         }
 
         private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -79,6 +148,7 @@ namespace GUI.modules
             // Lấy ID của người dùng
             var userId = tableNguoiDung.Rows[e.RowIndex].Cells["MaNguoiDung"].Value.ToString();
             var userName = tableNguoiDung.Rows[e.RowIndex].Cells["HoVaTen"].Value.ToString();
+            var status = tableNguoiDung.Rows[e.RowIndex].Cells["TrangThai"].Value.ToString();
 
             // === Khi click vào icon SỬA ===
             if (columnName == "editCol")
@@ -86,7 +156,7 @@ namespace GUI.modules
                 Sua formSua = new Sua(userId);
 
                 // Đăng ký lắng nghe sự kiện UserAdded từ form Them
-                formSua.UserUpdated+= (s, ev) =>
+                formSua.UserUpdated += (s, ev) =>
                 {
                     loadDataForTable(); // Gọi lại hàm load dữ liệu khi thêm thành công
                 };
@@ -97,27 +167,52 @@ namespace GUI.modules
             // === Khi click vào icon XÓA ===
             else if (columnName == "deleteCol")
             {
-                var result = MessageBox.Show(
+                if (status == "Hoạt động")
+                {
+                    var result = MessageBox.Show(
                     $"Bạn có chắc chắn muốn KHÓA người dùng: {userName} không?",
                     "Xác nhận khóa",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
+                    MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            _userBLL.LockUser(userId, 0);
+                            loadDataForTable();
+                            MessageBox.Show("Đã khóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
 
-                if (result == DialogResult.Yes)
+                    }
+                } else
                 {
-                    try
+                    var result = MessageBox.Show(
+                    $"Bạn có chắc chắn muốn MỞ KHÓA người dùng: {userName} không?",
+                    "Xác nhận khóa",
+                    MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
                     {
-                        _userBLL.LockUser(userId);
-                        loadDataForTable();
-                        MessageBox.Show("Đã khóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Lỗi",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        try
+                        {
+                            _userBLL.LockUser(userId, 1);
+                            loadDataForTable();
+                            MessageBox.Show("Đã mở khóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
 
+                    }
                 }
+                
+
+                
             }
         }
 
@@ -153,9 +248,56 @@ namespace GUI.modules
             formThem.ShowDialog();
         }
 
-        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        private void btnPrev_Click(object sender, EventArgs e)
         {
+            if (pageCurrent > 1)
+            {
+                pageCurrent--;
+                loadDataForTable();
+            }
+        }
 
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (pageCurrent < totalPages)
+            {
+                pageCurrent++;
+                loadDataForTable();
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (_debounceTimer != null)
+                _debounceTimer.Dispose();
+
+            _debounceTimer = new System.Threading.Timer(_ =>
+            {
+                this.Invoke(new Action(() =>
+                {
+                    pageCurrent = 1;
+                    loadDataForTable();
+                }));
+            }, null, DebounceDelay, Timeout.Infinite);
+        }
+
+        private void txtSearch_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+                txtSearch.Text = "Tìm kiếm...";
+        }
+
+        private void txtSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtSearch.Text == "Tìm kiếm...")
+            {
+                txtSearch.Text = "";
+            }
+        }
+
+        private void cbbFilter_ValueChanged(object sender, EventArgs e)
+        {
+            loadDataForTable();
         }
     }
 }

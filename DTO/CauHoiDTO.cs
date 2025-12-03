@@ -1,14 +1,18 @@
-﻿namespace DTO
+﻿
+namespace DTO
 {
     public class CauHoiDTO
     {
-        public long MaCauHoi { get; set; } 
+        public long MaCauHoi { get; set; }
         public long MaChuong { get; set; }
         public long MaMonHoc { get; set; }
         public string NoiDung { get; set; } = "";
         public string DoKho { get; set; } = "";
         public string TenMonHoc { get; set; } = "";
         public string TacGia { get; set; } = "Chưa xác định";
-        public bool IsBanSao { get; set; } // mặc định true
+
+        public List<string> DapAnList { get; set; } = new List<string>();
+        public List<long> DapAnIds { get; set; } = new List<long>();
+        public int DapAnChon { get; set; } = -1; // -1: chưa chọn
     }
 }
