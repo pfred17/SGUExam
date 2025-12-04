@@ -35,6 +35,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ItemNhomHocPhan));
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
+            lbSiSo = new Guna.UI2.WinForms.Guna2HtmlLabel();
             panel1 = new Panel();
             lbMonHoc = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lbGhiChu = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -43,10 +44,7 @@
             menuChucNang = new ContextMenuStrip(components);
             toolStripMenuItem1 = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
-            toolStripMenuItem3 = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripMenuItem();
-            toolStripMenuItem5 = new ToolStripMenuItem();
-            toolStripMenuItem6 = new ToolStripMenuItem();
             toolStripMenuItem7 = new ToolStripMenuItem();
             guna2CustomGradientPanel1.SuspendLayout();
             menuChucNang.SuspendLayout();
@@ -55,6 +53,7 @@
             // guna2CustomGradientPanel1
             // 
             guna2CustomGradientPanel1.BorderRadius = 15;
+            guna2CustomGradientPanel1.Controls.Add(lbSiSo);
             guna2CustomGradientPanel1.Controls.Add(panel1);
             guna2CustomGradientPanel1.Controls.Add(lbMonHoc);
             guna2CustomGradientPanel1.Controls.Add(lbGhiChu);
@@ -68,6 +67,16 @@
             guna2CustomGradientPanel1.Size = new Size(366, 300);
             guna2CustomGradientPanel1.TabIndex = 0;
             guna2CustomGradientPanel1.Paint += guna2CustomGradientPanel1_Paint;
+            // 
+            // lbSiSo
+            // 
+            lbSiSo.BackColor = Color.Transparent;
+            lbSiSo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbSiSo.Location = new Point(260, 242);
+            lbSiSo.Name = "lbSiSo";
+            lbSiSo.Size = new Size(63, 32);
+            lbSiSo.TabIndex = 3;
+            lbSiSo.Text = "lbSiSo";
             // 
             // panel1
             // 
@@ -132,54 +141,36 @@
             // menuChucNang
             // 
             menuChucNang.ImageScalingSize = new Size(24, 24);
-            menuChucNang.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2, toolStripMenuItem3, toolStripMenuItem4, toolStripMenuItem5, toolStripMenuItem6, toolStripMenuItem7 });
+            menuChucNang.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2, toolStripMenuItem4, toolStripMenuItem7 });
             menuChucNang.Name = "contextMenuStrip1";
-            menuChucNang.Size = new Size(287, 228);
+            menuChucNang.Size = new Size(241, 132);
             menuChucNang.Opening += menuChucNang_Opening;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(286, 32);
+            toolStripMenuItem1.Size = new Size(240, 32);
             toolStripMenuItem1.Text = "Danh sách sinh viên";
             toolStripMenuItem1.Click += menuXemSinhVien_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(286, 32);
+            toolStripMenuItem2.Size = new Size(240, 32);
             toolStripMenuItem2.Text = "Danh sách đề thi";
-            // 
-            // toolStripMenuItem3
-            // 
-            toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new Size(286, 32);
-            toolStripMenuItem3.Text = "Danh sách mã điểm danh";
+            toolStripMenuItem2.Click += menuDeThi_Click;
             // 
             // toolStripMenuItem4
             // 
             toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new Size(286, 32);
+            toolStripMenuItem4.Size = new Size(240, 32);
             toolStripMenuItem4.Text = "Sửa thông tin";
             toolStripMenuItem4.Click += menuSua_Click;
-            // 
-            // toolStripMenuItem5
-            // 
-            toolStripMenuItem5.Name = "toolStripMenuItem5";
-            toolStripMenuItem5.Size = new Size(286, 32);
-            toolStripMenuItem5.Text = "Tạo mã QR điểm danh";
-            // 
-            // toolStripMenuItem6
-            // 
-            toolStripMenuItem6.Name = "toolStripMenuItem6";
-            toolStripMenuItem6.Size = new Size(286, 32);
-            toolStripMenuItem6.Text = "Ẩn nhóm";
-            toolStripMenuItem6.Click += toolStripMenuItem6_Click;
             // 
             // toolStripMenuItem7
             // 
             toolStripMenuItem7.Name = "toolStripMenuItem7";
-            toolStripMenuItem7.Size = new Size(286, 32);
+            toolStripMenuItem7.Size = new Size(240, 32);
             toolStripMenuItem7.Text = "Xóa nhóm";
             toolStripMenuItem7.Click += menuXoa_Click;
             // 
@@ -205,13 +196,12 @@
         private ContextMenuStrip menuChucNang;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem toolStripMenuItem2;
-        private ToolStripMenuItem toolStripMenuItem3;
         private ToolStripMenuItem toolStripMenuItem4;
-        private ToolStripMenuItem toolStripMenuItem5;
-        private ToolStripMenuItem toolStripMenuItem6;
         private ToolStripMenuItem toolStripMenuItem7;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbMonHoc;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbGhiChu;
         private Panel panel1;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lbSiSo;
     }
 }

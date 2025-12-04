@@ -42,6 +42,7 @@
             guna2HtmlLabel1.TabIndex = 4;
             guna2HtmlLabel1.Text = "UC_KiemTra";
             guna2HtmlLabel1.TextAlignment = ContentAlignment.MiddleCenter;
+            guna2HtmlLabel1.Click += guna2HtmlLabel1_Click;
             // 
             // UC_KiemTra
             // 
@@ -50,7 +51,7 @@
             Controls.Add(guna2HtmlLabel1);
             Margin = new Padding(4, 4, 4, 4);
             Name = "UC_KiemTra";
-            Size = new Size(1120, 730);
+            Size = new Size(1166, 816);
             ResumeLayout(false);
             PerformLayout();
         }

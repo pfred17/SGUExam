@@ -49,7 +49,7 @@
             btnThemUC.DisabledState.CustomBorderColor = Color.DarkGray;
             btnThemUC.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnThemUC.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnThemUC.Font = new Font("Segoe UI", 9F);
+            btnThemUC.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThemUC.ForeColor = Color.White;
             btnThemUC.Location = new Point(920, 18);
             btnThemUC.Name = "btnThemUC";

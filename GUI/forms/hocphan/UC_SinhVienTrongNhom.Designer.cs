@@ -50,7 +50,6 @@
             tbTimKiem = new Guna.UI2.WinForms.Guna2TextBox();
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lblPagination = new Label();
-            flpPage = new FlowLayoutPanel();
             btnNext = new Button();
             btnPrev = new Button();
             dgvSinhVien = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -59,6 +58,7 @@
             colMaSinhVien = new DataGridViewTextBoxColumn();
             colGioiTinh = new DataGridViewTextBoxColumn();
             colHanhDong = new DataGridViewButtonColumn();
+            lbTongSV = new Label();
             guna2CustomGradientPanel2 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lbThongTinNhom = new Guna.UI2.WinForms.Guna2HtmlLabel();
             label1 = new Label();
@@ -144,7 +144,6 @@
             // guna2CustomGradientPanel1
             // 
             guna2CustomGradientPanel1.Controls.Add(lblPagination);
-            guna2CustomGradientPanel1.Controls.Add(flpPage);
             guna2CustomGradientPanel1.Controls.Add(btnNext);
             guna2CustomGradientPanel1.Controls.Add(btnPrev);
             guna2CustomGradientPanel1.Controls.Add(dgvSinhVien);
@@ -158,22 +157,12 @@
             // lblPagination
             // 
             lblPagination.AutoSize = true;
-            lblPagination.Location = new Point(742, 478);
+            lblPagination.Location = new Point(953, 435);
             lblPagination.Name = "lblPagination";
             lblPagination.Size = new Size(27, 25);
             lblPagination.TabIndex = 4;
             lblPagination.Text = "lb";
             lblPagination.Click += lblPagination_Click;
-            // 
-            // flpPage
-            // 
-            flpPage.Location = new Point(815, 429);
-            flpPage.Name = "flpPage";
-            flpPage.Size = new Size(200, 36);
-            flpPage.TabIndex = 3;
-            flpPage.WrapContents = false;
-            flpPage.Click += BtnPage_Click;
-            flpPage.Paint += flpPage_Paint;
             // 
             // btnNext
             // 
@@ -189,7 +178,7 @@
             // btnPrev
             // 
             btnPrev.Image = (Image)resources.GetObject("btnPrev.Image");
-            btnPrev.Location = new Point(742, 429);
+            btnPrev.Location = new Point(869, 429);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(67, 36);
             btnPrev.TabIndex = 1;
@@ -285,8 +274,21 @@
             colHanhDong.UseColumnTextForButtonValue = true;
             colHanhDong.Width = 106;
             // 
+            // lbTongSV
+            // 
+            lbTongSV.AutoSize = true;
+            lbTongSV.BackColor = Color.White;
+            lbTongSV.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTongSV.Location = new Point(978, 28);
+            lbTongSV.Name = "lbTongSV";
+            lbTongSV.Size = new Size(63, 25);
+            lbTongSV.TabIndex = 5;
+            lbTongSV.Text = "label2";
+            lbTongSV.Click += lbTongSV_Click;
+            // 
             // guna2CustomGradientPanel2
             // 
+            guna2CustomGradientPanel2.Controls.Add(lbTongSV);
             guna2CustomGradientPanel2.Controls.Add(lbThongTinNhom);
             guna2CustomGradientPanel2.CustomizableEdges = customizableEdges11;
             guna2CustomGradientPanel2.Location = new Point(0, 92);
@@ -355,8 +357,8 @@
         private DataGridViewButtonColumn colHanhDong;
         private Button btnPrev;
         private Button btnNext;
-        private FlowLayoutPanel flpPage;
         private Label lblPagination;
         private Label label1;
+        private Label lbTongSV;
     }
 }

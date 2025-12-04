@@ -8,9 +8,10 @@ namespace DTO
 {
     public class MonHocDTO
     {
-        public int MaMonHoc { get; set; }
-        public string TenMonHoc { get; set; }
+        public long MaMH {  get; set; }
+        public string TenMH { get; set; } = "";
         public int SoTinChi { get; set; }
-        public int TrangThai { get; set; }
+        public byte TrangThai { get; set; }
+        public MonHocDTO() { }
     }
 }

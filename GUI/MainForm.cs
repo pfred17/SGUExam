@@ -164,7 +164,7 @@ namespace GUI
                     var screenPoint = panelHeader.PointToScreen(picAvatar.Location);
                     var formPoint = this.PointToClient(screenPoint);
                     pnlDropdown.Location = new Point(
-                        1200,   
+                        1200,
                         formPoint.Y + picAvatar.Height + 5
                     );
                     pnlDropdown.BringToFront();
@@ -248,7 +248,7 @@ namespace GUI
         private void ModuleButton_Click(object sender, EventArgs e)
         {
             if (sender is Guna2Button btn && btn.Tag is ModuleItem module)
-            {   
+            {
                 ActivateButton(btn);
                 LoadModule(module.UserControlType);
             }
@@ -331,6 +331,11 @@ namespace GUI
                 Location = new Point(28, top),
                 Cursor = Cursors.Hand,
             };
+        }
+
+        private void panelMain_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

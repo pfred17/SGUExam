@@ -27,16 +27,53 @@ namespace GUI
         {
             //string username = txtMssv.Text.Trim();
             //string password = txtPassword.Text.Trim();
+            ////string username = "admin";
+            ////string password = "123456";
 
-            UserDTO user = userBLL.Login("admin", "123456");
+            //UserDTO user = userBLL.Login("admin", "123456");
 
-            if (user == null)
+            //if (user == null)
+            //{
+            //    MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!");
+            //    return;
+            //}
+
+            //// Chuyển qua form chính 
+            //MainForm main = new MainForm(user);
+            //main.Show();
+            //this.Hide();
+            string username = txtMssv.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            // BẮT BUỘC PHẢI KIỂM TRA TRỐNG
+            if (string.IsNullOrWhiteSpace(username))
             {
-                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!");
+                MessageBox.Show("Vui lòng nhập tên đăng nhập hoặc MSSV!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMssv.Focus();
                 return;
             }
 
-            // Chuyển qua form chính 
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Vui lòng nhập mật khẩu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPassword.Focus();
+                return;
+            }
+
+            // ĐĂNG NHẬP THẬT – DÙNG DỮ LIỆU NGƯỜI DÙNG NHẬP VÀO
+            UserDTO user = userBLL.Login(username, password);
+
+            if (user == null)
+            {
+                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Đăng nhập thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPassword.Clear();
+                txtMssv.Focus();
+                return;
+            }
+
+            // ĐĂNG NHẬP THÀNH CÔNG → CHUYỂN QUA MAIN FORM
+            MessageBox.Show($"Chào mừng {user.HoTen} đăng nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             MainForm main = new MainForm(user);
             main.Show();
             this.Hide();
@@ -200,5 +237,9 @@ namespace GUI
                 MessageBox.Show("Đổi mật khẩu thất bại!");
         }
 
+        private void txtMssv_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

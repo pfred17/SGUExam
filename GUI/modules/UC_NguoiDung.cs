@@ -1,4 +1,5 @@
 ﻿using BLL;
+using DAL;
 using GUI.forms.nguoidung;
 using Guna.UI2.WinForms;
 
@@ -82,25 +83,40 @@ namespace GUI.modules
             // === Khi click vào icon SỬA ===
             if (columnName == "editCol")
             {
-                MessageBox.Show($"Bạn vừa bấm SỬA người dùng: {userName} (ID: {userId}, RowIndex: {e.RowIndex}, ColumnIndex: {e.ColumnIndex})",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                new Sua().Show();
+                Sua formSua = new Sua(userId);
+
+                // Đăng ký lắng nghe sự kiện UserAdded từ form Them
+                formSua.UserUpdated+= (s, ev) =>
+                {
+                    loadDataForTable(); // Gọi lại hàm load dữ liệu khi thêm thành công
+                };
+
+                formSua.ShowDialog();
             }
 
             // === Khi click vào icon XÓA ===
             else if (columnName == "deleteCol")
             {
                 var result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn XÓA người dùng: {userName} (ID: {userId}) không?",
-                    "Xác nhận xóa",
+                    $"Bạn có chắc chắn muốn KHÓA người dùng: {userName} không?",
+                    "Xác nhận khóa",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
 
                 if (result == DialogResult.Yes)
                 {
-                    MessageBox.Show("Đã xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    // TODO: gọi _userBLL.DeleteUser(userId);
-                    // loadData();
+                    try
+                    {
+                        _userBLL.LockUser(userId);
+                        loadDataForTable();
+                        MessageBox.Show("Đã khóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Lỗi",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                 }
             }
         }
@@ -135,6 +151,11 @@ namespace GUI.modules
             };
 
             formThem.ShowDialog();
+        }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -22,8 +22,6 @@ namespace DAL
             string query = "INSERT INTO chi_tiet_nhom_hoc_phan (ma_nd, ma_nhom) VALUES (@maND, @maNhom)";
             var parameters = new SqlParameter[]
             {
-                //new SqlParameter("@maND", maND),
-                //new SqlParameter("@maNhom", maNhom)
                 new SqlParameter("@maND", SqlDbType.VarChar) { Value = maND },
                 new SqlParameter("@maNhom", SqlDbType.BigInt) { Value = maNhom }
             };
@@ -44,8 +42,6 @@ namespace DAL
             string query = "SELECT COUNT(*) FROM chi_tiet_nhom_hoc_phan WHERE ma_nd = @maND AND ma_nhom = @maNhom";
             var parameters = new SqlParameter[]
             {
-                //new SqlParameter("@maND", maND),
-                //new SqlParameter("@maNhom", maNhom)
                 new SqlParameter("@maND", SqlDbType.VarChar) { Value = maND },
                 new SqlParameter("@maNhom", SqlDbType.BigInt) { Value = maNhom }
             };
@@ -85,10 +81,29 @@ namespace DAL
             };
             return DatabaseHelper.ExecuteNonQuery(query, parameters) > 0;
         }
+        public int DemSinhVienTrongNhom(long maNhom)
+        {
+            string query = @"
+                SELECT COUNT(*) 
+                FROM chi_tiet_nhom_hoc_phan ct
+                JOIN nguoi_dung nd ON ct.ma_nd = nd.ma_nd 
+                WHERE ct.ma_nhom = @maNhom 
+                  AND nd.trang_thai = 1"; 
 
-        
+            var parameters = new SqlParameter[]
+            {
+        new SqlParameter("@maNhom", SqlDbType.BigInt) { Value = maNhom }
+            };
 
-
-
+            try
+            {
+                object result = DatabaseHelper.ExecuteQuery(query, parameters).Rows[0][0];
+                return Convert.ToInt32(result);
+            }
+            catch
+            {
+                return 0; // Trả về 0 nếu có lỗi (an toàn)
+            }
+        }
     }
 }
