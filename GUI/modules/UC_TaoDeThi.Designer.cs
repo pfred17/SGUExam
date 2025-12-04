@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.Serialization;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
+using Syncfusion.WinForms.Input;
+using Syncfusion.WinForms.Input.Enums;
 
 namespace GUI.modules
 {
@@ -10,87 +13,239 @@ namespace GUI.modules
         private Guna2Panel panelMain;
         private Guna2Panel panelConfig;
         private Guna2TextBox txtTenDe;
-        private Guna2DateTimePicker dtpTu, dtpDen;
+        private SfDateTimeEdit dtpTu, dtpDen;
         private Guna2NumericUpDown numThoiGianLamBai, numCanhBao, numDe, numTrungBinh, numKho;
         private Guna2ComboBox cbNhomHocPhan;
         private CheckedListBox clbChuong;
         private Guna2Button btnTaoDe;
+        private Guna2ComboBox cbMonHoc; // Chọn môn học
+        private CheckedListBox clbNhomHocPhan; // Chọn nhiều nhóm học phần
 
-        // Cấu hình
+
         private Guna2ToggleSwitch swTuDongLay, swXemDiem, swXemDapAn, swXemBaiLam, swDaoCauHoi, swDaoDapAn, swTuDongNop, swDeLuyenTap, swTinhDiem;
 
         private void InitializeComponent()
         {
-            // Main panel (trái)
+            // ==== PANEL TRÁI ====
             panelMain = new Guna2Panel
             {
-                Size = new Size(800, 600),
-                Location = new Point(30, 30),
-                BorderRadius = 8,
+                Size = new Size(730, 670),
+                Location = new Point(20, 30),
+                BorderRadius = 12,
                 FillColor = Color.White
             };
 
-            // Tên đề
+            int x = 30;
+            int y = 20;
+
+            Font fontLabel = new Font("Segoe UI", 10, FontStyle.Bold);
+            Font fontInput = new Font("Segoe UI", 9);
+
+            // ===== TÊN ĐỀ =====
+            AddLabel(panelMain, "Tên đề", x, y, fontLabel);
+            y += 25;
+
             txtTenDe = new Guna2TextBox
             {
+                Location = new Point(x, y),
+                Width = 480,
+                Height = 30,
+                BorderRadius = 8,
+                AutoRoundedCorners = true,
                 PlaceholderText = "Nhập tên đề kiểm tra",
-                Location = new Point(30, 40),
-                Width = 400,
-                BorderRadius = 6
+                Font = fontInput
             };
-            panelMain.Controls.Add(new Label { Text = "Tên đề kiểm tra", Location = new Point(30, 15), Font = new Font("Segoe UI", 10, FontStyle.Bold) });
             panelMain.Controls.Add(txtTenDe);
 
-            // Thời gian bắt đầu
-            panelMain.Controls.Add(new Label { Text = "Thời gian bắt đầu", Location = new Point(30, 90), Font = new Font("Segoe UI", 10, FontStyle.Bold) });
-            dtpTu = new Guna2DateTimePicker { Location = new Point(30, 115), Width = 180, BorderRadius = 6, Format = DateTimePickerFormat.Custom, CustomFormat = "dd/MM/yyyy HH:mm" };
-            dtpDen = new Guna2DateTimePicker { Location = new Point(230, 115), Width = 180, BorderRadius = 6, Format = DateTimePickerFormat.Custom, CustomFormat = "dd/MM/yyyy HH:mm" };
+            y += 50;
+
+            // ==== THỜI GIAN ====
+            AddLabel(panelMain, "Thời gian", x, y, fontLabel);
+            y += 25;
+
+            dtpTu = new SfDateTimeEdit
+            {
+                Location = new Point(x, y),
+                Width = 220,
+                Height = 30,
+                Font = fontInput,
+                Value = DateTime.Now,
+                AllowNull = false,
+                MinDateTime = DateTime.MinValue,
+                MaxDateTime = DateTime.MaxValue,
+                ShowDropDown = true,
+                DateTimePattern = DateTimePattern.Custom,
+                Format = "dd/MM/yyyy HH:mm", // Use 'Format' property for custom format
+                DateTimeEditingMode = DateTimeEditingMode.Default
+            };
+
+            dtpDen = new SfDateTimeEdit
+            {
+                Location = new Point(x + 240, y),
+                Width = 220,
+                Height = 30,
+                Font = fontInput,
+                Value = DateTime.Now.AddHours(1),
+                AllowNull = false,
+                MinDateTime = DateTime.MinValue,
+                MaxDateTime = DateTime.MaxValue,
+                ShowDropDown = true,
+                DateTimePattern = DateTimePattern.Custom,
+                Format = "dd/MM/yyyy HH:mm", // Use 'Format' property for custom format
+                DateTimeEditingMode = DateTimeEditingMode.Default
+            };
+
+            // Add to panel
             panelMain.Controls.Add(dtpTu);
             panelMain.Controls.Add(dtpDen);
 
-            // Thời gian làm bài
-            panelMain.Controls.Add(new Label { Text = "Thời gian làm bài", Location = new Point(30, 165), Font = new Font("Segoe UI", 10, FontStyle.Bold) });
-            numThoiGianLamBai = new Guna2NumericUpDown { Location = new Point(30, 190), Width = 100, BorderRadius = 6, Minimum = 1, Maximum = 300, Value = 45 };
-            panelMain.Controls.Add(numThoiGianLamBai);
-            panelMain.Controls.Add(new Label { Text = "phút", Location = new Point(140, 195), Font = new Font("Segoe UI", 10) });
+            y += 50;
+            // ===== THỜI GIAN LÀM BÀI & CẢNH BÁO (CÙNG 1 DÒNG) =====
+            var panelTimeWarning = new Panel
+            {
+                Location = new Point(x, y),
+                Size = new Size(480, 35)
+            };
 
-            // Cảnh báo nếu làm dưới
-            panelMain.Controls.Add(new Label { Text = "Cảnh báo nếu làm dưới", Location = new Point(30, 230), Font = new Font("Segoe UI", 10, FontStyle.Bold) });
-            numCanhBao = new Guna2NumericUpDown { Location = new Point(30, 255), Width = 100, BorderRadius = 6, Minimum = 1, Maximum = 60, Value = 1 };
-            panelMain.Controls.Add(numCanhBao);
-            panelMain.Controls.Add(new Label { Text = "phút", Location = new Point(140, 260), Font = new Font("Segoe UI", 10) });
-            panelMain.Controls.Add(new Label { Text = "Nếu sinh viên hoàn thành bài thi dưới số phút này, hệ thống sẽ đánh dấu là bất thường.", Location = new Point(30, 285), Font = new Font("Segoe UI", 8), ForeColor = Color.Gray, Width = 400 });
+            // Label "Thời gian làm bài"
+            var lblThoiGianLamBai = new Label
+            {
+                Text = "Thời gian làm bài",
+                Location = new Point(0, 0),
+                Font = fontLabel,
+                AutoSize = true
+            };
+            panelTimeWarning.Controls.Add(lblThoiGianLamBai);
 
-            // Giao cho
-            panelMain.Controls.Add(new Label { Text = "Giao cho", Location = new Point(30, 320), Font = new Font("Segoe UI", 10, FontStyle.Bold) });
-            cbNhomHocPhan = new Guna2ComboBox { Location = new Point(30, 345), Width = 350, BorderRadius = 6, DropDownStyle = ComboBoxStyle.DropDownList };
-            panelMain.Controls.Add(cbNhomHocPhan);
+            // NumericUpDown thời gian làm bài
+            numThoiGianLamBai = CreateSmallNumeric(lblThoiGianLamBai.Right + 10, 0, 45, 1, 300);
+            panelTimeWarning.Controls.Add(numThoiGianLamBai);
 
-            // Chương
-            panelMain.Controls.Add(new Label { Text = "Chương", Location = new Point(30, 390), Font = new Font("Segoe UI", 10, FontStyle.Bold) });
-            clbChuong = new CheckedListBox { Location = new Point(30, 415), Width = 350, Height = 60 };
+            // "phút" cho thời gian làm bài
+            AddRightLabel(panelTimeWarning, "phút", numThoiGianLamBai.Right + 5, 0, fontInput);
+
+            // Label "Cảnh báo"
+            var lblCanhBao = new Label
+            {
+                Text = "Cảnh báo",
+                Location = new Point(numThoiGianLamBai.Right + 65, 0),
+                Font = fontLabel,
+                AutoSize = true
+            };
+            panelTimeWarning.Controls.Add(lblCanhBao);
+
+            // NumericUpDown cảnh báo
+            numCanhBao = CreateSmallNumeric(lblCanhBao.Right + 10, 0, 1, 1, 60);
+            panelTimeWarning.Controls.Add(numCanhBao);
+
+            // "phút" cho cảnh báo
+            AddRightLabel(panelTimeWarning, "phút", numCanhBao.Right + 5, 0, fontInput);
+
+            panelMain.Controls.Add(panelTimeWarning);
+
+            y += 45; // Move y down for next controls
+
+            // Ghi chú cảnh báo
+            panelMain.Controls.Add(new Label
+            {
+                Text = "Nếu sinh viên làm bài dưới số phút cảnh báo, hệ thống sẽ đánh dấu bất thường.",
+                Location = new Point(x, y),
+                Font = new Font("Segoe UI", 8),
+                ForeColor = Color.Gray,
+                Width = 480
+            });
+
+            y += 40;
+
+
+
+
+            // ===== CHỌN MÔN HỌC =====
+            AddLabel(panelMain, "Môn học", x, y, fontLabel);
+            y += 25;
+
+            cbMonHoc = new Guna2ComboBox
+            {
+                Location = new Point(x, y),
+                Width = 420,
+                Height = 30,
+                BorderRadius = 8,
+                AutoRoundedCorners = true,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = fontInput
+            };
+            panelMain.Controls.Add(cbMonHoc);
+
+            y += 50;
+
+            // ===== NHÓM HỌC PHẦN =====
+            AddLabel(panelMain, "Nhóm học phần", x, y, fontLabel);
+            y += 25;
+
+            clbNhomHocPhan = new CheckedListBox
+            {
+                Location = new Point(x, y),
+                Width = 420,
+                Height = 60, // Reduced height for compactness
+                Font = fontInput,
+                IntegralHeight = false, // Always show scrollbar if needed
+                ScrollAlwaysVisible = true
+            };
+            panelMain.Controls.Add(clbNhomHocPhan);
+
+            y += 70; // Slightly more than height for spacing
+
+            // ===== CHƯƠNG =====
+            AddLabel(panelMain, "Chương", x, y, fontLabel);
+            y += 25;
+
+            clbChuong = new CheckedListBox
+            {
+                Location = new Point(x, y),
+                Width = 420,
+                Height = 60, // Reduced height for compactness
+                Font = fontInput,
+                IntegralHeight = false,
+                ScrollAlwaysVisible = true
+            };
             panelMain.Controls.Add(clbChuong);
 
-            // Số câu
-            panelMain.Controls.Add(new Label { Text = "Số câu dễ", Location = new Point(30, 485), Font = new Font("Segoe UI", 10) });
-            numDe = new Guna2NumericUpDown { Location = new Point(110, 480), Width = 60, BorderRadius = 6, Minimum = 0, Maximum = 100, Value = 0 };
-            panelMain.Controls.Add(numDe);
+            y += 70;
 
-            panelMain.Controls.Add(new Label { Text = "Số câu trung bình", Location = new Point(190, 485), Font = new Font("Segoe UI", 10) });
-            numTrungBinh = new Guna2NumericUpDown { Location = new Point(320, 480), Width = 60, BorderRadius = 6, Minimum = 0, Maximum = 100, Value = 0 };
-            panelMain.Controls.Add(numTrungBinh);
 
-            panelMain.Controls.Add(new Label { Text = "Số câu khó", Location = new Point(400, 485), Font = new Font("Segoe UI", 10) });
-            numKho = new Guna2NumericUpDown { Location = new Point(480, 480), Width = 60, BorderRadius = 6, Minimum = 0, Maximum = 100, Value = 0 };
-            panelMain.Controls.Add(numKho);
+            // ============ NHÓM 3 NUMERIC UP DOWN — CANH THẲNG HÀNG ============
+            var panelNumericGroup = new Panel
+            {
+                Location = new Point(x, y),
+                Size = new Size(500, 35)
+            };
 
-            // Nút tạo đề
+            // Cột 1: Dễ
+            AddRightLabel(panelNumericGroup, "Số câu dễ", 0, 0, fontInput);
+            numDe = CreateSmallNumeric(80, 0, 0, 0, 100);
+            panelNumericGroup.Controls.Add(numDe);
+
+            // Cột 2: Trung bình
+            AddRightLabel(panelNumericGroup, "Trung bình", 160, 0, fontInput);
+            numTrungBinh = CreateSmallNumeric(260, 0, 0, 0, 100);
+            panelNumericGroup.Controls.Add(numTrungBinh);
+
+            // Cột 3: Khó
+            AddRightLabel(panelNumericGroup, "Khó", 350, 0, fontInput);
+            numKho = CreateSmallNumeric(390, 0, 0, 0, 100);
+            panelNumericGroup.Controls.Add(numKho);
+
+            panelMain.Controls.Add(panelNumericGroup);
+
+            y += 55;
+
+            // ===== BUTTON TẠO ĐỀ =====
             btnTaoDe = new Guna2Button
             {
                 Text = "+ TẠO ĐỀ",
-                Location = new Point(30, 540),
-                Width = 180,
-                Height = 40,
+                Location = new Point(x, y),
+                Width = 200,
+                Height = 45,
                 BorderRadius = 8,
                 FillColor = Color.FromArgb(55, 123, 255),
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
@@ -98,32 +253,60 @@ namespace GUI.modules
             };
             panelMain.Controls.Add(btnTaoDe);
 
-            // Panel cấu hình (phải)
+            // ==== PANEL PHẢI ====
             panelConfig = new Guna2Panel
             {
-                Size = new Size(300, 600),
-                Location = new Point(850, 30),
-                BorderRadius = 8,
+                Size = new Size(340, 670),
+                Location = new Point(770, 30),
+                BorderRadius = 12,
                 FillColor = Color.White
             };
-            panelConfig.Controls.Add(new Label { Text = "CẤU HÌNH", Location = new Point(20, 20), Font = new Font("Segoe UI", 12, FontStyle.Bold) });
 
-            int y = 60;
-            swTuDongLay = AddSwitch(panelConfig, "Tự động lấy từ ngân hàng đề", ref y);
-            swXemDiem = AddSwitch(panelConfig, "Xem điểm sau khi thi xong", ref y);
-            swXemDapAn = AddSwitch(panelConfig, "Xem đáp án khi thi xong", ref y);
-            swXemBaiLam = AddSwitch(panelConfig, "Xem bài làm khi thi xong", ref y);
-            swDaoCauHoi = AddSwitch(panelConfig, "Đảo câu hỏi", ref y);
-            swDaoDapAn = AddSwitch(panelConfig, "Đảo đáp án", ref y);
-            swTuDongNop = AddSwitch(panelConfig, "Tự động nộp bài khi chuyển tab", ref y);
-            swDeLuyenTap = AddSwitch(panelConfig, "Đề luyện tập", ref y);
-            swTinhDiem = AddSwitch(panelConfig, "Tính điểm", ref y);
+            panelConfig.Controls.Add(new Label
+            {
+                Text = "CẤU HÌNH",
+                Location = new Point(20, 20),
+                Size = new Size(100, 30),
+                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+            });
 
-            // Add panels vào UC
+            int sy = 60;
+
+            swTuDongLay = AddSwitch(panelConfig, "Tự động lấy từ ngân hàng đề", ref sy);
+            swXemDiem = AddSwitch(panelConfig, "Xem điểm sau khi thi xong", ref sy);
+            swXemDapAn = AddSwitch(panelConfig, "Xem đáp án khi thi xong", ref sy);
+            swXemBaiLam = AddSwitch(panelConfig, "Xem bài làm khi thi xong", ref sy);
+            swDaoCauHoi = AddSwitch(panelConfig, "Đảo câu hỏi", ref sy);
+            swDaoDapAn = AddSwitch(panelConfig, "Đảo đáp án", ref sy);
+            swTuDongNop = AddSwitch(panelConfig, "Tự động nộp bài khi chuyển tab", ref sy);
+            swDeLuyenTap = AddSwitch(panelConfig, "Đề luyện tập", ref sy);
+            swTinhDiem = AddSwitch(panelConfig, "Tính điểm", ref sy);
+
+            // Add panels
             this.Controls.Add(panelMain);
             this.Controls.Add(panelConfig);
-            this.Size = new Size(1200, 660);
+            this.Size = new Size(1120, 731);
+
+            // 🔥 Xóa toàn bộ nền xám — đồng bộ style
+            ApplyFlatWhiteStyle(this);
+            panelMain.BackColor = Color.White;
+            panelConfig.BackColor = Color.White;
+            txtTenDe.BackColor = Color.White;
+            dtpTu.BackColor = Color.White;
+            dtpDen.BackColor = Color.White;
+            numThoiGianLamBai.BackColor = Color.White;
+            numCanhBao.BackColor = Color.White;
+            numDe.BackColor = Color.White;
+            numTrungBinh.BackColor = Color.White;
+            numKho.BackColor = Color.White;
+            clbChuong.BackColor = Color.White;
+            btnTaoDe.BackColor = Color.White;
+            cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
         }
+
+        // ====================================================================
+        // ======================= HÀM TIỆN ÍCH ================================
+        // ====================================================================
 
         private Guna2ToggleSwitch AddSwitch(Guna2Panel panel, string text, ref int y)
         {
@@ -144,6 +327,87 @@ namespace GUI.modules
             panel.Controls.Add(lbl);
             y += 38;
             return sw;
+        }
+
+        private void AddLabel(Control parent, string text, int x, int y, Font font)
+        {
+            parent.Controls.Add(new Label
+            {
+                Text = text,
+                Location = new Point(x, y),
+                Font = font,
+                AutoSize = true
+            });
+        }
+
+        private void AddRightLabel(Control parent, string text, int x, int y, Font font)
+        {
+            parent.Controls.Add(new Label
+            {
+                Text = text,
+                Location = new Point(x, y + 5),
+                Font = font,
+                AutoSize = true
+            });
+        }
+
+        private Guna2NumericUpDown CreateSmallNumeric(int x, int y, int value, int min, int max)
+        {
+            return new Guna2NumericUpDown
+            {
+                Location = new Point(x, y),
+                Width = 60,
+                Height = 28,
+                Minimum = min,
+                Maximum = max,
+                Value = value,
+                Font = new Font("Segoe UI", 9),
+                AutoRoundedCorners = false,
+                BorderRadius = 6
+            };
+        }
+
+        private void ApplyFlatWhiteStyle(Control c)
+        {
+            if (c is Guna2TextBox t)
+            {
+                t.FillColor = Color.White;
+                t.BorderColor = Color.Silver;
+                t.DisabledState.FillColor = Color.White;
+                t.HoverState.FillColor = Color.White;
+                t.FocusedState.FillColor = Color.White;
+            }
+            else if (c is Guna2ComboBox cb)
+            {
+                cb.FillColor = Color.White;
+                cb.BorderColor = Color.Silver;
+                cb.HoverState.FillColor = Color.White;
+                cb.FocusedState.FillColor = Color.White;
+            }
+            else if (c is Guna2DateTimePicker dtp)
+            {
+                dtp.FillColor = Color.White;
+                dtp.BorderColor = Color.Silver;
+            }
+            else if (c is Guna2NumericUpDown num)
+            {
+                num.FillColor = Color.White;
+                num.BorderColor = Color.Silver;
+                num.UpDownButtonFillColor = Color.White;
+                num.UpDownButtonForeColor = Color.Black;
+            }
+            else if (c is Guna2Panel pnl)
+            {
+                pnl.FillColor = Color.White;
+            }
+            else if (c is CheckedListBox clb)
+            {
+                clb.BackColor = Color.White;
+                clb.ForeColor = Color.Black;
+            }
+
+            foreach (Control child in c.Controls)
+                ApplyFlatWhiteStyle(child);
         }
     }
 }

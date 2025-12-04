@@ -377,7 +377,7 @@ namespace DAL
             string cleanMssv = mssv.Trim();
 
             string query = @"
-                SELECT ma_nd, ten_dang_nhap, mat_khau, ho_ten, email, ma_nguoi_dung, gioi_tinh, trang_thai
+                SELECT ma_nd, ten_dang_nhap, mat_khau, ho_ten, email, ma_nhom_quyen, gioi_tinh, trang_thai
                 FROM nguoi_dung 
                 WHERE TRIM(ma_nd) = @MSSV";
 

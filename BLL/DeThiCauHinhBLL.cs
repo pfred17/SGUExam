@@ -16,5 +16,10 @@ namespace BLL
         {
             return _dal.Update(maDe, cauHinh);
         }
+        public bool Insert(long maDe, DeThiCauHinhDTO cauHinh)
+        {
+            return _dal.Insert(maDe, cauHinh);
+        }
+
     }
 }

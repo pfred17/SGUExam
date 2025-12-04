@@ -125,20 +125,57 @@ namespace DAL
 
         public List<DeThiDTO> GetAllWithNhomHocPhan()
         {
-            string query = @"
-                SELECT dt.*, nhp.ten_nhom
-                FROM de_thi dt
-                LEFT JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
-                LEFT JOIN nhom_hoc_phan nhp ON nhp.ma_nhom = dtn.ma_nhom";
+            string queryDeThi = "SELECT * FROM de_thi";
+            DataTable dtDeThi = DatabaseHelper.ExecuteQuery(queryDeThi);
 
-            DataTable dt = DatabaseHelper.ExecuteQuery(query);
-            var list = new List<DeThiDTO>(dt.Rows.Count);
+            string queryNhom = @"
+        SELECT dtn.ma_de, dtn.ma_nhom, nhp.ten_nhom
+        FROM de_thi_nhom dtn
+        JOIN nhom_hoc_phan nhp ON nhp.ma_nhom = dtn.ma_nhom";
+            DataTable dtNhom = DatabaseHelper.ExecuteQuery(queryNhom);
 
-            foreach (DataRow row in dt.Rows)
-                list.Add(MapDeThi(row));
+            var nhomDict = new Dictionary<long, List<(long, string)>>();
+
+            foreach (DataRow row in dtNhom.Rows)
+            {
+                long maDe = Convert.ToInt64(row["ma_de"]);
+                long maNhom = Convert.ToInt64(row["ma_nhom"]);
+                string tenNhom = row["ten_nhom"].ToString();
+
+                if (!nhomDict.ContainsKey(maDe))
+                    nhomDict[maDe] = new List<(long, string)>();
+                nhomDict[maDe].Add((maNhom, tenNhom));
+            }
+
+            var cauHinhDAL = new DeThiCauHinhDAL();
+            var list = new List<DeThiDTO>(dtDeThi.Rows.Count);
+
+            foreach (DataRow row in dtDeThi.Rows)
+            {
+                var deThi = MapDeThi(row);
+
+                if (nhomDict.TryGetValue(deThi.MaDe, out var nhomList))
+                {
+                    deThi.NhomHocPhanIds = nhomList.Select(x => x.Item1).ToList();
+                    deThi.TenNhomHocPhan = string.Join(", ", nhomList.Select(x => x.Item2));
+                }
+                else
+                {
+                    deThi.NhomHocPhanIds = new List<long>();
+                    deThi.TenNhomHocPhan = null;
+                }
+
+                // Sử dụng DeThiCauHinhDAL để lấy cấu hình đề thi
+                deThi.CauHinh = cauHinhDAL.GetByMaDe(deThi.MaDe);
+
+                list.Add(deThi);
+            }
 
             return list;
         }
+
+
+
 
         public List<CauHoiDTO> GetCauHoiTheoDeThi(long maDe)
         {
@@ -182,6 +219,44 @@ namespace DAL
                 sql, new SqlParameter("@maDe", maDe)
             ));
         }
+        public void InsertDeThiChuong(long maDe, List<long> chuongIds)
+        {
+            if (chuongIds == null || chuongIds.Count == 0) return;
+            foreach (var id in chuongIds)
+            {
+                DatabaseHelper.ExecuteNonQuery(
+                    "INSERT INTO de_thi_chuong (ma_de, ma_chuong) VALUES (@maDe, @maChuong)",
+                    new SqlParameter("@maDe", maDe),
+                    new SqlParameter("@maChuong", id)
+                );
+            }
+        }
+
+        public void InsertDeThiNhom(long maDe, List<long> nhomHocPhanIds)
+        {
+            if (nhomHocPhanIds == null || nhomHocPhanIds.Count == 0) return;
+            foreach (var id in nhomHocPhanIds)
+            {
+                DatabaseHelper.ExecuteNonQuery(
+                    "INSERT INTO de_thi_nhom (ma_de, ma_nhom) VALUES (@maDe, @maNhom)",
+                    new SqlParameter("@maDe", maDe),
+                    new SqlParameter("@maNhom", id)
+                );
+            }
+        }
+        public void InsertDeThiCauHoi(long maDe, List<long> cauHoiIds)
+        {
+            if (cauHoiIds == null || cauHoiIds.Count == 0) return;
+            foreach (var id in cauHoiIds)
+            {
+                DatabaseHelper.ExecuteNonQuery(
+                    "INSERT INTO de_thi_cau_hoi (ma_de, ma_cau_hoi) VALUES (@maDe, @maCauHoi)",
+                    new SqlParameter("@maDe", maDe),
+                    new SqlParameter("@maCauHoi", id)
+                );
+            }
+        }
+
 
     }
 }

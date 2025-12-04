@@ -312,8 +312,8 @@ namespace GUI.modules
             var chuaChon = _dsCauHoi.Where(c => c.DapAnChon < 0).ToList();
             if (chuaChon.Count > 0)
             {
-                var ask = MessageBox.Show($"Bạn còn {chuaChon.Count} câu chưa trả lời. Bạn vẫn muốn nộp?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (ask != DialogResult.Yes) return;
+                MessageBox.Show($"Bạn phải trả lời tất cả các câu hỏi trước khi nộp bài!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
             int soCauDung = 0;

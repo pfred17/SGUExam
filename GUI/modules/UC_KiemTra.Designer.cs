@@ -99,7 +99,7 @@ namespace GUI.modules
 
             // UC
             this.Controls.Add(this.rootPanel);
-            this.Size = new Size(1100, 650);
+            this.Size = new Size(1100, 731);
         }
 
 

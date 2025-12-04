@@ -34,6 +34,14 @@ namespace GUI.modules
             flowDeThi.Controls.Clear();
             var danhSachDeThi = deThiBLL.GetAllWithNhomHocPhan();
 
+            // Lấy danh sách nhóm học phần của sinh viên
+            var nhomIds = new ChiTietNhomHocPhanBLL().GetNhomHocPhanIdsByUser(_userId);
+
+            // Chỉ lấy đề thi mà sinh viên thuộc ít nhất một nhóm học phần của đề đó
+            danhSachDeThi = danhSachDeThi
+                .Where(deThi => deThi.NhomHocPhanIds != null && deThi.NhomHocPhanIds.Any(id => nhomIds.Contains(id)))
+                .ToList();
+
             // Lọc trạng thái
             int trangThai = cbTrangThai.SelectedIndex; // 0: tất cả, 1: chưa mở, 2: chưa làm, 3: hoàn thành, 4: quá hạn
             if (trangThai > 0)
@@ -53,6 +61,7 @@ namespace GUI.modules
                 flowDeThi.Controls.Add(card);
             }
         }
+
 
         private Control CreateDeThiCard(DeThiDTO deThi)
         {
@@ -108,10 +117,11 @@ namespace GUI.modules
             };
 
             // Nút trạng thái
+            var statusText = GetTrangThaiText(deThi);
             var btnStatus = new Guna2Button
             {
-                Text = GetTrangThaiText(deThi.TrangThai),
-                FillColor = GetTrangThaiColor(deThi.TrangThai),
+                Text = statusText,
+                FillColor = GetTrangThaiColor(statusText),
                 ForeColor = Color.White,
                 BorderRadius = 8,
                 Width = 110,
@@ -147,27 +157,29 @@ namespace GUI.modules
         }
 
         // Hàm lấy text trạng thái
-        private string GetTrangThaiText(int trangThai)
+        private string GetTrangThaiText(DeThiDTO deThi)
         {
-            return trangThai switch
-            {
-                1 => "Chưa mở",
-                2 => "Chưa làm",
-                3 => "Hoàn thành",
-                4 => "Quá hạn",
-                _ => "Không xác định"
-            };
+            var now = DateTime.Now;
+            if (deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau)
+                return "Chưa mở";
+            if (deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
+                now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc)
+                return "Đang thi";
+            if (deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
+                return "Kết thúc";
+            return "Không xác định";
         }
 
+
         // Hàm lấy màu trạng thái
-        private Color GetTrangThaiColor(int trangThai)
+        private Color GetTrangThaiColor(string statusText)
         {
-            return trangThai switch
+            return statusText switch
             {
-                1 => Color.LightGray,
-                2 => Color.LightBlue,
-                3 => Color.FromArgb(120, 144, 156),
-                4 => Color.FromArgb(255, 138, 128),
+                "Chưa mở" => Color.LightGray,
+                "Đang thi" => Color.LightBlue,
+                "Kết thúc" => Color.FromArgb(120, 144, 156),
+                "Đã hủy" => Color.FromArgb(255, 138, 128),
                 _ => Color.Gray
             };
         }

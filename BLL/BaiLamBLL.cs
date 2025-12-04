@@ -19,5 +19,12 @@ namespace BLL
         public long Insert(BaiLamDTO baiLam) => dal.Insert(baiLam);
 
         public bool Update(BaiLamDTO baiLam) => dal.Update(baiLam);
+
+        public BaiLamDTO? GetByUserAndDeThi(string userId, long maDe)
+        {
+            // DAL: SELECT * FROM bai_lam WHERE ma_nd = @userId AND ma_de = @maDe
+            return dal.GetByUserAndDeThi(userId, maDe);
+        }
+
     }
 }

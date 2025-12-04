@@ -86,7 +86,20 @@ namespace DAL
             return DatabaseHelper.ExecuteNonQuery(query, parameters) > 0;
         }
 
-        
+        public List<long> GetNhomHocPhanIdsByUser(string maNd)
+        {
+            string query = "SELECT ma_nhom FROM chi_tiet_nhom_hoc_phan WHERE ma_nd = @maNd";
+            var parameters = new[] { new SqlParameter("@maNd", maNd) };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            var result = new List<long>();
+            foreach (DataRow row in dt.Rows)
+            {
+                result.Add(Convert.ToInt64(row["ma_nhom"]));
+            }
+            return result;
+        }
+
 
 
 

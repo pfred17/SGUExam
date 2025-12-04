@@ -55,5 +55,28 @@ namespace DAL
             };
             return DatabaseHelper.ExecuteNonQuery(query, param) > 0;
         }
+        public bool Insert(long maDe, DeThiCauHinhDTO cauHinh)
+        {
+            string query = @"
+        INSERT INTO de_thi_cau_hinh
+        (ma_de, tu_dong_lay, xem_diem_sau_thi, xem_dap_an_sau_thi,
+         xem_bai_lam, dao_cau_hoi, dao_dap_an, tu_dong_nop, de_luyen_tap, tinh_diem)
+        VALUES (@maDe, @tdl, @xdst, @xdast, @xbl, @dch, @dda, @tdn, @dlt, @td)";
+            var param = new SqlParameter[]
+            {
+        new("@maDe", maDe),
+        new("@tdl", cauHinh.TuDongLay),
+        new("@xdst", cauHinh.XemDiemSauThi),
+        new("@xdast", cauHinh.XemDapAnSauThi),
+        new("@xbl", cauHinh.XemBaiLam),
+        new("@dch", cauHinh.DaoCauHoi),
+        new("@dda", cauHinh.DaoDapAn),
+        new("@tdn", cauHinh.TuDongNop),
+        new("@dlt", cauHinh.DeLuyenTap),
+        new("@td", cauHinh.TinhDiem)
+            };
+            return DatabaseHelper.ExecuteNonQuery(query, param) > 0;
+        }
+
     }
 }

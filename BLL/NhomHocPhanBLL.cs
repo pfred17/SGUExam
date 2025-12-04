@@ -124,6 +124,10 @@ namespace BLL
 
             return all;
         }
+        public List<NhomHocPhanDTO> GetByMonHoc(long maMonHoc)
+        {
+            return dal.GetByMonHoc(maMonHoc);
+        }
 
 
     }

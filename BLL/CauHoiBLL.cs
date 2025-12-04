@@ -125,5 +125,10 @@ namespace BLL
 
             return (soNhom, tongCauTrung, cauDuyNhat);
         }
+        public List<CauHoiDTO> GetCauHoiByChuongAndTrangThai(List<long> chuongIds, int trangThai)
+        {
+            return _cauHoiDAL.GetCauHoiByChuongAndTrangThai(chuongIds, trangThai);
+        }
+
     }
 }

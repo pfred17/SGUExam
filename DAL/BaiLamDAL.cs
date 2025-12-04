@@ -78,5 +78,27 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, param);
             return rows > 0;
         }
+        public BaiLamDTO? GetByUserAndDeThi(string userId, long maDe)
+        {
+            string query = "SELECT * FROM bai_lam WHERE ma_nd = @userId AND ma_de = @maDe";
+            var param = new SqlParameter[]
+            {
+        new SqlParameter("@userId", userId),
+        new SqlParameter("@maDe", maDe)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
+            if (dt.Rows.Count == 0) return null;
+            var row = dt.Rows[0];
+            return new BaiLamDTO
+            {
+                MaBai = Convert.ToInt64(row["ma_bai"]),
+                MaDe = Convert.ToInt64(row["ma_de"]),
+                MaNguoiDung = row["ma_nd"].ToString(),
+                ThoiGianBatDau = row["thoi_gian_bat_dau"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(row["thoi_gian_bat_dau"]),
+                ThoiGianNop = row["thoi_gian_nop"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(row["thoi_gian_nop"]),
+                Diem = row["diem"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(row["diem"])
+            };
+        }
+
     }
 }

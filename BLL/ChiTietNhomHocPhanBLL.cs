@@ -1,4 +1,5 @@
 ﻿using DAL;
+using DocumentFormat.OpenXml.Bibliography;
 using DTO;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,10 @@ namespace BLL
 
         public static bool XoaSinhVienKhoiNhom(string maND, long maNhom)
             => ChiTietNhomHocPhanDAL.Instance.XoaSinhVienKhoiNhom(maND, maNhom);
+        public List<long> GetNhomHocPhanIdsByUser(string maNd)   {
+            return ChiTietNhomHocPhanDAL.Instance.GetNhomHocPhanIdsByUser(maNd);
+        }
 
-        
+
     }
 }

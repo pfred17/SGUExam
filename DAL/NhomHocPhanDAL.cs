@@ -20,7 +20,7 @@ namespace DAL
                 list.Add(new NhomHocPhanDTO
                 {
                     MaNhom = Convert.ToInt64(row["ma_nhom"]),
-                    MaMH = Convert.ToInt64(row["ma_mh"]),
+                    MaMH = Convert.ToInt64(row["ma_pc"]),
                     GhiChu = row["ghi_chu"].ToString(),
                     TenNhom = row["ten_nhom"].ToString(),
                     HocKy = row["hoc_ky"].ToString(),
@@ -183,5 +183,31 @@ namespace DAL
                 return null;
             }
         }
+        public List<NhomHocPhanDTO> GetByMonHoc(long maMonHoc)
+        {
+            var list = new List<NhomHocPhanDTO>();
+            string query = @"
+        SELECT nh.*
+        FROM nhom_hoc_phan nh
+        INNER JOIN phan_cong pc ON nh.ma_pc = pc.ma_pc
+        WHERE pc.ma_mh = @ma_mh AND nh.trang_thai = 1 AND pc.trang_thai = 1";
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@ma_mh", maMonHoc));
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new NhomHocPhanDTO
+                {
+                    MaNhom = Convert.ToInt64(row["ma_nhom"]),
+                    MaMH = maMonHoc, // Set from parameter, or you can get from pc.ma_mh if you select it
+                    TenNhom = row["ten_nhom"].ToString(),
+                    GhiChu = row["ghi_chu"]?.ToString(),
+                    HocKy = row["hoc_ky"]?.ToString(),
+                    NamHoc = row["nam_hoc"]?.ToString(),
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
+                });
+            }
+            return list;
+        }
+
+
     }
 }

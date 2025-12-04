@@ -32,5 +32,19 @@ namespace BLL
         {
             return _dal.GetSoLuongCauHoiTheoDe(maDe);
         }
+        public void InsertDeThiChuong(long maDe, List<long> chuongIds)
+        {
+            _dal.InsertDeThiChuong(maDe, chuongIds);
+        }
+
+        public void InsertDeThiNhom(long maDe, List<long> nhomHocPhanIds)
+        {
+            _dal.InsertDeThiNhom(maDe, nhomHocPhanIds);
+        }
+        public void InsertDeThiCauHoi(long maDe, List<long> cauHoiIds)
+        {
+            _dal.InsertDeThiCauHoi(maDe, cauHoiIds);
+        }
+
     }
 }

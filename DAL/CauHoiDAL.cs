@@ -153,6 +153,37 @@ namespace DAL
             var param = new SqlParameter("@MaCH", maCauHoi);
             DatabaseHelper.ExecuteNonQuery(query, param);
         }
+        public List<CauHoiDTO> GetCauHoiByChuongAndTrangThai(List<long> chuongIds, int trangThai)
+        {
+            var list = new List<CauHoiDTO>();
+            if (chuongIds == null || chuongIds.Count == 0) return list;
+
+            // Build IN clause safely
+            string inClause = string.Join(",", chuongIds.Select((id, idx) => $"@id{idx}"));
+            string query = $@"
+        SELECT ch.ma_cau_hoi, ch.noi_dung, ch.do_kho, ch.ma_chuong
+        FROM cau_hoi ch
+        WHERE ch.ma_chuong IN ({inClause}) AND ch.trang_thai = @trangThai";
+
+            var parameters = chuongIds
+                .Select((id, idx) => new SqlParameter($"@id{idx}", id))
+                .ToList();
+            parameters.Add(new SqlParameter("@trangThai", trangThai));
+
+            var dt = DatabaseHelper.ExecuteQuery(query, parameters.ToArray());
+            foreach (System.Data.DataRow row in dt.Rows)
+            {
+                list.Add(new CauHoiDTO
+                {
+                    MaCauHoi = (long)row["ma_cau_hoi"],
+                    NoiDung = row["noi_dung"].ToString(),
+                    DoKho = row["do_kho"].ToString(),
+                    MaChuong = (long)row["ma_chuong"]
+                });
+            }
+            return list;
+        }
+
 
     }
 }
