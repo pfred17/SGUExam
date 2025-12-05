@@ -27,10 +27,8 @@ namespace GUI
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            //string username = txtMssv.Text.Trim();
-            //string password = txtPassword.Text.Trim();
-            string username = "admin";
-            string password = "admin";
+            string username = txtMssv.Text.Trim();
+            string password = txtPassword.Text.Trim();
 
             UserDTO user = userBLL.Login(username, password);
 
