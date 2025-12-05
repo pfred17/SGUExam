@@ -13,6 +13,7 @@ namespace GUI.forms.hocphan
 {
     public partial class UC_ItemDeThi : UserControl
     {
+        public event EventHandler<long> SuaDeThiClicked;
         public event EventHandler<long> XemChiTietClicked;
         public event EventHandler<long> XoaClicked;
         private long _maDe;
@@ -65,7 +66,12 @@ namespace GUI.forms.hocphan
 
         private void btnXemChiTiet_Click(object sender, EventArgs e)
         {
+            XemChiTietClicked?.Invoke(this, _maDe);
+        }
 
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            SuaDeThiClicked?.Invoke(this, _maDe);
         }
     }
 }

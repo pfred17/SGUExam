@@ -88,13 +88,16 @@
             // 
             // lbMonHoc
             // 
+            lbMonHoc.AutoSize = false;
             lbMonHoc.BackColor = Color.Transparent;
             lbMonHoc.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbMonHoc.Location = new Point(19, 19);
+            lbMonHoc.Location = new Point(19, 102);
+            lbMonHoc.MaximumSize = new Size(330, 0);
             lbMonHoc.Name = "lbMonHoc";
-            lbMonHoc.Size = new Size(101, 32);
+            lbMonHoc.Size = new Size(320, 66);
             lbMonHoc.TabIndex = 0;
             lbMonHoc.Text = "lbMonhoc";
+            lbMonHoc.TextAlignment = ContentAlignment.MiddleLeft;
             // 
             // lbGhiChu
             // 
@@ -121,7 +124,7 @@
             btnSetting.ForeColor = Color.White;
             btnSetting.Image = (Image)resources.GetObject("btnSetting.Image");
             btnSetting.ImageSize = new Size(30, 30);
-            btnSetting.Location = new Point(302, 70);
+            btnSetting.Location = new Point(297, 10);
             btnSetting.Name = "btnSetting";
             btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnSetting.Size = new Size(49, 51);
@@ -131,10 +134,10 @@
             // lbTenNhom
             // 
             lbTenNhom.BackColor = Color.Transparent;
-            lbTenNhom.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbTenNhom.Location = new Point(19, 109);
+            lbTenNhom.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTenNhom.Location = new Point(19, 18);
             lbTenNhom.Name = "lbTenNhom";
-            lbTenNhom.Size = new Size(117, 32);
+            lbTenNhom.Size = new Size(124, 32);
             lbTenNhom.TabIndex = 0;
             lbTenNhom.Text = "lbTenNhom";
             // 

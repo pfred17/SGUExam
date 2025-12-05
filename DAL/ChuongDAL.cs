@@ -19,16 +19,16 @@ namespace DAL
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
             List<ChuongDTO> list = new List<ChuongDTO>();
-                foreach (DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new ChuongDTO
                 {
-                    list.Add(new ChuongDTO
-                    {
-                        MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                    MaChuong = Convert.ToInt64(row["ma_chuong"]),
                         TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
-                        MaMonHoc = Convert.ToInt64(row["ma_mh"])
-                    });
-                }
-                return list;
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"])
+                });
+            }
+            return list;
         }
         public bool IsChuongExists(string tenChuong)
         {
@@ -72,6 +72,7 @@ namespace DAL
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;
         }
+
         public bool DeleteChuong(long maChuong)
         {
             string query = @"DELETE FROM chuong WHERE ma_chuong = @ma_chuong";

@@ -28,7 +28,7 @@ namespace DAL
                     NoiDung = (string)row["noi_dung"],
                     DoKho = (string)row["do_kho"],
                     MaMonHoc = (long)row["ma_mh"],
-                    MaChuong = (long)row["ma_chuong"],        
+                    MaChuong = (long)row["ma_chuong"],
                     TenMonHoc = (string)row["ten_mh"],
                 });
             }
@@ -153,6 +153,6 @@ namespace DAL
             var param = new SqlParameter("@MaCH", maCauHoi);
             DatabaseHelper.ExecuteNonQuery(query, param);
         }
-        
+
     }
 }

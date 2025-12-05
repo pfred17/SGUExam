@@ -39,9 +39,10 @@
             // lbTenDe
             // 
             lbTenDe.AutoSize = true;
+            lbTenDe.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lbTenDe.Location = new Point(33, 15);
             lbTenDe.Name = "lbTenDe";
-            lbTenDe.Size = new Size(75, 25);
+            lbTenDe.Size = new Size(97, 30);
             lbTenDe.TabIndex = 0;
             lbTenDe.Text = "lbTenDe";
             // 
@@ -97,6 +98,7 @@
             btnSua.TabIndex = 5;
             btnSua.Text = "Sửa";
             btnSua.UseVisualStyleBackColor = false;
+            btnSua.Click += btnSua_Click;
             // 
             // UC_ItemDeThi
             // 

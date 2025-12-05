@@ -30,12 +30,13 @@ namespace GUI.modules
         {
             currentData = nhom;
             lbTenNhom.Text = nhom.TenNhom;
-            
+
             lbMonHoc.Text = $" {nhom.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
             lbGhiChu.Text = nhom.GhiChu;
             int soLuongSV = ChiTietNhomHocPhanBLL.DemSinhVienTrongNhom(nhom.MaNhom);
             lbSiSo.Text = $"Sỉ số:{soLuongSV}";
         }
+
 
         public NhomHocPhanDTO GetCurrentData() => currentData;
 

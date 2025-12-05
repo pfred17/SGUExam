@@ -1,5 +1,6 @@
 ﻿using BLL;
 using DTO;
+using GUI.modules;
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,15 @@ namespace GUI.forms.hocphan
                         }
                     }
                 };
+                // ✅ XEM CHI TIẾT ĐỀ THI
+                item.XemChiTietClicked += (s,maDe) =>
+                {
+                    MoChiTietDeThi(maDe);
+                };
+                item.SuaDeThiClicked += (s, maDe) =>
+                {
+                    
+                };
 
                 flDeThi.Controls.Add(item);
             }
@@ -97,6 +107,27 @@ namespace GUI.forms.hocphan
             btnPrev.Enabled = _currentPage > 1;
             btnNext.Enabled = _currentPage < _totalPages;
         }
+        
+
+        private void MoChiTietDeThi(long maDe)
+        {
+            var mainForm = this.FindForm() as MainForm;
+            if (mainForm == null)
+            {
+                MessageBox.Show("Không tìm thấy MainForm!");
+                return;
+            }
+
+            var panelMain = mainForm.Controls["panelMain"];
+            if (panelMain is Panel p)
+            {
+                var uc = new UC_ChiTietKiemTra(maDe);
+                p.Controls.Clear();
+                uc.Dock = DockStyle.Fill;
+                p.Controls.Add(uc);
+            }
+        }
+
         private void ApDungTimKiem()
         {
             string tuKhoa = tbTimKiem.Text.Trim()
@@ -137,14 +168,33 @@ namespace GUI.forms.hocphan
 
         private void btnTaoDe_Click(object sender, EventArgs e)
         {
+            // ✅ Kiểm tra đã có nhóm hay chưa
             if (_maNhom <= 0)
             {
-                MessageBox.Show("Chưa chọn nhóm học phần!");
+                MessageBox.Show("Chưa chọn nhóm học phần!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ _maNhom ĐÃ LÀ long → DÙNG TRỰC TIẾP
-            TaoDeThiClicked?.Invoke(_maNhom);
+            // ✅ Tìm MainForm cha
+            var mainForm = this.FindForm() as MainForm;
+            if (mainForm == null)
+            {
+                MessageBox.Show("Không tìm thấy MainForm!");
+                return;
+            }
+
+            // ✅ Tạo UC_TaoDeThi và truyền mã nhóm vào
+            var ucTaoDe = new UC_TaoDeThi(_maNhom);
+
+            // ✅ Lấy panelMain trong MainForm
+            var panelMain = mainForm.Controls["panelMain"];
+            if (panelMain is Panel p)
+            {
+                p.Controls.Clear();
+                ucTaoDe.Dock = DockStyle.Fill;
+                p.Controls.Add(ucTaoDe);
+            }
         }
 
         private void btnQuaylai_Click(object sender, EventArgs e)

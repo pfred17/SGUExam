@@ -12,7 +12,10 @@
         public int SoCauTrungBinh { get; set; }
         public int SoCauKho { get; set; }
         public int TrangThai { get; set; }
-        
+        public List<long> NhomHocPhanIds { get; set; }
+        public List<long> ChuongIds { get; set; }
+        public DeThiCauHinhDTO CauHinh { get; set; }
+        public string TenNhomHocPhan { get; set; }
 
     }
 }

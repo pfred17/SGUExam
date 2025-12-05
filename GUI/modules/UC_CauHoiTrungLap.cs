@@ -21,7 +21,7 @@ namespace GUI.modules
         private void UC_CauHoiTrungLap_Load(object sender, EventArgs e)
         {
             LoadComboBox();
-            LoadDuLieu();
+            //LoadDuLieu();
         }
 
         private void LoadComboBox()
@@ -36,92 +36,92 @@ namespace GUI.modules
             cboMonHoc.SelectedIndex = 0;
         }
 
-        private void LoadDuLieu()
-        {
-            var (nhom, trung, duyNhat) = _cauHoiBLL.LayThongKeTrungLap();
-            lblThongKe.Text = $"{nhom} nhóm trùng lặp • {trung} câu trùng • {duyNhat} câu duy nhất";
+        //private void LoadDuLieu()
+        //{
+        //    var (nhom, trung, duyNhat) = _cauHoiBLL.LayThongKeTrungLap();
+        //    lblThongKe.Text = $"{nhom} nhóm trùng lặp • {trung} câu trùng • {duyNhat} câu duy nhất";
 
-            var ds = _cauHoiBLL.LayCauHoiTrungLap();
+        //    var ds = _cauHoiBLL.LayCauHoiTrungLap();
 
-            dgvTrungLap.Columns.Clear();
-            dgvTrungLap.DataSource = null;
+        //    dgvTrungLap.Columns.Clear();
+        //    dgvTrungLap.DataSource = null;
 
-            if (!ds.Any())
-            {
-                dgvTrungLap.Columns.Add("ThongBao", "Thông báo");
-                dgvTrungLap.Rows.Add("Không tìm thấy câu hỏi trùng lặp!");
-                return;
-            }
+        //    if (!ds.Any())
+        //    {
+        //        dgvTrungLap.Columns.Add("ThongBao", "Thông báo");
+        //        dgvTrungLap.Rows.Add("Không tìm thấy câu hỏi trùng lặp!");
+        //        return;
+        //    }
 
-            // Tạo danh sách hiển thị với sửa/xóa
-            var listDisplay = ds.SelectMany(g =>
-            {
-                var minId = g.DanhSach.Min(c => c.MaCauHoi);
-                return g.DanhSach.Select(c => new
-                {
-                    c.MaCauHoi,
-                    c.NoiDung,
-                    c.TenMonHoc,
-                    c.DoKho,
-                    c.TacGia,
-                    ThuocNhom = c.MaCauHoi == minId ? "Câu gốc" : "Bản sao",
-                    Sua = "✎",
-                    Xoa = "🗑"
-                });
-            }).ToList();
+        //    // Tạo danh sách hiển thị với sửa/xóa
+        //    var listDisplay = ds.SelectMany(g =>
+        //    {
+        //        var minId = g.DanhSach.Min(c => c.MaCauHoi);
+        //        return g.DanhSach.Select(c => new
+        //        {
+        //            c.MaCauHoi,
+        //            c.NoiDung,
+        //            c.TenMonHoc,
+        //            c.DoKho,
+        //            c.TacGia,
+        //            ThuocNhom = c.MaCauHoi == minId ? "Câu gốc" : "Bản sao",
+        //            Sua = "✎",
+        //            Xoa = "🗑"
+        //        });
+        //    }).ToList();
 
-            dgvTrungLap.DataSource = listDisplay;
+        //    dgvTrungLap.DataSource = listDisplay;
 
-            // Thêm cột nút sửa/xóa
-            if (!dgvTrungLap.Columns.Contains("Sua"))
-                dgvTrungLap.Columns.Add(new DataGridViewButtonColumn
-                {
-                    Name = "Sua",
-                    HeaderText = "Sửa",
-                    Text = "✎",
-                    UseColumnTextForButtonValue = true
-                });
+        //    // Thêm cột nút sửa/xóa
+        //    if (!dgvTrungLap.Columns.Contains("Sua"))
+        //        dgvTrungLap.Columns.Add(new DataGridViewButtonColumn
+        //        {
+        //            Name = "Sua",
+        //            HeaderText = "Sửa",
+        //            Text = "✎",
+        //            UseColumnTextForButtonValue = true
+        //        });
 
-            if (!dgvTrungLap.Columns.Contains("Xoa"))
-                dgvTrungLap.Columns.Add(new DataGridViewButtonColumn
-                {
-                    Name = "Xoa",
-                    HeaderText = "Xóa",
-                    Text = "🗑",
-                    UseColumnTextForButtonValue = true
-                });
-        }
+        //    if (!dgvTrungLap.Columns.Contains("Xoa"))
+        //        dgvTrungLap.Columns.Add(new DataGridViewButtonColumn
+        //        {
+        //            Name = "Xoa",
+        //            HeaderText = "Xóa",
+        //            Text = "🗑",
+        //            UseColumnTextForButtonValue = true
+        //        });
+        //}
 
-        private void dgvTrungLap_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-            var row = dgvTrungLap.Rows[e.RowIndex];
-            long maCauHoi = Convert.ToInt64(row.Cells["MaCauHoi"].Value);
+        //private void dgvTrungLap_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.RowIndex < 0) return;
+        //    var row = dgvTrungLap.Rows[e.RowIndex];
+        //    long maCauHoi = Convert.ToInt64(row.Cells["MaCauHoi"].Value);
 
-            if (dgvTrungLap.Columns[e.ColumnIndex].Name == "Sua")
-            {
-                var frm = new frmSuaCauHoi(maCauHoi);
-                frm.ShowDialog();
-                LoadDuLieu();
-            }
-            else if (dgvTrungLap.Columns[e.ColumnIndex].Name == "Xoa")
-            {
-                if (MessageBox.Show("Xóa câu hỏi này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    _cauHoiBLL.Xoa(maCauHoi);
-                    LoadDuLieu();
-                }
-            }
-        }
+        //    if (dgvTrungLap.Columns[e.ColumnIndex].Name == "Sua")
+        //    {
+        //        var frm = new frmSuaCauHoi(maCauHoi);
+        //        frm.ShowDialog();
+        //        LoadDuLieu();
+        //    }
+        //    else if (dgvTrungLap.Columns[e.ColumnIndex].Name == "Xoa")
+        //    {
+        //        if (MessageBox.Show("Xóa câu hỏi này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        //        {
+        //            _cauHoiBLL.Xoa(maCauHoi);
+        //            LoadDuLieu();
+        //        }
+        //    }
+        //}
 
-        private void btnLoc_Click(object sender, EventArgs e) => LoadDuLieu();
+        //private void btnLoc_Click(object sender, EventArgs e) => LoadDuLieu();
 
-        private void btnReset_Click(object sender, EventArgs e)
-        {
-            cboLoaiCauHoi.SelectedIndex = 0;
-            cboMonHoc.SelectedIndex = 0;
-            LoadDuLieu();
-        }
+        //private void btnReset_Click(object sender, EventArgs e)
+        //{
+        //    cboLoaiCauHoi.SelectedIndex = 0;
+        //    cboMonHoc.SelectedIndex = 0;
+        //    LoadDuLieu();
+        //}
 
         private void loadTatCauHoi_Click(object sender, EventArgs e)
         {

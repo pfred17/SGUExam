@@ -1,6 +1,7 @@
 ﻿using DTO;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Data;
 
 namespace DAL
 {
@@ -30,7 +31,7 @@ namespace DAL
             string query = "DELETE FROM dap_an WHERE ma_cau_hoi = @MaCH";
             //string query = "UPDATE dap_an WHERE ma_cau_hoi = @MaCH";
             if (tran != null && tran.Connection != null) // kiểm tra xem transaction có hợp lệ không
-            { 
+            {
                 using var cmd = new SqlCommand(query, tran.Connection, tran); // là tạo một đối tượng SqlCommand để thực thi câu lệnh SQL trong một giao dịch đã được bắt đầu trước đó.
                 cmd.Parameters.AddWithValue("@MaCH", maCauHoi);
                 cmd.ExecuteNonQuery();

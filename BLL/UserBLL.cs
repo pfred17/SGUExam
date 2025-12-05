@@ -95,5 +95,10 @@ namespace BLL
         //{
         //    return dal.GetUserByMSSV(mssv, includeInactive);
         //}
+        //public UserDTO GetUserById(string userId)
+        //{
+        //    var users = GetAllUsers();
+        //    return users.FirstOrDefault(u => u.MSSV == userId);
+        //}
     }
 }
