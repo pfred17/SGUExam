@@ -89,12 +89,12 @@ namespace GUI.forms.PhanCong
         private void LoadComboBox()
         {
             var listMonHoc = _phanCongBLL.GetAllMonHocByStatus(1);
-            listMonHoc.Insert(0, new MonHocDTO { MaMH = 0, TenMH = "Chọn môn học cần phân công" });
+            listMonHoc.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn môn học cần phân công" });
             var displayList = listMonHoc
                 .Select(mh => new
                 {
-                    Text = mh.MaMH == 0 ? mh.TenMH : $"{mh.MaMH} - {mh.TenMH}",
-                    Value = mh.MaMH
+                    Text = mh.MaMonHoc == 0 ? mh.TenMonHoc : $"{mh.MaMonHoc} - {mh.TenMonHoc}",
+                    Value = mh.MaMonHoc
                 })
                 .ToList();
 
@@ -273,7 +273,7 @@ namespace GUI.forms.PhanCong
 
             try
             {
-                foreach(var userId in selectedUser)
+                foreach (var userId in selectedUser)
                 {
                     var user = _phanCongBLL.GetUserById(userId);
                     if (user != null)
@@ -296,7 +296,7 @@ namespace GUI.forms.PhanCong
 
                 LoadData();
 
-                MessageBox.Show($"Đã phân công {selectedUser.Count} giảng viên cho môn học {cbxMonHoc.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Đã phân công {selectedUser.Count} giảng viên cho môn học\n {cbxMonHoc.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 cbxMonHoc.SelectedIndex = 0;
             }
             catch (Exception ex)
@@ -304,11 +304,5 @@ namespace GUI.forms.PhanCong
                 MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void lblPage_Click(object sender, EventArgs e)
-        {
-
-        }
-  
     }
 }

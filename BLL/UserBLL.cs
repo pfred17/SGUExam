@@ -49,17 +49,25 @@ namespace BLL
         {
             return dal.GetUserById(userId);
         }
-        public List<UserDTO> GetAllUserByRoleExcluding(string userId)
+        public List<UserDTO> GetAllAssignableUsers()
         {
-            return dal.GetAllUserByRoleExcluding().Where(u => u.MSSV != userId).ToList();
+            return dal.GetAllAssignableUsers();
         }
         public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
         {
             return dal.GetUserPaged(page, pageSize, keyword, option);
         }
-        public int GetTotalUser(string? userId, string? keyword = null, int? trangThai = null)
+        //public int GetTotalUser(string? userId, string? keyword = null, int? trangThai = null)
+        //{
+        //    return dal.GetTotalUser(userId, keyword, trangThai);
+        //}
+        public List<UserDTO> GetAssignableUsersPaged(int page, int pageSize, string? userId, string? keyword = null)
         {
-            return dal.GetTotalUser(userId, keyword, trangThai);
+            return dal.GetAssignableUsersPaged(page, pageSize, userId, keyword);
+        }
+        public int GetTotalAssignableUsers(string? userId, string? keyword = null)
+        {
+            return dal.GetTotalAssignableUsers(userId, keyword);
         }
         public bool CreateNewUser(UserDTO userDTO)
         {

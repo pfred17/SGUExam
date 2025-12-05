@@ -35,7 +35,7 @@ namespace BLL
                 .ToDictionary(id => id, id =>
                 {
                     var m = monDal.GetMonHocById(id);
-                    return m?.TenMH ?? string.Empty;
+                    return m?.TenMonHoc ?? string.Empty;
                 });
 
             var filtered = all.Where(n =>

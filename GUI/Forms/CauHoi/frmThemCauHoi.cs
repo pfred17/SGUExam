@@ -69,7 +69,7 @@ namespace GUI
 
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMH);
+            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
         }
 
         //private void CbChuongFile_SelectedIndexChanged(object? sender, EventArgs e)
@@ -156,7 +156,7 @@ namespace GUI
 
             try
             {
-                var list = ReadExcelFile(path, monHoc.MaMH);
+                var list = ReadExcelFile(path, monHoc.MaMonHoc);
                 int count = 0;
 
                 foreach (var item in list)

@@ -44,8 +44,8 @@ namespace GUI.modules
                 // Gộp ma_mh + ten_mh thành 1 chuỗi để hiển thị
                 var dsHienThi = dsMonHoc.Select(mh => new
                 {
-                    MaMonHoc = mh.MaMH,
-                    TenHienThi = mh.MaMH + " - " + mh.TenMH
+                    MaMonHoc = mh.MaMonHoc,
+                    TenHienThi = mh.MaMonHoc + " - " + mh.TenMonHoc
                 }).ToList();
 
                 cbMonHoc.DataSource = dsHienThi;

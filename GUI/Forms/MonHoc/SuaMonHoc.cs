@@ -31,8 +31,8 @@ namespace GUI.forms.MonHoc
                 MessageBox.Show("Không tìm thấy môn học!");
                 return;
             }
-            txtMaMonHoc.Text = currentMonHoc.MaMH.ToString();
-            txtTenMonHoc.Text = currentMonHoc.TenMH;
+            txtMaMonHoc.Text = currentMonHoc.MaMonHoc.ToString();
+            txtTenMonHoc.Text = currentMonHoc.TenMonHoc;
             txtSoTinChi.Text = currentMonHoc.SoTinChi.ToString();
             tsTrangThai.Checked = currentMonHoc.TrangThai == 1;
         }
@@ -64,11 +64,11 @@ namespace GUI.forms.MonHoc
                 int newSoTinChi = int.Parse(txtSoTinChi.Text.Trim());
                 int newTrangThai = tsTrangThai.Checked ? 1 : 0;
 
-                string oldTenMonHoc = currentMonHoc.TenMH;
+                string oldTenMonHoc = currentMonHoc.TenMonHoc;
                 int oldSoTinChi = currentMonHoc.SoTinChi;
                 int oldTrangThai = currentMonHoc.TrangThai;
 
-                bool isReferenced = _monHocBLL.IsMonHocReferenced(currentMonHoc.MaMH);
+                bool isReferenced = _monHocBLL.IsMonHocReferenced(currentMonHoc.MaMonHoc);
 
                 if (newTenMonHoc == oldTenMonHoc &&
                     newSoTinChi == oldSoTinChi &&
@@ -89,7 +89,7 @@ namespace GUI.forms.MonHoc
                             "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    if (_monHocBLL.UpdateStatus(currentMonHoc.MaMH, newTrangThai))
+                    if (_monHocBLL.UpdateStatus(currentMonHoc.MaMonHoc, newTrangThai))
                     {
                         MessageBox.Show("Cập nhật trạng thái môn học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.DialogResult = DialogResult.OK;
@@ -102,7 +102,7 @@ namespace GUI.forms.MonHoc
                     return;
                 }
 
-                currentMonHoc.TenMH = newTenMonHoc;
+                currentMonHoc.TenMonHoc = newTenMonHoc;
                 currentMonHoc.SoTinChi = newSoTinChi;
                 currentMonHoc.TrangThai = newTrangThai;
 

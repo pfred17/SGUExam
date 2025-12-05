@@ -31,8 +31,8 @@ namespace DAL
             {
                 list.Add(new MonHocDTO
                 {
-                    MaMH = Convert.ToInt64(row["ma_mh"]),
-                    TenMH = Convert.ToString(row["ten_mh"]) ?? "",
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                    TenMonHoc = Convert.ToString(row["ten_mh"]) ?? "",
                     SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
                     TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
@@ -52,8 +52,8 @@ namespace DAL
             DataRow row = dt.Rows[0];
             return new MonHocDTO
             {
-                MaMH = Convert.ToInt64(row["ma_mh"]),
-                TenMH = Convert.ToString(row["ten_mh"]) ?? "",
+                MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                TenMonHoc = Convert.ToString(row["ten_mh"]) ?? "",
                 SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
@@ -79,8 +79,8 @@ namespace DAL
 
             SqlParameter[] parameters =
             {
-                new ("@ma_mh", monHoc.MaMH),
-                new ("@ten_mh", monHoc.TenMH),
+                new ("@ma_mh", monHoc.MaMonHoc),
+                new ("@ten_mh", monHoc.TenMonHoc),
                 new ("@so_tin_chi", monHoc.SoTinChi),
                 new ("@trang_thai", monHoc.TrangThai)
             };
@@ -101,8 +101,8 @@ namespace DAL
 
             SqlParameter[] parameters =
             {
-                new ("@ma_mh", monHoc.MaMH),
-                new ("@ten_mh", monHoc.TenMH),
+                new ("@ma_mh", monHoc.MaMonHoc),
+                new ("@ten_mh", monHoc.TenMonHoc),
                 new ("@so_tin_chi",monHoc.SoTinChi),
                 new ("@trang_thai", monHoc.TrangThai)
             };
@@ -192,8 +192,8 @@ namespace DAL
             {
                 list.Add(new MonHocDTO
                 {
-                    MaMH = Convert.ToInt64(row["ma_mh"]),
-                    TenMH = Convert.ToString(row["ten_mh"]) ?? "",
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                    TenMonHoc = Convert.ToString(row["ten_mh"]) ?? "",
                     SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
                     TrangThai = Convert.ToInt32(row["trang_thai"])
                 });

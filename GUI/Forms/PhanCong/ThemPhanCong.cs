@@ -42,14 +42,9 @@ namespace GUI.forms.PhanCong
             ThemTheoMonHoc frm = new ThemTheoMonHoc(_userId);
             pnMain.Controls.Add(frm);
         }
-        private void lblClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }
