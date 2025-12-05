@@ -107,8 +107,6 @@ namespace GUI.forms.hocphan
             btnPrev.Enabled = _currentPage > 1;
             btnNext.Enabled = _currentPage < _totalPages;
         }
-        
-
         private void MoChiTietDeThi(long maDe)
         {
             var mainForm = this.FindForm() as MainForm;
@@ -127,7 +125,6 @@ namespace GUI.forms.hocphan
                 p.Controls.Add(uc);
             }
         }
-
         private void ApDungTimKiem()
         {
             string tuKhoa = tbTimKiem.Text.Trim()
@@ -157,15 +154,10 @@ namespace GUI.forms.hocphan
 
             HienThiTrang();
         }
-
-
-
-
         private void btnXoa_Click(object sender, EventArgs e)
         {
 
         }
-
         private void btnTaoDe_Click(object sender, EventArgs e)
         {
             // ✅ Kiểm tra đã có nhóm hay chưa

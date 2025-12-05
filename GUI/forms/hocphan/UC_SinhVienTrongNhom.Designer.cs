@@ -44,6 +44,8 @@
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             btnThemSV = new Guna.UI2.WinForms.Guna2Button();
             btnXemDiem = new Guna.UI2.WinForms.Guna2Button();
             btnXuatDL = new Guna.UI2.WinForms.Guna2Button();
@@ -62,9 +64,15 @@
             guna2CustomGradientPanel2 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lbThongTinNhom = new Guna.UI2.WinForms.Guna2HtmlLabel();
             label1 = new Label();
+            guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
+            panelDeThi = new Panel();
+            btnClose = new Button();
+            lbThongTinNhomDeThi = new Label();
+            flowDeThi = new FlowLayoutPanel();
             guna2CustomGradientPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSinhVien).BeginInit();
             guna2CustomGradientPanel2.SuspendLayout();
+            panelDeThi.SuspendLayout();
             SuspendLayout();
             // 
             // btnThemSV
@@ -77,7 +85,7 @@
             btnThemSV.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnThemSV.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThemSV.ForeColor = Color.White;
-            btnThemSV.Location = new Point(908, 23);
+            btnThemSV.Location = new Point(846, 23);
             btnThemSV.Name = "btnThemSV";
             btnThemSV.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnThemSV.Size = new Size(180, 45);
@@ -95,10 +103,10 @@
             btnXemDiem.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnXemDiem.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnXemDiem.ForeColor = Color.White;
-            btnXemDiem.Location = new Point(441, 23);
+            btnXemDiem.Location = new Point(420, 23);
             btnXemDiem.Name = "btnXemDiem";
             btnXemDiem.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnXemDiem.Size = new Size(212, 45);
+            btnXemDiem.Size = new Size(202, 45);
             btnXemDiem.TabIndex = 1;
             btnXemDiem.Text = "Xem chi tiết điểm";
             btnXemDiem.Click += btnXemDiem_Click;
@@ -113,7 +121,7 @@
             btnXuatDL.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnXuatDL.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnXuatDL.ForeColor = Color.White;
-            btnXuatDL.Location = new Point(694, 23);
+            btnXuatDL.Location = new Point(641, 23);
             btnXuatDL.Name = "btnXuatDL";
             btnXuatDL.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnXuatDL.Size = new Size(180, 45);
@@ -138,7 +146,7 @@
             tbTimKiem.PlaceholderText = "";
             tbTimKiem.SelectedText = "";
             tbTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            tbTimKiem.Size = new Size(300, 45);
+            tbTimKiem.Size = new Size(276, 45);
             tbTimKiem.TabIndex = 3;
             // 
             // guna2CustomGradientPanel1
@@ -210,6 +218,7 @@
             dgvSinhVien.DefaultCellStyle = dataGridViewCellStyle3;
             dgvSinhVien.GridColor = Color.FromArgb(231, 229, 255);
             dgvSinhVien.Location = new Point(25, 37);
+            dgvSinhVien.Margin = new Padding(0);
             dgvSinhVien.Name = "dgvSinhVien";
             dgvSinhVien.RowHeadersVisible = false;
             dgvSinhVien.RowHeadersWidth = 62;
@@ -318,10 +327,72 @@
             label1.Text = "Tìm kiếm";
             label1.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // guna2Button2
+            // 
+            guna2Button2.BorderRadius = 4;
+            guna2Button2.CustomizableEdges = customizableEdges13;
+            guna2Button2.DisabledState.BorderColor = Color.DarkGray;
+            guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;
+            guna2Button2.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            guna2Button2.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            guna2Button2.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            guna2Button2.ForeColor = Color.White;
+            guna2Button2.Image = Properties.Resources.gear_166002712;
+            guna2Button2.ImageSize = new Size(28, 28);
+            guna2Button2.Location = new Point(1045, 22);
+            guna2Button2.Name = "guna2Button2";
+            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            guna2Button2.Size = new Size(55, 45);
+            guna2Button2.TabIndex = 10;
+            guna2Button2.Click += btnDeThi_Click;
+            // 
+            // panelDeThi
+            // 
+            panelDeThi.BackColor = Color.WhiteSmoke;
+            panelDeThi.Controls.Add(btnClose);
+            panelDeThi.Controls.Add(lbThongTinNhomDeThi);
+            panelDeThi.Controls.Add(flowDeThi);
+            panelDeThi.Dock = DockStyle.Right;
+            panelDeThi.Location = new Point(566, 0);
+            panelDeThi.Name = "panelDeThi";
+            panelDeThi.Size = new Size(554, 730);
+            panelDeThi.TabIndex = 11;
+            panelDeThi.Visible = false;
+            // 
+            // btnClose
+            // 
+            btnClose.Location = new Point(476, 23);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(57, 34);
+            btnClose.TabIndex = 2;
+            btnClose.Text = "X";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click_1;
+            // 
+            // lbThongTinNhomDeThi
+            // 
+            lbThongTinNhomDeThi.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbThongTinNhomDeThi.Location = new Point(14, 23);
+            lbThongTinNhomDeThi.Name = "lbThongTinNhomDeThi";
+            lbThongTinNhomDeThi.Size = new Size(446, 57);
+            lbThongTinNhomDeThi.TabIndex = 1;
+            lbThongTinNhomDeThi.Text = "lbThongTInNhomDeThi";
+            lbThongTinNhomDeThi.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // flowDeThi
+            // 
+            flowDeThi.AutoScroll = true;
+            flowDeThi.Location = new Point(0, 92);
+            flowDeThi.Name = "flowDeThi";
+            flowDeThi.Size = new Size(554, 638);
+            flowDeThi.TabIndex = 0;
+            // 
             // UC_SinhVienTrongNhom
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(panelDeThi);
+            Controls.Add(guna2Button2);
             Controls.Add(label1);
             Controls.Add(guna2CustomGradientPanel2);
             Controls.Add(guna2CustomGradientPanel1);
@@ -329,6 +400,7 @@
             Controls.Add(btnXuatDL);
             Controls.Add(btnXemDiem);
             Controls.Add(btnThemSV);
+            Margin = new Padding(0);
             Name = "UC_SinhVienTrongNhom";
             Size = new Size(1120, 730);
             guna2CustomGradientPanel1.ResumeLayout(false);
@@ -336,6 +408,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvSinhVien).EndInit();
             guna2CustomGradientPanel2.ResumeLayout(false);
             guna2CustomGradientPanel2.PerformLayout();
+            panelDeThi.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -345,7 +418,6 @@
         private Guna.UI2.WinForms.Guna2Button btnXemDiem;
         private Guna.UI2.WinForms.Guna2Button btnXuatDL;
         private Guna.UI2.WinForms.Guna2TextBox tbTimKiem;
-        private Guna.UI2.WinForms.Guna2Button guna2Button1;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel1;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel2;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbThongTinNhom;
@@ -360,5 +432,10 @@
         private Label lblPagination;
         private Label label1;
         private Label lbTongSV;
+        private Guna.UI2.WinForms.Guna2Button guna2Button2;
+        private Panel panelDeThi;
+        private Button btnClose;
+        private Label lbThongTinNhomDeThi;
+        private FlowLayoutPanel flowDeThi;
     }
 }

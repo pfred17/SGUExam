@@ -1,12 +1,14 @@
 ﻿// BLL/DeThiBLL.cs
+using DAL;
+using DTO;
 using System;
 using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
-using DTO;
-using System.Collections.Generic;
+using ZstdSharp.Unsafe;
 
 namespace BLL
 {
@@ -16,7 +18,7 @@ namespace BLL
         public List<DeThiDTO> GetAll() { return _dal.GetAll(); }
         public List<DeThiDTO> LayDeThiCuaNhom(long maNhom)
         {
-            //return _dal.GetAll();
+      
             return _dal.LayDeThiCuaNhom(maNhom);
         }
         public List<BangDiemItemDTO> GetBangDiemByDeThi(long maDe) {
@@ -44,5 +46,6 @@ namespace BLL
             return _dal.GetSoLuongCauHoiTheoDe(maDe);
             
         }
+        
     }
 }

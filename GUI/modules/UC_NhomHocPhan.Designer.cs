@@ -51,10 +51,10 @@
             btnThemUC.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnThemUC.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThemUC.ForeColor = Color.White;
-            btnThemUC.Location = new Point(920, 18);
+            btnThemUC.Location = new Point(898, 18);
             btnThemUC.Name = "btnThemUC";
             btnThemUC.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnThemUC.Size = new Size(179, 50);
+            btnThemUC.Size = new Size(164, 50);
             btnThemUC.TabIndex = 4;
             btnThemUC.Text = "Thêm";
             btnThemUC.Click += btnThem_Click;
@@ -78,7 +78,6 @@
             txtTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtTimKiem.Size = new Size(367, 41);
             txtTimKiem.TabIndex = 6;
-            txtTimKiem.TextChanged += txtTimKiem_TextChanged;
             // 
             // sqlCommand1
             // 
@@ -112,7 +111,6 @@
             label1.TabIndex = 1;
             label1.Text = "Tìm kiếm";
             label1.TextAlign = ContentAlignment.MiddleCenter;
-            label1.Click += label1_Click;
             // 
             // UC_NhomHocPhan
             // 

@@ -25,8 +25,6 @@ namespace GUI.modules
         private const int MinItemWidth = 240;         // nếu flow quá nhỏ, sẽ giảm số cột
         private const int ItemHorizontalGap = 16;     // khoảng cách ngang giữa các item (margin-left+right)
         private const int ItemVerticalGap = 12;       // khoảng cách dọc giữa các item (margin-top+bottom)
-
-
         public UC_NhomHocPhan(string userId)
         {
             _userId = userId;
@@ -180,23 +178,6 @@ namespace GUI.modules
             flowDanhSachNhom.Controls.Add(item);
             AdjustFlowChildrenSizes();
         }
-
-
-        private void guna2HtmlLabel1_Click(object sender, EventArgs e)
-        {
-        }
-        private void guna2TileButton1_Click(object sender, EventArgs e)
-        {
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-        private void guna2Button1_Click(object sender, EventArgs e)
-        {
-        }
-
-
-
         private void LoadDataItem()
         {
             try
@@ -219,9 +200,7 @@ namespace GUI.modules
         {
             LoadDataItem();
         }
-        private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
+        
         private void btnThem_Click(object sender, EventArgs e)
         {
             InitUcThem();
@@ -230,7 +209,6 @@ namespace GUI.modules
             ucThem.BringToFront();
         }
 
-        
         private void UpdateItemInFlow(NhomHocPhanDTO updatedNhom)
         {
             foreach (Control c in flowDanhSachNhom.Controls )
@@ -246,9 +224,6 @@ namespace GUI.modules
                 }
             }
             MessageBox.Show("✅ Đã cập nhật nhóm học phần!", "Thông báo");
-        }
-        private void btnTiemKiem_Click(object sender, EventArgs e)
-        {
         }
 
         // lỗi sửa
@@ -277,15 +252,7 @@ namespace GUI.modules
             };
         }
 
-        private void txtTimKiem_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
     }
 }

@@ -75,11 +75,6 @@ namespace GUI.modules
             EditClicked?.Invoke(this, EventArgs.Empty);
         }
 
-        private void lbGhiChu_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void menuXemSinhVien_Click(object sender, EventArgs e)
         {
             ViewStudentClicked?.Invoke(this, currentData);

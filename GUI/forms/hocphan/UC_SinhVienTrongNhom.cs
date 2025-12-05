@@ -28,12 +28,14 @@ namespace GUI
         private NhomHocPhanBLL _nhomHP;
         private readonly NhomHocPhanBLL _nhomBLL = new NhomHocPhanBLL();
         private long _maNhom;
-
+        private DeThiBLL _deThi = new DeThiBLL();
         public void SetGroupInfo(NhomHocPhanDTO nhom)
         {
             _nhom = nhom;
             lbThongTinNhom.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
             LoadDanhSachSinhVien(); // ← Tự động load lại danh sách thành viên
+            lbThongTinNhomDeThi.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
+
         }
         public UC_SinhVienTrongNhom()
         {
@@ -289,7 +291,7 @@ namespace GUI
             }
         }
 
-        
+
         private void CapNhatPhanTrang()
         {
             int totalPages = _totalRecords == 0 ? 1 : (int)Math.Ceiling((double)_totalRecords / PageSize);
@@ -316,9 +318,9 @@ namespace GUI
         {
             int totalPages = (int)Math.Ceiling((double)_totalRecords / PageSize);
 
-            if (_currentPage < totalPages) 
+            if (_currentPage < totalPages)
             {
-                _currentPage++; 
+                _currentPage++;
                 HienThiTrangHienTai();
                 CapNhatPhanTrang();
             }
@@ -452,6 +454,163 @@ namespace GUI
         private void lbTongSV_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnDeThi_Click(object sender, EventArgs e)
+        {
+            if (_nhom == null)
+            {
+                MessageBox.Show("Chưa chọn nhóm!");
+                return;
+            }
+
+            panelDeThi.Visible = true;
+            LoadDanhSachDeThiTheoNhom();
+        }
+
+        private void LoadDanhSachDeThiTheoNhom()
+        {
+            flowDeThi.Controls.Clear();
+
+            List<DeThiDTO> danhSach = _deThi.LayDeThiCuaNhom(_nhom.MaNhom);
+
+            foreach (var deThi in danhSach)
+            {
+                var card = TaoCardDeThiSinhVien(deThi);
+                flowDeThi.Controls.Add(card);
+            }
+        }
+
+        // Thay thế/ thêm vào trong UC_SinhVienTrongNhom
+        private Control TaoCardDeThiSinhVien(DeThiDTO deThi)
+        {
+            // Panel chính (dùng Guna2Panel nếu bạn có thư viện, hoặc Panel tiêu chuẩn)
+            var card = new Guna.UI2.WinForms.Guna2Panel
+            {
+                Width = 500,
+                Height = 135,
+                BorderRadius = 10,
+                BorderThickness = 1,
+                BorderColor = Color.LightGray,
+                FillColor = Color.White,
+                Margin = new Padding(15,8,8,8),
+                ShadowDecoration = { Enabled = true, Depth = 3 }
+            };
+
+            // Tiêu đề
+            //var lblTitle = new Label
+            //{
+            //    Text = deThi.TenDe ?? "(Không tên đề)",
+            //    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+            //    Location = new Point(15, 10),
+            //    AutoSize = false,
+            //    Width = card.Width - 30,
+            //    Height = 35
+
+            //};
+            var lblTitle = new Label
+            {
+                Text = deThi.TenDe ?? "(Không tên đề)",
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Location = new Point(15, 10),
+                AutoSize = false,
+                Width = card.Width - 30,
+                Height = 35,
+                Cursor = Cursors.Hand,   // ✅ Biến thành tay khi hover
+                Tag = deThi              // ✅ GẮN ĐỀ THI VÀO TAG
+            };
+            lblTitle.Click += LblTitle_Click;
+
+
+            // Mô tả/nhóm (nếu muốn hiển thị tên nhóm)
+            // var lblNhom = new Label { Text = deThi.TenNhomHocPhan ?? "", Font = new Font("Segoe UI", 9), ForeColor = Color.Gray, Location = new Point(15, 38), AutoSize = true };
+
+            // Thời gian hiển thị (an toàn với null)
+            string tg;
+            if (deThi.ThoiGianBatDau.HasValue && deThi.ThoiGianKetThuc.HasValue)
+                tg = $"{deThi.ThoiGianBatDau:dd/MM/yyyy HH:mm} → {deThi.ThoiGianKetThuc:dd/MM/yyyy HH:mm}";
+            else if (deThi.ThoiGianBatDau.HasValue)
+                tg = $"Bắt đầu: {deThi.ThoiGianBatDau:dd/MM/yyyy HH:mm}";
+            else if (deThi.ThoiGianKetThuc.HasValue)
+                tg = $"Kết thúc: {deThi.ThoiGianKetThuc:dd/MM/yyyy HH:mm}";
+            else
+                tg = "Chưa đặt thời gian";
+
+            var lblTG = new Label
+            {
+                Text = tg,
+                Font = new Font("Segoe UI", 9),
+                ForeColor = Color.Gray,
+                Location = new Point(15, 44),
+                AutoSize = false,
+                Width = card.Width - 30,
+                Height = 20
+            };
+
+            // Trạng thái
+            var trangThaiText = deThi.TrangThai == 1 ? "Đang mở" : "Đã đóng";
+            var lblTrangThai = new Label
+            {
+                Text = trangThaiText,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                ForeColor = deThi.TrangThai == 1 ? Color.FromArgb(21, 101, 192) : Color.FromArgb(198, 40, 40),
+                Location = new Point(15, 70),
+                AutoSize = true
+            };
+
+            // Nếu bạn muốn chỉ xem (không nút) thì không thêm button nào.
+            // Nếu muốn click card để mở chi tiết, gắn event cho card.Click
+
+            // Thêm control vào card
+            card.Controls.Add(lblTitle);
+            // card.Controls.Add(lblNhom); // nếu cần
+            card.Controls.Add(lblTG);
+            card.Controls.Add(lblTrangThai);
+
+            // Optional: hover effect
+            card.MouseEnter += (s, e) => card.FillColor = Color.FromArgb(250, 250, 250);
+            card.MouseLeave += (s, e) => card.FillColor = Color.White;
+
+            // Optional: khi click mở chi tiết (nếu muốn)
+            // card.Click += (s, e) => OpenChiTietDeThi(deThi.MaDe);
+
+            return card;
+        }
+        private void LblTitle_Click(object sender, EventArgs e)
+        {
+            var lbl = sender as Label;
+            if (lbl?.Tag is not DeThiDTO deThi) return;
+
+            // Tìm MainForm cha và panelMain
+            var mainForm = this.FindForm() as MainForm;
+            if (mainForm != null)
+            {
+                var uc = new UC_ChiTietKiemTra(deThi.MaDe);
+
+                var panelMain = mainForm.Controls["panelMain"];
+                if (panelMain is Panel p)
+                {
+                    p.Controls.Clear();
+                    uc.Dock = DockStyle.Fill;
+                    p.Controls.Add(uc);
+                }
+            }
+        }
+
+
+
+        private void btnClose_Click_1(object sender, EventArgs e)
+        {
+            // Tìm đúng Panel Dock=Right đang chứa nút Close
+            Panel panelRight = this.FindForm()
+                                    .Controls
+                                    .Find("panelDeThi", true)
+                                    .FirstOrDefault() as Panel;
+
+            if (panelRight != null)
+            {
+                panelRight.Visible = false;   // ✅ ẨN ĐÚNG PANEL
+            }
         }
     }
 }

@@ -108,11 +108,11 @@
             lbGhiChu.Size = new Size(91, 32);
             lbGhiChu.TabIndex = 0;
             lbGhiChu.Text = "lbGhiChu";
-            lbGhiChu.Click += lbGhiChu_Click;
             // 
             // btnSetting
             // 
-            btnSetting.BackColor = SystemColors.ButtonFace;
+            btnSetting.BackColor = Color.White;
+            btnSetting.BorderColor = Color.White;
             btnSetting.BorderRadius = 3;
             btnSetting.CustomizableEdges = customizableEdges1;
             btnSetting.DisabledState.BorderColor = Color.DarkGray;
@@ -124,7 +124,7 @@
             btnSetting.ForeColor = Color.White;
             btnSetting.Image = (Image)resources.GetObject("btnSetting.Image");
             btnSetting.ImageSize = new Size(30, 30);
-            btnSetting.Location = new Point(297, 10);
+            btnSetting.Location = new Point(290, 10);
             btnSetting.Name = "btnSetting";
             btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnSetting.Size = new Size(49, 51);

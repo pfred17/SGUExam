@@ -58,16 +58,7 @@ namespace BLL
             }
             return sb.ToString().Normalize(NormalizationForm.FormC);
         }
-        // lấy danh sách học kỳ
-        public List<string> GetDistinctHocKy()
-        {
-            return dal.GetDistinctHocKy();
-        }
-        // lấy danh sách năm học 
-        public List<string> GetDistinctNamHoc()
-        {
-            return dal.GetDistinctNamHoc();
-        }
+        
         // Lấy nhóm học phần theo mã
         public NhomHocPhanDTO GetById(long maNhom)
         {

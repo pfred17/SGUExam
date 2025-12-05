@@ -50,6 +50,8 @@
             // btnTaoDe
             // 
             btnTaoDe.BackColor = Color.FromArgb(94, 148, 255);
+            btnTaoDe.FlatAppearance.BorderSize = 0;
+            btnTaoDe.FlatStyle = FlatStyle.Flat;
             btnTaoDe.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnTaoDe.ForeColor = Color.White;
             btnTaoDe.Location = new Point(917, 19);
@@ -91,7 +93,6 @@
             label1.Size = new Size(100, 28);
             label1.TabIndex = 4;
             label1.Text = "Tìm kiếm";
-            label1.Click += label1_Click;
             // 
             // btnPrev
             // 

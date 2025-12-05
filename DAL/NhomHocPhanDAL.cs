@@ -47,36 +47,6 @@ namespace DAL
             }
             return list;
         }
-
-
-        // lấy danh sách học kỳ
-        public List<string> GetDistinctHocKy()
-        {
-            string query = "SELECT DISTINCT hoc_ky FROM nhom_hoc_phan WHERE trang_thai = 1";
-            DataTable dt = DatabaseHelper.ExecuteQuery(query);
-
-            List<string> list = new List<string>();
-            foreach (DataRow row in dt.Rows)
-            {
-                list.Add(row["hoc_ky"].ToString());
-            }
-            return list;
-        }
-        //Lấy danh sách năm học 
-        public List<string> GetDistinctNamHoc()
-        {
-            string query = "SELECT DISTINCT nam_hoc FROM nhom_hoc_phan WHERE trang_thai = 1";
-            DataTable dt = DatabaseHelper.ExecuteQuery(query);
-
-            List<string> list = new List<string>();
-            foreach (DataRow row in dt.Rows)
-            {
-                list.Add(row["nam_hoc"].ToString());
-            }
-            return list;
-        }
-
-
         //Thêm nhóm học phần
         public bool Insert(NhomHocPhanDTO nhom)
         {
@@ -144,7 +114,6 @@ namespace DAL
             return result > 0;
         }
 
-        // Xóa nhóm học phần (soft delete)
         public bool Delete(long maNhom)
         {
             try
@@ -165,7 +134,6 @@ namespace DAL
             }
             catch (Exception ex)
             {
-                // Log to console for quick debug; replace with proper logging if available
                 Console.WriteLine($"Lỗi DAL.Delete maNhom={maNhom}: {ex.Message}");
                 return false;
             }

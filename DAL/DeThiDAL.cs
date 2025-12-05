@@ -187,10 +187,10 @@ namespace DAL
         public List<DeThiDTO> LayDeThiCuaNhom(long maNhom)
         {
             string query = @"
-        SELECT dt.*
-        FROM de_thi dt
-        INNER JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
-        WHERE dtn.ma_nhom = @maNhom";
+                SELECT dt.*
+                FROM de_thi dt
+                INNER JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
+                WHERE dtn.ma_nhom = @maNhom";
 
             var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@maNhom", maNhom));
 
@@ -233,5 +233,7 @@ namespace DAL
             };
             return DatabaseHelper.ExecuteNonQuery(query, parameters) > 0;
         }
+        
+
     }
 }
