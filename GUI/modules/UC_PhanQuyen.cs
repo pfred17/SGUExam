@@ -38,16 +38,17 @@ namespace GUI.modules
 
         public void LoadDataForTable()
         {
-            //string keyword = txtSearch.Text.Trim();
-            //if (keyword == "Tìm kiếm...") keyword = "";
+            string keyword = txtSearch.Text.Trim();
+            if (keyword == "Tìm kiếm...") keyword = "";
 
-            //totalRecords = _userBLL.GetAllUsers().Count;
+            totalRecords = _roleBLL.getAllRole().Count();
             totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
             if (totalPages == 0) totalPages = 1;
             if (pageCurrent > totalPages) pageCurrent = totalPages;
 
-            var roles = _roleBLL.getAllRolePaged(pageCurrent, pageSize, "");
+            var roles = _roleBLL.getAllRolePaged(pageCurrent, pageSize, keyword);
+            //var roles = _roleBLL.getAllRole();
 
             if (roles.Count() == 0)
             {
@@ -70,14 +71,6 @@ namespace GUI.modules
                 );
             }
             UpdatePageInfo();
-        }
-
-        private void UpdatePageInfo()
-        {
-            //lblPage.Text = totalRecords == 0 ? "0" : $"{pageCurrent} / {totalPages}";
-            //btnPrev.Enabled = pageCurrent > 1;
-            //btnNext.Enabled = pageCurrent < totalPages;
-            //tablePhanQuyen.Enabled = totalRecords > 0;
         }
 
         private void tablePhanQuyen_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -130,6 +123,14 @@ namespace GUI.modules
             }
         }
 
+        private void UpdatePageInfo()
+        {
+            lblPage.Text = totalRecords == 0 ? "0" : $"{pageCurrent} / {totalPages}";
+            btnPrev.Enabled = pageCurrent > 1;
+            btnNext.Enabled = pageCurrent < totalPages;
+            tablePhanQuyen.Enabled = totalRecords > 0;
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ThemNhomQuyen themNhomQuyenForm = new ThemNhomQuyen();
@@ -160,33 +161,46 @@ namespace GUI.modules
             }
         }
 
-        //    private void txtSearch_TextChanged(object sender, EventArgs e)
-        //    {
-        //        if (_debounceTimer != null)
-        //            _debounceTimer.Dispose();
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
 
-        //        _debounceTimer = new System.Threading.Timer(_ =>
-        //        {
-        //            this.Invoke(new Action(() =>
-        //            {
-        //                pageCurrent = 1;
-        //                LoadDataForTable();
-        //            }));
-        //        }, null, DebounceDelay, Timeout.Infinite);
-        //    }
+            if (pageCurrent > 1)
+            {
+                pageCurrent--;
+                LoadDataForTable();
+            }
+        }
 
-        //    private void txtSearch_Leave(object sender, EventArgs e)
-        //    {
-        //        if (string.IsNullOrWhiteSpace(txtSearch.Text))
-        //            txtSearch.Text = "Tìm kiếm...";
-        //    }
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (pageCurrent < totalPages)
+            {
+                pageCurrent++;
+                LoadDataForTable();
+            }
+        }
 
-        //    private void txtSearch_Enter(object sender, EventArgs e)
-        //    {
-        //        if (txtSearch.Text == "Tìm kiếm...")
-        //        {
-        //            txtSearch.Text = "";
-        //        }
-        //    }
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (_debounceTimer != null)
+                _debounceTimer.Dispose();
+
+            _debounceTimer = new System.Threading.Timer(_ =>
+            {
+                this.Invoke(new Action(() =>
+                {
+                    pageCurrent = 1;
+                    LoadDataForTable();
+                }));
+            }, null, DebounceDelay, Timeout.Infinite);
+        }
+
+        private void txtSearch_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.Text = "";
+            }
+        }
     }
 }

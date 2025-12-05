@@ -253,6 +253,7 @@
             btnPrev.Size = new Size(32, 32);
             btnPrev.TabIndex = 4;
             btnPrev.Text = "<";
+            btnPrev.Click += btnPrev_Click_1;
             // 
             // lblPage
             // 

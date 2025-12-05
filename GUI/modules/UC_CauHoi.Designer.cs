@@ -15,6 +15,9 @@
 
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             txtTimKiem = new TextBox();
             cbDoKho = new ComboBox();
             cbChuong = new ComboBox();
@@ -32,10 +35,9 @@
             lbTatCaCauhoi = new Label();
             btnTimKiem = new Button();
             pnlContainer = new Panel();
-            //cbSoDongTrang = new ComboBox();
-            btnTrangSau = new Button();
-            btnTrangTruoc = new Button();
             lblTrangHienTai = new Label();
+            btnTrangTruoc = new Button();
+            btnTrangSau = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCauHoi).BeginInit();
             pnlContainer.SuspendLayout();
             SuspendLayout();
@@ -60,6 +62,7 @@
             cbDoKho.Name = "cbDoKho";
             cbDoKho.Size = new Size(182, 31);
             cbDoKho.TabIndex = 6;
+            cbDoKho.SelectedIndexChanged += cbDoKho_SelectedIndexChanged;
             // 
             // cbChuong
             // 
@@ -81,17 +84,40 @@
             // 
             dgvCauHoi.AllowUserToAddRows = false;
             dgvCauHoi.AllowUserToDeleteRows = false;
+            dgvCauHoi.AllowUserToResizeColumns = false;
+            dgvCauHoi.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(245, 249, 253);
+            dgvCauHoi.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvCauHoi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCauHoi.BackgroundColor = Color.White;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCauHoi.ColumnHeadersHeight = 29;
             dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho, SuaCol, XoaCol });
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Window;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvCauHoi.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvCauHoi.EnableHeadersVisualStyles = false;
+            dgvCauHoi.GridColor = Color.FromArgb(235, 240, 245);
             dgvCauHoi.Location = new Point(25, 280);
+            dgvCauHoi.MultiSelect = false;
             dgvCauHoi.Name = "dgvCauHoi";
             dgvCauHoi.ReadOnly = true;
             dgvCauHoi.RowHeadersVisible = false;
             dgvCauHoi.RowHeadersWidth = 51;
-            dgvCauHoi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCauHoi.Size = new Size(1050, 370);
+            dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCauHoi.Size = new Size(1050, 314);
             dgvCauHoi.TabIndex = 1;
             dgvCauHoi.CellContentClick += dgvCauHoi_CellContentClick;
             dgvCauHoi.SelectionChanged += dgvCauHoi_SelectionChanged;
@@ -126,7 +152,6 @@
             colDoKho.MinimumWidth = 6;
             colDoKho.Name = "colDoKho";
             colDoKho.ReadOnly = true;
-            cbDoKho.SelectedIndexChanged += cbDoKho_SelectedIndexChanged;
             // 
             // SuaCol
             // 
@@ -205,50 +230,14 @@
             // pnlContainer
             // 
             pnlContainer.BackColor = Color.White;
-            pnlContainer.Controls.Add(btnTrangSau);
-            pnlContainer.Controls.Add(btnTrangTruoc);
             pnlContainer.Controls.Add(lblTrangHienTai);
+            pnlContainer.Controls.Add(btnTrangTruoc);
+            pnlContainer.Controls.Add(btnTrangSau);
             pnlContainer.Dock = DockStyle.Bottom;
             pnlContainer.Location = new Point(0, 660);
             pnlContainer.Name = "pnlContainer";
             pnlContainer.Size = new Size(1120, 70);
             pnlContainer.TabIndex = 0;
-            // 
-            // btnTrangSau
-            // 
-            btnTrangSau.Location = new Point(981, 14);
-            btnTrangSau.Name = "btnTrangSau";
-            btnTrangSau.Size = new Size(94, 29);
-            btnTrangSau.TabIndex = 2;
-            btnTrangSau.Text = ">>";
-            btnTrangSau.UseVisualStyleBackColor = true;
-            btnTrangSau.Click += btnNextPage_Click;
-            // Custom màu xanh đẹp
-            btnTrangTruoc.BackColor = Color.FromArgb(52, 152, 219);
-            btnTrangTruoc.ForeColor = Color.White;
-            btnTrangTruoc.FlatStyle = FlatStyle.Flat;
-            btnTrangTruoc.FlatAppearance.BorderSize = 0;
-            btnTrangTruoc.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnTrangTruoc.FlatAppearance.MouseOverBackColor = Color.FromArgb(41, 128, 185);
-            pnlContainer.Controls.Add(btnTrangTruoc);
-            // 
-            // btnTrangTruoc
-            // 
-            btnTrangTruoc.Location = new Point(792, 17);
-            btnTrangTruoc.Name = "btnTrangTruoc";
-            btnTrangTruoc.Size = new Size(94, 29);
-            btnTrangTruoc.TabIndex = 1;
-            btnTrangTruoc.Text = "<<";
-            btnTrangTruoc.UseVisualStyleBackColor = true;
-            btnTrangTruoc.Click += btnPrevPage_Click;
-            // Custom màu xanh đẹp
-            btnTrangSau.BackColor = Color.FromArgb(52, 152, 219);
-            btnTrangSau.ForeColor = Color.White;
-            btnTrangSau.FlatStyle = FlatStyle.Flat;
-            btnTrangSau.FlatAppearance.BorderSize = 0;
-            btnTrangSau.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnTrangSau.FlatAppearance.MouseOverBackColor = Color.FromArgb(41, 128, 185);
-            pnlContainer.Controls.Add(btnTrangSau);
             // 
             // lblTrangHienTai
             // 
@@ -258,6 +247,38 @@
             lblTrangHienTai.Size = new Size(83, 23);
             lblTrangHienTai.TabIndex = 0;
             lblTrangHienTai.Text = "Trang 1/1";
+            // 
+            // btnTrangTruoc
+            // 
+            btnTrangTruoc.BackColor = Color.FromArgb(52, 152, 219);
+            btnTrangTruoc.FlatAppearance.BorderSize = 0;
+            btnTrangTruoc.FlatAppearance.MouseOverBackColor = Color.FromArgb(41, 128, 185);
+            btnTrangTruoc.FlatStyle = FlatStyle.Flat;
+            btnTrangTruoc.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnTrangTruoc.ForeColor = Color.White;
+            btnTrangTruoc.Location = new Point(792, 17);
+            btnTrangTruoc.Name = "btnTrangTruoc";
+            btnTrangTruoc.Size = new Size(94, 29);
+            btnTrangTruoc.TabIndex = 1;
+            btnTrangTruoc.Text = "<<";
+            btnTrangTruoc.UseVisualStyleBackColor = true;
+            btnTrangTruoc.Click += btnPrevPage_Click;
+            // 
+            // btnTrangSau
+            // 
+            btnTrangSau.BackColor = Color.FromArgb(52, 152, 219);
+            btnTrangSau.FlatAppearance.BorderSize = 0;
+            btnTrangSau.FlatAppearance.MouseOverBackColor = Color.FromArgb(41, 128, 185);
+            btnTrangSau.FlatStyle = FlatStyle.Flat;
+            btnTrangSau.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnTrangSau.ForeColor = Color.White;
+            btnTrangSau.Location = new Point(981, 14);
+            btnTrangSau.Name = "btnTrangSau";
+            btnTrangSau.Size = new Size(94, 29);
+            btnTrangSau.TabIndex = 2;
+            btnTrangSau.Text = ">>";
+            btnTrangSau.UseVisualStyleBackColor = false;
+            btnTrangSau.Click += btnNextPage_Click;
             // 
             // UC_CauHoi
             // 

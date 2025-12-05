@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
+using GUI.Forms.CauHoi;
 
 namespace GUI.modules
 {
@@ -32,7 +33,7 @@ namespace GUI.modules
         {
             _userId = userId;
             InitializeComponent();
-            SetupDataGridView();
+            //SetupDataGridView();
 
             loadPermission();
 
@@ -44,38 +45,18 @@ namespace GUI.modules
 
         private void loadPermission()
         {
-            btnThemMoi.Visible = _permissionBLL.HasPermission(_userId, 2, "Thêm");
-            btnTuDieuChinh.Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
+            //btnThemMoi.Visible = _permissionBLL.HasPermission(_userId, 2, "Thêm");
+            //btnTuDieuChinh.Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
             //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
             //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
         }
 
         #region Load dữ liệu
-        private void SetupDataGridView()
-        {
-            // Tắt style hệ thống để custom header
-            dgvCauHoi.EnableHeadersVisualStyles = false;
-            dgvCauHoi.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            dgvCauHoi.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvCauHoi.DefaultCellStyle.Font = new Font("Segoe UI", 12F);
-            dgvCauHoi.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 249, 253);
-            dgvCauHoi.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dgvCauHoi.GridColor = Color.FromArgb(235, 240, 245);
-
-            // Custom style table
-            dgvCauHoi.AllowUserToAddRows = false;
-            dgvCauHoi.AllowUserToOrderColumns = false;
-            dgvCauHoi.AllowUserToResizeColumns = false;
-            dgvCauHoi.AllowUserToResizeRows = false;
-            dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvCauHoi.MultiSelect = false;
-            dgvCauHoi.ReadOnly = true;
-        }
         private void LoadMonHoc()
         {
             var list = _monHocBLL.GetAllMonHocByStatus(1);
             list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
-            SetComboBoxData(cbMonHoc, list, "TenMH", "MaMH", cbMonHoc_SelectedIndexChanged);
+            SetComboBoxData(cbMonHoc, list, "TenMonHoc", "MaMonHoc", cbMonHoc_SelectedIndexChanged);
         }
 
         private void LoadDoKho()
@@ -90,17 +71,18 @@ namespace GUI.modules
             var list = new List<ChuongDTO> { new ChuongDTO { MaChuong = 0, TenChuong = "Chọn tất cả chương" } };
             if (maMH > 0)
                 list.AddRange(_chuongBLL.GetChuongByMonHoc(maMH));
-
             SetComboBoxData(cbChuong, list, "TenChuong", "MaChuong", cbChuong_SelectedIndexChanged);
         }
 
         private void SetComboBoxData<T>(ComboBox combo, List<T> list, string displayMember, string valueMember, EventHandler eventHandler)
         {
+            combo.DisplayMember = displayMember;
+            combo.ValueMember = valueMember;
+
             combo.SelectedIndexChanged -= eventHandler;  // Tạm thời bỏ event để tránh gọi LoadData thừa khi gán DataSource
             combo.DataSource = list;                     // Gán danh sách dữ liệu vào ComboBox
-            combo.DisplayMember = displayMember;         // Thuộc tính hiển thị trên ComboBox (vd: "TenMH")
-            combo.ValueMember = valueMember;             // Thuộc tính giá trị ẩn (vd: "MaMH")
-            combo.SelectedIndex = 0;                     // Mặc định chọn phần tử đầu tiên
+                     
+            combo.SelectedIndex = 0;          
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
         private void LoadData(int? page = null)
@@ -113,7 +95,7 @@ namespace GUI.modules
             var keyword = txtTimKiem.Text == PLACEHOLDER ? "" : txtTimKiem.Text.Trim();
 
             filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maCh, doKho, keyword)
-                .GroupBy(x => CauHoiBLL.Normalize(x.NoiDung))
+                 .GroupBy(x => new { Key = CauHoiBLL.Normalize(x.NoiDung), x.MaMonHoc })
                 .Select(g => g.OrderByDescending(x => x.MaCauHoi).First())
                 .ToList();
 
@@ -228,8 +210,9 @@ namespace GUI.modules
 
         private void btnTuDieuChinh_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Chức năng này đang phát triển...", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var frm = new frmDieuChinhDoKho();
+            if(frm.ShowDialog()== DialogResult.OK)
+                LoadData();
         }
 
         private void dgvCauHoi_CellContentClick(object? sender, DataGridViewCellEventArgs e)
@@ -290,7 +273,6 @@ namespace GUI.modules
                     parent.Controls.Add(_ucTrungLap);
             }
             _ucTrungLap.Visible = true;
-          //  _ucTrungLap.LoadDuLieu(); // Đảm bảo load lại dữ liệu khi chuyển view
         }
 
         #endregion

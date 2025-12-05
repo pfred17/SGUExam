@@ -4,48 +4,49 @@ using DTO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using sysDraw = System.Drawing;
 using ClosedXML.Excel;
+
 namespace GUI
 {
     public partial class frmThemCauHoi : Form
     {
+        #region Fields
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
         private readonly CauHoiBLL _cauHoiBLL = new();
-
-        // In-memory answers
         private readonly List<DapAnDTO> _dapAnList = new();
-        private int _nextTempId = -1; // tạo ID tạm cho đáp án mới (âm để tránh trùng)
+        #endregion
 
+        #region Constructor & Load
         public frmThemCauHoi()
         {
             InitializeComponent();
         }
 
-        // thiết kế load
         private void FrmThemCauHoi_Load(object? sender, EventArgs e)
         {
             InitCombos();
             pnlDapAnContainer.Controls.Clear();
         }
+        #endregion
 
-        // --- Init helpers (gọn, rõ) ---
+        #region Init Helpers
         private void InitCombos()
         {
             var monList = _monHocBLL.GetAllMonHocByStatus(1);
             cbMonHoc.DataSource = new List<MonHocDTO>(monList);
-            cbMonHoc.DisplayMember = "TenMH";
-            cbMonHoc.ValueMember = "MaMH";
+            cbMonHoc.DisplayMember = "TenMonHoc";
+            cbMonHoc.ValueMember = "MaMonHoc";
 
             cbMonHocFile.DataSource = new List<MonHocDTO>(monList);
-            cbMonHocFile.DisplayMember = "TenMH";
-            cbMonHocFile.ValueMember = "MaMH";
+            cbMonHocFile.DisplayMember = "TenMonHoc";
+            cbMonHocFile.ValueMember = "MaMonHoc";
 
             LoadDoKhoToCombo(cbDoKho);
-
         }
 
         private void LoadDoKhoToCombo(ComboBox cb)
@@ -63,118 +64,23 @@ namespace GUI
             cb.DisplayMember = "TenChuong";
             cb.ValueMember = "MaChuong";
         }
+        #endregion
 
-        // -------------------------------------------
-        // sự kiện form và nút bấm
+        #region Event Handlers
 
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
         }
 
-        //private void CbChuongFile_SelectedIndexChanged(object? sender, EventArgs e)
-        //{
-        //    // placeholder nếu cần
-        //}
-
         private void BtnChonFile_Click(object? sender, EventArgs e)
         {
             openFileDialog1.Filter = "Excel Files (*.xlsx;*.xls)|*.xlsx;*.xls|All Files (*.*)|*.*";
             if (openFileDialog1.ShowDialog() == DialogResult.OK) txtDuongDan.Text = openFileDialog1.FileName;
         }
-        private List<(string NoiDung, String DoKho, long MaChuong, List<DapAnDTO> DapAnlist)> ReadExcelFile(string path, long maMonHoc)
-        {
-            var result = new List<(string, string, long, List<DapAnDTO>)>();
-            if (!File.Exists(path)) throw new FileNotFoundException("File Excel câu hỏi không tồn tại", path);
 
-            using var wb = new XLWorkbook(path);
-            var ws = wb.Worksheets.First();
-            int row = 2; // header dòng 1
-            while (!ws.Cell(row, 1).IsEmpty())
-            {
-                try
-                {
-                    string noiDung = ws.Cell(row, 1).GetString().Trim();
-                    string doKho = ws.Cell(row, 2).GetString().Trim();
-                    string tenChuong = ws.Cell(row, 3).GetString().Trim();
+        private void txtDuongDan_TextChanged(object sender, EventArgs e) { }
 
-                    if (string.IsNullOrEmpty(noiDung) || string.IsNullOrEmpty(tenChuong))
-                    {
-                        row++;
-                        continue;
-                    }
-
-                    // Kiểm tra chương, nếu không có thì tạo mới
-                    var chuong = _chuongBLL.GetChuongByMonHoc(maMonHoc)
-                                .FirstOrDefault(c => c.TenChuong.Equals(tenChuong, StringComparison.OrdinalIgnoreCase));
-                    long maChuong = 0;
-                    if (chuong == null)
-                    {
-                        var newChuong = new ChuongDTO { MaChuong = 0, MaMonHoc = maMonHoc, TenChuong = tenChuong };
-                        maChuong = _chuongBLL.AddChuong(newChuong, maMonHoc); // trả về ID chương mới
-                    }
-                    else
-                    {
-                        maChuong = chuong.MaChuong;
-                    }
-
-                    // 4 đáp án
-                    var dapAnList = new List<DapAnDTO>();
-                    int dapAnDung = 0;
-                    int.TryParse(ws.Cell(row, 8).GetString().Trim(), out dapAnDung); // cột 8 = đáp án đúng (1-4)
-
-                    for (int i = 0; i < 4; i++)
-                    {
-                        string daNoiDung = ws.Cell(row, 4 + i).GetString().Trim(); // cột 4-7
-                        bool dung = (i + 1) == dapAnDung;
-                        dapAnList.Add(new DapAnDTO { MaCauHoi = 0, NoiDung = daNoiDung, Dung = dung });
-                    }
-
-                    result.Add((noiDung, doKho, maChuong, dapAnList));
-                }
-                catch
-                {
-                    // bỏ qua dòng lỗi
-                }
-                row++;
-            }
-            return result;
-        }
-        private void BtnThemVaoHeThong_Click(object? sender, EventArgs e)
-        {
-            var path = txtDuongDan.Text?.Trim();
-            if (string.IsNullOrEmpty(path))
-            {
-                MessageBox.Show("Vui lòng chọn file Excel chứa câu hỏi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (!(cbMonHocFile.SelectedItem is MonHocDTO monHoc))
-            {
-                MessageBox.Show("Vui lòng chọn Môn học cho bộ câu hỏi import.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                var list = ReadExcelFile(path, monHoc.MaMonHoc);
-                int count = 0;
-
-                foreach (var item in list)
-                {
-                    if (item.MaChuong == 0) continue;
-                    _cauHoiBLL.ThemMoi(item.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
-                    count++;
-                }
-
-                MessageBox.Show($"Import thành công {count} câu hỏi từ Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Import thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Thêm editor panel (gộp trong form để giảm file)
         private void BtnThemCauTraLoi_Click(object? sender, EventArgs e)
         {
             if (_dapAnList.Count >= 4)
@@ -185,11 +91,93 @@ namespace GUI
             ShowAnswerEditor();
         }
 
-        // Hiển thị panel chỉnh sửa/nhập đáp án; gộp để không tạo nhiều file
+        private void BtnThemVaoHeThong_Click(object? sender, EventArgs e)
+        {
+            //var path = txtDuongDan.Text?.Trim();
+            //if (string.IsNullOrEmpty(path))
+            //{
+            //    MessageBox.Show("Vui lòng chọn file Excel chứa câu hỏi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+            //if (!(cbMonHocFile.SelectedItem is MonHocDTO monHoc))
+            //{
+            //    MessageBox.Show("Vui lòng chọn Môn học cho bộ câu hỏi import.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            //try
+            //{
+            //    var list = ReadExcelFile(path, monHoc.MaMonHoc);
+            //    int count = 0;
+
+            //    // --- Validate từng câu trước khi import ---
+            //    var validList = new List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)>();
+            //    foreach (var item in list)
+            //    {
+            //        if (CauHoiValidator.Validate(item.NoiDung, item.MaChuong, item.DoKho, item.DapAnlist, out var valErrors))
+            //            validList.Add(item);
+            //        else
+            //            errors.Add($"Câu '{item.NoiDung.Substring(0, Math.Min(50, item.NoiDung.Length))}...': {string.Join(", ", valErrors)}");
+            //    }
+
+            //    if (errors.Any())
+            //    {
+            //        MessageBox.Show("File Excel có lỗi, không thể import.\n" +
+            //                        string.Join("\n", errors),
+            //                        "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        return;
+            //    }
+
+            //    int count = 0;
+            //    foreach (var item in validList)
+            //    {
+            //        _cauHoiBLL.ThemMoi(item.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
+            //        count++;
+            //    }
+
+            //    MessageBox.Show($"Import thành công {count} câu hỏi từ Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Import thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+        }
+
+        private void BtnLuuCauHoi_Click(object? sender, EventArgs e)
+        {
+            if (!ValidateBeforeSave(out string noiDung, out long maChuong, out string doKho)) return;
+
+            // tất cả đáp án chưa có ID, MaCauHoi = 0
+            _dapAnList.ForEach(d => d.MaCauHoi = 0);
+
+            btnLuuCauHoi.Enabled = false;
+            var prevCursor = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+
+            try
+            {
+                long newId = _cauHoiBLL.ThemMoi(maChuong, noiDung, doKho, _dapAnList);
+                MessageBox.Show($"Lưu câu hỏi thành công (ID: {newId})", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lưu câu hỏi thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = prevCursor;
+                btnLuuCauHoi.Enabled = true;
+            }
+        }
+
+        #endregion
+
+        #region Answer Editor
 
         private void ShowAnswerEditor(DapAnDTO? editing = null)
         {
-            // nếu editor đang mở thì focus
             if (pnlDapAnContainer.Controls.OfType<Panel>().Any(p => p.Tag?.ToString() == "editor")) return;
 
             var panel = CreateEditorPanel(editing);
@@ -198,7 +186,7 @@ namespace GUI
             panel.Focus();
         }
 
-        private Panel CreateEditorPanel(DapAnDTO? editing) //  tạo UI panel chỉnh sửa/nhập đáp án
+        private Panel CreateEditorPanel(DapAnDTO? editing)
         {
             var panel = new Panel
             {
@@ -216,13 +204,22 @@ namespace GUI
             var rbCorrect = new RadioButton { Text = "Đáp án đúng", Left = 8, Top = rtb.Bottom + 8, Checked = editing?.Dung ?? false, AutoSize = true };
             panel.Controls.Add(rbCorrect);
 
-            var btnSave = new Button { Text = "Lưu câu trả lời", BackColor = sysDraw.Color.FromArgb(0, 123, 255), ForeColor = sysDraw.Color.White, FlatStyle = FlatStyle.Flat, Left = panel.Width - 140, Top = rtb.Bottom + 6, Width = 120, Height = 30 };
+            var btnSave = new Button
+            {
+                Text = "Lưu câu trả lời",
+                BackColor = sysDraw.Color.FromArgb(0, 123, 255),
+                ForeColor = sysDraw.Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Left = panel.Width - 140,
+                Top = rtb.Bottom + 6,
+                Width = 120,
+                Height = 30
+            };
             panel.Controls.Add(btnSave);
 
             var btnCancel = new Button { Text = "Hủy", Left = btnSave.Left - 80, Top = btnSave.Top, Width = 60 };
             panel.Controls.Add(btnCancel);
 
-            // nút lưu
             btnSave.Click += (s, ev) =>
             {
                 var content = rtb.Text.Trim();
@@ -244,7 +241,7 @@ namespace GUI
                 }
                 else
                 {
-                    var dto = new DapAnDTO { MaDapAn = _nextTempId--, MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
+                    var dto = new DapAnDTO {MaCauHoi = 0, NoiDung = content, Dung = rbCorrect.Checked };
                     if (dto.Dung) _dapAnList.ForEach(d => d.Dung = false);
                     _dapAnList.Add(dto);
                 }
@@ -274,7 +271,6 @@ namespace GUI
             }
         }
 
-        // Thêm summary panel UI (gọn) cho mỗi đáp án
         private void AddAnswerSummary(DapAnDTO dto)
         {
             var summary = new Panel { Width = pnlDapAnContainer.ClientSize.Width - 8, Height = 80, BorderStyle = BorderStyle.FixedSingle, BackColor = sysDraw.Color.FromArgb(250, 250, 250), Padding = new Padding(8), Tag = dto.MaDapAn };
@@ -307,8 +303,7 @@ namespace GUI
                 var dtoToEdit = _dapAnList.FirstOrDefault(x => x.MaDapAn == dto.MaDapAn);
                 if (dtoToEdit != null)
                 {
-
-                    pnlDapAnContainer.Controls.Remove(summary); //  để tránh trùng lặp UI khi chỉnh sửa
+                    pnlDapAnContainer.Controls.Remove(summary);
                     var editor = CreateEditorPanel(dtoToEdit);
                     pnlDapAnContainer.Controls.Add(editor);
                     editor.BringToFront();
@@ -327,43 +322,122 @@ namespace GUI
             pnlDapAnContainer.Controls.Add(summary);
         }
 
-        private void RefreshAnswerListUI() // Cập nhật UI danh sách đáp án , chỉ có 1 đáp án đúng tránh trùng
+        private void RefreshAnswerListUI()
         {
             pnlDapAnContainer.Controls.Clear();
             foreach (var dto in _dapAnList.AsEnumerable().Reverse())
-                AddAnswerSummary(dto); // AddAnswerSummary là hàm tạo UI cho mỗi đáp án
+                AddAnswerSummary(dto);
+            btnLuuCauHoi.Enabled = (_dapAnList.Count == 4 && _dapAnList.Any(d => d.Dung));
         }
 
-        // Lưu câu hỏi -> gọi BLL
-        private void BtnLuuCauHoi_Click(object? sender, EventArgs e)
+        #endregion
+
+        #region Excel Import Helper
+        private List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)> ReadExcelFile(string path, long maMonHoc, out List<string> logErrors)
         {
-            if (!ValidateBeforeSave(out string noiDung, out long maChuong, out string doKho)) return;
+            var result = new List<(string, string, long, List<DapAnDTO>)>();
+            logErrors = new List<string>();
 
-            foreach (var da in _dapAnList) da.MaCauHoi = 0;
+            if (!File.Exists(path))
+                throw new FileNotFoundException("File Excel câu hỏi không tồn tại", path);
 
-            btnLuuCauHoi.Enabled = false;
-            var prevCursor = Cursor.Current;
-            Cursor.Current = Cursors.WaitCursor;
+            using var wb = new XLWorkbook(path);
+            var ws = wb.Worksheets.First();
 
-            try
+            // --- tìm cột theo tên header ---
+            var header = ws.Row(1);
+            var colMap = new Dictionary<string, int>();
+            for (int c = 1; c <= header.LastCellUsed().Address.ColumnNumber; c++)
             {
-                long newId = _cauHoiBLL.ThemMoi(maChuong, noiDung, doKho, _dapAnList);
-                MessageBox.Show($"Lưu câu hỏi thành công (ID: {newId})", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                string name = header.Cell(c).GetString().Trim();
+                if (!string.IsNullOrEmpty(name)) colMap[name] = c;
             }
-            catch (Exception ex)
+
+            string[] requiredCols = { "NoiDung", "DoKho", "TenChuong", "DapAn1", "DapAn2", "DapAn3", "DapAn4", "DapAnDung" };
+            foreach (var col in requiredCols)
+                if (!colMap.ContainsKey(col))
+                    throw new Exception($"File Excel thiếu cột bắt buộc: {col}");
+
+            int row = 2; // bắt đầu từ dòng 2
+
+            while (!ws.Cell(row, 1).IsEmpty())
             {
-                MessageBox.Show("Lưu câu hỏi thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    string noiDung = ws.Cell(row, colMap["NoiDung"]).GetString().Trim();
+                    string doKho = ws.Cell(row, colMap["DoKho"]).GetString().Trim();
+                    string tenChuong = ws.Cell(row, colMap["TenChuong"]).GetString().Trim();
+
+                    if (string.IsNullOrEmpty(noiDung)) { logErrors.Add($"Dòng {row}: Nội dung câu hỏi trống"); row++; continue; }
+                    if (string.IsNullOrEmpty(tenChuong)) { logErrors.Add($"Dòng {row}: Tên chương trống"); row++; continue; }
+                    if (string.IsNullOrEmpty(doKho) || !new[] { "Dễ", "Trung bình", "Khó" }.Contains(doKho))
+                    { logErrors.Add($"Dòng {row}: Độ khó không hợp lệ"); row++; continue; }
+
+                    var chuong = _chuongBLL.GetChuongByMonHoc(maMonHoc)
+                                .FirstOrDefault(c => c.TenChuong.Equals(tenChuong, StringComparison.OrdinalIgnoreCase));
+                    long maChuong = 0;
+                    if (chuong == null)
+                    {
+                        var newChuong = new ChuongDTO { MaChuong = 0, MaMonHoc = maMonHoc, TenChuong = tenChuong };
+                        maChuong = _chuongBLL.AddChuong(newChuong, maMonHoc);
+                    }
+                    else
+                        maChuong = chuong.MaChuong;
+
+                    var dapAnList = new List<DapAnDTO>();
+                    bool hasEmptyAnswer = false;
+                    for (int i = 1; i <= 4; i++)
+                    {
+                        string da = ws.Cell(row, colMap[$"DapAn{i}"]).GetString().Trim();
+                        if (string.IsNullOrEmpty(da)) hasEmptyAnswer = true;
+                        dapAnList.Add(new DapAnDTO { MaCauHoi = 0, NoiDung = da });
+                    }
+                    if (hasEmptyAnswer) { logErrors.Add($"Dòng {row}: Có đáp án trống"); row++; continue; }
+
+                    if (!int.TryParse(ws.Cell(row, colMap["DapAnDung"]).GetString().Trim(), out int dung) || dung < 1 || dung > 4)
+                    { logErrors.Add($"Dòng {row}: Cột đáp án đúng không hợp lệ"); row++; continue; }
+
+                    dapAnList[dung - 1].Dung = true;
+
+                    result.Add((noiDung, doKho, maChuong, dapAnList));
+                }
+                catch (Exception ex)
+                {
+                    logErrors.Add($"Dòng {row}: Lỗi đọc Excel - {ex.Message}");
+                }
+                row++;
             }
-            finally
+
+            return result;
+        }
+        #endregion
+
+        #region Validate Helper
+        public class CauHoiValidator
+        {
+            public static bool Validate(string noiDung, long maChuong, string doKho, List<DapAnDTO> dapAnList, out List<string> errors)
             {
-                Cursor.Current = prevCursor;
-                btnLuuCauHoi.Enabled = true;
+                errors = new List<string>();
+
+                if (string.IsNullOrWhiteSpace(noiDung))
+                    errors.Add("Nội dung câu hỏi không được để trống.");
+
+                if (maChuong <= 0)
+                    errors.Add("Chương chưa hợp lệ.");
+
+                if (string.IsNullOrEmpty(doKho) || doKho == "Tất cả")
+                    errors.Add("Độ khó chưa chọn hoặc không hợp lệ.");
+
+                if (dapAnList.Count != 4)
+                    errors.Add("Cần nhập đủ 4 đáp án.");
+
+                if (!dapAnList.Any(d => d.Dung))
+                    errors.Add("Phải có ít nhất một đáp án đúng.");
+
+                return errors.Count == 0;
             }
         }
 
-        // Validate trước khi lưu câu hỏi
         private bool ValidateBeforeSave(out string noiDung, out long maChuong, out string doKho)
         {
             noiDung = rtbNoiDung.Text.Trim();
@@ -384,18 +458,15 @@ namespace GUI
 
             return true;
         }
+        #endregion
 
-        // Helper: rút bớt text
+        #region Helpers
         private string TruncatePlainText(string text, int maxLen)
         {
             if (string.IsNullOrEmpty(text)) return string.Empty;
             var s = text.Replace("\r", " ").Replace("\n", " ").Trim();
             return s.Length <= maxLen ? s : s.Substring(0, maxLen) + "...";
         }
-
-        private void txtDuongDan_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
     }
 }

@@ -65,7 +65,7 @@ namespace GUI.modules
             danhSachMoi.Add(itemTatCa);
 
             // 2. Thêm tất cả các mục từ danh sách gốc vào sau
-            foreach(var role in roles)
+            foreach (var role in roles)
             {
                 if (role.TrangThai == 1)
                 {
@@ -206,7 +206,8 @@ namespace GUI.modules
                         }
 
                     }
-                } else
+                }
+                else
                 {
                     var result = MessageBox.Show(
                     $"Bạn có chắc chắn muốn MỞ KHÓA người dùng: {userName} không?",
@@ -228,9 +229,9 @@ namespace GUI.modules
 
                     }
                 }
-                
 
-                
+
+
             }
         }
 
@@ -271,15 +272,6 @@ namespace GUI.modules
             };
 
             formThem.ShowDialog();
-        }
-
-        private void btnPrev_Click(object sender, EventArgs e)
-        {
-            if (pageCurrent > 1)
-            {
-                pageCurrent--;
-                loadDataForTable();
-            }
         }
 
         private void btnNext_Click(object sender, EventArgs e)
@@ -323,6 +315,15 @@ namespace GUI.modules
         private void cbbFilter_ValueChanged(object sender, EventArgs e)
         {
             loadDataForTable();
+        }
+
+        private void btnPrev_Click_1(object sender, EventArgs e)
+        {
+            if (pageCurrent > 1)
+            {
+                pageCurrent--;
+                loadDataForTable();
+            }
         }
     }
 }
