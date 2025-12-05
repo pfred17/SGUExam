@@ -1,7 +1,16 @@
 ﻿using BLL;
 using DTO;
 using GUI.modules;
+using GUI.Forms.nhomhocphan;
 using Guna.UI2.WinForms;
+using Microsoft.VisualBasic.ApplicationServices;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using Guna.UI2.AnimatorNS;
+using GUI.Forms.nguoidung;
 
 namespace GUI
 {
@@ -56,11 +65,10 @@ namespace GUI
                 new ModuleItem{ Id=5, Name="DeKiemTra", DisplayName="Đề kiểm tra", Group="QUẢN LÝ", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_KiemTra) },
                 new ModuleItem{ Id=7, Name="NhomQuyen", DisplayName="Nhóm quyền", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_phanquyencaidat, UserControlType=typeof(UC_PhanQuyen) },
                 new ModuleItem{ Id=8, Name="NguoiDung", DisplayName="Người dùng", Group="QUẢN TRỊ", Icon=Properties.Resources.icon_nhomnguoidung, UserControlType=typeof(UC_NguoiDung) },
-
                 // Thuộc về sinh viên
                 new ModuleItem{ Id=9, Name="DeThi", DisplayName="Thi", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) },
                 // UC_HocPhanUser của bảo đang làm
-                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Học phần", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_dekiemtra, UserControlType=typeof(UC_DeThi) }
+                new ModuleItem{ Id=10, Name="HocPhan", DisplayName="Học phần", Group="CHƯC NĂNG", Icon=Properties.Resources.icon_nhomhocphan, UserControlType=typeof(UC_NhomHocPhanUser) }
             };
         }
 
@@ -257,7 +265,11 @@ namespace GUI
             };
 
             btnLogout.Click += (s, e) => handleLogout();
-
+            btnProfile.Click += (s, e) =>
+            {
+                Info infoForm = new Info(_userId);
+                infoForm.ShowDialog();
+            };
             pnlDropdown.Controls.Add(btnLogout);
             pnlDropdown.Controls.Add(spacing);
             pnlDropdown.Controls.Add(btnProfile);

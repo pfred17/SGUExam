@@ -20,7 +20,7 @@ namespace DAL
                 list.Add(new NhomHocPhanDTO
                 {
                     MaNhom = Convert.ToInt64(row["ma_nhom"]),
-                    MaMH = Convert.ToInt64(row["ma_pc"]),
+                    MaPc = Convert.ToInt64(row["ma_mh"]),
                     GhiChu = row["ghi_chu"].ToString(),
                     TenNhom = row["ten_nhom"].ToString(),
                     HocKy = row["hoc_ky"].ToString(),
@@ -66,7 +66,7 @@ namespace DAL
 
             SqlParameter[] param =
             {
-                new SqlParameter("@ma_mh", nhom.MaMH),
+                new SqlParameter("@ma_mh", nhom.MaPc),
                 new SqlParameter("@ten_nhom", nhom.TenNhom),
                 new SqlParameter("@ghi_chu", nhom.GhiChu),
                 new SqlParameter("@hoc_ky", nhom.HocKy),
@@ -90,7 +90,7 @@ namespace DAL
                 {
                     cmd.Parameters.AddRange(new[]
                     {
-                        new SqlParameter("@ma_mh", nhom.MaMH),
+                        new SqlParameter("@ma_mh", nhom.MaPc),
                         new SqlParameter("@ten_nhom", nhom.TenNhom ?? string.Empty),
                         new SqlParameter("@ghi_chu", nhom.GhiChu ?? string.Empty),
                         new SqlParameter("@hoc_ky", nhom.HocKy ?? string.Empty),
@@ -115,7 +115,7 @@ namespace DAL
             {
         new SqlParameter("@GhiChu", nhom.GhiChu),
         new SqlParameter("@TenNhom", nhom.TenNhom),
-        new SqlParameter("@MaMH", nhom.MaMH),
+        new SqlParameter("@MaMH", nhom.MaPc),
         new SqlParameter("@HocKy", nhom.HocKy),
         new SqlParameter("@NamHoc", nhom.NamHoc),
         new SqlParameter("@MaNhom", nhom.MaNhom)
@@ -162,7 +162,7 @@ namespace DAL
         {
             try
             {
-                string query = "SELECT * FROM NhomHocPhan WHERE MaNhom = @MaNhom";
+                string query = "SELECT * FROM nhom_hoc_phan WHERE ma_nhom = @MaNhom";
                 SqlParameter[] parameters = { new SqlParameter("@MaNhom", maNhom) };
 
                 DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
@@ -171,10 +171,10 @@ namespace DAL
                 DataRow row = dt.Rows[0];
                 return new NhomHocPhanDTO
                 {
-                    MaNhom = Convert.ToInt64(row["MaNhom"]),
-                    TenNhom = row["TenNhom"].ToString(),
-                    HocKy = row["HocKy"].ToString(),
-                    NamHoc = row["NamHoc"].ToString()
+                    MaNhom = Convert.ToInt64(row["ma_nhom"]),
+                    TenNhom = row["ten_nhom"].ToString(),
+                    HocKy = row["hoc_ky"].ToString(),
+                    NamHoc = row["nam_hoc"].ToString()
                 };
             }
             catch (Exception ex)
@@ -197,7 +197,6 @@ namespace DAL
                 list.Add(new NhomHocPhanDTO
                 {
                     MaNhom = Convert.ToInt64(row["ma_nhom"]),
-                    MaMH = maMonHoc, // Set from parameter, or you can get from pc.ma_mh if you select it
                     TenNhom = row["ten_nhom"].ToString(),
                     GhiChu = row["ghi_chu"]?.ToString(),
                     HocKy = row["hoc_ky"]?.ToString(),
@@ -207,7 +206,79 @@ namespace DAL
             }
             return list;
         }
+        // dal của bảo phan
+        public List<NhomHocPhanDTO> GetNhomHocPhanByUserId(string userId)
+        {
+            List<NhomHocPhanDTO> list = new List<NhomHocPhanDTO>();
+            string query = @"
+                SELECT nhp.*
+                FROM nhom_hoc_phan nhp
+                INNER JOIN chi_tiet_nhom_hoc_phan cthp ON cthp.ma_nhom = nhp.ma_nhom
+                WHERE cthp.ma_nd = @UserId AND nhp.trang_thai = 1";
+            SqlParameter[] parameters = { new SqlParameter("@UserId", userId) };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new NhomHocPhanDTO
+                {
+                    MaNhom = Convert.ToInt64(row["ma_nhom"]),
+                    MaPc = Convert.ToInt64(row["ma_pc"]),
+                    TenNhom = row["ten_nhom"].ToString(),
+                    GhiChu = row["ghi_chu"].ToString(),
+                    HocKy = row["hoc_ky"].ToString(),
+                    NamHoc = row["nam_hoc"].ToString(),
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
+                });
+            }
+            return list;
+        }
+        
+        public string GetTenMonHocByMaNhom(long maNhom)
+        {
+            string query = @"
+                SELECT mh.ten_mh
+                FROM mon_hoc mh
+                INNER JOIN phan_cong pc ON pc.ma_mh = mh.ma_mh
+                INNER JOIN nhom_hoc_phan nhp ON nhp.ma_pc = pc.ma_pc
+                WHERE nhp.ma_nhom = @MaNhom";
 
+            SqlParameter[] parameters = { new SqlParameter("@MaNhom", maNhom) };
+            object result = DatabaseHelper.ExecuteScalar(query, parameters);
+
+            return result != null ? result.ToString() : string.Empty;
+        }
+
+        public List<NhomHocPhanDTO> SearchNhomHocPhan(string userId, string keyword)
+        {
+            List<NhomHocPhanDTO> list = new List<NhomHocPhanDTO>();
+            string query = @"
+        SELECT * FROM nhom_hoc_phan nhp
+        INNER JOIN phan_cong pc ON pc.ma_pc = nhp.ma_pc
+        INNER JOIN mon_hoc mh ON mh.ma_mh = pc.ma_mh
+        INNER JOIN chi_tiet_nhom_hoc_phan cthp ON cthp.ma_nhom = nhp.ma_nhom
+        WHERE cthp.ma_nd = @userId AND mh.ten_mh LIKE '%'+@keyword+'%'";
+
+            SqlParameter[] parameters = {
+        new SqlParameter("@keyword", keyword),
+        new SqlParameter("@userId", userId)
+    };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new NhomHocPhanDTO
+                {
+                    MaNhom = Convert.ToInt64(row["ma_nhom"]),
+                    MaPc = Convert.ToInt64(row["ma_pc"]),
+                    TenNhom = row["ten_nhom"].ToString(),
+                    GhiChu = row["ghi_chu"].ToString(),
+                    HocKy = row["hoc_ky"].ToString(),
+                    NamHoc = row["nam_hoc"].ToString(),
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
+                });
+            }
+            return list;
+        }
 
     }
 }

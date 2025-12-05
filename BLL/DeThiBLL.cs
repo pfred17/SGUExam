@@ -46,5 +46,17 @@ namespace BLL
             _dal.InsertDeThiCauHoi(maDe, cauHoiIds);
         }
 
+        // dal của bảo phan
+        public List <DeThiDTO> GetDeKiemTraByMaNhom (long maNhom)
+        {
+            return _dal.GetDeKiemTraByMaNhom(maNhom);
+        }
+
+        public List<DeThiDTO> GetDeLuyenTapByMaNhom(long maNhom)
+        {
+            return _dal.GetDeLuyenTapByMaNhom(maNhom);
+        }
+
+
     }
 }

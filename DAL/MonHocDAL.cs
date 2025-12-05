@@ -223,5 +223,6 @@ namespace DAL
 
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters.ToArray()));
         }
+        
     }
 }
