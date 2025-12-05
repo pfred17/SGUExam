@@ -29,7 +29,7 @@ namespace GUI
         {
             _nhom = nhom;
             _mon = monHoc;
-            lbThongTinNhom.Text = $"{monHoc.MaMH} - {monHoc.TenMH} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
+            lbThongTinNhom.Text = $"{monHoc.MaMonHoc} - {monHoc.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
             LoadDanhSachSinhVien(); // ← Tự động load lại danh sách thành viên
         }
 

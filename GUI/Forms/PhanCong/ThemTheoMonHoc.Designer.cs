@@ -33,8 +33,8 @@ namespace GUI.forms.PhanCong
             CustomizableEdges customizableEdges1 = new CustomizableEdges();
             CustomizableEdges customizableEdges2 = new CustomizableEdges();
             CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             CustomizableEdges customizableEdges4 = new CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             CustomizableEdges customizableEdges5 = new CustomizableEdges();
             CustomizableEdges customizableEdges6 = new CustomizableEdges();
             CustomizableEdges customizableEdges7 = new CustomizableEdges();
@@ -45,15 +45,15 @@ namespace GUI.forms.PhanCong
             cbxMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             dgv = new DataGridView();
+            btnPrev = new Guna.UI2.WinForms.Guna2Button();
+            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            btnNext = new Guna.UI2.WinForms.Guna2Button();
+            btnThem = new Guna.UI2.WinForms.Guna2Button();
             MSSV = new DataGridViewTextBoxColumn();
             HoTen = new DataGridViewTextBoxColumn();
             Email = new DataGridViewTextBoxColumn();
             NhomQuyen = new DataGridViewTextBoxColumn();
             CheckCol = new DataGridViewCheckBoxColumn();
-            btnPrev = new Guna.UI2.WinForms.Guna2Button();
-            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            btnNext = new Guna.UI2.WinForms.Guna2Button();
-            btnThem = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             SuspendLayout();
             // 
@@ -147,6 +147,68 @@ namespace GUI.forms.PhanCong
             dgv.CellValueChanged += dgv_CellValueChanged;
             dgv.SelectionChanged += dgv_SelectionChanged;
             // 
+            // btnPrev
+            // 
+            btnPrev.BackColor = Color.DodgerBlue;
+            btnPrev.Cursor = Cursors.Hand;
+            btnPrev.CustomizableEdges = customizableEdges5;
+            btnPrev.FillColor = Color.FromArgb(6, 101, 208);
+            btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPrev.ForeColor = Color.White;
+            btnPrev.Location = new Point(657, 490);
+            btnPrev.Name = "btnPrev";
+            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnPrev.Size = new Size(40, 40);
+            btnPrev.TabIndex = 17;
+            btnPrev.Text = "<";
+            btnPrev.Click += btnPrev_Click;
+            // 
+            // lblPage
+            // 
+            lblPage.AutoSize = false;
+            lblPage.BackColor = Color.Transparent;
+            lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPage.Location = new Point(702, 490);
+            lblPage.Margin = new Padding(3, 4, 3, 4);
+            lblPage.Name = "lblPage";
+            lblPage.Size = new Size(80, 40);
+            lblPage.TabIndex = 19;
+            lblPage.Text = "1";
+            lblPage.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
+            // btnNext
+            // 
+            btnNext.BackColor = Color.DodgerBlue;
+            btnNext.Cursor = Cursors.Hand;
+            btnNext.CustomizableEdges = customizableEdges7;
+            btnNext.FillColor = Color.FromArgb(6, 101, 208);
+            btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNext.ForeColor = Color.White;
+            btnNext.Location = new Point(787, 490);
+            btnNext.Name = "btnNext";
+            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnNext.Size = new Size(40, 40);
+            btnNext.TabIndex = 18;
+            btnNext.Text = ">";
+            btnNext.Click += btnNext_Click;
+            // 
+            // btnThem
+            // 
+            btnThem.BorderRadius = 10;
+            btnThem.Cursor = Cursors.Hand;
+            btnThem.CustomizableEdges = customizableEdges9;
+            btnThem.FillColor = Color.FromArgb(6, 101, 208);
+            btnThem.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnThem.ForeColor = Color.White;
+            btnThem.HoverState.FillColor = Color.FromArgb(0, 110, 220);
+            btnThem.Location = new Point(608, 550);
+            btnThem.Name = "btnThem";
+            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnThem.Size = new Size(220, 50);
+            btnThem.TabIndex = 20;
+            btnThem.Text = "LƯU PHÂN CÔNG";
+            btnThem.Click += btnThem_Click;
+            // 
             // MSSV
             // 
             MSSV.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -188,7 +250,7 @@ namespace GUI.forms.PhanCong
             // NhomQuyen
             // 
             NhomQuyen.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            NhomQuyen.DataPropertyName = "Role";
+            NhomQuyen.DataPropertyName = "TenNhomQuyen";
             NhomQuyen.HeaderText = "Nhóm quyền";
             NhomQuyen.MinimumWidth = 6;
             NhomQuyen.Name = "NhomQuyen";
@@ -205,69 +267,6 @@ namespace GUI.forms.PhanCong
             CheckCol.Name = "CheckCol";
             CheckCol.Resizable = DataGridViewTriState.False;
             CheckCol.Width = 66;
-            // 
-            // btnPrev
-            // 
-            btnPrev.BackColor = Color.DodgerBlue;
-            btnPrev.Cursor = Cursors.Hand;
-            btnPrev.CustomizableEdges = customizableEdges5;
-            btnPrev.FillColor = Color.FromArgb(6, 101, 208);
-            btnPrev.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPrev.ForeColor = Color.White;
-            btnPrev.Location = new Point(657, 490);
-            btnPrev.Name = "btnPrev";
-            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnPrev.Size = new Size(40, 40);
-            btnPrev.TabIndex = 17;
-            btnPrev.Text = "<";
-            btnPrev.Click += btnPrev_Click;
-            // 
-            // lblPage
-            // 
-            lblPage.AutoSize = false;
-            lblPage.BackColor = Color.Transparent;
-            lblPage.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPage.Location = new Point(702, 490);
-            lblPage.Margin = new Padding(3, 4, 3, 4);
-            lblPage.Name = "lblPage";
-            lblPage.Size = new Size(80, 40);
-            lblPage.TabIndex = 19;
-            lblPage.Text = "1";
-            lblPage.TextAlignment = ContentAlignment.MiddleCenter;
-            lblPage.Click += lblPage_Click;
-            // 
-            // btnNext
-            // 
-            btnNext.BackColor = Color.DodgerBlue;
-            btnNext.Cursor = Cursors.Hand;
-            btnNext.CustomizableEdges = customizableEdges7;
-            btnNext.FillColor = Color.FromArgb(6, 101, 208);
-            btnNext.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnNext.ForeColor = Color.White;
-            btnNext.Location = new Point(787, 490);
-            btnNext.Name = "btnNext";
-            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btnNext.Size = new Size(40, 40);
-            btnNext.TabIndex = 18;
-            btnNext.Text = ">";
-            btnNext.Click += btnNext_Click;
-            // 
-            // btnThem
-            // 
-            btnThem.BorderRadius = 22;
-            btnThem.Cursor = Cursors.Hand;
-            btnThem.CustomizableEdges = customizableEdges9;
-            btnThem.FillColor = Color.FromArgb(6, 101, 208);
-            btnThem.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            btnThem.ForeColor = Color.White;
-            btnThem.HoverState.FillColor = Color.FromArgb(0, 110, 220);
-            btnThem.Location = new Point(608, 552);
-            btnThem.Name = "btnThem";
-            btnThem.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnThem.Size = new Size(220, 45);
-            btnThem.TabIndex = 20;
-            btnThem.Text = "LƯU PHÂN CÔNG";
-            btnThem.Click += btnThem_Click;
             // 
             // ThemTheoMonHoc
             // 

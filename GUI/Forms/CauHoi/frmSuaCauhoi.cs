@@ -98,7 +98,7 @@ namespace GUI
 
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMH);
+            if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
         }
 
         private void CbChuongFile_SelectedIndexChanged(object? sender, EventArgs e)
@@ -300,7 +300,7 @@ namespace GUI
 
             try
             {
-                _cauHoiBLL.CapNhat(_maCauHoi,maChuong, noiDung, doKho, _dapAnList);
+                _cauHoiBLL.CapNhat(_maCauHoi, maChuong, noiDung, doKho, _dapAnList);
                 MessageBox.Show($"Sữa câu hỏi thành công (ID: {_maCauHoi})", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();

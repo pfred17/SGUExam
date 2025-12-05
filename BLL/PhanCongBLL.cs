@@ -8,7 +8,7 @@ using DAL;
 namespace BLL
 {
     public class PhanCongBLL
-    { 
+    {
         private readonly PhanCongDAL _dal = new PhanCongDAL();
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
         private readonly UserBLL _userBLL = new UserBLL();
@@ -34,7 +34,7 @@ namespace BLL
         }
         public int GetStatus(long maPhanCong)
         {
-            return _dal.GetStatus(maPhanCong);  
+            return _dal.GetStatus(maPhanCong);
         }
         public bool UpdateStatus(long maPhanCong, int trangThai)
         {
@@ -48,7 +48,7 @@ namespace BLL
         {
             return _dal.IsPhanCongReferenced(maPhanCong);
         }
-        public PhanCongDTO? GetPhanCongById(long  maPhanCong)
+        public PhanCongDTO? GetPhanCongById(long maPhanCong)
         {
             return _dal.GetPhanCongById(maPhanCong);
         }
@@ -77,9 +77,9 @@ namespace BLL
         {
             return _monHocBLL.GetTotalMonHoc(keyword, 1);
         }
-        public List<UserDTO> GetAllUserByRoleExcluding(string userId)
+        public List<UserDTO> GetAllAssignableUsers()
         {
-            return _userBLL.GetAllUserByRoleExcluding(userId);
+            return _userBLL.GetAllAssignableUsers();
         }
         public UserDTO GetUserById(string userId)
         {
@@ -87,12 +87,12 @@ namespace BLL
         }
         public List<UserDTO> GetUSerForSelection(int page, int pageSize, string userId, string? keyword = null)
         {
-            return _userBLL.GetUserPaged(page, pageSize, userId, 1);
+            return _userBLL.GetAssignableUsersPaged(page, pageSize, userId, keyword);
         }
         public int GetTotalUserForSelection(string userId, string? keyword = null)
         {
-            return _userBLL.GetTotalUser(userId, keyword, 1);
-               
+            return _userBLL.GetTotalAssignableUsers(userId, keyword);
+
         }
     }
 }

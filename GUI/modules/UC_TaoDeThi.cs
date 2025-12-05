@@ -44,7 +44,7 @@ namespace GUI.modules
             if (cbMonHoc.SelectedItem is MonHocDTO monHoc)
             {
                 // Lấy nhóm học phần qua bảng phân công
-                var nhomList = nhomHocPhanBLL.GetByMonHoc(monHoc.MaMH)
+                var nhomList = nhomHocPhanBLL.GetByMonHoc(monHoc.MaMonHoc)
                     .Where(x => x.TrangThai == 1)
                     .ToList();
                 clbNhomHocPhan.Items.Clear();
@@ -56,7 +56,7 @@ namespace GUI.modules
 
 
                 // Load chương của môn học
-                var chuongList = chuongBLL.GetChuongByMonHoc(monHoc.MaMH);
+                var chuongList = chuongBLL.GetChuongByMonHoc(monHoc.MaMonHoc);
                 clbChuong.Items.Clear();
                 clbChuong.Items.Clear();
                 foreach (var chuong in chuongList)

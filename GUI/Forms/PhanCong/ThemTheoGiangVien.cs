@@ -1,4 +1,5 @@
 ﻿using BLL;
+//using DocumentFormat.OpenXml.Spreadsheet;
 using DTO;
 using Microsoft.VisualBasic.ApplicationServices;
 using System;
@@ -57,7 +58,7 @@ namespace GUI.forms.PhanCong
 
         private void LoadComboBox()
         {
-            var listUser = _phanCongBLL.GetAllUserByRoleExcluding(_userId);
+            var listUser = _phanCongBLL.GetAllAssignableUsers().Where(u => u.MSSV != _userId).ToList();
             listUser.Insert(0, new UserDTO { MSSV = "", HoTen = "Chọn giảng viên cần phân công" });
 
             var displayList = listUser
@@ -96,8 +97,8 @@ namespace GUI.forms.PhanCong
             {
                 bindingList.Add(new MonHocDTO
                 {
-                    MaMH = -1,
-                    TenMH = "Không tìm thấy kết quả"
+                    MaMonHoc = -1,
+                    TenMonHoc = "Không tìm thấy kết quả"
                 });
             }
             // reload UI
@@ -108,7 +109,7 @@ namespace GUI.forms.PhanCong
             {
                 if (row.Cells["MaMonHoc"].Value is long maMH)
                 {
-                    if (maMH == -1) 
+                    if (maMH == -1)
                     {
                         row.Cells["CheckCol"].ReadOnly = true;
                         row.Cells["CheckCol"].Value = false;
@@ -116,7 +117,7 @@ namespace GUI.forms.PhanCong
                         row.DefaultCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Italic);
                         row.Cells["TenMonHoc"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     }
-                    else 
+                    else
                     {
                         row.Cells["CheckCol"].ReadOnly = false;
                         row.Cells["CheckCol"].Value = checkedState.ContainsKey(maMH) && checkedState[maMH];
@@ -224,7 +225,7 @@ namespace GUI.forms.PhanCong
             bool isChecked = Convert.ToBoolean(row.Cells["CheckCol"].Value ?? false);
             checkedState[maMH] = isChecked;
         }
-        
+
         private void btnThem_Click(object sender, EventArgs e)
         {
             SaveCheckedState();
@@ -258,7 +259,7 @@ namespace GUI.forms.PhanCong
                         _phanCongBLL.AddPhanCong(new PhanCongDTO
                         {
                             MaNguoiDung = maND,
-                            MaMonHoc = mh.MaMH,
+                            MaMonHoc = mh.MaMonHoc,
                             TrangThai = 1
                         });
                     }
@@ -274,7 +275,7 @@ namespace GUI.forms.PhanCong
 
                 LoadData();
 
-                MessageBox.Show($"Đã phân công {selectedMaMH.Count} môn học cho giảng viên {cbxGiangVien.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Đã phân công {selectedMaMH.Count} môn học cho giảng viên\n {cbxGiangVien.Text}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 cbxGiangVien.SelectedIndex = 0;
                 txtSearch.Text = "Tìm kiếm môn học...";
                 pageCurrent = 1;

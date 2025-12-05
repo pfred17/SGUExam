@@ -37,8 +37,8 @@ namespace GUI.forms.MonHoc
             {
                 MonHocDTO newMH = new MonHocDTO
                 {
-                    MaMH = long.Parse(txtMaMonHoc.Text.Trim()),
-                    TenMH = txtTenMonHoc.Text.Trim(),
+                    MaMonHoc = long.Parse(txtMaMonHoc.Text.Trim()),
+                    TenMonHoc = txtTenMonHoc.Text.Trim(),
                     SoTinChi = int.Parse(txtSoTinChi.Text.Trim()),
                     TrangThai = 1
                 };

@@ -256,6 +256,46 @@ namespace DAL
                 );
             }
         }
+        public List<DeThiDTO> GetDeKiemTraByMaNhom(long maNhom)
+        {
+            List<DeThiDTO> list = new List<DeThiDTO>();
+            string query = @"
+                SELECT dt.*
+                FROM de_thi dt
+                INNER JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
+                INNER JOIN nhom_hoc_phan nhp ON dtn.ma_nhom = nhp.ma_nhom
+                INNER JOIN de_thi_cau_hinh dtch ON dt.ma_de = dtch.ma_de
+                WHERE dtn.ma_nhom = @maNhom and dtch.de_luyen_tap = 0";
+            SqlParameter parameter = new SqlParameter("@maNhom", maNhom);
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameter);
+   
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(MapDeThi(row));
+            }
+            return list;
+
+        }
+        public List<DeThiDTO> GetDeLuyenTapByMaNhom(long maNhom)
+        {
+            List<DeThiDTO> list = new List<DeThiDTO>();
+            string query = @"
+                SELECT dt.*
+                FROM de_thi dt
+                INNER JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
+                INNER JOIN nhom_hoc_phan nhp ON dtn.ma_nhom = nhp.ma_nhom
+                INNER JOIN de_thi_cau_hinh dtch ON dt.ma_de = dtch.ma_de
+                WHERE dtn.ma_nhom = @maNhom and dtch.de_luyen_tap = 1";
+            SqlParameter parameter = new SqlParameter("@maNhom", maNhom);
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameter);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(MapDeThi(row));
+            }
+            return list;
+
+        }
 
 
     }

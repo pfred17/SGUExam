@@ -44,8 +44,8 @@ namespace GUI.modules
                 // Gộp ma_mh + ten_mh thành 1 chuỗi để hiển thị
                 var dsHienThi = dsMonHoc.Select(mh => new
                 {
-                    MaMonHoc = mh.MaMH,
-                    TenHienThi = mh.MaMH + " - " + mh.TenMH
+                    MaMonHoc = mh.MaMonHoc,
+                    TenHienThi = mh.MaMonHoc + " - " + mh.TenMonHoc
                 }).ToList();
 
                 cbMonHoc.DataSource = dsHienThi;
@@ -127,7 +127,7 @@ namespace GUI.modules
 
                 NhomHocPhanDTO nhom = new NhomHocPhanDTO
                 {
-                    MaMH = Convert.ToInt64(cbMonHoc.SelectedValue),
+                    MaPc = Convert.ToInt64(cbMonHoc.SelectedValue),
                     TenNhom = tbTenNhom.Text.Trim(),
                     GhiChu = tbGhiChu.Text.Trim(),
                     HocKy = cbHocKy.Text,
@@ -155,7 +155,7 @@ namespace GUI.modules
                     // Thay khối Insert cũ bằng InsertReturnId để lấy MaNhom thực từ DB
                     long newId = nhomHocPhanBLL.InsertReturnId(nhom);
 
-                    if (newId > 0 )
+                    if (newId > 0)
                     {
                         nhom.MaNhom = newId; // gán id thực cho DTO
                         NhomHocPhanAdded?.Invoke(this, nhom);
@@ -246,7 +246,7 @@ namespace GUI.modules
             // Gán dữ liệu lên form
             tbTenNhom.Text = nhom.TenNhom;
             tbGhiChu.Text = nhom.GhiChu;
-            cbMonHoc.SelectedValue = nhom.MaMH;
+            cbMonHoc.SelectedValue = nhom.MaPc;
             cbHocKy.Text = nhom.HocKy;
             cbNamHoc.Text = nhom.NamHoc;
         }
@@ -257,4 +257,3 @@ namespace GUI.modules
         }
     }
 }
-
