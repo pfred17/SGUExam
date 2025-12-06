@@ -95,5 +95,19 @@ namespace BLL
         {
             return dal.QuyenThamGia(maNd);
         }
+
+
+        //////////
+        public bool IsEmailTonTai(string email)
+        {
+            return dal.IsEmailTonTai(email);
+        }
+
+        public bool IsTenDangNhapTonTai(string tenDangNhap)
+        {
+            return dal.IsTenDangNhapTonTai(tenDangNhap);
+        }
+
+
     }
 }

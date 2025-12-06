@@ -95,9 +95,9 @@ namespace GUI.forms.hocphan
                 {
                     MoChiTietDeThi(maDe);
                 };
-                item.SuaDeThiClicked += (s, maDe) =>
+                item.ChinhSuaClicked += (s, maDe) =>
                 {
-                    
+                    MoChinhSuaDeThi(maDe);
                 };
 
                 flDeThi.Controls.Add(item);
@@ -107,6 +107,25 @@ namespace GUI.forms.hocphan
             btnPrev.Enabled = _currentPage > 1;
             btnNext.Enabled = _currentPage < _totalPages;
         }
+        private void MoChinhSuaDeThi(long maDe)
+        {
+            var mainForm = this.FindForm() as MainForm;
+            if (mainForm == null)
+            {
+                MessageBox.Show("Không tìm thấy MainForm!");
+                return;
+            }
+
+            var panelMain = mainForm.Controls["panelMain"];
+            if (panelMain is Panel p)
+            {
+                var uc = new ChinhSuaDeThi(maDe);
+                p.Controls.Clear();
+                uc.Dock = DockStyle.Fill;
+                p.Controls.Add(uc);
+            }
+        }
+
         private void MoChiTietDeThi(long maDe)
         {
             var mainForm = this.FindForm() as MainForm;

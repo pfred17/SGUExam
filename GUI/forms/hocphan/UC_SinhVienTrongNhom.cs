@@ -32,7 +32,8 @@ namespace GUI
         public void SetGroupInfo(NhomHocPhanDTO nhom)
         {
             _nhom = nhom;
-            lbThongTinNhom.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
+            lbThongTinNhom.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom} - Mã nhóm: {nhom.MaNhom}";
+            //lbThongTinNhom.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom} ";
             LoadDanhSachSinhVien(); // ← Tự động load lại danh sách thành viên
             lbThongTinNhomDeThi.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} - {nhom.NamHoc} - {nhom.HocKy} - {nhom.TenNhom}";
 

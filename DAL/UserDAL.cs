@@ -363,6 +363,22 @@ namespace DAL
             return Convert.ToInt32(result) > 0;
         }
 
+
+        //
+        public bool IsEmailTonTai(string email)
+        {
+            string query = "SELECT COUNT(*) FROM nguoi_dung WHERE email = @email";
+            return (int)DatabaseHelper.ExecuteScalar(query,
+                new SqlParameter("@email", email)) > 0;
+        }
+
+        public bool IsTenDangNhapTonTai(string tenDangNhap)
+        {
+            string query = "SELECT COUNT(*) FROM nguoi_dung WHERE ten_dang_nhap = @tenDangNhap";
+            return (int)DatabaseHelper.ExecuteScalar(query,
+                new SqlParameter("@tenDangNhap", tenDangNhap)) > 0;
+        }
+
     }
 }
 
