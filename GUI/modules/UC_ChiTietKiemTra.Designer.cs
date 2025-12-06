@@ -121,8 +121,9 @@ namespace GUI.modules
             cbLocTrangThai.Items.AddRange(new object[] { "Tất cả", "Đã nộp bài", "Chưa nộp bài" });
             cbLocTrangThai.Location = new Point(180, 30);
             cbLocTrangThai.Name = "cbLocTrangThai";
-            cbLocTrangThai.Size = new Size(130, 36);
+            cbLocTrangThai.Size = new Size(150, 36);
             cbLocTrangThai.StartIndex = 0;
+            cbLocTrangThai.SelectedIndexChanged += cbLocTrangThai_SelectedIndexChanged;
 
             // 
             // txtTimKiem
@@ -132,7 +133,7 @@ namespace GUI.modules
             txtTimKiem.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtTimKiem.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             txtTimKiem.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTimKiem.Location = new Point(330, 30);
+            txtTimKiem.Location = new Point(350, 30);
             txtTimKiem.Name = "txtTimKiem";
             txtTimKiem.PlaceholderText = "Tìm kiếm sinh viên...";
             txtTimKiem.Size = new Size(300, 36);
@@ -149,6 +150,8 @@ namespace GUI.modules
             btnXuatBangDiem.Name = "btnXuatBangDiem";
             btnXuatBangDiem.Size = new Size(180, 36);
             btnXuatBangDiem.Text = "📄 Xuất bảng điểm";
+            btnXuatBangDiem.Click += btnXuatBangDiem_Click;
+
 
             // =======================
             // CẤU HÌNH BẢNG
@@ -273,7 +276,7 @@ namespace GUI.modules
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 FillWeight = 10
             });
-
+            tableBangDiem.CellDoubleClick += tableBangDiem_CellDoubleClick;
             // Final refresh
             tableBangDiem.Refresh();
 
@@ -309,28 +312,46 @@ namespace GUI.modules
             flowThongKeCard.WrapContents = true;
             flowThongKeCard.BackColor = Color.Transparent;
 
-            // 
-            // chartDiemThi
-            // 
+            // Chart initialization (your code)
             chartDiemThi.Location = new Point(30, 320);
             chartDiemThi.Size = new Size(1062, 320);
             chartDiemThi.BackColor = Color.White;
 
-            // Configure ChartArea and Legend and Series in a consistent way
             var chartArea = new ChartArea("ChartArea1");
             chartDiemThi.ChartAreas.Add(chartArea);
+
             var legend = new Legend("Legend1");
             chartDiemThi.Legends.Add(legend);
 
             var series = new Series("Số lượng sinh viên")
             {
                 ChartType = SeriesChartType.Column,
-                IsValueShownAsLabel = true
+                IsValueShownAsLabel = true,
+                Color = Color.FromArgb(33, 150, 243)
             };
-            // color can be set using System.Drawing.Color
-            series.Color = Color.FromArgb(33, 150, 243);
-
             chartDiemThi.Series.Add(series);
+
+            var area = chartDiemThi.ChartAreas[0];
+
+            area.AxisX.Title = "Mốc điểm";
+            area.AxisY.Title = "Số lượng sinh viên";
+            area.AxisX.Interval = 1;
+            area.AxisX.LabelStyle.Angle = 0;
+            area.AxisX.LabelStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            area.AxisX.LabelStyle.IsStaggered = false;
+            area.AxisX.MajorGrid.LineColor = Color.LightGray;
+            area.AxisY.MajorGrid.LineColor = Color.LightGray;
+            area.AxisX.IsMarginVisible = true;
+
+            area.AxisX.Minimum = 0.5;
+            area.AxisX.Maximum = 10.5;
+            area.AxisY.Minimum = 0;
+            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            area.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+
+
+
+
 
             // Add controls to tabPhanTich
             tabPhanTich.BackColor = Color.White;
@@ -339,8 +360,35 @@ namespace GUI.modules
             tabPhanTich.Controls.Add(flowThongKeCard);
             tabPhanTich.Controls.Add(chartDiemThi);
 
-            // (tabThongKeCauHoi left empty here - designer placeholder)
-            tabThongKeCauHoi.BackColor = Color.White;
+            // In UC_ChiTietKiemTra.Designer.cs, inside InitializeComponent (after tabThongKeCauHoi.BackColor = Color.White;)
+            var flowThongKeCauHoi = new FlowLayoutPanel
+            {
+                Name = "flowThongKeCauHoi",
+                Location = new Point(30, 60),
+                Size = new Size(1062, 640),
+                AutoScroll = true,
+                BackColor = Color.Transparent,
+                WrapContents = false,
+                FlowDirection = FlowDirection.TopDown
+            };
+            tabThongKeCauHoi.Controls.Add(flowThongKeCauHoi);
+            tabControl.SelectedIndexChanged += (s, e) =>
+            {
+                if (tabControl.SelectedTab == tabThongKeCauHoi)
+                    LoadThongKeCauHoi();
+            };
+
+            // Add a label for the title
+            var lblTitle = new Label
+            {
+                Text = "Thống kê chi tiết theo câu hỏi",
+                Font = new Font("Segoe UI", 13F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(50, 50, 50),
+                Location = new Point(30, 20),
+                AutoSize = true
+            };
+            tabThongKeCauHoi.Controls.Add(lblTitle);
+
 
             // 
             // UC_ChiTietKiemTra (this control)

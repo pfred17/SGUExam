@@ -2,6 +2,7 @@
 using DAL;
 using DTO;
 using System.Collections.Generic;
+using System.Data;
 
 namespace BLL
 {
@@ -15,6 +16,10 @@ namespace BLL
         public List<BangDiemItemDTO> GetBangDiemByDeThi(long maDe)
         {
             return _dal.GetBangDiemByDeThi(maDe);
+        }
+        public List<BangDiemItemDTO> GetAllBangDiemByDeThi(long maDe)
+        {
+            return _dal.GetAllBangDiemByDeThi(maDe);
         }
         public long CreateDeThi(DeThiDTO deThi)
         {
@@ -61,6 +66,14 @@ namespace BLL
         public bool DeleteDeThi(long maDe)
         {
             return _dal.DeleteDeThi(maDe);
+        }
+        public KetQuaBaiThiDTO GetKetQuaBaiThi(long maDe, string mssv)
+        {
+            return _dal.GetKetQuaBaiThi(maDe, mssv);
+        }
+        public List<CauHoiThongKeDTO> GetThongKeCauHoi(long maDe)
+        {
+            return _dal.GetThongKeCauHoi(maDe);
         }
 
     }

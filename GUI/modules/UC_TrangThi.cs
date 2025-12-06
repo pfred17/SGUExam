@@ -33,7 +33,7 @@ namespace GUI.modules
         private DeThiCauHinhDTO _cauHinh;
 
         // Dynamic controls
-        private List<Guna2RadioButton> radioDapAn = new List<Guna2RadioButton>();
+        private List<(Guna2Panel panel, Guna2RadioButton radio, Label lbl)> radioDapAnPanels = new();
         private List<Guna2CircleButton> _btnDanhSachCau = new List<Guna2CircleButton>();
 
         public UC_TrangThi(long maDe, string userId)
@@ -74,26 +74,52 @@ namespace GUI.modules
             _dsCauHoi = _deThiBLL.GetCauHoiTheoDeThi(_maDe);
 
             // Xóa radio đáp án cũ
-            foreach (var r in radioDapAn) panelCauHoi.Controls.Remove(r);
-            radioDapAn.Clear();
+            foreach (var item in radioDapAnPanels) panelCauHoi.Controls.Remove(item.panel);
+            radioDapAnPanels.Clear();
 
-            // Tính vị trí bắt đầu radio đáp án phía dưới lblNoiDung
-            int radioStartY = lblNoiDung.Location.Y + lblNoiDung.Size.Height + 20; // 20px padding
+            int radioStartY = lblNoiDung.Location.Y + lblNoiDung.Size.Height + 20;
 
             for (int i = 0; i < 4; i++)
             {
+                var pnl = new Guna2Panel
+                {
+                    Width = 900,
+                    Height = 60,
+                    Location = new Point(40, radioStartY + i * 70),
+                    BorderColor = Color.Silver,
+                    BorderThickness = 1,
+                    BorderRadius = 8,
+                    FillColor = Color.Transparent
+                };
+
                 var radio = new Guna2RadioButton
                 {
                     Font = new Font("Segoe UI", 14),
-                    Location = new Point(60, radioStartY + i * 100), // spacing 50px
-                    Width = 900,
-                    Height = 50,
-                    Tag = i,
-                    Visible = false
+                    Location = new Point(18, 18),
+                    Width = 30,
+                    Height = 30,
+                    Tag = i
                 };
+
+                var lbl = new Label
+                {
+                    Font = new Font("Segoe UI", 14),
+                    AutoSize = false,
+                    Location = new Point(60, 10),
+                    Width = pnl.Width - 80,
+                    Height = 40,
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+                pnl.Click += PnlOrLbl_Click;
+                lbl.Click += PnlOrLbl_Click;
                 radio.CheckedChanged += RadioDapAn_CheckedChanged;
-                radioDapAn.Add(radio);
-                panelCauHoi.Controls.Add(radio);
+
+                pnl.Controls.Add(radio);
+                pnl.Controls.Add(lbl);
+                panelCauHoi.Controls.Add(pnl);
+
+
+                radioDapAnPanels.Add((pnl, radio, lbl));
             }
 
             foreach (var cau in _dsCauHoi)
@@ -123,7 +149,7 @@ namespace GUI.modules
             {
                 lblCauSo.Text = "";
                 lblNoiDung.Text = "Không có câu hỏi nào.";
-                foreach (var r in radioDapAn) r.Visible = false;
+                foreach (var item in radioDapAnPanels) item.panel.Visible = false;
                 return;
             }
 
@@ -132,11 +158,18 @@ namespace GUI.modules
             lblCauSo.Text = $"Câu {_cauHienTai + 1}/{_dsCauHoi.Count}";
             lblNoiDung.Text = cau.NoiDung;
 
-            for (int i = 0; i < radioDapAn.Count; i++)
+            for (int i = 0; i < radioDapAnPanels.Count; i++)
             {
-                radioDapAn[i].Visible = i < cau.DapAnList.Count;
-                radioDapAn[i].Text = i < cau.DapAnList.Count ? $"{(char)('A' + i)}. {cau.DapAnList[i]}" : "";
-                radioDapAn[i].Checked = (cau.DapAnChon == i);
+                var item = radioDapAnPanels[i];
+                bool visible = i < cau.DapAnList.Count;
+                item.panel.Visible = visible;
+                if (visible)
+                {
+                    item.lbl.Text = $"{(char)('A' + i)}. {cau.DapAnList[i]}";
+                    item.radio.Checked = (cau.DapAnChon == i);
+                    item.panel.BorderColor = (cau.DapAnChon == i) ? Color.LimeGreen : Color.Silver;
+                    item.panel.BorderThickness = (cau.DapAnChon == i) ? 2 : 1;
+                }
             }
 
             btnTruoc.Enabled = _cauHienTai > 0;
@@ -145,7 +178,6 @@ namespace GUI.modules
             UpdateNavigationVisuals();
         }
 
-        // Navigation Buttons (flowPanelSoCau)
         private void CreateNavigationButtons()
         {
             flowPanelSoCau.Controls.Clear();
@@ -204,17 +236,17 @@ namespace GUI.modules
 
                 if (_dsCauHoi[i].DapAnChon >= 0)
                 {
-                    btn.FillColor = Color.FromArgb(132, 209, 132);
+                    btn.FillColor = Color.FromArgb(132, 209, 132); // Correctly answered/selected
                     btn.ForeColor = Color.Black;
                 }
                 else
                 {
-                    btn.FillColor = Color.White;
+                    btn.FillColor = Color.White; // Not yet selected
                 }
 
                 if (i == _cauHienTai)
                 {
-                    btn.FillColor = Color.FromArgb(255, 223, 93);
+                    btn.FillColor = Color.FromArgb(255, 223, 93); // Current question
                     btn.ForeColor = Color.Black;
                 }
             }
@@ -223,16 +255,27 @@ namespace GUI.modules
         private void RadioDapAn_CheckedChanged(object sender, EventArgs e)
         {
             var radio = sender as Guna2RadioButton;
+            // Kiểm tra nếu sự kiện này được kích hoạt bởi việc uncheck, thì bỏ qua.
             if (radio == null || !radio.Checked) return;
 
-            if (radio.Tag is int idx)
+            // Chỉ cho chọn 1 đáp án
+            for (int i = 0; i < radioDapAnPanels.Count; i++)
             {
-                _dsCauHoi[_cauHienTai].DapAnChon = idx;
-            }
-            else
-            {
-                for (int i = 0; i < radioDapAn.Count; i++)
-                    if (radioDapAn[i] == radio) _dsCauHoi[_cauHienTai].DapAnChon = i;
+                var item = radioDapAnPanels[i];
+                if (item.radio == radio)
+                {
+                    // Radio đang được chọn
+                    item.panel.BorderColor = Color.LimeGreen;
+                    item.panel.BorderThickness = 2;
+                    _dsCauHoi[_cauHienTai].DapAnChon = i;
+                }
+                else
+                {
+                    // Radio KHÔNG được chọn -> Bắt buộc uncheck và reset giao diện
+                    item.radio.Checked = false; // <--- DÒNG CẦN THIẾT ĐỂ BẮT BUỘC BỎ CHỌN CÁC RADIO KHÁC
+                    item.panel.BorderColor = Color.Silver;
+                    item.panel.BorderThickness = 1;
+                }
             }
 
             UpdateNavigationVisuals();
@@ -240,15 +283,51 @@ namespace GUI.modules
 
         private void SaveCurrentSelectedAnswer()
         {
-            for (int i = 0; i < radioDapAn.Count; i++)
+            // The DapAnChon state is already updated in RadioDapAn_CheckedChanged,
+            // but this ensures the state is saved when navigating away (e.g., using 'Trước' or 'Tiếp')
+            // by explicitly checking the state one last time.
+
+            // Reset selection first
+            _dsCauHoi[_cauHienTai].DapAnChon = -1;
+
+            for (int i = 0; i < radioDapAnPanels.Count; i++)
             {
-                if (radioDapAn[i].Checked)
+                // Check the radio button component in the tuple
+                if (radioDapAnPanels[i].radio.Checked)
                 {
                     _dsCauHoi[_cauHienTai].DapAnChon = i;
                     return;
                 }
             }
-            _dsCauHoi[_cauHienTai].DapAnChon = -1;
+        }
+        private void PnlOrLbl_Click(object sender, EventArgs e)
+        {
+            Guna2Panel panelContainer = null;
+
+            if (sender is Guna2Panel pnl)
+            {
+                // Người dùng click vào Panel
+                panelContainer = pnl;
+            }
+            else if (sender is Label lbl)
+            {
+                // Người dùng click vào Label, tìm Panel cha (Parent)
+                panelContainer = lbl.Parent as Guna2Panel;
+            }
+
+            if (panelContainer != null)
+            {
+                // Tìm Guna2RadioButton bên trong Panel
+                var radio = panelContainer.Controls.OfType<Guna2RadioButton>().FirstOrDefault();
+
+                if (radio != null && !radio.Checked)
+                {
+                    // Nếu RadioButton chưa được chọn, thì chọn nó.
+                    radio.Checked = true;
+
+                    // Logic trong RadioDapAn_CheckedChanged sẽ tự động xử lý việc uncheck các radio khác.
+                }
+            }
         }
 
         private void BtnTruoc_Click(object sender, EventArgs e)
@@ -309,9 +388,14 @@ namespace GUI.modules
 
         private void SubmitAndClose()
         {
+            // Always save the current answer before submission
+            SaveCurrentSelectedAnswer();
+
             var chuaChon = _dsCauHoi.Where(c => c.DapAnChon < 0).ToList();
             if (chuaChon.Count > 0)
             {
+                // Note: The original code forces answering all questions before submission.
+                // If this is the desired business logic, this check is correct.
                 MessageBox.Show($"Bạn phải trả lời tất cả các câu hỏi trước khi nộp bài!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -335,6 +419,7 @@ namespace GUI.modules
             {
                 MaDe = _maDe,
                 MaNguoiDung = _userId,
+                // The original code calculated ThoiGianBatDau as Now - ThoiGianConLai, which seems correct for a running timer
                 ThoiGianBatDau = DateTime.Now.Subtract(_thoiGianConLai),
                 ThoiGianNop = DateTime.Now,
                 Diem = diem
@@ -362,10 +447,15 @@ namespace GUI.modules
 
             try
             {
+                // Assuming GUI.forms.dethi.KetQuaBaiThi is a valid form class
                 var form = new GUI.forms.dethi.KetQuaBaiThi(_dsCauHoi, soCauDung, diem, _user, _cauHinh);
                 form.ShowDialog();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // Handle potential error in showing the results form
+                Console.WriteLine($"Error showing results form: {ex.Message}");
+            }
 
             this.ParentForm?.Close();
         }

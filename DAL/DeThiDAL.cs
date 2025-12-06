@@ -133,6 +133,38 @@ namespace DAL
             }
             return result;
         }
+        public List<BangDiemItemDTO> GetAllBangDiemByDeThi(long maDe)
+        {
+            string query = @"
+        SELECT 
+            nd.ma_nd,
+            nd.ho_ten,
+            bl.diem,
+            bl.thoi_gian_bat_dau,
+            bl.thoi_gian_nop,
+            DATEDIFF(MINUTE, bl.thoi_gian_bat_dau, bl.thoi_gian_nop) AS thoi_gian_thi
+        FROM de_thi_nhom dtn
+        JOIN chi_tiet_nhom_hoc_phan ctnhp ON dtn.ma_nhom = ctnhp.ma_nhom
+        JOIN nguoi_dung nd ON nd.ma_nd = ctnhp.ma_nd
+        LEFT JOIN bai_lam bl ON bl.ma_nd = nd.ma_nd AND bl.ma_de = dtn.ma_de
+        WHERE dtn.ma_de = @ma_de;";
+
+            var result = new List<BangDiemItemDTO>();
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@ma_de", maDe));
+            foreach (DataRow row in dt.Rows)
+            {
+                result.Add(new BangDiemItemDTO
+                {
+                    MSSV = row["ma_nd"].ToString(),
+                    HoTen = row["ho_ten"].ToString(),
+                    Diem = row["diem"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(row["diem"]),
+                    ThoiGianVaoThi = row["thoi_gian_bat_dau"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(row["thoi_gian_bat_dau"]),
+                    ThoiGianNopBai = row["thoi_gian_nop"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(row["thoi_gian_nop"]),
+                    ThoiGianThi = row["thoi_gian_thi"] == DBNull.Value ? null : (int?)Convert.ToInt32(row["thoi_gian_thi"])
+                });
+            }
+            return result;
+        }
 
         public long InsertDeThi(DeThiDTO deThi)
         {
@@ -470,10 +502,138 @@ namespace DAL
                 return false;
             }
         }
+        public KetQuaBaiThiDTO GetKetQuaBaiThi(long maDe, string mssv)
+        {
+            // 1. Lấy mã bài làm
+            string queryBaiLam = @"
+        SELECT TOP 1 ma_bai, diem
+        FROM bai_lam
+        WHERE ma_de = @maDe AND ma_nd = @mssv
+        ORDER BY ma_bai DESC";
+            var dtBaiLam = DatabaseHelper.ExecuteQuery(queryBaiLam,
+                new SqlParameter("@maDe", maDe),
+                new SqlParameter("@mssv", mssv)
+            );
+            if (dtBaiLam.Rows.Count == 0)
+                return null; // Chưa có bài làm
 
+            long maBai = Convert.ToInt64(dtBaiLam.Rows[0]["ma_bai"]);
+            decimal diem = dtBaiLam.Rows[0]["diem"] == DBNull.Value ? 0 : Convert.ToDecimal(dtBaiLam.Rows[0]["diem"]);
 
+            // 2. Lấy chi tiết bài làm (câu hỏi + đáp án đã chọn)
+            string queryChiTiet = @"
+        SELECT ch.*, ctbl.ma_dap_an_chon
+        FROM bai_lam_chi_tiet ctbl
+        JOIN cau_hoi ch ON ch.ma_cau_hoi = ctbl.ma_cau_hoi
+        WHERE ctbl.ma_bai = @maBai";
+            var dtChiTiet = DatabaseHelper.ExecuteQuery(queryChiTiet,
+                new SqlParameter("@maBai", maBai)
+            );
 
+            var cauHoiList = new List<CauHoiDTO>();
+            int soCauDung = 0;
 
+            foreach (DataRow row in dtChiTiet.Rows)
+            {
+                var cauHoi = new CauHoiDTO
+                {
+                    MaCauHoi = Convert.ToInt64(row["ma_cau_hoi"]),
+                    NoiDung = row["noi_dung"].ToString(),
+                    DoKho = row["do_kho"].ToString(),
+                    MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                    DapAnList = new List<string>(),
+                    DapAnIds = new List<long>(),
+                    DapAnChon = -1
+                };
+
+                // Lấy danh sách đáp án cho câu hỏi này
+                string queryDapAn = "SELECT * FROM dap_an WHERE ma_cau_hoi = @maCauHoi";
+                var dtDapAn = DatabaseHelper.ExecuteQuery(queryDapAn,
+                    new SqlParameter("@maCauHoi", cauHoi.MaCauHoi)
+                );
+                foreach (DataRow daRow in dtDapAn.Rows)
+                {
+                    cauHoi.DapAnList.Add(daRow["noi_dung"].ToString());
+                    cauHoi.DapAnIds.Add(Convert.ToInt64(daRow["ma_dap_an"]));
+                }
+
+                // Đáp án đã chọn
+                if (row["ma_dap_an_chon"] != DBNull.Value)
+                {
+                    long maDapAnChon = Convert.ToInt64(row["ma_dap_an_chon"]);
+                    int idx = cauHoi.DapAnIds.IndexOf(maDapAnChon);
+                    cauHoi.DapAnChon = idx;
+                }
+
+                // Kiểm tra đúng/sai
+                if (cauHoi.DapAnChon >= 0 && cauHoi.DapAnChon < cauHoi.DapAnIds.Count)
+                {
+                    long maDapAnChon = cauHoi.DapAnIds[cauHoi.DapAnChon];
+                    var dapAnRow = dtDapAn.Rows
+                        .Cast<DataRow>()
+                        .FirstOrDefault(r => Convert.ToInt64(r["ma_dap_an"]) == maDapAnChon);
+                    if (dapAnRow != null && Convert.ToBoolean(dapAnRow["dung"]))
+                        soCauDung++;
+                }
+
+                cauHoiList.Add(cauHoi);
+            }
+
+            return new KetQuaBaiThiDTO
+            {
+                DsCauHoi = cauHoiList,
+                SoCauDung = soCauDung,
+                Diem = diem
+            };
+        }
+        public List<CauHoiThongKeDTO> GetThongKeCauHoi(long maDe)
+        {
+            // Query all questions in the test
+            var cauHoiList = new DeThiDAL().GetCauHoiTheoDeThi(maDe);
+            var result = new List<CauHoiThongKeDTO>();
+            int idx = 1;
+            foreach (var ch in cauHoiList)
+            {
+                // Get all answers for this question
+                var dapAns = new DapAnDAL().GetByCauHoi(ch.MaCauHoi);
+                // Count selections for each answer
+                var dt = DatabaseHelper.ExecuteQuery(
+                    @"SELECT ma_dap_an_chon, COUNT(*) AS SoLuong
+              FROM bai_lam_chi_tiet
+              WHERE ma_cau_hoi = @maCauHoi AND ma_dap_an_chon IS NOT NULL
+              GROUP BY ma_dap_an_chon",
+                    new SqlParameter("@maCauHoi", ch.MaCauHoi)
+                );
+                int total = dt.Rows.Cast<DataRow>().Sum(r => Convert.ToInt32(r["SoLuong"]));
+                var dapAnThongKe = new List<DapAnThongKeDTO>();
+                int dapAnDungIdx = -1;
+                for (int i = 0; i < dapAns.Count; i++)
+                {
+                    var da = dapAns[i];
+                    int soLuongChon = 0;
+                    var found = dt.Rows.Cast<DataRow>().FirstOrDefault(r => Convert.ToInt64(r["ma_dap_an_chon"]) == da.MaDapAn);
+                    if (found != null) soLuongChon = Convert.ToInt32(found["SoLuong"]);
+                    double tiLe = total > 0 ? (double)soLuongChon / total : 0.0;
+                    if (da.Dung) dapAnDungIdx = i;
+                    dapAnThongKe.Add(new DapAnThongKeDTO
+                    {
+                        NoiDung = da.NoiDung,
+                        SoLuongChon = soLuongChon,
+                        TiLeChon = tiLe,
+                        IsDung = da.Dung
+                    });
+                }
+                result.Add(new CauHoiThongKeDTO
+                {
+                    MaCauHoi = ch.MaCauHoi,
+                    NoiDung = ch.NoiDung,
+                    DapAns = dapAnThongKe,
+                    Index = idx++,
+                    DapAnDungIndex = dapAnDungIdx
+                });
+            }
+            return result;
+        }
 
     }
 }
