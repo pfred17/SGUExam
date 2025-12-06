@@ -39,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="forms\dethi\ThemCauHoiVaoDeThi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="forms\dethi\UC_TaoDeThi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="modules\UC_ChiTietKiemTra.cs" />
     <Compile Update="modules\UC_DeThi.cs">
       <SubType>UserControl</SubType>

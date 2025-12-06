@@ -150,99 +150,132 @@ namespace GUI.modules
             btnXuatBangDiem.Size = new Size(180, 36);
             btnXuatBangDiem.Text = "📄 Xuất bảng điểm";
 
-            // 
-            // tableBangDiem
-            // 
+            // =======================
+            // CẤU HÌNH BẢNG
+            // =======================
+            // Basic
             tableBangDiem.AllowUserToAddRows = false;
             tableBangDiem.AllowUserToDeleteRows = false;
             tableBangDiem.AllowUserToResizeRows = false;
             tableBangDiem.ReadOnly = true;
             tableBangDiem.RowHeadersVisible = false;
-            tableBangDiem.RowTemplate.Height = 50;
-            tableBangDiem.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            tableBangDiem.GridColor = Color.FromArgb(231, 229, 255);
+            tableBangDiem.RowHeadersWidth = 4;
+            // In your designer or initialization code
+
+            var panelBangDiem = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(0, 100, 0, 0), // 100px top space
+                BackColor = Color.Transparent // or match your background
+            };
+
+            // Add tableBangDiem to this panel
+            panelBangDiem.Controls.Add(tableBangDiem);
+            tableBangDiem.Dock = DockStyle.Fill;
+
+            // Add the panel to your tab/page/container
+            tabBangDiem.Controls.Add(panelBangDiem);
+
+
+            // Appearance
             tableBangDiem.BackgroundColor = Color.White;
             tableBangDiem.BorderStyle = BorderStyle.None;
-            tableBangDiem.Location = new Point(30, 90);
-            tableBangDiem.Name = "tableBangDiem";
-            tableBangDiem.Size = new Size(1062, 610);
-            tableBangDiem.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableBangDiem.GridColor = Color.FromArgb(231, 229, 255);
+            tableBangDiem.RowTemplate.Height = 45;
+            tableBangDiem.EnableHeadersVisualStyles = false;
 
             // Header style
-            var headerStyle = new DataGridViewCellStyle();
-            headerStyle.BackColor = Color.FromArgb(242, 245, 250);
-            headerStyle.ForeColor = Color.Gray;
-            headerStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            headerStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            headerStyle.SelectionBackColor = Color.FromArgb(242, 245, 250);
-            headerStyle.SelectionForeColor = Color.Gray;
-            headerStyle.WrapMode = DataGridViewTriState.True;
+            var headerStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(242, 245, 250),
+                ForeColor = Color.FromArgb(80, 80, 80),
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Alignment = DataGridViewContentAlignment.MiddleCenter,
+                WrapMode = DataGridViewTriState.True,
+                SelectionBackColor = Color.FromArgb(242, 245, 250),
+                SelectionForeColor = Color.FromArgb(80, 80, 80)
+            };
             tableBangDiem.ColumnHeadersDefaultCellStyle = headerStyle;
-            tableBangDiem.ColumnHeadersHeight = 50;
-            tableBangDiem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            tableBangDiem.ColumnHeadersHeight = 48;
+            tableBangDiem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             // Row style
-            var rowStyle = new DataGridViewCellStyle();
-            rowStyle.BackColor = Color.White;
-            rowStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            rowStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            rowStyle.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            rowStyle.SelectionForeColor = Color.White;
-            rowStyle.WrapMode = DataGridViewTriState.False;
+            var rowStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(50, 50, 50),
+                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                SelectionBackColor = Color.FromArgb(116, 185, 255),
+                SelectionForeColor = Color.White,
+                Padding = new Padding(6, 0, 6, 0)
+            };
             tableBangDiem.DefaultCellStyle = rowStyle;
+            tableBangDiem.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle { BackColor = Color.FromArgb(250, 250, 250) };
 
-            // Alternating row style
-            var altRowStyle = new DataGridViewCellStyle();
-            altRowStyle.BackColor = Color.White;
-            tableBangDiem.AlternatingRowsDefaultCellStyle = altRowStyle;
+            // Force vertical scrollbar only (prevent horizontal scroll)
+            tableBangDiem.ScrollBars = ScrollBars.Vertical;
 
-            // Columns
-            var colMSSV = new DataGridViewTextBoxColumn
+            // Columns: clear then add with AutoSizeMode=Fill and FillWeight (ratio)
+            tableBangDiem.Columns.Clear();
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "MSSV",
                 Name = "colMSSV",
-                MinimumWidth = 6
-            };
-            var colHoTen = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 12 // relative
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Họ và tên",
                 Name = "colHoTen",
-                MinimumWidth = 6
-            };
-            var colDiem = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 30
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Điểm",
                 Name = "colDiem",
-                MinimumWidth = 6
-            };
-            var colThoiGianVaoThi = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 8
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Thời gian vào thi",
                 Name = "colThoiGianVaoThi",
-                MinimumWidth = 6
-            };
-            var colThoiGianNopBai = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 18
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Thời gian nộp bài",
                 Name = "colThoiGianNopBai",
-                MinimumWidth = 6
-            };
-            var colThoiGianThi = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 18
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Thời gian thi (phút)",
                 Name = "colThoiGianThi",
-                MinimumWidth = 6
-            };
-            var colTrangThai = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 12
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Trạng thái",
                 Name = "colTrangThai",
-                MinimumWidth = 6
-            };
-
-            tableBangDiem.Columns.AddRange(new DataGridViewColumn[] {
-                colMSSV, colHoTen, colDiem, colThoiGianVaoThi, colThoiGianNopBai, colThoiGianThi, colTrangThai
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 10
             });
+
+            // Final refresh
+            tableBangDiem.Refresh();
 
             // ------------------------------
             // Phân tích tab controls setup

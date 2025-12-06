@@ -159,5 +159,25 @@ namespace DAL
             };
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
+
+        public ChuongDTO? GetChuongById(long maChuong)
+        {
+            string query = "SELECT * FROM chuong WHERE ma_chuong = @ma_chuong";
+            SqlParameter[] parameters = {
+        new SqlParameter("@ma_chuong", maChuong)
+    };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+            if (dt.Rows.Count == 0) return null;
+
+            DataRow row = dt.Rows[0];
+            return new ChuongDTO
+            {
+                MaChuong = Convert.ToInt64(row["ma_chuong"]),
+                TenChuong = Convert.ToString(row["ten_chuong"]) ?? "",
+                MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                TrangThai = Convert.ToInt32(row["trang_thai"])
+            };
+        }
+
     }
 }

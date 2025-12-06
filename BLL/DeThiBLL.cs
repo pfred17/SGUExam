@@ -45,6 +45,23 @@ namespace BLL
         {
             _dal.InsertDeThiCauHoi(maDe, cauHoiIds);
         }
+        public DeThiDTO GetFullDetailById(long maDe)
+        {
+            return _dal.GetFullDetailById(maDe);
+        }
+        public bool UpdateDeThi(DeThiDTO deThi)
+        {
+            return _dal.UpdateDeThi(deThi);
+        }
+        public void DeleteDeThiCauHoi(long maDe)
+        {
+            string sql = "DELETE FROM de_thi_cau_hoi WHERE ma_de = @maDe";
+            DatabaseHelper.ExecuteNonQuery(sql, new Microsoft.Data.SqlClient.SqlParameter("@maDe", maDe));
+        }
+        public bool DeleteDeThi(long maDe)
+        {
+            return _dal.DeleteDeThi(maDe);
+        }
 
     }
 }
