@@ -81,7 +81,7 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.ControlText;
-            panel1.Location = new Point(3, 67);
+            panel1.Location = new Point(3, 81);
             panel1.Name = "panel1";
             panel1.Size = new Size(570, 2);
             panel1.TabIndex = 2;
@@ -92,9 +92,9 @@
             lbMonHoc.BackColor = Color.Transparent;
             lbMonHoc.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lbMonHoc.Location = new Point(19, 102);
-            lbMonHoc.MaximumSize = new Size(330, 0);
+            lbMonHoc.MaximumSize = new Size(320, 0);
             lbMonHoc.Name = "lbMonHoc";
-            lbMonHoc.Size = new Size(320, 66);
+            lbMonHoc.Size = new Size(304, 65);
             lbMonHoc.TabIndex = 0;
             lbMonHoc.Text = "lbMonhoc";
             lbMonHoc.TextAlignment = ContentAlignment.MiddleLeft;
@@ -133,13 +133,16 @@
             // 
             // lbTenNhom
             // 
+            lbTenNhom.AutoSize = false;
             lbTenNhom.BackColor = Color.Transparent;
-            lbTenNhom.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTenNhom.Location = new Point(19, 18);
+            lbTenNhom.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTenNhom.Location = new Point(19, 10);
+            lbTenNhom.MaximumSize = new Size(310, 0);
             lbTenNhom.Name = "lbTenNhom";
-            lbTenNhom.Size = new Size(124, 32);
+            lbTenNhom.Size = new Size(300, 65);
             lbTenNhom.TabIndex = 0;
             lbTenNhom.Text = "lbTenNhom";
+            lbTenNhom.TextAlignment = ContentAlignment.MiddleLeft;
             // 
             // menuChucNang
             // 

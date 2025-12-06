@@ -91,14 +91,9 @@ namespace BLL
             return dal.CreateUser(username, hoten, password, email);
         }
 
-        //public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
-        //{
-        //    return dal.GetUserByMSSV(mssv, includeInactive);
-        //}
-        //public UserDTO GetUserById(string userId)
-        //{
-        //    var users = GetAllUsers();
-        //    return users.FirstOrDefault(u => u.MSSV == userId);
-        //}
+        public bool QuyenThamGia(string maNd)
+        {
+            return dal.QuyenThamGia(maNd);
+        }
     }
 }

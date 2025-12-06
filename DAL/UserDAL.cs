@@ -309,36 +309,6 @@ namespace DAL
 
         public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
         {
-            //if (string.IsNullOrWhiteSpace(mssv))
-            //    return null;
-
-            //string query = @"SELECT ma_nd, ho_ten, gioi_tinh, loai_nd, trang_thai 
-            //         FROM nguoi_dung 
-            //         WHERE ma_nd = @mssv";
-
-            //if (!includeInactive)
-            //    query += " AND trang_thai = 1";
-
-            //SqlParameter[] parameters =
-            //{
-            //    new SqlParameter("@mssv", mssv.Trim())
-            //};
-
-            //DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
-
-            //if (dt.Rows.Count == 0)
-            //    return null;
-
-            //DataRow row = dt.Rows[0];
-
-            //return new UserDTO
-            //{
-            //    MSSV = row["ma_nd"].ToString(),
-            //    HoTen = row["ho_ten"].ToString(),
-            //    GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
-            //    Role = row["loai_nd"].ToString(),
-            //    TrangThai = Convert.ToInt32(row["trang_thai"])
-            //};
 
             if (string.IsNullOrWhiteSpace(mssv)) return null;
 
@@ -370,6 +340,27 @@ namespace DAL
                 GioiTinh = r["gioi_tinh"] == DBNull.Value ? 1 : Convert.ToInt32(r["gioi_tinh"]),
                 TrangThai = r["trang_thai"] == DBNull.Value ? 1 : Convert.ToInt32(r["trang_thai"])
             };
+        }
+
+        public bool QuyenThamGia(string maNd)
+        {
+            string query = @"
+                SELECT COUNT(*) 
+                FROM nguoi_dung AS nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
+                JOIN nhom_quyen_chuc_nang AS nqcn ON nqcn.ma_nhom_quyen = nq.ma_nhom_quyen
+                JOIN quyen AS q ON q.ma_quyen = nqcn.ma_quyen
+                WHERE nqcn.duoc_phep = 1 
+                AND q.ma_quyen = 5
+                AND nd.ma_nd = @ma_nd
+            ";
+
+            object result = DatabaseHelper.ExecuteScalar(
+                query,
+                new SqlParameter("@ma_nd", maNd)
+            );
+
+            return Convert.ToInt32(result) > 0;
         }
 
     }

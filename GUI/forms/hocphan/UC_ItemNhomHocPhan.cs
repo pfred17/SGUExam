@@ -29,7 +29,7 @@ namespace GUI.modules
         public void SetData(NhomHocPhanDTO nhom)
         {
             currentData = nhom;
-            lbTenNhom.Text = nhom.TenNhom;
+            lbTenNhom.Text =  $" {nhom.MaMonHoc} - {nhom.TenNhom}";
 
             lbMonHoc.Text = $" {nhom.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
             lbGhiChu.Text = nhom.GhiChu;

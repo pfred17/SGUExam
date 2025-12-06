@@ -50,11 +50,7 @@ namespace GUI.modules
                 IsFromExcel = isFromExcel;
             }
         }
-        // Hàm gọi khi muốn thông báo "đã thêm sinh viên thành công"
-        //protected virtual void OnSinhVienAdded(UserDTO user)
-        //{
-        //    SinhVienAdded?.Invoke(this, user);
-        //}
+        
         protected virtual void OnSinhVienAdded(UserDTO user, bool isFromExcel = false)
         {
             SinhVienAdded?.Invoke(this, new SinhVienAddedEventArgs(user, isFromExcel));
@@ -83,12 +79,21 @@ namespace GUI.modules
                 }
                 // Kiểm tra trùng trong nhóm hiện tại (tránh thêm 2 lần)
                 // Cha sẽ truyền DataGridView hoặc bạn có thể dùng event để cha tự kiểm tra
-                if (user.Role != "1") // tùy tên role trong DB của bạn
+                //if (user.Role != "1") // tùy tên role trong DB của bạn
+                //{
+                //    MessageBox.Show("Đây không phải tài khoản sinh viên!", "Lỗi",
+                //        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    return;
+                //}
+                bool coQuyen = userBLL.QuyenThamGia(user.MSSV);
+
+                if (!coQuyen)
                 {
-                    MessageBox.Show("Đây không phải tài khoản sinh viên!", "Lỗi",
+                    MessageBox.Show("Tài khoản này không có quyền tham gia nhóm học phần!", "Lỗi",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
 
                 // Thành công → phát event cho form cha
                 OnSinhVienAdded(user, isFromExcel: false);
@@ -244,14 +249,28 @@ namespace GUI.modules
                             continue;
                         }
 
-                        // 2. KIỂM TRA ROLE
-                        if (user.Role != "1")
+                        //// 2. KIỂM TRA ROLE
+                        //if (user.Role != "1")
+                        //{
+                        //    if (!khongPhaiSinhVien.Contains(mssv))
+                        //    {
+                        //        khongPhaiSinhVien.Add(mssv);
+                        //        loiChiTiet.Add($"• {mssv} → Không phải Sinh viên (và {khongPhaiSinhVien.Count} trường hợp khác)");
+                        //    }
+                        //    thatBai++;
+                        //    continue;
+                        //}
+                        // 2. KIỂM TRA QUYỀN THAM GIA NHÓM (ma_quyen = 5)
+                        bool coQuyenThamGia = userBLL.QuyenThamGia(mssv);
+
+                        if (!coQuyenThamGia)
                         {
                             if (!khongPhaiSinhVien.Contains(mssv))
                             {
                                 khongPhaiSinhVien.Add(mssv);
-                                loiChiTiet.Add($"• {mssv} → Không phải Sinh viên (và {khongPhaiSinhVien.Count} trường hợp khác)");
+                                loiChiTiet.Add($"• {mssv} → Không có quyền tham gia nhóm (và {khongPhaiSinhVien.Count} trường hợp khác)");
                             }
+
                             thatBai++;
                             continue;
                         }
