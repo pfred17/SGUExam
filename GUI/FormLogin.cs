@@ -34,7 +34,9 @@ namespace GUI
 
             if (user == null)
             {
-                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!");
+                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Đăng nhập thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPassword.Clear();
+                txtMssv.Focus();
                 return;
             }
 

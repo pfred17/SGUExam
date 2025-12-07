@@ -9,9 +9,9 @@ namespace GUI.modules
 {
     public partial class UC_TaoDeThi : UserControl
     {
+        private readonly NhomHocPhanBLL nhomHocPhanBLL = new NhomHocPhanBLL();
         private readonly DeThiBLL deThiBLL = new DeThiBLL();
         private readonly MonHocBLL monHocBLL = new MonHocBLL();
-        private readonly NhomHocPhanBLL nhomHocPhanBLL = new NhomHocPhanBLL();
         private readonly ChuongBLL chuongBLL = new ChuongBLL();
 
         public UC_TaoDeThi()
@@ -20,6 +20,7 @@ namespace GUI.modules
             LoadData();
             btnTaoDe.Click += BtnTaoDe_Click;
         }
+      
 
         private void LoadData()
         {
@@ -27,7 +28,7 @@ namespace GUI.modules
             var monList = monHocBLL.GetAllMonHocByStatus(1);
             cbMonHoc.DataSource = monList;
             cbMonHoc.DisplayMember = "TenMH";
-            cbMonHoc.ValueMember = "MaMH";
+            cbMonHoc.ValueMember = "MaMonHoc";
             cbMonHoc.SelectedIndex = -1;
 
             // Clear nhóm học phần và chương
@@ -181,5 +182,7 @@ namespace GUI.modules
                 }
             }
         }
+        
+
     }
 }

@@ -394,6 +394,7 @@ namespace GUI.modules
             });
             return card;
         }
+       
 
         private void LoadThongKeCauHoi()
         {

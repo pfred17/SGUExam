@@ -670,7 +670,41 @@ namespace DAL
                 list.Add(MapDeThi(row));
             }
             return list;
+        }
+        public List<DeThiDTO> LayDeThiCuaNhom(long maNhom)
+        {
+            string query = @"
+                SELECT dt.*
+                FROM de_thi dt
+                INNER JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
+                WHERE dtn.ma_nhom = @maNhom";
 
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@maNhom", maNhom));
+
+            var list = new List<DeThiDTO>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new DeThiDTO
+                {
+                    MaDe = Convert.ToInt64(row["ma_de"]),
+                    TenDe = row["ten_de"]?.ToString(),
+
+                    ThoiGianBatDau = row["thoi_gian_bat_dau"] == DBNull.Value
+                        ? null : Convert.ToDateTime(row["thoi_gian_bat_dau"]),
+
+                    ThoiGianKetThuc = row["thoi_gian_ket_thuc"] == DBNull.Value
+                        ? null : Convert.ToDateTime(row["thoi_gian_ket_thuc"]),
+
+                    ThoiGianLamBai = row["thoi_gian_lam_bai"] == DBNull.Value ? 0 : Convert.ToInt32(row["thoi_gian_lam_bai"]),
+                    CanhBaoNeuDuoi = row["canh_bao_neu_duoi"] == DBNull.Value ? 0 : Convert.ToInt32(row["canh_bao_neu_duoi"]),
+                    SoCauDe = row["so_cau_de"] == DBNull.Value ? 0 : Convert.ToInt32(row["so_cau_de"]),
+                    SoCauTrungBinh = row["so_cau_trung_binh"] == DBNull.Value ? 0 : Convert.ToInt32(row["so_cau_trung_binh"]),
+                    SoCauKho = row["so_cau_kho"] == DBNull.Value ? 0 : Convert.ToInt32(row["so_cau_kho"]),
+                    TrangThai = row["trang_thai"] == DBNull.Value ? 0 : Convert.ToInt32(row["trang_thai"])
+                });
+            }
+            return list;
         }
     }
 }

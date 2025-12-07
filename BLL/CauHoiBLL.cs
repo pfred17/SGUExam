@@ -85,6 +85,7 @@ namespace BLL
         public void CapNhat(long maCauHoi, long maChuong, string noiDung, string doKho, List<DapAnDTO> dapAnList)
         {
             _cauHoiDAL.CapNhat(maCauHoi, maChuong, noiDung, doKho, dapAnList);
+          
         }
 
         // 2. Lấy chi tiết 1 câu hỏi
@@ -127,7 +128,6 @@ namespace BLL
                 .ThenBy(nhom => nhom.DanhSach.First().MaCauHoi)
                 .ToList();
         }
-
 
         /// Thống kê nhanh: số nhóm trùng, số câu trùng, số câu duy nhất
         public (int NhomTrung, int CauTrung, int CauDuyNhat) LayThongKeTrungLap()

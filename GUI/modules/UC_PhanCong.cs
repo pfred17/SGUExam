@@ -33,7 +33,15 @@ namespace GUI.modules
             _userId = userId;
             InitializeComponent();
             SetupDataGridView();
+            loadPermission();
             LoadData();
+        }
+        private void loadPermission()
+        {
+            btnThem.Visible = _permissionBLL.HasPermission(_userId, 4, "Thêm");
+            //dgvPhanCong.Columns["DetailCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Xem");
+            dgvPhanCong.Columns["EditCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Sửa");
+            dgvPhanCong.Columns["DeleteCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Xóa");
         }
         private void SetupDataGridView()
         {
@@ -204,7 +212,6 @@ namespace GUI.modules
 
                     if (col == "EditCol")
                     {
-
                         SuaPhanCong frm = new SuaPhanCong(maPC, _userId);
                         if (frm.ShowDialog() == DialogResult.OK)
                         {

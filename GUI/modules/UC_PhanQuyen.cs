@@ -33,9 +33,15 @@ namespace GUI.modules
         {
             _userId = userId;
             InitializeComponent();
+            loadPermission();
             LoadDataForTable();
         }
-
+        private void loadPermission()
+        {
+            btnAdd.Visible = _permissionBLL.HasPermission(_userId, 7, "Thêm");
+            tablePhanQuyen.Columns["EditCol"].Visible = _permissionBLL.HasPermission(_userId, 7, "Sửa");
+            tablePhanQuyen.Columns["DeleteCol"].Visible = _permissionBLL.HasPermission(_userId, 7, "Xóa");
+        }
         public void LoadDataForTable()
         {
             string keyword = txtSearch.Text.Trim();

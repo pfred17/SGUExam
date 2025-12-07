@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BLL;
+using DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,32 +9,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DTO;
 
 namespace GUI.modules
 {
     public partial class UC_ItemNhomHocPhan : UserControl
     {
+        private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+
         private NhomHocPhanDTO _nhom;
         private MonHocDTO _monHoc;
+        public event EventHandler<NhomHocPhanDTO> DeThiClicked;
         public event EventHandler<NhomHocPhanDTO> ViewStudentClicked;
         public event EventHandler DeleteClicked;
         public event EventHandler EditClicked;
         private NhomHocPhanDTO currentData;
-        public UC_ItemNhomHocPhan()
+
+        public UC_ItemNhomHocPhan(string userId)
         {
+            _userId = userId;
             InitializeComponent();
+            loadPermission();
         }
 
-        public void SetData(NhomHocPhanDTO nhom, MonHocDTO monHoc)
+        private void loadPermission()
+        {
+            toolStripMenuItem4.Visible = _permissionBLL.HasPermission(_userId, 1, "Sửa");
+            toolStripMenuItem7.Visible = _permissionBLL.HasPermission(_userId, 1, "Xóa");
+        }
+
+        public void SetData(NhomHocPhanDTO nhom)
         {
             currentData = nhom;
-            lbTenNhom.Text = nhom.TenNhom;
-            //lbMonHoc.Text = $"{monHoc.MaMonHoc} - {monHoc.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
-            lbMonHoc.Text =$" {monHoc.MaMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
+            lbTenNhom.Text =  $" {nhom.MaMonHoc} - {nhom.TenNhom}";
 
+            lbMonHoc.Text = $" {nhom.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
             lbGhiChu.Text = nhom.GhiChu;
+            int soLuongSV = ChiTietNhomHocPhanBLL.DemSinhVienTrongNhom(nhom.MaNhom);
+            lbSiSo.Text = $"Sỉ số:{soLuongSV}";
         }
+
 
         public NhomHocPhanDTO GetCurrentData() => currentData;
 
@@ -66,25 +82,20 @@ namespace GUI.modules
 
         }
 
-        private void toolStripMenuItem6_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void menuSua_Click(object sender, EventArgs e)
         {
             EditClicked?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void lbGhiChu_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void menuXemSinhVien_Click(object sender, EventArgs e)
         {
             ViewStudentClicked?.Invoke(this, currentData);
         }
+
+        private void menuDeThi_Click(object sender, EventArgs e)
+        {
+            DeThiClicked?.Invoke(this, currentData);
+        }
     }
-    
+
 }

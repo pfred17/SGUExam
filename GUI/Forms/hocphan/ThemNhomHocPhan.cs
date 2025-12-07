@@ -1,5 +1,4 @@
 ﻿using BLL;
-using DAL;
 using DTO;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GUI.modules
+namespace GUI.forms.hocphan
 {
-    public partial class UC_ThemNhomHocPhan : UserControl
+    public partial class ThemNhomHocPhan : Form
     {
         private bool isEditMode = false;
         private long editingMaNhom = 0;
@@ -25,19 +24,19 @@ namespace GUI.modules
         private MonHocBLL monHocBLL = new MonHocBLL();
         private readonly PhanCongBLL phanCongBLL = new PhanCongBLL();
         private readonly string maUserDangNhap;
-        public UC_ThemNhomHocPhan(string maNguoiDung)
+        public ThemNhomHocPhan(string maNguoiDung)
         {
             InitializeComponent();
             this.maUserDangNhap = maNguoiDung;
         }
 
-        private void UC_ThemNhomHocPhan_Load(object sender, EventArgs e)
+        private void ThemNhomHocPhan_Load(object sender, EventArgs e)
         {
             LoadComboBoxMonHoc();
             LoadHocKy();
             LoadNamHoc();
         }
-       
+
         private void LoadComboBoxMonHoc()
         {
             try
@@ -132,9 +131,9 @@ namespace GUI.modules
 
         }
 
-        
 
-        
+
+
         private void btnLuu_Click(object sender, EventArgs e)
         {
             try
@@ -273,12 +272,7 @@ namespace GUI.modules
 
         private void btnDong_Click(object sender, EventArgs e)
         {
-            // Ẩn usercontrol (không Remove)
-            ResetFields();
-            this.Visible = z;
-
-            // Thông báo cho cha biết đã đóng (nếu cần)
-            FormClosedEvent?.Invoke(this, EventArgs.Empty);
+           this.Dispose();
         }
 
         private void cbHocKy_SelectedIndexChanged(object sender, EventArgs e)
@@ -373,4 +367,4 @@ namespace GUI.modules
         }
     }
 }
-
+    

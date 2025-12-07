@@ -24,6 +24,8 @@ namespace BLL
 
         public static bool XoaSinhVienKhoiNhom(string maND, long maNhom)
             => ChiTietNhomHocPhanDAL.Instance.XoaSinhVienKhoiNhom(maND, maNhom);
+        public static int DemSinhVienTrongNhom(long maNhom)
+            => ChiTietNhomHocPhanDAL.Instance.DemSinhVienTrongNhom(maNhom);
         public List<long> GetNhomHocPhanIdsByUser(string maNd)   {
             return ChiTietNhomHocPhanDAL.Instance.GetNhomHocPhanIdsByUser(maNd);
         }

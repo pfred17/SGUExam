@@ -29,7 +29,15 @@ namespace GUI.modules
             _userId = userId;
             InitializeComponent();
             SetupDataGridView();
+            loadPermission();
             LoadData();
+        }
+        private void loadPermission()
+        {
+            btnThem.Visible = _permissionBLL.HasPermission(_userId, 3, "Thêm");
+            dgvMonHoc.Columns["DetailCol"].Visible = _permissionBLL.HasPermission(_userId, 3, "Xem");
+            dgvMonHoc.Columns["EditCol"].Visible = _permissionBLL.HasPermission(_userId, 3, "Sửa");
+            dgvMonHoc.Columns["DeleteCol"].Visible = _permissionBLL.HasPermission(_userId, 3, "Xóa");
         }
         private void SetupDataGridView()
         {

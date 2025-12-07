@@ -21,7 +21,9 @@ namespace GUI.modules
 {
     public partial class UC_ThemSVVaoNhom : UserControl
     {
-        public event EventHandler<UserDTO> SinhVienAdded;
+
+        //public event EventHandler<UserDTO> SinhVienAdded;
+        public event EventHandler<SinhVienAddedEventArgs> SinhVienAdded;
         private UserBLL userBLL = new UserBLL();
         private OpenFileDialog openFileDialog1 = new OpenFileDialog();
         private long _maNhom; // sẽ được truyền từ form cha
@@ -37,10 +39,21 @@ namespace GUI.modules
         {
 
         }
-        // Hàm gọi khi muốn thông báo "đã thêm sinh viên thành công"
-        protected virtual void OnSinhVienAdded(UserDTO user)
+        public class SinhVienAddedEventArgs : EventArgs
         {
-            SinhVienAdded?.Invoke(this, user);
+            public UserDTO User { get; set; }
+            public bool IsFromExcel { get; set; }  // CỜ QUAN TRỌNG NHẤT!
+
+            public SinhVienAddedEventArgs(UserDTO user, bool isFromExcel = false)
+            {
+                User = user;
+                IsFromExcel = isFromExcel;
+            }
+        }
+
+        protected virtual void OnSinhVienAdded(UserDTO user, bool isFromExcel = false)
+        {
+            SinhVienAdded?.Invoke(this, new SinhVienAddedEventArgs(user, isFromExcel));
         }
         private void btnThemSV_Click(object sender, EventArgs e)
         {
@@ -64,19 +77,19 @@ namespace GUI.modules
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                
+                bool coQuyen = userBLL.QuyenThamGia(user.MSSV);
 
-                // Kiểm tra trùng trong nhóm hiện tại (tránh thêm 2 lần)
-                // Cha sẽ truyền DataGridView hoặc bạn có thể dùng event để cha tự kiểm tra
-
-                if (user.Role != 1) // tùy tên role trong DB của bạn
+                if (!coQuyen)
                 {
-                    MessageBox.Show("Đây không phải tài khoản sinh viên!", "Lỗi",
+                    MessageBox.Show("Tài khoản này không có quyền tham gia nhóm học phần!", "Lỗi",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
+
                 // Thành công → phát event cho form cha
-                OnSinhVienAdded(user);
+                OnSinhVienAdded(user, isFromExcel: false);
 
                 // Xóa ô nhập và focus lại để thêm tiếp
                 tbMaSv.Clear();
@@ -93,7 +106,7 @@ namespace GUI.modules
         {
             this.Visible = false;
         }
-        
+
 
         private void btnTaoMaMoi_Click(object sender, EventArgs e)
         {
@@ -132,145 +145,8 @@ namespace GUI.modules
 
         }
 
-        // Read only MSSV values (first column) from Excel, tolerant to file lock by copying to temp
 
-        //private void btnThemExcel_Click(object sender, EventArgs e)
-        //{
-        //    if (string.IsNullOrEmpty(filePathExcel))
-        //    {
-        //        MessageBox.Show("Vui lòng chọn file trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        return;
-        //    }
-
-        //    rtbKetQua.Clear();
-        //    rtbKetQua.AppendText("Đang đọc file Excel...\n\n");
-
-        //    try
-        //    {
-        //        using (var workbook = new XLWorkbook(filePathExcel))
-        //        {
-        //            var worksheet = workbook.Worksheet(1); // Sheet đầu tiên
-        //            var rowCount = worksheet.LastRowUsed().RowNumber();
-
-        //            int thanhCong = 0;
-        //            int thatBai = 0;
-        //            var loiChiTiet = new List<string>();
-
-        //            // Bắt đầu từ dòng 2 (dòng 1 là tiêu đề)
-        //            for (int row = 2; row <= rowCount; row++)
-        //            {
-        //                // ĐỌC ĐẦY ĐỦ 8 CỘT THEO THỨ TỰ TRONG FILE CỦA BẠN
-        //                string mssv = worksheet.Cell(row, 1).GetString().Trim();
-        //                string tenDangNhap = worksheet.Cell(row, 2).GetString().Trim();
-        //                string matKhau = worksheet.Cell(row, 3).GetString().Trim();
-        //                string hoTen = worksheet.Cell(row, 4).GetString().Trim();
-        //                string email = worksheet.Cell(row, 5).GetString().Trim();
-        //                string role = worksheet.Cell(row, 6).GetString().Trim();
-        //                int gioiTinh = worksheet.Cell(row, 7).GetValue<int>();
-        //                int trangThai = worksheet.Cell(row, 8).GetValue<int>();
-
-        //                rtbKetQua.AppendText($"Dòng {row}: Đang xử lý MSSV = [{mssv}]\n");
-
-        //                if (string.IsNullOrWhiteSpace(mssv))
-        //                {
-        //                    loiChiTiet.Add($"Dòng {row}: MSSV trống");
-        //                    thatBai++;
-        //                    continue;
-        //                }
-
-        //                // BƯỚC 1: KIỂM TRA MSSV ĐÃ TỒN TẠI CHƯA?
-        //                UserDTO user = userBLL.GetUserByMSSV(mssv, true);
-
-        //                if (user == null && role == "Sinh viên") // CHƯA TỒN TẠI → TẠO MỚI THEO FILE
-        //                {
-        //                    UserDTO newUser = new UserDTO
-        //                    {
-        //                        MSSV = mssv,
-        //                        TenDangNhap = tenDangNhap,
-        //                        MatKhau = matKhau,
-        //                        HoTen = hoTen,
-        //                        Email = email,
-        //                        Role = role,
-        //                        GioiTinh = gioiTinh,
-        //                        TrangThai = trangThai
-        //                    };
-
-        //                    bool taoOK = userBLL.CreateNewUser(newUser);
-        //                    if (taoOK)
-        //                    {
-        //                        user = userBLL.GetUserByMSSV(mssv, true); // lấy lại user vừa tạo
-        //                        rtbKetQua.AppendText($" → ĐÃ TẠO TÀI KHOẢN MỚI: {hoTen} ({mssv})\n", Color.Blue);
-        //                    }
-        //                    else
-        //                    {
-        //                        loiChiTiet.Add($"Dòng {row}: {mssv} → Tạo tài khoản thất bại (trùng email/tên đăng nhập)");
-        //                        thatBai++;
-        //                        continue;
-        //                    }
-        //                }
-        //                else if (user != null)
-        //                {
-        //                    rtbKetQua.AppendText($" → ĐÃ TỒN TẠI: {user.HoTen} ({mssv})\n", Color.Orange);
-        //                }
-        //                else
-        //                {
-        //                    loiChiTiet.Add($"Dòng {row}: {mssv} → Không phải Sinh viên hoặc bị khóa");
-        //                    thatBai++;
-        //                    continue;
-        //                }
-
-        //                // BƯỚC 2: KIỂM TRA ROLE
-        //                if (user.Role != "Sinh viên")
-        //                {
-        //                    loiChiTiet.Add($"Dòng {row}: {mssv} → Không phải sinh viên");
-        //                    thatBai++;
-        //                    continue;
-        //                }
-
-        //                // BƯỚC 3: KIỂM TRA ĐÃ TRONG NHÓM CHƯA
-        //                if (ChiTietNhomHocPhanBLL.DaTonTaiTrongNhom(mssv, _maNhom))
-        //                {
-        //                    loiChiTiet.Add($"Dòng {row}: {mssv} → Đã có trong nhóm");
-        //                    thatBai++;
-        //                    continue;
-        //                }
-
-        //                // BƯỚC 4: THÊM VÀO NHÓM
-        //                bool themOK = ChiTietNhomHocPhanBLL.ThemSinhVienVaoNhom(mssv, _maNhom);
-        //                if (themOK)
-        //                {
-        //                    thanhCong++;
-        //                    OnSinhVienAdded(user);
-        //                    rtbKetQua.AppendText($" → ĐÃ THÊM VÀO NHÓM THÀNH CÔNG!\n", Color.Green);
-        //                }
-        //                else
-        //                {
-        //                    loiChiTiet.Add($"Dòng {row}: {mssv} → Lỗi khi thêm vào nhóm");
-        //                    thatBai++;
-        //                }
-        //            }
-
-        //            // HIỂN THỊ KẾT QUẢ
-        //            rtbKetQua.AppendText($"HOÀN TẤT!\n\n");
-        //            rtbKetQua.AppendText($"Thành công: {thanhCong} sinh viên\n", Color.Green);
-        //            rtbKetQua.AppendText($"Thất bại: {thatBai} sinh viên\n\n", Color.Red);
-
-        //            if (loiChiTiet.Count > 0)
-        //            {
-        //                rtbKetQua.AppendText("Chi tiết lỗi (20 dòng đầu):\n", Color.DarkRed);
-        //                foreach (var loi in loiChiTiet.Take(20))
-        //                    rtbKetQua.AppendText($"• {loi}\n", Color.Maroon);
-        //            }
-
-        //            MessageBox.Show($"Đã thêm thành công {thanhCong} sinh viên vào nhóm!",
-        //                           "Thành công!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Lỗi đọc file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
+       
         private void btnThemExcel_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(filePathExcel))
@@ -278,9 +154,6 @@ namespace GUI.modules
                 MessageBox.Show("Vui lòng chọn file trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            rtbKetQua.Clear();
-            rtbKetQua.AppendText("Đang đọc file Excel và xử lý sinh viên...\n\n");
 
             try
             {
@@ -293,7 +166,6 @@ namespace GUI.modules
                     int thatBai = 0;
                     var loiChiTiet = new List<string>();
 
-                    // BIẾN GỘP THÔNG BÁO – SIÊU ĐẸP, SIÊU CHUYÊN NGHIỆP
                     var daCoTrongNhom = new HashSet<string>();
                     var emailHoacTenDangNhapTrung = new HashSet<string>();
                     var khongPhaiSinhVien = new HashSet<string>();
@@ -310,8 +182,6 @@ namespace GUI.modules
                         int gioiTinh = worksheet.Cell(row, 7).GetValue<int>();
                         int trangThai = worksheet.Cell(row, 8).GetValue<int>();
 
-                        rtbKetQua.AppendText($"Dòng {row}: MSSV = [{mssv}]\n");
-
                         if (string.IsNullOrWhiteSpace(mssv))
                         {
                             loiChiTiet.Add("• Dòng trống hoặc MSSV không hợp lệ");
@@ -321,9 +191,27 @@ namespace GUI.modules
 
                         UserDTO user = userBLL.GetUserByMSSV(mssv, true);
 
-                        // 1. CHƯA TỒN TẠI → TẠO MỚI (nếu là Sinh viên)
+                        // 1. CHƯA CÓ → TẠO MỚI (CHỈ SINH VIÊN)
                         if (user == null && role == 1)
                         {
+                            // ✅ KIỂM TRA TRÙNG TRƯỚC KHI TẠO
+                            bool trungEmail = userBLL.IsEmailExists(email);
+                            bool trungTenDangNhap = userBLL.IsMssvExists(tenDangNhap);
+
+                            if (trungEmail || trungTenDangNhap)
+                            {
+                                if (trungEmail && trungTenDangNhap)
+                                    loiChiTiet.Add($"• {mssv} → Trùng cả Email và Tên đăng nhập");
+                                else if (trungEmail)
+                                    loiChiTiet.Add($"• {mssv} → Trùng Email");
+                                else
+                                    loiChiTiet.Add($"• {mssv} → Trùng Tên đăng nhập");
+
+                                thatBai++;
+                                continue;
+                            }
+
+                            // ✅ KHÔNG TRÙNG → TẠO BÌNH THƯỜNG
                             bool taoOK = userBLL.CreateNewUser(new UserDTO
                             {
                                 MSSV = mssv,
@@ -339,42 +227,29 @@ namespace GUI.modules
                             if (taoOK)
                             {
                                 user = userBLL.GetUserByMSSV(mssv, true);
-                                rtbKetQua.AppendText($" → ĐÃ TẠO TÀI KHOẢN MỚI: {hoTen} ({mssv})\n", Color.Blue);
                             }
                             else
                             {
-                                if (!emailHoacTenDangNhapTrung.Contains(mssv))
-                                {
-                                    emailHoacTenDangNhapTrung.Add(mssv);
-                                    loiChiTiet.Add($"• {mssv} → Trùng email hoặc tên đăng nhập (và {emailHoacTenDangNhapTrung.Count} trường hợp khác)");
-                                }
+                                loiHeThong.Add($"• {mssv} → Lỗi hệ thống khi tạo tài khoản");
                                 thatBai++;
                                 continue;
                             }
                         }
-                        else if (user != null)
+
+                        else if (user == null)
                         {
-                            rtbKetQua.AppendText($" → ĐÃ TỒN TẠI: {user.HoTen} ({mssv})\n", Color.Orange);
-                        }
-                        else
-                        {
-                            if (!khongPhaiSinhVien.Contains(mssv))
-                            {
-                                khongPhaiSinhVien.Add(mssv);
-                                loiChiTiet.Add($"• {mssv} → Không phải Sinh viên hoặc bị khóa (và {khongPhaiSinhVien.Count} trường hợp khác)");
-                            }
+                            khongPhaiSinhVien.Add(mssv);
+                            loiChiTiet.Add($"• {mssv} → Không phải Sinh viên hoặc bị khóa");
                             thatBai++;
                             continue;
                         }
 
-                        // 2. KIỂM TRA ROLE
-                        if (user.Role != 1)
+                        // 2. KIỂM TRA QUYỀN THAM GIA NHÓM
+                        bool coQuyenThamGia = userBLL.QuyenThamGia(mssv);
+                        if (!coQuyenThamGia)
                         {
-                            if (!khongPhaiSinhVien.Contains(mssv))
-                            {
-                                khongPhaiSinhVien.Add(mssv);
-                                loiChiTiet.Add($"• {mssv} → Không phải Sinh viên (và {khongPhaiSinhVien.Count} trường hợp khác)");
-                            }
+                            khongPhaiSinhVien.Add(mssv);
+                            loiChiTiet.Add($"• {mssv} → Không có quyền tham gia nhóm");
                             thatBai++;
                             continue;
                         }
@@ -382,11 +257,8 @@ namespace GUI.modules
                         // 3. KIỂM TRA ĐÃ TRONG NHÓM CHƯA
                         if (ChiTietNhomHocPhanBLL.DaTonTaiTrongNhom(mssv, _maNhom))
                         {
-                            if (!daCoTrongNhom.Contains(mssv))
-                            {
-                                daCoTrongNhom.Add(mssv);
-                                loiChiTiet.Add($"• {mssv} → Đã có trong nhóm (và {daCoTrongNhom.Count - 1} sinh viên khác)");
-                            }
+                            daCoTrongNhom.Add(mssv);
+                            loiChiTiet.Add($"• {mssv} → Đã có trong nhóm");
                             thatBai++;
                             continue;
                         }
@@ -396,8 +268,7 @@ namespace GUI.modules
                         if (themOK)
                         {
                             thanhCong++;
-                            OnSinhVienAdded(user);
-                            rtbKetQua.AppendText($" → ĐÃ THÊM VÀO NHÓM THÀNH CÔNG!\n", Color.Green);
+                            OnSinhVienAdded(user, isFromExcel: true);
                         }
                         else
                         {
@@ -406,20 +277,20 @@ namespace GUI.modules
                         }
                     }
 
-                    // HIỂN THỊ KẾT QUẢ SIÊU ĐẸP
-                    rtbKetQua.AppendText($"\nHOÀN TẤT!\n", Color.Navy);
-                    rtbKetQua.AppendText($"Thành công: {thanhCong} sinh viên\n", Color.Green);
-                    rtbKetQua.AppendText($"Thất bại: {thatBai} sinh viên\n\n", Color.Red);
+                    // TỔNG HỢP THÔNG BÁO
+                    string thongBao = $"Hoàn tất import!\n\n" +
+                                      $"✅ Thành công: {thanhCong} sinh viên\n" +
+                                      $"❌ Thất bại: {thatBai} sinh viên\n\n";
 
                     if (loiChiTiet.Count > 0 || loiHeThong.Count > 0)
                     {
-                        rtbKetQua.AppendText("Chi tiết lỗi:\n", Color.DarkRed);
-                        foreach (var loi in loiChiTiet) rtbKetQua.AppendText($"{loi}\n", Color.Maroon);
-                        foreach (var loi in loiHeThong) rtbKetQua.AppendText($"{loi}\n", Color.DarkRed);
+                        thongBao += "Chi tiết lỗi:\n";
+                        foreach (var loi in loiChiTiet) thongBao += loi + "\n";
+                        foreach (var loi in loiHeThong) thongBao += loi + "\n";
                     }
 
                     MessageBox.Show(
-                        $"Hoàn tất xử lý!\n\nThành công: {thanhCong} sinh viên\nThất bại: {thatBai} sinh viên",
+                        thongBao,
                         "Kết quả import",
                         MessageBoxButtons.OK,
                         thanhCong > 0 ? MessageBoxIcon.Information : MessageBoxIcon.Warning
@@ -433,6 +304,8 @@ namespace GUI.modules
         }
 
 
+
+
         private void btnChonTep_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -444,14 +317,19 @@ namespace GUI.modules
                 filePathExcel = ofd.FileName;
                 txtDuongDan.Text = "Đã chọn: " + Path.GetFileName(filePathExcel);
                 btnThemExcel.Enabled = true;
-                rtbKetQua.Clear();
+
             }
         }
-        
+
 
         private void btnClose_Click_1(object sender, EventArgs e)
         {
             this.Visible = false;
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            
         }
     }
     public static class RichTextBoxExtensions

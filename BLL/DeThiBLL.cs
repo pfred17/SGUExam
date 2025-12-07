@@ -1,6 +1,7 @@
 ﻿// BLL/DeThiBLL.cs
 using DAL;
 using DTO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -9,12 +10,13 @@ namespace BLL
     public class DeThiBLL
     {
         private readonly DeThiDAL _dal = new DeThiDAL();
-        public List<DeThiDTO> GetAll()
+        public List<DeThiDTO> GetAll() { return _dal.GetAll(); }
+        public List<DeThiDTO> LayDeThiCuaNhom(long maNhom)
         {
-            return _dal.GetAll();
+      
+            return _dal.LayDeThiCuaNhom(maNhom);
         }
-        public List<BangDiemItemDTO> GetBangDiemByDeThi(long maDe)
-        {
+        public List<BangDiemItemDTO> GetBangDiemByDeThi(long maDe) {
             return _dal.GetBangDiemByDeThi(maDe);
         }
         public List<BangDiemItemDTO> GetAllBangDiemByDeThi(long maDe)
@@ -36,6 +38,7 @@ namespace BLL
         public int GetSoLuongCauHoiTheoDe(long maDe)
         {
             return _dal.GetSoLuongCauHoiTheoDe(maDe);
+            
         }
         public void InsertDeThiChuong(long maDe, List<long> chuongIds)
         {

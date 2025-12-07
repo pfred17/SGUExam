@@ -45,10 +45,9 @@ namespace GUI.modules
 
         private void loadPermission()
         {
-            //btnThemMoi.Visible = _permissionBLL.HasPermission(_userId, 2, "Thêm");
-            //btnTuDieuChinh.Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
-            //btnDelete.Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
-            //btnView.Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
+            btnThemMoi.Visible = _permissionBLL.HasPermission(_userId, 2, "Thêm");
+            dgvCauHoi.Columns["SuaCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
+            dgvCauHoi.Columns["XoaCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Xóa");
         }
 
         #region Load dữ liệu

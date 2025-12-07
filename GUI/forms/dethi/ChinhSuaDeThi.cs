@@ -49,7 +49,7 @@ namespace GUI.modules
                 var nhom = nhomHocPhanBLL.GetById(deThi.NhomHocPhanIds[0]);
                 if (nhom != null)
                 {
-                    cbMonHoc.SelectedValue = nhom.MaMH;
+                    cbMonHoc.SelectedValue = nhom.MaMonHoc;
                 }
             }
             else
@@ -61,7 +61,7 @@ namespace GUI.modules
             if (cbMonHoc.SelectedItem is MonHocDTO selectedMonHoc)
             {
                 // Nhóm học phần
-                var nhomList = nhomHocPhanBLL.GetByMonHoc(selectedMonHoc.MaMH)
+                var nhomList = nhomHocPhanBLL.GetByMonHoc(selectedMonHoc.MaMonHoc)
                     .Where(x => x.TrangThai == 1)
                     .ToList();
                 clbNhomHocPhan.Items.Clear();
@@ -72,7 +72,7 @@ namespace GUI.modules
                 clbNhomHocPhan.DisplayMember = "TenNhom";
 
                 // Chương
-                var chuongList = chuongBLL.GetChuongByMonHoc(selectedMonHoc.MaMH);
+                var chuongList = chuongBLL.GetChuongByMonHoc(selectedMonHoc.MaMonHoc);
                 clbChuong.Items.Clear();
                 foreach (var chuong in chuongList)
                 {
@@ -115,7 +115,7 @@ namespace GUI.modules
             if (cbMonHoc.SelectedItem is MonHocDTO monHoc)
             {
                 // Lấy nhóm học phần qua bảng phân công
-                var nhomList = nhomHocPhanBLL.GetByMonHoc(monHoc.MaMH)
+                var nhomList = nhomHocPhanBLL.GetByMonHoc(monHoc.MaMonHoc)
                     .Where(x => x.TrangThai == 1)
                     .ToList();
                 clbNhomHocPhan.Items.Clear();
@@ -127,7 +127,7 @@ namespace GUI.modules
 
 
                 // Load chương của môn học
-                var chuongList = chuongBLL.GetChuongByMonHoc(monHoc.MaMH);
+                var chuongList = chuongBLL.GetChuongByMonHoc(monHoc.MaMonHoc);
                 clbChuong.Items.Clear();
                 clbChuong.Items.Clear();
                 foreach (var chuong in chuongList)

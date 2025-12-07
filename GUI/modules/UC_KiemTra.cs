@@ -12,15 +12,22 @@ namespace GUI.modules
     {
         private readonly DeThiBLL deThiBLL = new DeThiBLL();
         private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+
 
         public UC_KiemTra(string userId)
         {
             InitializeComponent();
             _userId = userId;
+            loadPermission();
             cbTrangThai.SelectedIndex = 0;
             btnTaoDeThi.Click += BtnTaoDeThi_Click; // Gắn sự kiện
-
             LoadDeThi();
+        }
+
+        private void loadPermission()
+        {
+            btnTaoDeThi.Visible = _permissionBLL.HasPermission(_userId, 5, "Thêm");
         }
 
         private void LoadDeThi()
@@ -276,6 +283,7 @@ namespace GUI.modules
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
+            btnView.Visible = _permissionBLL.HasPermission(_userId, 5, "Xem");
             btnView.Click += BtnView_Click;
 
             // ===== NÚT CHỈNH SỬA =====
@@ -291,7 +299,9 @@ namespace GUI.modules
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
+            btnEdit.Visible = _permissionBLL.HasPermission(_userId, 5, "Sửa");
             btnEdit.Click += BtnEdit_Click;
+
 
             // ===== NÚT XOÁ =====
             var btnDelete = new Guna2Button
@@ -306,6 +316,7 @@ namespace GUI.modules
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
+            btnDelete.Visible = _permissionBLL.HasPermission(_userId, 5, "Xóa");
             btnDelete.Click += BtnDelete_Click;
 
             // Add nút vào panel

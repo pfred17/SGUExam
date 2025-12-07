@@ -44,23 +44,23 @@ namespace GUI.modules
             _userId = userId;
 
             // Prepare events
-            this.Load += UC_TrangThi_Load;
+            //this.Load += UC_TrangThi_Load;
             btnTruoc.Click += BtnTruoc_Click;
             btnTiep.Click += BtnTiep_Click;
             btnNopBai.Click += BtnNopBai_Click;
         }
 
-        private void UC_TrangThi_Load(object sender, EventArgs e)
-        {
-            _user = _userBLL.GetUserById(_userId);
-            _cauHinh = _deThiCauHinhBLL.GetByMaDe(_maDe);
+        //private void UC_TrangThi_Load(object sender, EventArgs e)
+        //{
+        //    _user = _userBLL.GetUserById(_userId);
+        //    _cauHinh = _deThiCauHinhBLL.GetByMaDe(_maDe);
 
-            LoadDeThi();
-            CreateNavigationButtons();
-            UpdateNavigationVisuals();
-            StartTimer();
-            CenterSubmitButton();
-        }
+        //    LoadDeThi();
+        //    CreateNavigationButtons();
+        //    UpdateNavigationVisuals();
+        //    StartTimer();
+        //    CenterSubmitButton();
+        //}
 
         private void LoadDeThi()
         {
