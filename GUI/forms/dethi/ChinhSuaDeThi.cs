@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using BLL;
 using DTO;
+using System.Diagnostics;
 
 namespace GUI.modules
 {
@@ -27,6 +29,7 @@ namespace GUI.modules
         {
             // 1. Lấy dữ liệu đề thi từ maDe
             var deThi = deThiBLL.GetFullDetailById(_maDe);
+            Debug.WriteLine($"deThi: {System.Text.Json.JsonSerializer.Serialize(deThi)}"); Debug.WriteLine($"deThi: {System.Text.Json.JsonSerializer.Serialize(deThi)}");
             if (deThi == null)
             {
                 MessageBox.Show("Không tìm thấy đề thi!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -36,8 +39,8 @@ namespace GUI.modules
             // 2. Load tất cả môn học
             var monList = monHocBLL.GetAllMonHocByStatus(1);
             cbMonHoc.DataSource = monList;
-            cbMonHoc.DisplayMember = "TenMH";
-            cbMonHoc.ValueMember = "MaMH";
+            cbMonHoc.DisplayMember = "TenMonHoc";
+            cbMonHoc.ValueMember = "MaMonHoc";
 
             // Gán event khi chọn môn học
             cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
@@ -49,7 +52,7 @@ namespace GUI.modules
                 var nhom = nhomHocPhanBLL.GetById(deThi.NhomHocPhanIds[0]);
                 if (nhom != null)
                 {
-                    cbMonHoc.SelectedValue = nhom.MaMonHoc;
+                    cbMonHoc.SelectedValue = Convert.ToInt64(nhom.MaMonHoc);
                 }
             }
             else

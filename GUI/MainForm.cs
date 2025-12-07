@@ -335,6 +335,7 @@ namespace GUI
             uc.Dock = DockStyle.Fill;
             panelMain.Controls.Add(uc);
         }
+
         private IEnumerable<ModuleItem> GetAccessibleModules()
         {
             var latestPermissions = _permissionBLL.GetUserPermissions(_userId);

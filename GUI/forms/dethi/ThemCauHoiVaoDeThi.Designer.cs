@@ -385,6 +385,7 @@ namespace GUI.modules
             lblChuaCoCauHoi.Size = new Size(420, 20);
             lblChuaCoCauHoi.TabIndex = 7;
 
+
             // 
             // btnTaoDeThi - Nút ở cuối panelRight
             // 
