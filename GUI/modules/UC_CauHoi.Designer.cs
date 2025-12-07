@@ -24,6 +24,7 @@
             colNoiDung = new DataGridViewTextBoxColumn();
             colMonHoc = new DataGridViewTextBoxColumn();
             colDoKho = new DataGridViewTextBoxColumn();
+            xemCol = new DataGridViewImageColumn();
             SuaCol = new DataGridViewImageColumn();
             XoaCol = new DataGridViewImageColumn();
             label2 = new Label();
@@ -84,7 +85,7 @@
             dgvCauHoi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCauHoi.BackgroundColor = Color.White;
             dgvCauHoi.ColumnHeadersHeight = 29;
-            dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho, SuaCol, XoaCol });
+            dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho,xemCol, SuaCol, XoaCol });
             dgvCauHoi.Location = new Point(25, 280);
             dgvCauHoi.Name = "dgvCauHoi";
             dgvCauHoi.ReadOnly = true;
@@ -145,6 +146,12 @@
             colDoKho.ReadOnly = true;
             cbDoKho.SelectedIndexChanged += cbDoKho_SelectedIndexChanged;
             // 
+            //xemcol
+
+            xemCol.HeaderText = "";
+            xemCol.MinimumWidth = 6;
+            xemCol.Name = "xemCol";
+            xemCol.ReadOnly = true;
             // SuaCol
             // 
             SuaCol.HeaderText = "";
@@ -314,6 +321,7 @@
         private DataGridViewTextBoxColumn colNoiDung = null!;
         private DataGridViewTextBoxColumn colMonHoc = null!;
         private DataGridViewTextBoxColumn colDoKho = null!;
+        private DataGridViewImageColumn xemCol = null!;
         private DataGridViewImageColumn SuaCol = null!;
         private DataGridViewImageColumn XoaCol = null!;
         private Label lbTatCaCauhoi = null!;

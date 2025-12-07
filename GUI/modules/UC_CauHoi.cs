@@ -121,6 +121,7 @@ namespace GUI.modules
                     x.NoiDung,
                     x.TenMonHoc,
                     x.DoKho,
+                     Properties.Resources.icon_eyes,
                     Properties.Resources.icon_edit,
                     Properties.Resources.icon_delete
                 );
@@ -208,14 +209,19 @@ namespace GUI.modules
             string colName = dgvCauHoi.Columns[e.ColumnIndex].Name;
             // Lấy ID thật từ Tag
             long maCH = Convert.ToInt64(dgvCauHoi.Rows[e.RowIndex].Tag);
+            if(colName== "xemCol")
+            {
+                var frm = new frmXemChiTiet(maCH); // truyền mã câu hỏi để xem
+                frm.ShowDialog(); 
 
-            if (colName == "SuaCol")
+            }
+            else if (colName == "SuaCol")
             {
                 var frm = new frmSuaCauHoi(maCH, _userId); // truyền mã câu hỏi cần sửa
                 if (frm.ShowDialog() == DialogResult.OK)
                     LoadData();
             }
-            else if (colName == "XoaCol")
+            else if(colName == "XoaCol")
             {
                 if (MessageBox.Show("Bạn có chắc chắn muốn xóa câu hỏi này?", "Xác nhận xóa",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
