@@ -247,6 +247,15 @@ namespace DAL
             DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
             return dt.Rows.Count > 0;
         }
+        public bool MssvExists(string userId)
+        {
+            string query = "SELECT * FROM nguoi_dung WHERE ma_nd = @e";
+            SqlParameter[] param = {
+                new SqlParameter("@e", userId)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
+            return dt.Rows.Count > 0;
+        }
 
         public UserDTO GetUserById(string userId)
         {

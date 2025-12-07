@@ -94,5 +94,13 @@ namespace BLL
         {
             return dal.GetUserByMSSV(mssv, includeInactive);
         }
+        public bool IsEmailExists(string email)
+        {
+            return dal.EmailExists(email);
+        }
+        public bool IsMssvExists(string username)
+        {
+            return dal.MssvExists(username);
+        }
     }
 }

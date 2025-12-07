@@ -19,7 +19,7 @@ namespace GUI.modules
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
 
-        private List<CauHoiDTO> filteredList = new(); // Dữ liệu đã lọc
+        private List<CauHoiDTO> filteredList = new();
         private UC_CauHoiTrungLap1? _ucTrungLap;
 
         private const string PLACEHOLDER = "Nhập nội dung câu hỏi để tìm kiếm...";
@@ -96,12 +96,12 @@ namespace GUI.modules
 
         private void SetComboBoxData<T>(ComboBox combo, List<T> list, string displayMember, string valueMember, EventHandler eventHandler)
         {
-            combo.SelectedIndexChanged -= eventHandler;  // Tạm thời bỏ event để tránh gọi LoadData thừa khi gán DataSource
-            combo.DataSource = list;                     // Gán danh sách dữ liệu vào ComboBox
-            combo.DisplayMember = displayMember;         // Thuộc tính hiển thị trên ComboBox (vd: "TenMH")
-            combo.ValueMember = valueMember;             // Thuộc tính giá trị ẩn (vd: "MaMH")
-            combo.SelectedIndex = 0;                     // Mặc định chọn phần tử đầu tiên
-            combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
+            combo.SelectedIndexChanged -= eventHandler;  
+            combo.DataSource = list;                     
+            combo.DisplayMember = displayMember;        
+            combo.ValueMember = valueMember;            
+            combo.SelectedIndex = 0;                     
+            combo.SelectedIndexChanged += eventHandler;  
         }
         private void LoadData(int? page = null)
         {
@@ -131,7 +131,7 @@ namespace GUI.modules
         }
         public void dispkayTatCaCauHoiFromTrungLap()
         {
-            LoadData(); // load lại toàn bộ câu hỏi
+            LoadData(); 
         }
         private void RenderGrid(List<CauHoiDTO> list)
         {
@@ -149,7 +149,7 @@ namespace GUI.modules
             {
                 var x = list[i];
                 dgvCauHoi.Rows.Add(
-                    (CurrentPage - 1) * PageSize + i + 1, // số thứ tự
+                    (CurrentPage - 1) * PageSize + i + 1, 
                     x.NoiDung,
                     x.TenMonHoc,
                     x.DoKho,
@@ -257,7 +257,7 @@ namespace GUI.modules
             }
         }
 
-        // hàm này sẽ hiển thị tất cả câu hỏi khi ở form UC_CauHoi
+      
         private void showAllCauHoi(object sender, EventArgs e)
         {
             // reset combobox 
