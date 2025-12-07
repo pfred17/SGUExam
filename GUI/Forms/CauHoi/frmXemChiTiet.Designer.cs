@@ -15,6 +15,13 @@
 
         private void InitializeComponent()
         {
+            // Định nghĩa màu sắc chuyên nghiệp
+            System.Drawing.Color primaryColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            System.Drawing.Color backgroundColor = System.Drawing.Color.FromArgb(236, 240, 241); 
+            System.Drawing.Color textColor = System.Drawing.Color.FromArgb(44, 62, 80); 
+            System.Drawing.Color titleColor = System.Drawing.Color.FromArgb(41, 128, 185);
+            System.Drawing.Color answerPanelColor = System.Drawing.Color.White; 
+
             lblMonHocTitle = new Label();
             lblChuongTitle = new Label();
             lblDoKhoTitle = new Label();
@@ -38,176 +45,170 @@
             pnlD.SuspendLayout();
             SuspendLayout();
             // 
+            // Form
+            // 
+            this.AutoScaleDimensions = new SizeF(8F, 20F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.BackColor = backgroundColor; 
+            this.ClientSize = new Size(760, 430);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Text = "Xem chi tiết câu hỏi";
+            // 
             // lblMonHocTitle
             // 
             lblMonHocTitle.AutoSize = true;
             lblMonHocTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblMonHocTitle.ForeColor = titleColor; 
             lblMonHocTitle.Location = new Point(12, 9);
             lblMonHocTitle.Name = "lblMonHocTitle";
-            lblMonHocTitle.Size = new Size(89, 23);
-            lblMonHocTitle.TabIndex = 0;
             lblMonHocTitle.Text = "Môn học :";
             // 
             // lblChuongTitle
             // 
             lblChuongTitle.AutoSize = true;
             lblChuongTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblChuongTitle.ForeColor = titleColor;
             lblChuongTitle.Location = new Point(323, 9);
             lblChuongTitle.Name = "lblChuongTitle";
-            lblChuongTitle.Size = new Size(84, 23);
-            lblChuongTitle.TabIndex = 1;
             lblChuongTitle.Text = "Chương :";
             // 
             // lblDoKhoTitle
             // 
             lblDoKhoTitle.AutoSize = true;
             lblDoKhoTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblDoKhoTitle.ForeColor = titleColor; 
             lblDoKhoTitle.Location = new Point(583, 9);
             lblDoKhoTitle.Name = "lblDoKhoTitle";
-            lblDoKhoTitle.Size = new Size(78, 23);
-            lblDoKhoTitle.TabIndex = 2;
             lblDoKhoTitle.Text = "Độ khó :";
             // 
             // lblDapAnTitle
             // 
             lblDapAnTitle.AutoSize = true;
             lblDapAnTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblDapAnTitle.Location = new Point(12, 106);
+            lblDapAnTitle.ForeColor = titleColor; 
+            lblDapAnTitle.Location = new Point(12, 115); 
             lblDapAnTitle.Name = "lblDapAnTitle";
-            lblDapAnTitle.Size = new Size(156, 23);
-            lblDapAnTitle.TabIndex = 3;
             lblDapAnTitle.Text = "Danh sách đáp án:";
             // 
             // lblMonHoc
             // 
             lblMonHoc.AutoSize = true;
             lblMonHoc.Font = new Font("Segoe UI", 10F);
+            lblMonHoc.ForeColor = textColor; 
             lblMonHoc.Location = new Point(98, 9);
             lblMonHoc.Name = "lblMonHoc";
-            lblMonHoc.Size = new Size(112, 23);
-            lblMonHoc.TabIndex = 4;
             lblMonHoc.Text = "text mon hoc";
             // 
             // lblChuong
             // 
             lblChuong.AutoSize = true;
             lblChuong.Font = new Font("Segoe UI", 10F);
+            lblChuong.ForeColor = textColor; 
             lblChuong.Location = new Point(404, 9);
             lblChuong.Name = "lblChuong";
-            lblChuong.Size = new Size(98, 23);
-            lblChuong.TabIndex = 5;
             lblChuong.Text = "ten chuong";
             // 
             // lblDoKho
             // 
             lblDoKho.AutoSize = true;
             lblDoKho.Font = new Font("Segoe UI", 10F);
+            lblDoKho.ForeColor = textColor; 
             lblDoKho.Location = new Point(659, 9);
             lblDoKho.Name = "lblDoKho";
-            lblDoKho.Size = new Size(93, 23);
-            lblDoKho.TabIndex = 6;
             lblDoKho.Text = "ten do kho";
             // 
             // lblNoiDung
             // 
-            lblNoiDung.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblNoiDung.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblNoiDung.ForeColor = primaryColor; 
             lblNoiDung.Location = new Point(12, 44);
             lblNoiDung.Name = "lblNoiDung";
-            lblNoiDung.Size = new Size(700, 42);
-            lblNoiDung.TabIndex = 7;
+            lblNoiDung.Size = new Size(700, 50); 
             lblNoiDung.Text = "ten noi dung";
             // 
             // lblDapAnDung
             // 
             lblDapAnDung.AutoSize = true;
             lblDapAnDung.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblDapAnDung.ForeColor = Color.DarkBlue;
-            lblDapAnDung.Location = new Point(30, 370);
+            lblDapAnDung.ForeColor = System.Drawing.Color.ForestGreen; 
+            lblDapAnDung.Location = new Point(30, 380);
             lblDapAnDung.Name = "lblDapAnDung";
-            lblDapAnDung.Size = new Size(0, 23);
-            lblDapAnDung.TabIndex = 12;
+            lblDapAnDung.Text = "";
             // 
             // pnlA
             // 
-            pnlA.BackColor = Color.WhiteSmoke;
+            pnlA.BackColor = answerPanelColor;
             pnlA.BorderStyle = BorderStyle.FixedSingle;
             pnlA.Controls.Add(lblA);
             pnlA.Location = new Point(30, 145);
             pnlA.Name = "pnlA";
-            pnlA.Size = new Size(700, 40);
-            pnlA.TabIndex = 8;
+            pnlA.Size = new Size(700, 45); 
             // 
             // lblA
             // 
             lblA.AutoSize = true;
             lblA.Font = new Font("Segoe UI", 10F);
-            lblA.Location = new Point(5, 10);
+            lblA.ForeColor = textColor;
+            lblA.Location = new Point(10, 12);
             lblA.Name = "lblA";
-            lblA.Size = new Size(0, 23);
-            lblA.TabIndex = 0;
+            lblA.Text = "";
             // 
             // pnlB
             // 
-            pnlB.BackColor = Color.WhiteSmoke;
+            pnlB.BackColor = answerPanelColor;
             pnlB.BorderStyle = BorderStyle.FixedSingle;
             pnlB.Controls.Add(lblB);
-            pnlB.Location = new Point(30, 196);
+            pnlB.Location = new Point(30, 195);
             pnlB.Name = "pnlB";
-            pnlB.Size = new Size(700, 40);
-            pnlB.TabIndex = 9;
+            pnlB.Size = new Size(700, 45); 
             // 
             // lblB
             // 
             lblB.AutoSize = true;
             lblB.Font = new Font("Segoe UI", 10F);
-            lblB.Location = new Point(5, 10);
+            lblB.ForeColor = textColor;
+            lblB.Location = new Point(10, 12);
             lblB.Name = "lblB";
-            lblB.Size = new Size(0, 23);
-            lblB.TabIndex = 0;
+            lblB.Text = "";
             // 
             // pnlC
             // 
-            pnlC.BackColor = Color.WhiteSmoke;
+            pnlC.BackColor = answerPanelColor;
             pnlC.BorderStyle = BorderStyle.FixedSingle;
             pnlC.Controls.Add(lblC);
-            pnlC.Location = new Point(30, 247);
+            pnlC.Location = new Point(30, 245);
             pnlC.Name = "pnlC";
-            pnlC.Size = new Size(700, 40);
-            pnlC.TabIndex = 10;
+            pnlC.Size = new Size(700, 45);
             // 
             // lblC
             // 
             lblC.AutoSize = true;
             lblC.Font = new Font("Segoe UI", 10F);
-            lblC.Location = new Point(5, 10);
+            lblC.ForeColor = textColor;
+            lblC.Location = new Point(10, 12);
             lblC.Name = "lblC";
-            lblC.Size = new Size(0, 23);
-            lblC.TabIndex = 0;
+            lblC.Text = "";
             // 
             // pnlD
             // 
-            pnlD.BackColor = Color.WhiteSmoke;
+            pnlD.BackColor = answerPanelColor;
             pnlD.BorderStyle = BorderStyle.FixedSingle;
             pnlD.Controls.Add(lblD);
-            pnlD.Location = new Point(30, 299);
+            pnlD.Location = new Point(30, 295);
             pnlD.Name = "pnlD";
-            pnlD.Size = new Size(700, 40);
-            pnlD.TabIndex = 11;
+            pnlD.Size = new Size(700, 45); 
             // 
             // lblD
             // 
             lblD.AutoSize = true;
             lblD.Font = new Font("Segoe UI", 10F);
-            lblD.Location = new Point(5, 10);
+            lblD.ForeColor = textColor;
+            lblD.Location = new Point(10, 12);
             lblD.Name = "lblD";
-            lblD.Size = new Size(0, 23);
-            lblD.TabIndex = 0;
+            lblD.Text = "";
             // 
-            // frmXemChiTiet
+            // Add Controls to Form
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(760, 430);
             Controls.Add(lblMonHocTitle);
             Controls.Add(lblChuongTitle);
             Controls.Add(lblDoKhoTitle);
@@ -221,9 +222,7 @@
             Controls.Add(pnlC);
             Controls.Add(pnlD);
             Controls.Add(lblDapAnDung);
-            Name = "frmXemChiTiet";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Xem chi tiết câu hỏi";
+
             pnlA.ResumeLayout(false);
             pnlA.PerformLayout();
             pnlB.ResumeLayout(false);
