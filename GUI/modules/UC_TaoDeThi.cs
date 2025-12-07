@@ -130,17 +130,16 @@ namespace GUI.modules
                 }
             };
 
-            // Bước 1: Insert de_thi
-            long maDe = deThiBLL.CreateDeThi(deThi);
-            if (maDe <= 0)
-            {
-                MessageBox.Show("Tạo đề thi thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Bước 5: Nếu tự động lấy câu hỏi
             if (deThi.CauHinh.TuDongLay)
             {
+                // Bước 1: Insert de_thi ngay
+                long maDe = deThiBLL.CreateDeThi(deThi);
+                if (maDe <= 0)
+                {
+                    MessageBox.Show("Tạo đề thi thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 var cauHoiBLL = new CauHoiBLL();
                 // Lấy câu hỏi theo chương và trạng thái = 1
                 var allCauHoi = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
@@ -153,17 +152,34 @@ namespace GUI.modules
                 var cauHoiIds = cauDe.Concat(cauTB).Concat(cauKho).Select(x => x.MaCauHoi).ToList();
 
                 // Bước 7: Insert vào de_thi_cau_hoi
-                var deThiCauHoiBLL = new DeThiBLL();
-                deThiCauHoiBLL.InsertDeThiCauHoi(maDe, cauHoiIds);
+                deThiBLL.InsertDeThiCauHoi(maDe, cauHoiIds);
+
+                MessageBox.Show("Tạo đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Quay về UC_KiemTra
+                var mainForm = this.FindForm() as MainForm;
+                if (mainForm != null)
+                {
+                    var ucKiemTra = new GUI.modules.UC_KiemTra("0000000000");
+                    ucKiemTra.Dock = DockStyle.Fill;
+                    var panelMain = mainForm.Controls["panelMain"];
+                    if (panelMain is Panel p)
+                    {
+                        p.Controls.Clear();
+                        p.Controls.Add(ucKiemTra);
+                    }
+                }
             }
             else
             {
-                // Nếu thủ công: chuyển sang trang chọn câu hỏi cho đề thi
-                MessageBox.Show("Chuyển sang trang chọn câu hỏi thủ công (chưa triển khai).", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                // TODO: Hiển thị giao diện chọn câu hỏi thủ công
-            }
+                // Chưa insert de_thi, chuyển sang giao diện chọn câu hỏi thủ công
+                var mainForm = this.FindForm() as MainForm;
+                if (mainForm != null)
+                {
+                    var ucThemCauHoi = new ThemCauHoiVaoDeThi(deThi); // deThi chưa có MaDe
+                    mainForm.LoadModule(ucThemCauHoi);
 
-            MessageBox.Show("Tạo đề thi thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 }

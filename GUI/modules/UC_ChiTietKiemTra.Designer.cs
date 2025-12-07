@@ -121,8 +121,9 @@ namespace GUI.modules
             cbLocTrangThai.Items.AddRange(new object[] { "Tất cả", "Đã nộp bài", "Chưa nộp bài" });
             cbLocTrangThai.Location = new Point(180, 30);
             cbLocTrangThai.Name = "cbLocTrangThai";
-            cbLocTrangThai.Size = new Size(130, 36);
+            cbLocTrangThai.Size = new Size(150, 36);
             cbLocTrangThai.StartIndex = 0;
+            cbLocTrangThai.SelectedIndexChanged += cbLocTrangThai_SelectedIndexChanged;
 
             // 
             // txtTimKiem
@@ -132,7 +133,7 @@ namespace GUI.modules
             txtTimKiem.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtTimKiem.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             txtTimKiem.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTimKiem.Location = new Point(330, 30);
+            txtTimKiem.Location = new Point(350, 30);
             txtTimKiem.Name = "txtTimKiem";
             txtTimKiem.PlaceholderText = "Tìm kiếm sinh viên...";
             txtTimKiem.Size = new Size(300, 36);
@@ -149,100 +150,135 @@ namespace GUI.modules
             btnXuatBangDiem.Name = "btnXuatBangDiem";
             btnXuatBangDiem.Size = new Size(180, 36);
             btnXuatBangDiem.Text = "📄 Xuất bảng điểm";
+            btnXuatBangDiem.Click += btnXuatBangDiem_Click;
 
-            // 
-            // tableBangDiem
-            // 
+
+            // =======================
+            // CẤU HÌNH BẢNG
+            // =======================
+            // Basic
             tableBangDiem.AllowUserToAddRows = false;
             tableBangDiem.AllowUserToDeleteRows = false;
             tableBangDiem.AllowUserToResizeRows = false;
             tableBangDiem.ReadOnly = true;
             tableBangDiem.RowHeadersVisible = false;
-            tableBangDiem.RowTemplate.Height = 50;
-            tableBangDiem.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            tableBangDiem.GridColor = Color.FromArgb(231, 229, 255);
+            tableBangDiem.RowHeadersWidth = 4;
+            // In your designer or initialization code
+
+            var panelBangDiem = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(0, 100, 0, 0), // 100px top space
+                BackColor = Color.Transparent // or match your background
+            };
+
+            // Add tableBangDiem to this panel
+            panelBangDiem.Controls.Add(tableBangDiem);
+            tableBangDiem.Dock = DockStyle.Fill;
+
+            // Add the panel to your tab/page/container
+            tabBangDiem.Controls.Add(panelBangDiem);
+
+
+            // Appearance
             tableBangDiem.BackgroundColor = Color.White;
             tableBangDiem.BorderStyle = BorderStyle.None;
-            tableBangDiem.Location = new Point(30, 90);
-            tableBangDiem.Name = "tableBangDiem";
-            tableBangDiem.Size = new Size(1062, 610);
-            tableBangDiem.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableBangDiem.GridColor = Color.FromArgb(231, 229, 255);
+            tableBangDiem.RowTemplate.Height = 45;
+            tableBangDiem.EnableHeadersVisualStyles = false;
 
             // Header style
-            var headerStyle = new DataGridViewCellStyle();
-            headerStyle.BackColor = Color.FromArgb(242, 245, 250);
-            headerStyle.ForeColor = Color.Gray;
-            headerStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            headerStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            headerStyle.SelectionBackColor = Color.FromArgb(242, 245, 250);
-            headerStyle.SelectionForeColor = Color.Gray;
-            headerStyle.WrapMode = DataGridViewTriState.True;
+            var headerStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(242, 245, 250),
+                ForeColor = Color.FromArgb(80, 80, 80),
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Alignment = DataGridViewContentAlignment.MiddleCenter,
+                WrapMode = DataGridViewTriState.True,
+                SelectionBackColor = Color.FromArgb(242, 245, 250),
+                SelectionForeColor = Color.FromArgb(80, 80, 80)
+            };
             tableBangDiem.ColumnHeadersDefaultCellStyle = headerStyle;
-            tableBangDiem.ColumnHeadersHeight = 50;
-            tableBangDiem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            tableBangDiem.ColumnHeadersHeight = 48;
+            tableBangDiem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             // Row style
-            var rowStyle = new DataGridViewCellStyle();
-            rowStyle.BackColor = Color.White;
-            rowStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            rowStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            rowStyle.SelectionBackColor = Color.FromArgb(116, 185, 255);
-            rowStyle.SelectionForeColor = Color.White;
-            rowStyle.WrapMode = DataGridViewTriState.False;
+            var rowStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(50, 50, 50),
+                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                SelectionBackColor = Color.FromArgb(116, 185, 255),
+                SelectionForeColor = Color.White,
+                Padding = new Padding(6, 0, 6, 0)
+            };
             tableBangDiem.DefaultCellStyle = rowStyle;
+            tableBangDiem.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle { BackColor = Color.FromArgb(250, 250, 250) };
 
-            // Alternating row style
-            var altRowStyle = new DataGridViewCellStyle();
-            altRowStyle.BackColor = Color.White;
-            tableBangDiem.AlternatingRowsDefaultCellStyle = altRowStyle;
+            // Force vertical scrollbar only (prevent horizontal scroll)
+            tableBangDiem.ScrollBars = ScrollBars.Vertical;
 
-            // Columns
-            var colMSSV = new DataGridViewTextBoxColumn
+            // Columns: clear then add with AutoSizeMode=Fill and FillWeight (ratio)
+            tableBangDiem.Columns.Clear();
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "MSSV",
                 Name = "colMSSV",
-                MinimumWidth = 6
-            };
-            var colHoTen = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 12 // relative
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Họ và tên",
                 Name = "colHoTen",
-                MinimumWidth = 6
-            };
-            var colDiem = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 30
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Điểm",
                 Name = "colDiem",
-                MinimumWidth = 6
-            };
-            var colThoiGianVaoThi = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 8
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Thời gian vào thi",
                 Name = "colThoiGianVaoThi",
-                MinimumWidth = 6
-            };
-            var colThoiGianNopBai = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 18
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Thời gian nộp bài",
                 Name = "colThoiGianNopBai",
-                MinimumWidth = 6
-            };
-            var colThoiGianThi = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 18
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Thời gian thi (phút)",
                 Name = "colThoiGianThi",
-                MinimumWidth = 6
-            };
-            var colTrangThai = new DataGridViewTextBoxColumn
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 12
+            });
+
+            tableBangDiem.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Trạng thái",
                 Name = "colTrangThai",
-                MinimumWidth = 6
-            };
-
-            tableBangDiem.Columns.AddRange(new DataGridViewColumn[] {
-                colMSSV, colHoTen, colDiem, colThoiGianVaoThi, colThoiGianNopBai, colThoiGianThi, colTrangThai
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 10
             });
+            tableBangDiem.CellDoubleClick += tableBangDiem_CellDoubleClick;
+            // Final refresh
+            tableBangDiem.Refresh();
 
             // ------------------------------
             // Phân tích tab controls setup
@@ -276,28 +312,46 @@ namespace GUI.modules
             flowThongKeCard.WrapContents = true;
             flowThongKeCard.BackColor = Color.Transparent;
 
-            // 
-            // chartDiemThi
-            // 
+            // Chart initialization (your code)
             chartDiemThi.Location = new Point(30, 320);
             chartDiemThi.Size = new Size(1062, 320);
             chartDiemThi.BackColor = Color.White;
 
-            // Configure ChartArea and Legend and Series in a consistent way
             var chartArea = new ChartArea("ChartArea1");
             chartDiemThi.ChartAreas.Add(chartArea);
+
             var legend = new Legend("Legend1");
             chartDiemThi.Legends.Add(legend);
 
             var series = new Series("Số lượng sinh viên")
             {
                 ChartType = SeriesChartType.Column,
-                IsValueShownAsLabel = true
+                IsValueShownAsLabel = true,
+                Color = Color.FromArgb(33, 150, 243)
             };
-            // color can be set using System.Drawing.Color
-            series.Color = Color.FromArgb(33, 150, 243);
-
             chartDiemThi.Series.Add(series);
+
+            var area = chartDiemThi.ChartAreas[0];
+
+            area.AxisX.Title = "Mốc điểm";
+            area.AxisY.Title = "Số lượng sinh viên";
+            area.AxisX.Interval = 1;
+            area.AxisX.LabelStyle.Angle = 0;
+            area.AxisX.LabelStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            area.AxisX.LabelStyle.IsStaggered = false;
+            area.AxisX.MajorGrid.LineColor = Color.LightGray;
+            area.AxisY.MajorGrid.LineColor = Color.LightGray;
+            area.AxisX.IsMarginVisible = true;
+
+            area.AxisX.Minimum = 0.5;
+            area.AxisX.Maximum = 10.5;
+            area.AxisY.Minimum = 0;
+            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            area.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+
+
+
+
 
             // Add controls to tabPhanTich
             tabPhanTich.BackColor = Color.White;
@@ -306,8 +360,35 @@ namespace GUI.modules
             tabPhanTich.Controls.Add(flowThongKeCard);
             tabPhanTich.Controls.Add(chartDiemThi);
 
-            // (tabThongKeCauHoi left empty here - designer placeholder)
-            tabThongKeCauHoi.BackColor = Color.White;
+            // In UC_ChiTietKiemTra.Designer.cs, inside InitializeComponent (after tabThongKeCauHoi.BackColor = Color.White;)
+            var flowThongKeCauHoi = new FlowLayoutPanel
+            {
+                Name = "flowThongKeCauHoi",
+                Location = new Point(30, 60),
+                Size = new Size(1062, 640),
+                AutoScroll = true,
+                BackColor = Color.Transparent,
+                WrapContents = false,
+                FlowDirection = FlowDirection.TopDown
+            };
+            tabThongKeCauHoi.Controls.Add(flowThongKeCauHoi);
+            tabControl.SelectedIndexChanged += (s, e) =>
+            {
+                if (tabControl.SelectedTab == tabThongKeCauHoi)
+                    LoadThongKeCauHoi();
+            };
+
+            // Add a label for the title
+            var lblTitle = new Label
+            {
+                Text = "Thống kê chi tiết theo câu hỏi",
+                Font = new Font("Segoe UI", 13F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(50, 50, 50),
+                Location = new Point(30, 20),
+                AutoSize = true
+            };
+            tabThongKeCauHoi.Controls.Add(lblTitle);
+
 
             // 
             // UC_ChiTietKiemTra (this control)

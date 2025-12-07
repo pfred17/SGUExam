@@ -53,5 +53,10 @@ namespace BLL
         {
             return _dal.GetTotalChuongByMonHoc(maMonHoc);
         }
+        public ChuongDTO? GetChuongById(long maChuong)
+        {
+            return _dal.GetChuongById(maChuong);
+        }
+
     }
 }
