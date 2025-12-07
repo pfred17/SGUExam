@@ -5,13 +5,19 @@ namespace GUI.modules
 {
     public partial class UC_CauHoiTrungLap1 : UserControl
     {
-        private readonly CauHoiBLL _cauHoiBLL = new();
+        private readonly CauHoiBLL _cauHoiBLL;
         private readonly MonHocBLL _monHocBLL = new();
         private readonly UC_CauHoi _parentUC;
-        public UC_CauHoiTrungLap1(UC_CauHoi parent)
+        private readonly string _userId; // 1. THÊM: Biến lưu ID người dùng
+        private readonly long _maND;
+        public UC_CauHoiTrungLap1(UC_CauHoi parent, string userId)
         {
             InitializeComponent();
             _parentUC = parent;
+            _userId = userId;
+            _maND = Convert.ToInt64(userId);
+            // Khởi tạo BLL với _maND để nó tự động lọc (đã sửa ở bước trước)
+            _cauHoiBLL = new CauHoiBLL(_maND);
         }
         public void UC_CauHoiTrungLap1_Load(object sender, EventArgs e)
         {
@@ -26,7 +32,7 @@ namespace GUI.modules
         }
         private void LoadMonHoc()
         {
-            var list = _monHocBLL.GetAllMonHoc();
+            var list = _monHocBLL.GetMonHocTheoPhanCong(_maND);
             list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
 
             cboMonHoc.DataSource = list;
@@ -101,7 +107,7 @@ namespace GUI.modules
 
             if (e.ColumnIndex == 6) // Sửa
             {
-                frmSuaCauHoi frm = new frmSuaCauHoi(maCauHoi);
+                frmSuaCauHoi frm = new frmSuaCauHoi(maCauHoi, _userId);
                 frm.ShowDialog();
             }
             else if (e.ColumnIndex == 7) // Xóa

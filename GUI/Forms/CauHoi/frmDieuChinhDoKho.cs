@@ -15,10 +15,14 @@ namespace GUI.Forms.CauHoi
     public partial class frmDieuChinhDoKho : Form
     {
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
-        private readonly CauHoiBLL _cauHoiBLL = new CauHoiBLL();
-        public frmDieuChinhDoKho()
+        private readonly CauHoiBLL _cauHoiBLL;
+        private readonly long _maND;
+        public frmDieuChinhDoKho(string userId)
         {
             InitializeComponent();
+            _maND = Convert.ToInt64(userId);
+            // KHỞI TẠO BLL VỚI MA_ND ĐÃ LẤY
+            _cauHoiBLL = new CauHoiBLL(_maND);
             LoadMonHocData();
         }
 
@@ -26,7 +30,7 @@ namespace GUI.Forms.CauHoi
         {
             try
             {
-                var list = _monHocBLL.GetAllMonHoc();
+                var list = _monHocBLL.GetMonHocTheoPhanCong(_maND);
                 list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
                 cbMonHoc.DataSource = list;
                 cbMonHoc.DisplayMember = "TenMonHoc";

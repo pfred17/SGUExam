@@ -1,4 +1,6 @@
 ﻿using BLL;
+using ClosedXML.Excel;
+using DAL;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DTO;
 using System;
@@ -8,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using sysDraw = System.Drawing;
-using ClosedXML.Excel;
 
 namespace GUI
 {
@@ -17,14 +18,17 @@ namespace GUI
         #region Fields
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
-        private readonly CauHoiBLL _cauHoiBLL = new();
+        private readonly CauHoiBLL _cauHoiBLL;
         private readonly List<DapAnDTO> _dapAnList = new();
+        private readonly string _userId;
         #endregion
 
         #region Constructor & Load
-        public frmThemCauHoi()
+        public frmThemCauHoi(string userId)
         {
-            InitializeComponent();
+            InitializeComponent();  
+           _userId = userId;
+           _cauHoiBLL = new CauHoiBLL(Convert.ToInt64(_userId)); // KHỞI TẠO BLL VỚI MA_ND ĐÃ LẤY
         }
 
         private void FrmThemCauHoi_Load(object? sender, EventArgs e)
@@ -37,8 +41,10 @@ namespace GUI
         #region Init Helpers
         private void InitCombos()
         {
-            var monList = _monHocBLL.GetAllMonHoc();
-            cbMonHoc.DataSource = new List<MonHocDTO>(monList);
+            long maND = Convert.ToInt64(_userId);
+            // Lọc môn học theo phân công
+            var monList = _monHocBLL.GetMonHocTheoPhanCong(maND);
+            cbMonHoc.DataSource = monList;
             cbMonHoc.DisplayMember = "TenMonHoc";
             cbMonHoc.ValueMember = "MaMonHoc";
 

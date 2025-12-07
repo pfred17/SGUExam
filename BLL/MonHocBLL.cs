@@ -12,12 +12,21 @@ namespace BLL
 {
     public class MonHocBLL
     {
+        private readonly long _maND; // Lưu maND
+
         private readonly MonHocDAL _dal = new MonHocDAL();
+        public MonHocBLL(long maND = 0)
+        {
+            _maND = maND;
+        }
         public List<MonHocDTO> GetAllMonHoc()
         {
             return _dal.GetAllMonHoc();
         }
-
+        public List<MonHocDTO> GetMonHocTheoPhanCong(long maND)
+        {
+            return _dal.GetMonHocTheoPhanCong(maND);
+        }
         public MonHocDTO? GetMonHocById(long maMonHoc)
         {
             return _dal.GetMonHocById(maMonHoc);

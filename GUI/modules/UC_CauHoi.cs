@@ -31,6 +31,7 @@ namespace GUI.modules
         public UC_CauHoi(string userId)
         {
             _userId = userId;
+            _cauHoiBLL = new CauHoiBLL(Convert.ToInt64(_userId)); // truyen userID xuong BLL
             InitializeComponent();
             LoadMonHoc();
             LoadDoKho();
@@ -40,7 +41,8 @@ namespace GUI.modules
         #region Load dữ liệu
         private void LoadMonHoc()
         {
-            var list = _monHocBLL.GetAllMonHoc();
+            long maND = Convert.ToInt64(_userId);
+            var list = _monHocBLL.GetMonHocTheoPhanCong(maND);
             list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
             SetComboBoxData(cbMonHoc, list, "TenMonHoc", "MaMonHoc", cbMonHoc_SelectedIndexChanged);
         }
@@ -64,9 +66,9 @@ namespace GUI.modules
         {
             combo.SelectedIndexChanged -= eventHandler;  // Tạm thời bỏ event để tránh gọi LoadData thừa khi gán DataSource
             combo.DataSource = list;                     // Gán danh sách dữ liệu vào ComboBox
-            combo.DisplayMember = displayMember;      
-            combo.ValueMember = valueMember;           
-            combo.SelectedIndex = 0;          
+            combo.DisplayMember = displayMember;
+            combo.ValueMember = valueMember;
+            combo.SelectedIndex = 0;
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
         private void LoadData(int? page = null)
@@ -187,15 +189,15 @@ namespace GUI.modules
         }
         private void btnThemMoi_Click(object sender, EventArgs e)
         {
-            var frm = new frmThemCauHoi();
+            var frm = new frmThemCauHoi(_userId);
             if (frm.ShowDialog() == DialogResult.OK)
                 LoadData();
         }
 
         private void btnTuDieuChinh_Click(object sender, EventArgs e)
         {
-            var frm = new frmDieuChinhDoKho();
-            if(frm.ShowDialog()== DialogResult.OK)
+            var frm = new frmDieuChinhDoKho(_userId);
+            if (frm.ShowDialog() == DialogResult.OK)
                 LoadData();
         }
 
@@ -209,7 +211,7 @@ namespace GUI.modules
 
             if (colName == "SuaCol")
             {
-                var frm = new frmSuaCauHoi(maCH); // truyền mã câu hỏi cần sửa
+                var frm = new frmSuaCauHoi(maCH, _userId); // truyền mã câu hỏi cần sửa
                 if (frm.ShowDialog() == DialogResult.OK)
                     LoadData();
             }
@@ -250,7 +252,7 @@ namespace GUI.modules
 
             if (_ucTrungLap == null)
             {
-                _ucTrungLap = new UC_CauHoiTrungLap1(this); // Tạo mới UC_CauHoiTrungLap nếu chưa có
+                _ucTrungLap = new UC_CauHoiTrungLap1(this, _userId); // Tạo mới UC_CauHoiTrungLap nếu chưa có
                 _ucTrungLap.Dock = DockStyle.Fill;
                 var parent = this.Parent;
                 if (parent != null)

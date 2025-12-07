@@ -1,4 +1,5 @@
 ﻿using BLL;
+using DAL;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DTO;
 using System;
@@ -14,15 +15,18 @@ namespace GUI
     {
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
-        private readonly CauHoiBLL _cauHoiBLL = new();
+        private readonly CauHoiBLL _cauHoiBLL;
 
         private readonly long _maCauHoi; // ID câu hỏi cần sửa
+        private readonly string _userId; // THÊM: Lưu userId
         private readonly List<DapAnDTO> _dapAnList = new(); // danh sách đáp án tạm thời
         private Dictionary<long, bool> _dapAnUsedMap = new(); //để lưu trạng thái “đã dùng” của đáp án
-        public frmSuaCauHoi(long maCauHoi)
+        public frmSuaCauHoi(long maCauHoi, string userId)
         {
             InitializeComponent();
             _maCauHoi = maCauHoi;
+            _userId = userId;
+            _cauHoiBLL = new CauHoiBLL(Convert.ToInt64(_userId)); // KHỞI TẠO BLL VỚI MA_ND ĐÃ LẤY
         }
 
         // thiết kế load
@@ -36,12 +40,16 @@ namespace GUI
 
         private void InitCombos()
         {
-            var monList = _monHocBLL.GetAllMonHoc();
-            cbMonHoc.DataSource = new List<MonHocDTO>(monList);
+            //var monList = _monHocBLL.GetAllMonHoc();
+            //cbMonHoc.DataSource = new List<MonHocDTO>(monList);
+            long maND = Convert.ToInt64(_userId);
+            var monList = _monHocBLL.GetMonHocTheoPhanCong(maND);
+            cbMonHoc.DataSource = monList;
             cbMonHoc.DisplayMember = "TenMonHoc";
             cbMonHoc.ValueMember = "MaMonHoc";
 
             cbMonHocFile.DataSource = new List<MonHocDTO>(monList);
+            cbMonHocFile.DataSource = _monHocBLL.GetMonHocTheoPhanCong(maND);
             cbMonHocFile.DisplayMember = "TenMonHoc";
             cbMonHocFile.ValueMember = "MaMonHoc";
 
