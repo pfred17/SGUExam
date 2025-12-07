@@ -96,9 +96,10 @@ namespace GUI
             label9.ForeColor = Color.FromArgb(100, 100, 100);
             label9.Location = new Point(29, 172);
             label9.Name = "label9";
-            label9.Size = new Size(421, 20);
+            label9.Size = new Size(420, 20);
             label9.TabIndex = 7;
-            label9.Text = "Vui lòng soạn câu hỏi theo đúng định dạng. Tải về file mẫu Docx";
+            label9.Text = "Vui lòng soạn câu hỏi theo đúng định dạng. Tải về file mẫu Excel";
+            label9.Click += OpenFileMauCauHoi_Click;
             // 
             // txtDuongDan
             // 
@@ -132,7 +133,7 @@ namespace GUI
             // 
             // lblChuongFile
             // 
-            lblChuongFile.Location = new Point(320, 18);
+            lblChuongFile.Location = new Point(415, 18);
             lblChuongFile.Name = "lblChuongFile";
             lblChuongFile.Size = new Size(100, 20);
             lblChuongFile.TabIndex = 10;
@@ -141,9 +142,9 @@ namespace GUI
             // cbChuongFile
             // 
             cbChuongFile.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbChuongFile.Location = new Point(320, 40);
+            cbChuongFile.Location = new Point(415, 41);
             cbChuongFile.Name = "cbChuongFile";
-            cbChuongFile.Size = new Size(121, 28);
+            cbChuongFile.Size = new Size(287, 28);
             cbChuongFile.TabIndex = 12;
             // 
             // cbMonHocFile
@@ -151,8 +152,9 @@ namespace GUI
             cbMonHocFile.DropDownStyle = ComboBoxStyle.DropDownList;
             cbMonHocFile.Location = new Point(30, 40);
             cbMonHocFile.Name = "cbMonHocFile";
-            cbMonHocFile.Size = new Size(192, 28);
+            cbMonHocFile.Size = new Size(301, 28);
             cbMonHocFile.TabIndex = 13;
+            cbMonHocFile.SelectedIndexChanged += CbMonHocFile_SelectedIndexChanged;
             // 
             // tabThuCong
             // 

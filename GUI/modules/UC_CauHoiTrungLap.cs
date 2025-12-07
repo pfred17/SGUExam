@@ -3,14 +3,14 @@ using DTO;
 using System.Data;
 namespace GUI.modules
 {
-    public partial class UC_CauHoiTrungLap1 : UserControl
+    public partial class UC_CauHoiTrungLap : UserControl
     {
         private readonly CauHoiBLL _cauHoiBLL;
         private readonly MonHocBLL _monHocBLL = new();
         private readonly UC_CauHoi _parentUC;
         private readonly string _userId; // 1. THÊM: Biến lưu ID người dùng
         private readonly long _maND;
-        public UC_CauHoiTrungLap1(UC_CauHoi parent, string userId)
+        public UC_CauHoiTrungLap(UC_CauHoi parent, string userId)
         {
             InitializeComponent();
             _parentUC = parent;

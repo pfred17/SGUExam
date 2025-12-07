@@ -20,7 +20,7 @@ namespace GUI.modules
         private readonly ChuongBLL _chuongBLL = new();
 
         private List<CauHoiDTO> filteredList = new(); // Dữ liệu đã lọc
-        private UC_CauHoiTrungLap1? _ucTrungLap;
+        private UC_CauHoiTrungLap? _ucTrungLap;
 
         private const string PLACEHOLDER = "Nhập nội dung câu hỏi để tìm kiếm...";
         // Phân trang
@@ -258,7 +258,7 @@ namespace GUI.modules
 
             if (_ucTrungLap == null)
             {
-                _ucTrungLap = new UC_CauHoiTrungLap1(this, _userId); // Tạo mới UC_CauHoiTrungLap nếu chưa có
+                _ucTrungLap = new UC_CauHoiTrungLap(this, _userId); // Tạo mới UC_CauHoiTrungLap nếu chưa có
                 _ucTrungLap.Dock = DockStyle.Fill;
                 var parent = this.Parent;
                 if (parent != null)

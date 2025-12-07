@@ -70,10 +70,17 @@ namespace GUI
             cb.DisplayMember = "TenChuong";
             cb.ValueMember = "MaChuong";
         }
+
         #endregion
 
         #region Event Handlers
-
+        private void CbMonHocFile_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (cbMonHocFile.SelectedItem is MonHocDTO m)
+            {
+                LoadChuongToCombo(cbChuongFile, m.MaMonHoc);
+            }
+        }
         private void CbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cbMonHoc.SelectedItem is MonHocDTO m) LoadChuongToCombo(cbChuong, m.MaMonHoc);
@@ -110,16 +117,22 @@ namespace GUI
                 MessageBox.Show("Vui lòng chọn Môn học cho bộ câu hỏi import.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!(cbChuongFile.SelectedItem is ChuongDTO chuong) || chuong.MaChuong == 0)
+            {
+                MessageBox.Show("Vui lòng chọn Chương.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             try
             {
                 var list = ReadExcelFile(path, monHoc.MaMonHoc, out var errors);
 
                 // --- Validate từng câu trước khi import ---
-                var validList = new List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)>();
+                var validList = new List<(string NoiDung, string DoKho, List<DapAnDTO> DapAnlist)>();
                 foreach (var item in list)
                 {
-                    if (CauHoiValidator.Validate(item.NoiDung, item.MaChuong, item.DoKho, item.DapAnlist, out var valErrors))
+                    long maChuong = chuong.MaChuong;
+                    if (CauHoiValidator.Validate(item.NoiDung, maChuong, item.DoKho, item.DapAnlist, out var valErrors))
                         validList.Add(item);
                     else
                         errors.Add($"Câu '{item.NoiDung.Substring(0, Math.Min(50, item.NoiDung.Length))}...': {string.Join(", ", valErrors)}");
@@ -136,7 +149,7 @@ namespace GUI
                 int count = 0;
                 foreach (var item in validList)
                 {
-                    _cauHoiBLL.ThemMoi(item.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
+                    _cauHoiBLL.ThemMoi(chuong.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
                     count++;
                 }
 
@@ -338,9 +351,9 @@ namespace GUI
         #endregion
 
         #region Excel Import Helper
-        private List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)> ReadExcelFile(string path, long maMonHoc, out List<string> logErrors)
+        private List<(string NoiDung, string DoKho, List<DapAnDTO> DapAnlist)> ReadExcelFile(string path, long maMonHoc, out List<string> logErrors)
         {
-            var result = new List<(string, string, long, List<DapAnDTO>)>();
+            var result = new List<(string, string,List<DapAnDTO>)>();
             logErrors = new List<string>();
 
             if (!File.Exists(path))
@@ -358,7 +371,7 @@ namespace GUI
                 if (!string.IsNullOrEmpty(name)) colMap[name] = c;
             }
 
-            string[] requiredCols = { "NoiDung", "DoKho", "TenChuong", "DapAn1", "DapAn2", "DapAn3", "DapAn4", "DapAnDung" };
+            string[] requiredCols = { "NoiDung", "DoKho", "DapAn1", "DapAn2", "DapAn3", "DapAn4", "DapAnDung" };
             foreach (var col in requiredCols)
                 if (!colMap.ContainsKey(col))
                     throw new Exception($"File Excel thiếu cột bắt buộc: {col}");
@@ -371,23 +384,10 @@ namespace GUI
                 {
                     string noiDung = ws.Cell(row, colMap["NoiDung"]).GetString().Trim();
                     string doKho = ws.Cell(row, colMap["DoKho"]).GetString().Trim();
-                    string tenChuong = ws.Cell(row, colMap["TenChuong"]).GetString().Trim();
-
+                  
                     if (string.IsNullOrEmpty(noiDung)) { logErrors.Add($"Dòng {row}: Nội dung câu hỏi trống"); row++; continue; }
-                    if (string.IsNullOrEmpty(tenChuong)) { logErrors.Add($"Dòng {row}: Tên chương trống"); row++; continue; }
                     if (string.IsNullOrEmpty(doKho) || !new[] { "Dễ", "Trung bình", "Khó" }.Contains(doKho))
                     { logErrors.Add($"Dòng {row}: Độ khó không hợp lệ"); row++; continue; }
-
-                    var chuong = _chuongBLL.GetChuongByMonHoc(maMonHoc)
-                                .FirstOrDefault(c => c.TenChuong.Equals(tenChuong, StringComparison.OrdinalIgnoreCase));
-                    long maChuong = 0;
-                    if (chuong == null)
-                    {
-                        var newChuong = new ChuongDTO { MaChuong = 0, MaMonHoc = maMonHoc, TenChuong = tenChuong };
-                        maChuong = _chuongBLL.AddChuong(newChuong, maMonHoc);
-                    }
-                    else
-                        maChuong = chuong.MaChuong;
 
                     var dapAnList = new List<DapAnDTO>();
                     bool hasEmptyAnswer = false;
@@ -404,7 +404,7 @@ namespace GUI
 
                     dapAnList[dung - 1].Dung = true;
 
-                    result.Add((noiDung, doKho, maChuong, dapAnList));
+                    result.Add((noiDung, doKho, dapAnList));
                 }
                 catch (Exception ex)
                 {
@@ -471,6 +471,24 @@ namespace GUI
             if (string.IsNullOrEmpty(text)) return string.Empty;
             var s = text.Replace("\r", " ").Replace("\n", " ").Trim();
             return s.Length <= maxLen ? s : s.Substring(0, maxLen) + "...";
+        }
+
+        private void OpenFileMauCauHoi_Click(object? sender, EventArgs e)
+        {
+            string filePath = Path.Combine(Application.StartupPath, "E:\\Downloads\\TestCauHoiCSharp.xlsx");
+            if (File.Exists(filePath))
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = filePath,
+                    UseShellExecute = true
+                });
+
+            }
+            else
+            {
+                MessageBox.Show("Không tìm thấy file mẫu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
         #endregion
     }

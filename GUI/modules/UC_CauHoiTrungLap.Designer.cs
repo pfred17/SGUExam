@@ -2,7 +2,7 @@
 
 namespace GUI.modules
 {
-    partial class UC_CauHoiTrungLap1
+    partial class UC_CauHoiTrungLap
     {
         /// <summary> 
         /// Required designer variable.
