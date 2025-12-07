@@ -42,7 +42,7 @@ namespace GUI.modules
         public class SinhVienAddedEventArgs : EventArgs
         {
             public UserDTO User { get; set; }
-            public bool IsFromExcel { get; set; }  // CỜ QUAN TRỌNG NHẤT!
+            public bool IsFromExcel { get; set; }  
 
             public SinhVienAddedEventArgs(UserDTO user, bool isFromExcel = false)
             {
@@ -295,6 +295,13 @@ namespace GUI.modules
                         MessageBoxButtons.OK,
                         thanhCong > 0 ? MessageBoxIcon.Information : MessageBoxIcon.Warning
                     );
+                    var ucParent = this.ParentForm.Controls.OfType<UC_SinhVienTrongNhom>().FirstOrDefault();
+                    ucParent?.LoadDanhSachSinhVien();
+                    //if (this.ParentForm != null)
+                    //{
+                    //    var ucParent = this.ParentForm.Controls.OfType<UC_SinhVienTrongNhom>().FirstOrDefault();
+                    //    ucParent?.LoadDanhSachSinhVien();  // ← LOAD LẠI 1 LẦN DUY NHẤT SAU KHI IMPORT XONG
+                    //}
                 }
             }
             catch (Exception ex)

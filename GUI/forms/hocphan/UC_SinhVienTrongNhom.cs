@@ -159,8 +159,9 @@ namespace GUI
             {
                 MessageBox.Show("Đã thêm sinh viên vào nhóm thành công!", "Thành công",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LoadDanhSachSinhVien();
             }
-            LoadDanhSachSinhVien();
         }
 
         private void UC_SinhVienTrongNhom_Load(object sender, EventArgs e)
@@ -207,6 +208,7 @@ namespace GUI
                         MessageBox.Show("Xóa thất bại! Vui lòng thử lại.", "Lỗi",
                                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+
 
                 }
             }
@@ -482,7 +484,7 @@ namespace GUI
             }
         }
 
-        // Thay thế/ thêm vào trong UC_SinhVienTrongNhom
+        
         private Control TaoCardDeThiSinhVien(DeThiDTO deThi)
         {
             // Panel chính (dùng Guna2Panel nếu bạn có thư viện, hoặc Panel tiêu chuẩn)
@@ -498,17 +500,7 @@ namespace GUI
                 ShadowDecoration = { Enabled = true, Depth = 3 }
             };
 
-            // Tiêu đề
-            //var lblTitle = new Label
-            //{
-            //    Text = deThi.TenDe ?? "(Không tên đề)",
-            //    Font = new Font("Segoe UI", 12, FontStyle.Bold),
-            //    Location = new Point(15, 10),
-            //    AutoSize = false,
-            //    Width = card.Width - 30,
-            //    Height = 35
-
-            //};
+           
             var lblTitle = new Label
             {
                 Text = deThi.TenDe ?? "(Không tên đề)",

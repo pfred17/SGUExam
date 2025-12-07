@@ -116,14 +116,14 @@ namespace GUI.forms.hocphan
                 return;
             }
 
-            var panelMain = mainForm.Controls["panelMain"];
-            if (panelMain is Panel p)
-            {
-                var uc = new ChinhSuaDeThi(maDe);
-                p.Controls.Clear();
-                uc.Dock = DockStyle.Fill;
-                p.Controls.Add(uc);
-            }
+            //var panelMain = mainForm.Controls["panelMain"];
+            //if (panelMain is Panel p)
+            //{
+            //    var uc = new ChinhSuaDeThi(maDe);
+            //    p.Controls.Clear();
+            //    uc.Dock = DockStyle.Fill;
+            //    p.Controls.Add(uc);
+            //}
         }
 
         private void MoChiTietDeThi(long maDe)

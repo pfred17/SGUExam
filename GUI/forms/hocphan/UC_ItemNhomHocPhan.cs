@@ -37,7 +37,7 @@ namespace GUI.modules
             lbSiSo.Text = $"Sỉ số:{soLuongSV}";
         }
 
-
+         
         public NhomHocPhanDTO GetCurrentData() => currentData;
 
         private void guna2CustomGradientPanel2_Paint(object sender, PaintEventArgs e)
@@ -52,7 +52,7 @@ namespace GUI.modules
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
-            menuChucNang.Show(btnSetting, new Point(0, btnSetting.Height));
+             menuChucNang.Show(btnSetting, new Point(0, btnSetting.Height));
         }
 
         private void menuXoa_Click(object sender, EventArgs e)

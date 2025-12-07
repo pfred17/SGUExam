@@ -68,7 +68,7 @@ namespace DAL
             return DatabaseHelper.ExecuteQuery(query, parameters);
         }
 
-        // Xóa sinh viên khỏi nhóm (dùng khi nhấn nút Xóa)
+        //Xóa sinh viên khỏi nhóm(dùng khi nhấn nút Xóa)
         public bool XoaSinhVienKhoiNhom(string maND, long maNhom)
         {
             string query = "DELETE FROM chi_tiet_nhom_hoc_phan WHERE ma_nd = @maND AND ma_nhom = @maNhom";
@@ -81,6 +81,44 @@ namespace DAL
             };
             return DatabaseHelper.ExecuteNonQuery(query, parameters) > 0;
         }
+
+        //public bool XoaSinhVienKhoiNhom(string maND, long maNhom)
+        //{
+        //    // ✅ 1. KIỂM TRA ĐÃ CÓ BÀI LÀM CHƯA
+        //    string checkQuery = @"
+        //        SELECT TOP 1 1
+        //        FROM bai_lam bl
+        //        JOIN de_thi_nhom dtn ON bl.ma_de = dtn.ma_de
+        //        WHERE bl.ma_nd = @maND
+        //          AND dtn.ma_nhom = @maNhom
+        //    ";
+
+        //    var checkParams = new SqlParameter[]
+        //    {
+        //new SqlParameter("@maND", SqlDbType.VarChar) { Value = maND },
+        //new SqlParameter("@maNhom", SqlDbType.BigInt) { Value = maNhom }
+        //    };
+
+        //    object result = DatabaseHelper.ExecuteScalar(checkQuery, checkParams);
+
+        //    // ✅ NẾU ĐÃ LÀM BÀI → KHÔNG ĐƯỢC XÓA
+        //    if (result != null)
+        //    {
+        //        return false; // BLL sẽ dùng để báo: "Sinh viên đã làm bài, không thể xóa"
+        //    }
+
+        //    // ✅ 2. CHƯA LÀM BÀI → XÓA BÌNH THƯỜNG
+        //    string deleteQuery = @"
+        //        DELETE FROM chi_tiet_nhom_hoc_phan
+        //        WHERE ma_nd = @maND AND ma_nhom = @maNhom
+        //    ";
+
+        //    int rows = DatabaseHelper.ExecuteNonQuery(deleteQuery, checkParams);
+        //    return rows > 0;
+        //}
+
+
+
         public int DemSinhVienTrongNhom(long maNhom)
         {
             string query = @"
