@@ -195,14 +195,17 @@ namespace GUI.modules
             };
 
             // ===== MÔ TẢ =====
+            // Trong LoadDeThi hoặc CreateDeThiCard
+            var deThiFull = deThiBLL.GetFullDetailById(deThi.MaDe);
             var lblMoTa = new Label
             {
-                Text = "Giao cho học phần Lập trình web và ứng dụng - NH2025 - HK1",
+                Text = $"Nhóm học phần: {deThiFull.TenNhomHocPhan ?? "Chưa có"}",
                 Font = new Font("Segoe UI", 10),
                 ForeColor = Color.Gray,
                 Location = new Point(22, 55),
                 AutoSize = true
             };
+
 
             // ===== THỜI GIAN =====
             var lblTG = new Label

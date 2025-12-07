@@ -82,6 +82,11 @@ namespace GUI.modules
                 MessageBox.Show("Vui lòng nhập tên đề kiểm tra!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (dtpTu.Value < DateTime.Now)
+            {
+                MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời điểm hiện tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (dtpTu.Value >= dtpDen.Value)
             {
                 MessageBox.Show("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -102,6 +107,15 @@ namespace GUI.modules
             if (chuongIds.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn ít nhất một chương!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            int soCauDe = (int)numDe.Value;
+            int soCauTrungBinh = (int)numTrungBinh.Value;
+            int soCauKho = (int)numKho.Value;
+
+            if (soCauDe <= 0 || soCauTrungBinh <= 0 || soCauKho <= 0)
+            {
+                MessageBox.Show("Số lượng câu hỏi Dễ, Trung bình, Khó không được để trống hoặc bằng 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

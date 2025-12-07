@@ -11,7 +11,6 @@ namespace GUI.forms.dethi
     {
         private readonly DeThiCauHinhDTO _cauHinh;
 
-        // ... (Constructor giữ nguyên) ...
         public KetQuaBaiThi(List<CauHoiDTO> dsCauHoi, int soCauDung, decimal diem, UserDTO user, DeThiCauHinhDTO cauHinh)
         {
             _cauHinh = cauHinh;
@@ -31,7 +30,7 @@ namespace GUI.forms.dethi
 
             int top = 10;
 
-            // --- 1. THÔNG TIN NGƯỜI LÀM BÀI (LUÔN HIỂN THỊ) ---
+            // 1. Thông tin người làm bài
             var lblMSSV = new Label { Text = $"MSSV: {user.MSSV}", Font = new Font("Segoe UI", 13, FontStyle.Bold), ForeColor = Color.DarkSlateGray, Location = new Point(20, top), AutoSize = true };
             panel.Controls.Add(lblMSSV);
             top += 28;
@@ -44,8 +43,7 @@ namespace GUI.forms.dethi
             panel.Controls.Add(lblEmail);
             top += 28;
 
-            // --- 2. HIỂN THỊ ĐIỂM (THEO QUY TẮC) ---
-            // Quy tắc: Chỉ hiện điểm nếu XemDiemSauThi = 1 HOẶC (XemDapAnSauThi = 1 VÀ XemBaiLam = 1)
+            // 2. Hiển thị điểm
             bool shouldShowScore = _cauHinh.XemDiemSauThi == true || (_cauHinh.XemDapAnSauThi == true && _cauHinh.XemBaiLam == true);
 
             if (shouldShowScore)
@@ -62,12 +60,9 @@ namespace GUI.forms.dethi
                 top += 40;
             }
 
-            // --- XỬ LÝ TRƯỜNG HỢP: CHỈ XEM ĐIỂM (THEO RÀNG BUỘC) ---
-            // "Nếu xem_diem_sau_thi = 1 thì hiển thị đề thi này bạn chỉ được phép xem điểm..."
-            // Điều kiện để DỪNG lại sau khi hiển thị điểm: XemDiemSauThi = 1 VÀ KHÔNG được xem chi tiết (XemDapAnSauThi = 0)
+            // 3. Chỉ xem điểm, không xem chi tiết
             if (_cauHinh.XemDiemSauThi == true && _cauHinh.XemDapAnSauThi == false)
             {
-                // Thêm thông báo rõ ràng hơn
                 var lblChiXemDiem = new Label
                 {
                     Text = "Bạn chỉ được phép xem thông tin và điểm số.",
@@ -77,25 +72,23 @@ namespace GUI.forms.dethi
                     AutoSize = true
                 };
                 panel.Controls.Add(lblChiXemDiem);
-                return; // KẾT THÚC, không hiển thị chi tiết câu hỏi
+                return;
             }
 
-
-            // --- 3. HIỂN THỊ CHI TIẾT CÂU HỎI VÀ ĐÁP ÁN (THEO QUY TẮC) ---
-            // Quy tắc: Chỉ hiển thị chi tiết nếu XemDapAnSauThi = 1 (vì nó bao gồm cả XemBaiLam=0 và XemBaiLam=1)
+            // 4. Hiển thị chi tiết câu hỏi và đáp án
             if (_cauHinh.XemDapAnSauThi == true)
             {
-                // Biến cờ quyết định xem có tô màu cho đáp án đã chọn của USER hay không
-                // "xem_bai_lam = 1" mới hiển thị toàn bộ bài làm của user (kể cả đáp án đã chọn)
                 bool shouldShowUserChoice = _cauHinh.XemBaiLam == true;
+                var dapAnBLL = new BLL.DapAnBLL();
 
                 for (int i = 0; i < dsCauHoi.Count; i++)
                 {
                     var cau = dsCauHoi[i];
-                    var dapAnBLL = new BLL.DapAnBLL();
                     var dapAnList = dapAnBLL.GetByCauHoi(cau.MaCauHoi);
 
-                    int dapAnDungIndex = dapAnList.FindIndex(da => da.Dung);
+                    // Tìm ID đáp án đúng
+                    var dapAnDung = dapAnList.FirstOrDefault(da => da.Dung);
+                    long? dapAnDungId = dapAnDung?.MaDapAn;
 
                     // Tiêu đề câu hỏi
                     var lblCau = new Label
@@ -104,12 +97,14 @@ namespace GUI.forms.dethi
                         Font = new Font("Segoe UI", 13, FontStyle.Bold),
                         Location = new Point(20, top),
                         AutoSize = true,
-                        ForeColor = (cau.DapAnChon == dapAnDungIndex && shouldShowUserChoice) ? Color.DarkGreen : Color.Black // Chỉ tô màu đúng/sai khi được xem bài làm
+                        ForeColor = (shouldShowUserChoice && cau.DapAnChon >= 0 && cau.DapAnChon < cau.DapAnIds.Count && cau.DapAnIds[cau.DapAnChon] == dapAnDungId)
+                            ? Color.DarkGreen
+                            : Color.Black
                     };
                     panel.Controls.Add(lblCau);
                     top += 30;
 
-                    // Hiển thị chi tiết đáp án
+                    // Hiển thị đáp án
                     for (int j = 0; j < cau.DapAnList.Count; j++)
                     {
                         string prefix = $"{(char)('A' + j)}. ";
@@ -117,24 +112,20 @@ namespace GUI.forms.dethi
                         Color backColor = Color.White;
                         string suffix = "";
 
-                        bool isDapAnDung = (j == dapAnDungIndex);
+                        bool isDapAnDung = (cau.DapAnIds[j] == dapAnDungId);
                         bool isDapAnChon = (j == cau.DapAnChon);
 
                         if (isDapAnDung)
                         {
-                            // 1. Đáp án đúng của đề (Luôn hiển thị nếu XemDapAnSauThi = 1)
                             foreColor = Color.DarkGreen;
                             suffix = " ✓";
-
                             if (isDapAnChon && shouldShowUserChoice)
                             {
-                                // 2. Chọn đúng (Chỉ tô nền nếu được xem bài làm)
                                 backColor = Color.LightGreen;
                             }
                         }
                         else if (isDapAnChon && shouldShowUserChoice)
                         {
-                            // 3. Chọn sai (Chỉ tô nền và ký hiệu nếu được xem bài làm)
                             backColor = Color.LightCoral;
                             suffix = " ✗";
                         }
@@ -158,7 +149,6 @@ namespace GUI.forms.dethi
             }
             else
             {
-                // Trường hợp không được xem điểm và cũng không được xem đáp án.
                 if (_cauHinh.XemDiemSauThi == false)
                 {
                     var lblKhongDuocXem = new Label
