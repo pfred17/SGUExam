@@ -31,7 +31,6 @@
             lbTenDe = new Label();
             lbNhom = new Label();
             lbThoiGian = new Label();
-            btnXoa = new Button();
             btnXemChiTiet = new Button();
             btnSua = new Button();
             SuspendLayout();
@@ -40,49 +39,43 @@
             // 
             lbTenDe.AutoSize = true;
             lbTenDe.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTenDe.Location = new Point(33, 15);
+            lbTenDe.Location = new Point(26, 12);
+            lbTenDe.Margin = new Padding(2, 0, 2, 0);
             lbTenDe.Name = "lbTenDe";
-            lbTenDe.Size = new Size(97, 30);
+            lbTenDe.Size = new Size(84, 25);
             lbTenDe.TabIndex = 0;
             lbTenDe.Text = "lbTenDe";
             // 
             // lbNhom
             // 
             lbNhom.AutoSize = true;
-            lbNhom.Location = new Point(33, 54);
+            lbNhom.Location = new Point(26, 43);
+            lbNhom.Margin = new Padding(2, 0, 2, 0);
             lbNhom.Name = "lbNhom";
-            lbNhom.Size = new Size(77, 25);
+            lbNhom.Size = new Size(63, 20);
             lbNhom.TabIndex = 1;
             lbNhom.Text = "lbNhom";
             // 
             // lbThoiGian
             // 
             lbThoiGian.AutoSize = true;
-            lbThoiGian.Location = new Point(33, 94);
+            lbThoiGian.Location = new Point(26, 75);
+            lbThoiGian.Margin = new Padding(2, 0, 2, 0);
             lbThoiGian.Name = "lbThoiGian";
-            lbThoiGian.Size = new Size(96, 25);
+            lbThoiGian.Size = new Size(81, 20);
             lbThoiGian.TabIndex = 2;
             lbThoiGian.Text = "lbThoiGian";
-            // 
-            // btnXoa
-            // 
-            btnXoa.BackColor = Color.HotPink;
-            btnXoa.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnXoa.Location = new Point(859, 43);
-            btnXoa.Name = "btnXoa";
-            btnXoa.Size = new Size(118, 43);
-            btnXoa.TabIndex = 3;
-            btnXoa.Text = "Xóa";
-            btnXoa.UseVisualStyleBackColor = false;
-            btnXoa.Click += btnXoa_Click;
             // 
             // btnXemChiTiet
             // 
             btnXemChiTiet.BackColor = Color.Aquamarine;
+            btnXemChiTiet.FlatAppearance.BorderSize = 0;
+            btnXemChiTiet.FlatStyle = FlatStyle.Flat;
             btnXemChiTiet.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnXemChiTiet.Location = new Point(581, 43);
+            btnXemChiTiet.Location = new Point(737, 36);
+            btnXemChiTiet.Margin = new Padding(2);
             btnXemChiTiet.Name = "btnXemChiTiet";
-            btnXemChiTiet.Size = new Size(128, 43);
+            btnXemChiTiet.Size = new Size(125, 34);
             btnXemChiTiet.TabIndex = 4;
             btnXemChiTiet.Text = "Xem chi tiết";
             btnXemChiTiet.UseVisualStyleBackColor = false;
@@ -91,10 +84,13 @@
             // btnSua
             // 
             btnSua.BackColor = Color.LightSkyBlue;
+            btnSua.FlatAppearance.BorderSize = 0;
+            btnSua.FlatStyle = FlatStyle.Flat;
             btnSua.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSua.Location = new Point(725, 43);
+            btnSua.Location = new Point(897, 36);
+            btnSua.Margin = new Padding(2);
             btnSua.Name = "btnSua";
-            btnSua.Size = new Size(118, 43);
+            btnSua.Size = new Size(94, 34);
             btnSua.TabIndex = 5;
             btnSua.Text = "Sửa";
             btnSua.UseVisualStyleBackColor = false;
@@ -102,19 +98,19 @@
             // 
             // UC_ItemDeThi
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(btnSua);
             Controls.Add(btnXemChiTiet);
-            Controls.Add(btnXoa);
             Controls.Add(lbThoiGian);
             Controls.Add(lbNhom);
             Controls.Add(lbTenDe);
+            Margin = new Padding(2);
             Name = "UC_ItemDeThi";
-            Padding = new Padding(50, 0, 0, 0);
-            Size = new Size(1015, 128);
+            Padding = new Padding(40, 0, 0, 0);
+            Size = new Size(1050, 102);
             Load += UC_ItemDeThi_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -125,7 +121,6 @@
         private Label lbTenDe;
         private Label lbNhom;
         private Label lbThoiGian;
-        private Button btnXoa;
         private Button btnXemChiTiet;
         private Button btnSua;
     }

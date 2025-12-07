@@ -275,7 +275,7 @@ namespace GUI.modules
         {
             // Ẩn usercontrol (không Remove)
             ResetFields();
-            this.Visible = z;
+            this.Visible = false;
 
             // Thông báo cho cha biết đã đóng (nếu cần)
             FormClosedEvent?.Invoke(this, EventArgs.Empty);

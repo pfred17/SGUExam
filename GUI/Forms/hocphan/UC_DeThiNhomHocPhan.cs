@@ -18,7 +18,7 @@ namespace GUI.forms.hocphan
         private List<DeThiDTO> _dsDeThi = new List<DeThiDTO>();
         private List<DeThiDTO> _dsDeThiLoc = new List<DeThiDTO>();    
         private int _currentPage = 1;
-        private int _pageSize = 4;
+        private int _pageSize = 5;
         private int _totalPages = 1;
         public event Action<long> TaoDeThiClicked;
 
@@ -107,6 +107,24 @@ namespace GUI.forms.hocphan
             btnPrev.Enabled = _currentPage > 1;
             btnNext.Enabled = _currentPage < _totalPages;
         }
+        //private void MoChinhSuaDeThi(long maDe)
+        //{
+        //    var mainForm = this.FindForm() as MainForm;
+        //    if (mainForm == null)
+        //    {
+        //        MessageBox.Show("Không tìm thấy MainForm!");
+        //        return;
+        //    }
+
+        //    var panelMain = mainForm.Controls["panelMain"];
+        //    if (panelMain is Panel p)
+        //    {
+        //        var uc = new ChinhSuaDeThi(maDe);
+        //        p.Controls.Clear();
+        //        uc.Dock = DockStyle.Fill;
+        //        p.Controls.Add(uc);
+        //    }
+        //}
         private void MoChinhSuaDeThi(long maDe)
         {
             var mainForm = this.FindForm() as MainForm;
@@ -116,15 +134,17 @@ namespace GUI.forms.hocphan
                 return;
             }
 
+            var uc = new GUI.modules.ChinhSuaDeThi(maDe);
+            uc.Dock = DockStyle.Fill;
+
             var panelMain = mainForm.Controls["panelMain"];
             if (panelMain is Panel p)
             {
-                var uc = new ChinhSuaDeThi(maDe);
                 p.Controls.Clear();
-                uc.Dock = DockStyle.Fill;
                 p.Controls.Add(uc);
             }
         }
+
 
         private void MoChiTietDeThi(long maDe)
         {
@@ -179,7 +199,34 @@ namespace GUI.forms.hocphan
         }
         private void btnTaoDe_Click(object sender, EventArgs e)
         {
-            // ✅ Kiểm tra đã có nhóm hay chưa
+            //// ✅ Kiểm tra đã có nhóm hay chưa
+            //if (_maNhom <= 0)
+            //{
+            //    MessageBox.Show("Chưa chọn nhóm học phần!", "Thông báo",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            //// ✅ Tìm MainForm cha
+            //var mainForm = this.FindForm() as MainForm;
+            //if (mainForm == null)
+            //{
+            //    MessageBox.Show("Không tìm thấy MainForm!");
+            //    return;
+            //}
+
+            //// ✅ Tạo UC_TaoDeThi và truyền mã nhóm vào
+            //var ucTaoDe = new UC_TaoDeThi(-_maNhom);
+
+            //// ✅ Lấy panelMain trong MainForm
+            //var panelMain = mainForm.Controls["panelMain"];
+            //if (panelMain is Panel p)
+            //{
+            //    p.Controls.Clear();
+            //    ucTaoDe.Dock = DockStyle.Fill;
+            //    p.Controls.Add(ucTaoDe);
+            //}
+
             if (_maNhom <= 0)
             {
                 MessageBox.Show("Chưa chọn nhóm học phần!", "Thông báo",
@@ -187,7 +234,6 @@ namespace GUI.forms.hocphan
                 return;
             }
 
-            // ✅ Tìm MainForm cha
             var mainForm = this.FindForm() as MainForm;
             if (mainForm == null)
             {
@@ -195,15 +241,14 @@ namespace GUI.forms.hocphan
                 return;
             }
 
-            // ✅ Tạo UC_TaoDeThi và truyền mã nhóm vào
-            var ucTaoDe = new UC_TaoDeThi();
+            // ✅ Truyền MÃ NHÓM sang UC_TaoDeThi
+            var ucTaoDe = new UC_TaoDeThi(_maNhom);
+            ucTaoDe.Dock = DockStyle.Fill;
 
-            // ✅ Lấy panelMain trong MainForm
             var panelMain = mainForm.Controls["panelMain"];
             if (panelMain is Panel p)
             {
                 p.Controls.Clear();
-                ucTaoDe.Dock = DockStyle.Fill;
                 p.Controls.Add(ucTaoDe);
             }
         }

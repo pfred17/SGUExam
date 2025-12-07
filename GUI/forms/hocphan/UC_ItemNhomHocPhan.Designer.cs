@@ -29,125 +29,30 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ItemNhomHocPhan));
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
-            lbSiSo = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            panel1 = new Panel();
-            lbMonHoc = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            lbGhiChu = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            btnSetting = new Guna.UI2.WinForms.Guna2Button();
-            lbTenNhom = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             menuChucNang = new ContextMenuStrip(components);
             toolStripMenuItem1 = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripMenuItem();
             toolStripMenuItem7 = new ToolStripMenuItem();
-            guna2CustomGradientPanel1.SuspendLayout();
+            btnSetting = new Guna.UI2.WinForms.Guna2Button();
+            panel1 = new Panel();
+            guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
+            lbSiSo1 = new Label();
+            lbGhiChu1 = new Label();
+            lbMonHoc1 = new Label();
+            lbTenNhom1 = new Label();
+            lbTenNhom = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            lbGhiChu = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            lbMonHoc = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            lbSiSo = new Guna.UI2.WinForms.Guna2HtmlLabel();
             menuChucNang.SuspendLayout();
+            guna2CustomGradientPanel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // guna2CustomGradientPanel1
-            // 
-            guna2CustomGradientPanel1.BorderRadius = 15;
-            guna2CustomGradientPanel1.Controls.Add(lbSiSo);
-            guna2CustomGradientPanel1.Controls.Add(panel1);
-            guna2CustomGradientPanel1.Controls.Add(lbMonHoc);
-            guna2CustomGradientPanel1.Controls.Add(lbGhiChu);
-            guna2CustomGradientPanel1.Controls.Add(btnSetting);
-            guna2CustomGradientPanel1.Controls.Add(lbTenNhom);
-            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges3;
-            guna2CustomGradientPanel1.Dock = DockStyle.Fill;
-            guna2CustomGradientPanel1.Location = new Point(0, 0);
-            guna2CustomGradientPanel1.Margin = new Padding(2);
-            guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
-            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            guna2CustomGradientPanel1.Size = new Size(293, 240);
-            guna2CustomGradientPanel1.TabIndex = 0;
-            guna2CustomGradientPanel1.Paint += guna2CustomGradientPanel1_Paint;
-            // 
-            // lbSiSo
-            // 
-            lbSiSo.BackColor = Color.Transparent;
-            lbSiSo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbSiSo.Location = new Point(208, 194);
-            lbSiSo.Margin = new Padding(2);
-            lbSiSo.Name = "lbSiSo";
-            lbSiSo.Size = new Size(53, 27);
-            lbSiSo.TabIndex = 3;
-            lbSiSo.Text = "lbSiSo";
-            // 
-            // panel1
-            // 
-            panel1.BackColor = SystemColors.ControlText;
-            panel1.Location = new Point(2, 65);
-            panel1.Margin = new Padding(2);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(456, 2);
-            panel1.TabIndex = 2;
-            // 
-            // lbMonHoc
-            // 
-            lbMonHoc.BackColor = Color.Transparent;
-            lbMonHoc.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbMonHoc.Location = new Point(15, 82);
-            lbMonHoc.Margin = new Padding(2);
-            lbMonHoc.MaximumSize = new Size(256, 0);
-            lbMonHoc.Name = "lbMonHoc";
-            lbMonHoc.Size = new Size(84, 27);
-            lbMonHoc.TabIndex = 0;
-            lbMonHoc.Text = "lbMonhoc";
-            lbMonHoc.TextAlignment = ContentAlignment.MiddleLeft;
-            // 
-            // lbGhiChu
-            // 
-            lbGhiChu.BackColor = Color.Transparent;
-            lbGhiChu.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbGhiChu.Location = new Point(15, 162);
-            lbGhiChu.Margin = new Padding(2);
-            lbGhiChu.Name = "lbGhiChu";
-            lbGhiChu.Size = new Size(75, 27);
-            lbGhiChu.TabIndex = 0;
-            lbGhiChu.Text = "lbGhiChu";
-            // 
-            // btnSetting
-            // 
-            btnSetting.BackColor = Color.White;
-            btnSetting.BorderColor = Color.White;
-            btnSetting.BorderRadius = 3;
-            btnSetting.CustomizableEdges = customizableEdges1;
-            btnSetting.DisabledState.BorderColor = Color.DarkGray;
-            btnSetting.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnSetting.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnSetting.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnSetting.FillColor = Color.White;
-            btnSetting.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnSetting.ForeColor = Color.White;
-            btnSetting.Image = (Image)resources.GetObject("btnSetting.Image");
-            btnSetting.ImageSize = new Size(30, 30);
-            btnSetting.Location = new Point(232, 8);
-            btnSetting.Margin = new Padding(2);
-            btnSetting.Name = "btnSetting";
-            btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnSetting.Size = new Size(39, 41);
-            btnSetting.TabIndex = 1;
-            btnSetting.Click += btnSetting_Click;
-            // 
-            // lbTenNhom
-            // 
-            lbTenNhom.BackColor = Color.Transparent;
-            lbTenNhom.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTenNhom.Location = new Point(15, 24);
-            lbTenNhom.Margin = new Padding(2);
-            lbTenNhom.MaximumSize = new Size(248, 0);
-            lbTenNhom.Name = "lbTenNhom";
-            lbTenNhom.Size = new Size(97, 19);
-            lbTenNhom.TabIndex = 0;
-            lbTenNhom.Text = "lbTenNhom";
-            lbTenNhom.TextAlignment = ContentAlignment.MiddleLeft;
             // 
             // menuChucNang
             // 
@@ -185,6 +90,148 @@
             toolStripMenuItem7.Text = "Xóa nhóm";
             toolStripMenuItem7.Click += menuXoa_Click;
             // 
+            // btnSetting
+            // 
+            btnSetting.BackColor = Color.White;
+            btnSetting.BorderColor = Color.White;
+            btnSetting.BorderRadius = 3;
+            btnSetting.CustomizableEdges = customizableEdges1;
+            btnSetting.DisabledState.BorderColor = Color.DarkGray;
+            btnSetting.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSetting.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnSetting.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnSetting.FillColor = Color.White;
+            btnSetting.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSetting.ForeColor = Color.White;
+            btnSetting.Image = (Image)resources.GetObject("btnSetting.Image");
+            btnSetting.ImageSize = new Size(30, 30);
+            btnSetting.Location = new Point(288, 11);
+            btnSetting.Margin = new Padding(2);
+            btnSetting.Name = "btnSetting";
+            btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnSetting.Size = new Size(39, 41);
+            btnSetting.TabIndex = 1;
+            btnSetting.Click += btnSetting_Click;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.ControlText;
+            panel1.Location = new Point(2, 65);
+            panel1.Margin = new Padding(2);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(456, 2);
+            panel1.TabIndex = 2;
+            // 
+            // guna2CustomGradientPanel1
+            // 
+            guna2CustomGradientPanel1.BorderRadius = 15;
+            guna2CustomGradientPanel1.Controls.Add(lbSiSo1);
+            guna2CustomGradientPanel1.Controls.Add(lbGhiChu1);
+            guna2CustomGradientPanel1.Controls.Add(lbMonHoc1);
+            guna2CustomGradientPanel1.Controls.Add(lbTenNhom1);
+            guna2CustomGradientPanel1.Controls.Add(panel1);
+            guna2CustomGradientPanel1.Controls.Add(btnSetting);
+            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges3;
+            guna2CustomGradientPanel1.Dock = DockStyle.Fill;
+            guna2CustomGradientPanel1.Location = new Point(0, 0);
+            guna2CustomGradientPanel1.Margin = new Padding(2);
+            guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
+            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            guna2CustomGradientPanel1.Size = new Size(339, 240);
+            guna2CustomGradientPanel1.TabIndex = 0;
+            guna2CustomGradientPanel1.Paint += guna2CustomGradientPanel1_Paint;
+            // 
+            // lbSiSo1
+            // 
+            lbSiSo1.BackColor = Color.White;
+            lbSiSo1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbSiSo1.Location = new Point(260, 201);
+            lbSiSo1.Name = "lbSiSo1";
+            lbSiSo1.Size = new Size(67, 25);
+            lbSiSo1.TabIndex = 7;
+            lbSiSo1.Text = "lbSiSo";
+            // 
+            // lbGhiChu1
+            // 
+            lbGhiChu1.BackColor = Color.White;
+            lbGhiChu1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbGhiChu1.Location = new Point(17, 162);
+            lbGhiChu1.Name = "lbGhiChu1";
+            lbGhiChu1.Size = new Size(235, 49);
+            lbGhiChu1.TabIndex = 6;
+            lbGhiChu1.Text = "lbGhiChu";
+            // 
+            // lbMonHoc1
+            // 
+            lbMonHoc1.BackColor = Color.White;
+            lbMonHoc1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbMonHoc1.Location = new Point(17, 85);
+            lbMonHoc1.Name = "lbMonHoc1";
+            lbMonHoc1.Size = new Size(282, 50);
+            lbMonHoc1.TabIndex = 4;
+            lbMonHoc1.Text = "lbMonHoc";
+            // 
+            // lbTenNhom1
+            // 
+            lbTenNhom1.BackColor = Color.White;
+            lbTenNhom1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTenNhom1.ImageAlign = ContentAlignment.MiddleLeft;
+            lbTenNhom1.Location = new Point(17, 11);
+            lbTenNhom1.Name = "lbTenNhom1";
+            lbTenNhom1.Size = new Size(256, 50);
+            lbTenNhom1.TabIndex = 3;
+            lbTenNhom1.Text = "lbTenNhom";
+            lbTenNhom1.TextAlign = ContentAlignment.MiddleLeft;
+            lbTenNhom1.Click += lbTenNhom1_Click;
+            // 
+            // lbTenNhom
+            // 
+            lbTenNhom.BackColor = Color.Transparent;
+            lbTenNhom.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTenNhom.Location = new Point(15, 24);
+            lbTenNhom.Margin = new Padding(2);
+            lbTenNhom.MaximumSize = new Size(248, 0);
+            lbTenNhom.Name = "lbTenNhom";
+            lbTenNhom.Size = new Size(97, 25);
+            lbTenNhom.TabIndex = 0;
+            lbTenNhom.Text = "lbTenNhom";
+            lbTenNhom.TextAlignment = ContentAlignment.MiddleLeft;
+            // 
+            // lbGhiChu
+            // 
+            lbGhiChu.BackColor = Color.Transparent;
+            lbGhiChu.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbGhiChu.Location = new Point(15, 162);
+            lbGhiChu.Margin = new Padding(2);
+            lbGhiChu.Name = "lbGhiChu";
+            lbGhiChu.Size = new Size(75, 27);
+            lbGhiChu.TabIndex = 0;
+            lbGhiChu.Text = "lbGhiChu";
+            // 
+            // lbMonHoc
+            // 
+            lbMonHoc.BackColor = Color.Transparent;
+            lbMonHoc.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbMonHoc.Location = new Point(15, 82);
+            lbMonHoc.Margin = new Padding(2);
+            lbMonHoc.MaximumSize = new Size(256, 0);
+            lbMonHoc.Name = "lbMonHoc";
+            lbMonHoc.Size = new Size(84, 27);
+            lbMonHoc.TabIndex = 0;
+            lbMonHoc.Text = "lbMonhoc";
+            lbMonHoc.TextAlignment = ContentAlignment.MiddleLeft;
+            // 
+            // lbSiSo
+            // 
+            lbSiSo.BackColor = Color.Transparent;
+            lbSiSo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbSiSo.Location = new Point(208, 194);
+            lbSiSo.Margin = new Padding(2);
+            lbSiSo.Name = "lbSiSo";
+            lbSiSo.Size = new Size(53, 27);
+            lbSiSo.TabIndex = 3;
+            lbSiSo.Text = "lbSiSo";
+            // 
             // UC_ItemNhomHocPhan
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -192,10 +239,9 @@
             Controls.Add(guna2CustomGradientPanel1);
             Margin = new Padding(2);
             Name = "UC_ItemNhomHocPhan";
-            Size = new Size(293, 240);
-            guna2CustomGradientPanel1.ResumeLayout(false);
-            guna2CustomGradientPanel1.PerformLayout();
+            Size = new Size(339, 240);
             menuChucNang.ResumeLayout(false);
+            guna2CustomGradientPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -215,5 +261,9 @@
         private Panel panel1;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbSiSo;
+        private Label lbTenNhom1;
+        private Label lbMonHoc1;
+        private Label lbGhiChu1;
+        private Label lbSiSo1;
     }
 }

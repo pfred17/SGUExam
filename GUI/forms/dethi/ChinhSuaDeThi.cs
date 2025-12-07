@@ -37,7 +37,7 @@ namespace GUI.modules
             var monList = monHocBLL.GetAllMonHocByStatus(1);
             cbMonHoc.DataSource = monList;
             cbMonHoc.DisplayMember = "TenMH";
-            cbMonHoc.ValueMember = "MaMH";
+            cbMonHoc.ValueMember = "MaMonHoc";
 
             // Gán event khi chọn môn học
             cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
