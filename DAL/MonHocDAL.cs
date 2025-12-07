@@ -79,10 +79,10 @@ namespace DAL
 
             SqlParameter[] parameters =
             {
-                new ("@ma_mh", monHoc.MaMonHoc),
-                new ("@ten_mh", monHoc.TenMonHoc),
-                new ("@so_tin_chi", monHoc.SoTinChi),
-                new ("@trang_thai", monHoc.TrangThai)
+                new SqlParameter("@ma_mh", monHoc.MaMonHoc),
+                new SqlParameter("@ten_mh", monHoc.TenMonHoc),
+                new SqlParameter("@so_tin_chi", monHoc.SoTinChi),
+                new SqlParameter("@trang_thai", monHoc.TrangThai)
             };
 
             object result = DatabaseHelper.ExecuteScalar(query, parameters);
@@ -101,10 +101,10 @@ namespace DAL
 
             SqlParameter[] parameters =
             {
-                new ("@ma_mh", monHoc.MaMonHoc),
-                new ("@ten_mh", monHoc.TenMonHoc),
-                new ("@so_tin_chi",monHoc.SoTinChi),
-                new ("@trang_thai", monHoc.TrangThai)
+                new SqlParameter("@ma_mh", monHoc.MaMonHoc),
+                new SqlParameter("@ten_mh", monHoc.TenMonHoc),
+                new SqlParameter("@so_tin_chi",monHoc.SoTinChi),
+                new SqlParameter("@trang_thai", monHoc.TrangThai)
             };
             int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
             return rows > 0;

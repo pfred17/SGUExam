@@ -75,7 +75,7 @@
             pnMain.Margin = new Padding(0);
             pnMain.Name = "pnMain";
             pnMain.Padding = new Padding(23, 27, 23, 27);
-            pnMain.Size = new Size(1600, 1217);
+            pnMain.Size = new Size(1120, 730);
             pnMain.TabIndex = 1;
             // 
             // dgvPhanCong
@@ -178,12 +178,12 @@
             pnHeader.Margin = new Padding(0);
             pnHeader.Name = "pnHeader";
             pnHeader.Padding = new Padding(11, 13, 11, 13);
-            pnHeader.Size = new Size(1600, 80);
+            pnHeader.Size = new Size(1120, 80);
             pnHeader.TabIndex = 0;
             // 
             // btnThem
             // 
-            btnThem.BorderRadius = 15;
+            btnThem.BackColor = Color.DodgerBlue;
             btnThem.Cursor = Cursors.Hand;
             btnThem.CustomizableEdges = customizableEdges5;
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
@@ -192,7 +192,7 @@
             btnThem.Location = new Point(886, 15);
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnThem.Size = new Size(210, 50);
+            btnThem.Size = new Size(208, 48);
             btnThem.TabIndex = 0;
             btnThem.Text = "+THÊM PHÂN CÔNG";
             btnThem.Click += btnThem_Click;
@@ -217,7 +217,7 @@
             txtSearch.PlaceholderText = "Tìm kiếm giảng viên, môn học...";
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtSearch.Size = new Size(275, 50);
+            txtSearch.Size = new Size(275, 48);
             txtSearch.TabIndex = 1;
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Enter += txtSearch_Enter;
@@ -229,13 +229,13 @@
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             MaPhanCong.DefaultCellStyle = dataGridViewCellStyle2;
             MaPhanCong.FillWeight = 74.3705139F;
-            MaPhanCong.HeaderText = "#";
+            MaPhanCong.HeaderText = "Mã phân công";
             MaPhanCong.MinimumWidth = 6;
             MaPhanCong.Name = "MaPhanCong";
             MaPhanCong.ReadOnly = true;
             MaPhanCong.Resizable = DataGridViewTriState.False;
             MaPhanCong.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MaPhanCong.Width = 30;
+            MaPhanCong.Width = 149;
             // 
             // MaMon
             // 
@@ -289,12 +289,11 @@
             // 
             // TrangThai
             // 
-            TrangThai.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             TrangThai.HeaderText = "Trạng thái";
             TrangThai.MinimumWidth = 6;
             TrangThai.Name = "TrangThai";
             TrangThai.ReadOnly = true;
-            TrangThai.Width = 131;
+            TrangThai.Width = 125;
             // 
             // EditCol
             // 
@@ -320,12 +319,12 @@
             // 
             // UC_PhanCong
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(pnHeader);
             Controls.Add(pnMain);
             Name = "UC_PhanCong";
-            Size = new Size(1600, 1217);
+            Size = new Size(1120, 730);
             pnMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPhanCong).EndInit();
             pnHeader.ResumeLayout(false);

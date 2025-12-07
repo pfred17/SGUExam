@@ -14,5 +14,8 @@ namespace DTO
         public List<string> DapAnList { get; set; } = new List<string>();
         public List<long> DapAnIds { get; set; } = new List<long>();
         public int DapAnChon { get; set; } = -1; // -1: chưa chọn
+        public int SoLuotLam { get; set; }  
+        public double TyLeSai { get; set; }
+        public string DoKhoGoiY { get; set; } = ""; 
     }
 }

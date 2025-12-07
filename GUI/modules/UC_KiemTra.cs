@@ -12,17 +12,22 @@ namespace GUI.modules
     {
         private readonly DeThiBLL deThiBLL = new DeThiBLL();
         private readonly string _userId;
+        private readonly PermissionBLL _permissionBLL = new PermissionBLL();
+
 
         public UC_KiemTra(string userId)
         {
             InitializeComponent();
             _userId = userId;
-
-            cbLoai.SelectedIndex = 0;
+            loadPermission();
             cbTrangThai.SelectedIndex = 0;
             btnTaoDeThi.Click += BtnTaoDeThi_Click; // Gắn sự kiện
-
             LoadDeThi();
+        }
+
+        private void loadPermission()
+        {
+            btnTaoDeThi.Visible = _permissionBLL.HasPermission(_userId, 5, "Thêm");
         }
 
         private void LoadDeThi()
@@ -30,11 +35,59 @@ namespace GUI.modules
             flowDeThi.Controls.Clear();
             List<DeThiDTO> danhSachDeThi = deThiBLL.GetAll();
 
+            // 🔥 Lọc theo từ khóa tìm kiếm
+            string keyword = txtSearch.Text.Trim().ToLower();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                danhSachDeThi = danhSachDeThi
+                    .Where(x => x.TenDe != null && x.TenDe.ToLower().Contains(keyword))
+                    .ToList();
+            }
+
+            // Lọc theo trạng thái
+            string selectedStatus = cbTrangThai.SelectedItem?.ToString() ?? "Tất cả";
+            DateTime now = DateTime.Now;
+
+            if (selectedStatus == "Chưa mở")
+            {
+                danhSachDeThi = danhSachDeThi
+                    .Where(deThi =>
+                        deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau
+                    ).ToList();
+            }
+            else if (selectedStatus == "Đang mở")
+            {
+                danhSachDeThi = danhSachDeThi
+                    .Where(deThi =>
+                        deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
+                        now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc
+                    ).ToList();
+            }
+            else if (selectedStatus == "Đã đóng")
+            {
+                danhSachDeThi = danhSachDeThi
+                    .Where(deThi =>
+                        deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc
+                    ).ToList();
+            }
+
+            // Tạo thẻ (card)
             foreach (var deThi in danhSachDeThi)
             {
                 var card = CreateDeThiCard(deThi);
                 flowDeThi.Controls.Add(card);
             }
+        }
+
+
+
+        private void CbTrangThai_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadDeThi();
+        }
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadDeThi();
         }
         private void BtnView_Click(object sender, EventArgs e)
         {
@@ -71,6 +124,58 @@ namespace GUI.modules
                 }
             }
         }
+        private void BtnEdit_Click(object sender, EventArgs e)
+        {
+            var btn = sender as Guna2Button;
+            var deThi = btn.Tag as DeThiDTO;
+
+            // Tìm MainForm cha và panelMain
+            var mainForm = this.FindForm() as MainForm;
+            if (mainForm != null)
+            {
+                var uc = new ChinhSuaDeThi(deThi.MaDe);
+                var panelMain = mainForm.Controls["panelMain"];
+                if (panelMain is Panel p)
+                {
+                    p.Controls.Clear();
+                    uc.Dock = DockStyle.Fill;
+                    p.Controls.Add(uc);
+                }
+            }
+        }
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            var btn = sender as Guna2Button;
+            var deThi = btn?.Tag as DeThiDTO;
+            if (deThi == null) return;
+
+            var confirm = MessageBox.Show(
+                $"CẢNH BÁO: Việc xóa đề thi \"{deThi.TenDe}\" sẽ xóa toàn bộ dữ liệu liên quan (bài làm, câu hỏi, cấu hình, nhóm, chương, ...).\n\nBạn có chắc chắn muốn tiếp tục?",
+                "Xác nhận xóa đề thi",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes) return;
+
+            try
+            {
+                bool result = deThiBLL.DeleteDeThi(deThi.MaDe);
+                if (result)
+                {
+                    MessageBox.Show("Đã xóa đề thi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDeThi(); // Reload the exam list
+                }
+                else
+                {
+                    MessageBox.Show("Xóa đề thi thất bại! Không thể xóa toàn bộ dữ liệu liên quan.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Xóa đề thi thất bại!\nChi tiết lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
 
         private Control CreateDeThiCard(DeThiDTO deThi)
@@ -127,11 +232,37 @@ namespace GUI.modules
             };
 
             // ===== NÚT TRẠNG THÁI =====
+            string statusText;
+            Color statusColor;
+            DateTime now = DateTime.Now;
+
+            if (deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau)
+            {
+                statusText = "Chưa mở";
+                statusColor = Color.LightGray;
+            }
+            else if (deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
+                     now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc)
+            {
+                statusText = "Đang thi";
+                statusColor = Color.LightBlue;
+            }
+            else if (deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
+            {
+                statusText = "Kết thúc";
+                statusColor = Color.FromArgb(120, 144, 156);
+            }
+            else
+            {
+                statusText = "Không xác định";
+                statusColor = Color.Gray;
+            }
+
             var btnStatus = new Guna2Button
             {
-                Text = deThi.TrangThai == 1 ? "Đang mở" : "Đã đóng",
-                FillColor = deThi.TrangThai == 1 ? Color.FromArgb(200, 230, 255) : Color.FromArgb(255, 230, 230),
-                ForeColor = deThi.TrangThai == 1 ? Color.FromArgb(21, 101, 192) : Color.FromArgb(198, 40, 40),
+                Text = statusText,
+                FillColor = statusColor,
+                ForeColor = Color.White,
                 BorderRadius = 10,
                 Width = 100,
                 Height = 36,
@@ -152,6 +283,7 @@ namespace GUI.modules
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
+            btnView.Visible = _permissionBLL.HasPermission(_userId, 5, "Xem");
             btnView.Click += BtnView_Click;
 
             // ===== NÚT CHỈNH SỬA =====
@@ -167,7 +299,9 @@ namespace GUI.modules
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
-            //btnEdit.Click += BtnEdit_Click;
+            btnEdit.Visible = _permissionBLL.HasPermission(_userId, 5, "Sửa");
+            btnEdit.Click += BtnEdit_Click;
+
 
             // ===== NÚT XOÁ =====
             var btnDelete = new Guna2Button
@@ -182,7 +316,8 @@ namespace GUI.modules
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
-            //btnDelete.Click += BtnDelete_Click;
+            btnDelete.Visible = _permissionBLL.HasPermission(_userId, 5, "Xóa");
+            btnDelete.Click += BtnDelete_Click;
 
             // Add nút vào panel
             buttonPanel.Controls.Add(btnStatus);
@@ -198,36 +333,5 @@ namespace GUI.modules
 
             return card;
         }
-
-        // ===================== EVENT HANDLER ======================
-
-        //private void BtnView_Click(object sender, EventArgs e)
-        //{
-        //    var btn = sender as Guna2Button;
-        //    var deThi = btn.Tag as DeThiDTO;
-
-        //    MessageBox.Show($"Xem chi tiết đề: {deThi.TenDe}\nID: {deThi.MaDe}");
-        //}
-
-        //private void BtnEdit_Click(object sender, EventArgs e)
-        //{
-        //    var btn = sender as Guna2Button;
-        //    var deThi = btn.Tag as DeThiDTO;
-
-        //    MessageBox.Show($"Chỉnh sửa đề: {deThi.TenDe}");
-        //}
-
-        //private void BtnDelete_Click(object sender, EventArgs e)
-        //{
-        //    var btn = sender as Guna2Button;
-        //    var deThi = btn.Tag as DeThiDTO;
-
-        //    if (MessageBox.Show($"Bạn có chắc muốn xoá đề '{deThi.TenDe}'?",
-        //        "Xác nhận xoá", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-        //    {
-        //        deThiBLL.Delete(deThi.MaDe);
-        //        LoadDeThi();
-        //    }
-        //}
     }
 }

@@ -56,7 +56,6 @@ namespace BLL
         {
             return _dal.GetPhanCongPaged(page, pageSize, keyword);
         }
-
         public int GetTotalPhanCong(string? keyword = null)
         {
             return _dal.GetTotalPhanCong(keyword);
@@ -92,7 +91,20 @@ namespace BLL
         public int GetTotalUserForSelection(string userId, string? keyword = null)
         {
             return _userBLL.GetTotalAssignableUsers(userId, keyword);
-
+               
         }
+        public long GetValidMaPCForGroup(long maMH, string maND)
+        {
+            return _dal.GetMaPCByCriteria(maMH, maND);
+        }
+        public long GetMaPCByGiangVienAndMonHoc(long maMH, string maND)
+        {
+            return _dal.GetMaPCByGiangVienAndMonHoc(maMH, maND);
+        }
+        public List<MonHocDTO> GetMonHocByGiangVien(string maND)
+        {
+            return _dal.GetMonHocByGiangVien(maND);
+        }
+
     }
 }

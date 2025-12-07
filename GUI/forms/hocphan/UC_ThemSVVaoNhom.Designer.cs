@@ -38,7 +38,6 @@
             tbMaSv = new TextBox();
             label1 = new Label();
             tabPage3 = new TabPage();
-            rtbKetQua = new RichTextBox();
             btnClose = new Button();
             txtDuongDan = new TextBox();
             btnThemExcel = new Button();
@@ -65,12 +64,14 @@
             // 
             tabControl.Controls.Add(tabPage1);
             tabControl.Controls.Add(tabPage3);
-            tabControl.ItemSize = new Size(135, 35);
+            tabControl.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tabControl.ItemSize = new Size(180, 45);
             tabControl.Location = new Point(3, 3);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(644, 347);
             tabControl.TabIndex = 0;
+            tabControl.DrawItem += tabControl1_DrawItem;
             tabControl.SelectedIndexChanged += tabControl_SelectedIndexChange;
             // 
             // tabPage1
@@ -80,19 +81,19 @@
             tabPage1.Controls.Add(btnThemSV);
             tabPage1.Controls.Add(tbMaSv);
             tabPage1.Controls.Add(label1);
-            tabPage1.Location = new Point(4, 39);
+            tabPage1.Location = new Point(4, 49);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(636, 304);
+            tabPage1.Size = new Size(636, 294);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Thêm thủ công";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // btnDong
             // 
-            btnDong.Location = new Point(445, 230);
+            btnDong.Location = new Point(453, 212);
             btnDong.Name = "btnDong";
-            btnDong.Size = new Size(112, 34);
+            btnDong.Size = new Size(123, 41);
             btnDong.TabIndex = 3;
             btnDong.Text = "Đóng";
             btnDong.UseVisualStyleBackColor = true;
@@ -100,9 +101,9 @@
             // 
             // btnThemSV
             // 
-            btnThemSV.Location = new Point(243, 230);
+            btnThemSV.Location = new Point(250, 212);
             btnThemSV.Name = "btnThemSV";
-            btnThemSV.Size = new Size(174, 34);
+            btnThemSV.Size = new Size(174, 41);
             btnThemSV.TabIndex = 2;
             btnThemSV.Text = "Thêm sinh viên";
             btnThemSV.UseVisualStyleBackColor = true;
@@ -110,9 +111,10 @@
             // 
             // tbMaSv
             // 
+            tbMaSv.BorderStyle = BorderStyle.FixedSingle;
             tbMaSv.Location = new Point(22, 112);
             tbMaSv.Name = "tbMaSv";
-            tbMaSv.Size = new Size(395, 31);
+            tbMaSv.Size = new Size(402, 37);
             tbMaSv.TabIndex = 1;
             // 
             // label1
@@ -128,32 +130,23 @@
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.FixedSingle;
-            tabPage3.Controls.Add(rtbKetQua);
             tabPage3.Controls.Add(btnClose);
             tabPage3.Controls.Add(txtDuongDan);
             tabPage3.Controls.Add(btnThemExcel);
             tabPage3.Controls.Add(btnChonFileExcel);
-            tabPage3.Location = new Point(4, 39);
+            tabPage3.Location = new Point(4, 49);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(636, 304);
+            tabPage3.Size = new Size(636, 294);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Tham gia bằng excel";
             tabPage3.UseVisualStyleBackColor = true;
             // 
-            // rtbKetQua
-            // 
-            rtbKetQua.Location = new Point(34, 122);
-            rtbKetQua.Name = "rtbKetQua";
-            rtbKetQua.Size = new Size(284, 142);
-            rtbKetQua.TabIndex = 5;
-            rtbKetQua.Text = "";
-            // 
             // btnClose
             // 
-            btnClose.Location = new Point(465, 230);
+            btnClose.Location = new Point(454, 211);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(112, 34);
+            btnClose.Size = new Size(123, 41);
             btnClose.TabIndex = 4;
             btnClose.Text = "Đóng";
             btnClose.UseVisualStyleBackColor = true;
@@ -161,31 +154,39 @@
             // 
             // txtDuongDan
             // 
-            txtDuongDan.Location = new Point(178, 54);
+            txtDuongDan.BorderStyle = BorderStyle.FixedSingle;
+            txtDuongDan.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtDuongDan.Location = new Point(178, 82);
+            txtDuongDan.Multiline = true;
             txtDuongDan.Name = "txtDuongDan";
-            txtDuongDan.Size = new Size(399, 31);
+            txtDuongDan.Size = new Size(399, 45);
             txtDuongDan.TabIndex = 3;
             txtDuongDan.Text = "Chưa có tệp nào được chọn";
             // 
             // btnThemExcel
             // 
-            btnThemExcel.Location = new Point(337, 230);
+            btnThemExcel.Location = new Point(252, 211);
             btnThemExcel.Name = "btnThemExcel";
-            btnThemExcel.Size = new Size(112, 34);
+            btnThemExcel.Size = new Size(174, 41);
             btnThemExcel.TabIndex = 2;
-            btnThemExcel.Text = "Thêm vào hệ thống";
+            btnThemExcel.Text = "Thêm sinh viên";
             btnThemExcel.UseVisualStyleBackColor = true;
             btnThemExcel.Click += btnThemExcel_Click;
             // 
             // btnChonFileExcel
             // 
             btnChonFileExcel.BackColor = Color.FromArgb(52, 152, 219);
+            btnChonFileExcel.FlatAppearance.BorderSize = 0;
+            btnChonFileExcel.FlatStyle = FlatStyle.Flat;
+            btnChonFileExcel.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnChonFileExcel.ForeColor = Color.White;
-            btnChonFileExcel.Location = new Point(34, 49);
+            btnChonFileExcel.ImageAlign = ContentAlignment.MiddleLeft;
+            btnChonFileExcel.Location = new Point(34, 82);
             btnChonFileExcel.Name = "btnChonFileExcel";
-            btnChonFileExcel.Size = new Size(138, 40);
+            btnChonFileExcel.Size = new Size(138, 45);
             btnChonFileExcel.TabIndex = 0;
             btnChonFileExcel.Text = "Chọn tệp";
+            btnChonFileExcel.TextAlign = ContentAlignment.TopCenter;
             btnChonFileExcel.UseVisualStyleBackColor = false;
             btnChonFileExcel.Click += btnChonTep_Click;
             // 
@@ -230,6 +231,5 @@
         private Button btnThemExcel;
         private TextBox txtDuongDan;
         private Button btnClose;
-        private RichTextBox rtbKetQua;
     }
 }

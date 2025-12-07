@@ -31,6 +31,7 @@
     <PackageReference Include="Syncfusion.SfInput.WinForms" Version="31.2.16" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
+    <PackageReference Include="ZedGraph" Version="5.2.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +40,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="forms\dethi\KetQuaBaiThiAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\dethi\ThemCauHoiVaoDeThi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="forms\dethi\UC_TaoDeThi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="modules\UC_ChiTietKiemTra.cs" />
     <Compile Update="modules\UC_DeThi.cs">
       <SubType>UserControl</SubType>

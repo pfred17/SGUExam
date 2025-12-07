@@ -217,5 +217,70 @@ namespace DAL
             SqlParameter parameters = new("@keyword", keyword);
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
         }
+        public long GetMaPCByCriteria(long maMH, string maND)
+        {
+            long maPhanCong = 0;
+
+            string query = @"
+            SELECT TOP 1 ma_pc 
+            FROM phan_cong 
+            WHERE ma_mh = @MaMH 
+              AND ma_nd = @MaND 
+              AND trang_thai = 1;"; // Chỉ lấy bản ghi đang hoạt động
+
+            SqlParameter[] parameters = {
+            new SqlParameter("@MaMH", maMH),
+            new SqlParameter("@MaND", maND)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                // Lấy giá trị MaPC từ dòng đầu tiên
+                if (long.TryParse(dt.Rows[0]["ma_pc"].ToString(), out long result))
+                {
+                    maPhanCong = result;
+                }
+            }
+
+            return maPhanCong;
+        }
+        public long GetMaPCByGiangVienAndMonHoc(long maMH, string maND)
+        {
+            string query = "SELECT ma_pc FROM phan_cong WHERE ma_nd = @maND AND ma_mh = @maMH AND trang_thai = 1";
+            var parameters = new[]
+            {
+                new SqlParameter("@maND", maND),
+                new SqlParameter("@maMH", maMH)
+            };
+            var result = DatabaseHelper.ExecuteScalar(query, parameters);
+            return result != null ? Convert.ToInt64(result) : 0;
+        }
+        public List<MonHocDTO> GetMonHocByGiangVien(string maND)
+        {
+            string query = @"
+                SELECT DISTINCT
+                    mh.ma_mh AS MaMH, mh.ten_mh AS TenMH, mh.so_tin_chi AS SoTinChi
+                FROM phan_cong pc
+                INNER JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
+                WHERE pc.ma_nd = @maND 
+                  AND pc.trang_thai = 1 
+                  AND mh.trang_thai = 1";
+
+            var parameters = new[] { new SqlParameter("@maND", maND) };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            var list = new List<MonHocDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new MonHocDTO
+                {
+                    MaMonHoc = Convert.ToInt64(row["MaMH"]),
+                    TenMonHoc = row["TenMH"].ToString(),
+                    SoTinChi = Convert.ToInt32(row["SoTinChi"])
+                });
+            }
+            return list;
+        }
     }
 }

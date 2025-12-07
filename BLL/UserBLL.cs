@@ -23,7 +23,10 @@ namespace BLL
 
             return true;
         }
-
+        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+        {
+            return dal.GetUserByMSSV(mssv, includeInactive);
+        }
         public bool VerifyCode(string email, string code)
         {
             return codeStorage.ContainsKey(email) && codeStorage[email] == code;
@@ -109,9 +112,9 @@ namespace BLL
             return dal.CreateUser(username, hoten, password, email);
         }
 
-        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+        public bool QuyenThamGia(string maNd)
         {
-            return dal.GetUserByMSSV(mssv, includeInactive);
+            return dal.QuyenThamGia(maNd);
         }
         public bool IsEmailExists(string email)
         {
@@ -121,5 +124,7 @@ namespace BLL
         {
             return dal.MssvExists(username);
         }
+
+
     }
 }

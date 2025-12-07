@@ -83,7 +83,7 @@
             btnReset.Location = new Point(560, 20);
             btnReset.Size = new Size(90, 28);
             btnReset.Text = "Reset";
-            btnReset.Click += btnReset_Click;
+            //btnReset.Click += btnReset_Click;
             // 
             // btnLoc
             // 
@@ -93,7 +93,7 @@
             btnLoc.Location = new Point(450, 20);
             btnLoc.Size = new Size(90, 28);
             btnLoc.Text = "Lọc";
-            btnLoc.Click += btnLoc_Click;
+            //btnLoc.Click += btnLoc_Click;
             // 
             // cboMonHoc
             // 

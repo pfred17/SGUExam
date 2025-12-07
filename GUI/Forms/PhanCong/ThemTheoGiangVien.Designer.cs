@@ -43,14 +43,14 @@
             cbxGiangVien = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             dgv = new DataGridView();
-            btnThem = new Guna.UI2.WinForms.Guna2Button();
-            btnPrev = new Guna.UI2.WinForms.Guna2Button();
-            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            btnNext = new Guna.UI2.WinForms.Guna2Button();
             MaMonHoc = new DataGridViewTextBoxColumn();
             TenMonHoc = new DataGridViewTextBoxColumn();
             SoTinChi = new DataGridViewTextBoxColumn();
             CheckCol = new DataGridViewCheckBoxColumn();
+            btnThem = new Guna.UI2.WinForms.Guna2Button();
+            btnPrev = new Guna.UI2.WinForms.Guna2Button();
+            lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            btnNext = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             SuspendLayout();
             // 
@@ -61,7 +61,7 @@
             lblGiangVien.ForeColor = Color.DimGray;
             lblGiangVien.Location = new Point(30, 25);
             lblGiangVien.Name = "lblGiangVien";
-            lblGiangVien.Size = new Size(125, 23);
+            lblGiangVien.Size = new Size(95, 23);
             lblGiangVien.TabIndex = 0;
             lblGiangVien.Text = "Giảng viên";
             // 
@@ -145,19 +145,66 @@
             dgv.CurrentCellDirtyStateChanged += dgv_CurrentCellDirtyStateChanged;
             dgv.SelectionChanged += dgv_SelectionChanged;
             // 
+            // MaMonHoc
+            // 
+            MaMonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            MaMonHoc.DataPropertyName = "MaMonHoc";
+            MaMonHoc.FillWeight = 74.3705139F;
+            MaMonHoc.HeaderText = "Mã môn học";
+            MaMonHoc.MinimumWidth = 6;
+            MaMonHoc.Name = "MaMonHoc";
+            MaMonHoc.ReadOnly = true;
+            MaMonHoc.Resizable = DataGridViewTriState.False;
+            MaMonHoc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            MaMonHoc.Width = 133;
+            // 
+            // TenMonHoc
+            // 
+            TenMonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TenMonHoc.DataPropertyName = "TenMonHoc";
+            TenMonHoc.FillWeight = 74.3705139F;
+            TenMonHoc.HeaderText = "Tên môn học";
+            TenMonHoc.MinimumWidth = 6;
+            TenMonHoc.Name = "TenMonHoc";
+            TenMonHoc.ReadOnly = true;
+            TenMonHoc.Resizable = DataGridViewTriState.False;
+            TenMonHoc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // SoTinChi
+            // 
+            SoTinChi.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            SoTinChi.DataPropertyName = "SoTinChi";
+            SoTinChi.FillWeight = 74.3705139F;
+            SoTinChi.HeaderText = "Số tín chỉ";
+            SoTinChi.MinimumWidth = 6;
+            SoTinChi.Name = "SoTinChi";
+            SoTinChi.ReadOnly = true;
+            SoTinChi.Resizable = DataGridViewTriState.False;
+            SoTinChi.SortMode = DataGridViewColumnSortMode.NotSortable;
+            SoTinChi.Width = 103;
+            // 
+            // CheckCol
+            // 
+            CheckCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            CheckCol.HeaderText = "Chọn";
+            CheckCol.MinimumWidth = 6;
+            CheckCol.Name = "CheckCol";
+            CheckCol.Resizable = DataGridViewTriState.False;
+            CheckCol.Width = 66;
+            // 
             // btnThem
             // 
-            btnThem.BorderRadius = 22;
+            btnThem.BorderRadius = 10;
             btnThem.Cursor = Cursors.Hand;
             btnThem.CustomizableEdges = customizableEdges5;
             btnThem.FillColor = Color.FromArgb(6, 101, 208);
             btnThem.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnThem.ForeColor = Color.White;
             btnThem.HoverState.FillColor = Color.FromArgb(0, 110, 220);
-            btnThem.Location = new Point(608, 552);
+            btnThem.Location = new Point(608, 550);
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnThem.Size = new Size(220, 45);
+            btnThem.Size = new Size(220, 50);
             btnThem.TabIndex = 20;
             btnThem.Text = "LƯU PHÂN CÔNG";
             btnThem.Click += btnThem_Click;
@@ -206,53 +253,6 @@
             btnNext.TabIndex = 21;
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
-            // 
-            // MaMonHoc
-            // 
-            MaMonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MaMonHoc.DataPropertyName = "MaMonHoc";
-            MaMonHoc.FillWeight = 74.3705139F;
-            MaMonHoc.HeaderText = "Mã môn học";
-            MaMonHoc.MinimumWidth = 6;
-            MaMonHoc.Name = "MaMonHoc";
-            MaMonHoc.ReadOnly = true;
-            MaMonHoc.Resizable = DataGridViewTriState.False;
-            MaMonHoc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MaMonHoc.Width = 133;
-            // 
-            // TenMonHoc
-            // 
-            TenMonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            TenMonHoc.DataPropertyName = "TenMonHoc";
-            TenMonHoc.FillWeight = 74.3705139F;
-            TenMonHoc.HeaderText = "Tên môn học";
-            TenMonHoc.MinimumWidth = 6;
-            TenMonHoc.Name = "TenMonHoc";
-            TenMonHoc.ReadOnly = true;
-            TenMonHoc.Resizable = DataGridViewTriState.False;
-            TenMonHoc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            // 
-            // SoTinChi
-            // 
-            SoTinChi.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            SoTinChi.DataPropertyName = "SoTinChi";
-            SoTinChi.FillWeight = 74.3705139F;
-            SoTinChi.HeaderText = "Số tín chỉ";
-            SoTinChi.MinimumWidth = 6;
-            SoTinChi.Name = "SoTinChi";
-            SoTinChi.ReadOnly = true;
-            SoTinChi.Resizable = DataGridViewTriState.False;
-            SoTinChi.SortMode = DataGridViewColumnSortMode.NotSortable;
-            SoTinChi.Width = 103;
-            // 
-            // CheckCol
-            // 
-            CheckCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            CheckCol.HeaderText = "Chọn";
-            CheckCol.MinimumWidth = 6;
-            CheckCol.Name = "CheckCol";
-            CheckCol.Resizable = DataGridViewTriState.False;
-            CheckCol.Width = 66;
             // 
             // ThemTheoGiangVien
             // 

@@ -106,7 +106,6 @@ namespace DAL
                                         (ma_nd ,ten_dang_nhap, mat_khau, ho_ten, email, gioi_tinh, ma_nhom_quyen, trang_thai)
                         VALUES (@MSSV, @TenDangNhap, @MatKhau, @HoTen, @Email, @GioiTinh, @MaNhomQuyen, @TrangThai)";
 
-
             SqlParameter[] parameters =
             {
                 new SqlParameter("@MSSV", userDTO.MSSV),
@@ -309,8 +308,7 @@ namespace DAL
                     MSSV = row["ma_nd"].ToString() ?? "",
                     HoTen = row["ho_ten"].ToString() ?? "",
                     Email = row["email"].ToString() ?? "",
-                    TenNhomQuyen = row["ten_nhom_quyen"].ToString() ?? "",
-                    TrangThai = Convert.ToInt32(row["trang_thai"])
+                    Role =  Convert.ToInt32(row["ten_nhom_quyen"].ToString())
                 });
             }
 
@@ -407,5 +405,27 @@ namespace DAL
 
             return list;
         }
+        public bool QuyenThamGia(string maNd)
+        {
+            string query = @"
+                SELECT COUNT(*) 
+                FROM nguoi_dung AS nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
+                JOIN nhom_quyen_chuc_nang AS nqcn ON nqcn.ma_nhom_quyen = nq.ma_nhom_quyen
+                JOIN quyen AS q ON q.ma_quyen = nqcn.ma_quyen
+                WHERE nqcn.duoc_phep = 1 
+                AND q.ma_quyen = 5
+                AND nd.ma_nd = @ma_nd
+            ";
+
+            object result = DatabaseHelper.ExecuteScalar(
+                query,
+                new SqlParameter("@ma_nd", maNd)
+            );
+
+            return Convert.ToInt32(result) > 0;
+        }
+     
+
     }
 }

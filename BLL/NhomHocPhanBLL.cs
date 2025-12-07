@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DTO;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Text;
 
@@ -9,7 +10,7 @@ namespace BLL
     public class NhomHocPhanBLL
     {
         private readonly NhomHocPhanDAL dal;
-        private readonly DAL.MonHocDAL monDal = new DAL.MonHocDAL();
+      
         public NhomHocPhanBLL()
         {
             dal = new NhomHocPhanDAL();
@@ -30,20 +31,13 @@ namespace BLL
 
             var all = dal.GetAll();
 
-            // Cache tên môn để tránh gọi DB nhiều lần
-            var monCache = all.Select(x => x.MaPc).Distinct()
-                .ToDictionary(id => id, id =>
-                {
-                    var m = monDal.GetMonHocById(id);
-                    return m?.TenMonHoc ?? string.Empty;
-                });
-
             var filtered = all.Where(n =>
             {
                 string tenNhom = RemoveDiacritics(n.TenNhom ?? string.Empty).ToUpperInvariant();
                 string hocKy = RemoveDiacritics(n.HocKy ?? string.Empty).ToUpperInvariant();
                 string namHoc = RemoveDiacritics(n.NamHoc ?? string.Empty).ToUpperInvariant();
-                string tenMon = monCache.ContainsKey(n.MaPc) ? RemoveDiacritics(monCache[n.MaPc] ?? string.Empty).ToUpperInvariant() : string.Empty;
+                // SỬ DỤNG TRỰC TIẾP TenMonHoc từ DTO
+                string tenMon = RemoveDiacritics(n.TenMonHoc ?? string.Empty).ToUpperInvariant();
 
                 return tenNhom.Contains(q) || hocKy.Contains(q) || namHoc.Contains(q) || tenMon.Contains(q);
             }).ToList();
@@ -64,16 +58,7 @@ namespace BLL
             }
             return sb.ToString().Normalize(NormalizationForm.FormC);
         }
-        // lấy danh sách học kỳ
-        public List<string> GetDistinctHocKy()
-        {
-            return dal.GetDistinctHocKy();
-        }
-        // lấy danh sách năm học 
-        public List<string> GetDistinctNamHoc()
-        {
-            return dal.GetDistinctNamHoc();
-        }
+        
         // Lấy nhóm học phần theo mã
         public NhomHocPhanDTO GetById(long maNhom)
         {
@@ -121,7 +106,7 @@ namespace BLL
 
             if (!string.IsNullOrEmpty(namHoc))
                 all = all.FindAll(x => x.NamHoc == namHoc);
-
+                
             return all;
         }
         public List<NhomHocPhanDTO> GetByMonHoc(long maMonHoc)
@@ -142,6 +127,14 @@ namespace BLL
         public List<NhomHocPhanDTO> SearchNhomHocPhan(string userId, string keyword)
         {
             return dal.SearchNhomHocPhan(userId, keyword);
+        }
+        public DataTable LayBangDiemTheoNhom(long maNhom)
+        {
+            return dal.LayBangDiemTheoNhom(maNhom);
+        }
+        public DataTable LayBangDiemPivot(long maNhom)
+        {
+            return dal.LayBangDiemPivot(maNhom);
         }
     }
 }

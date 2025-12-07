@@ -15,10 +15,6 @@ namespace GUI.Forms.nguoidung
         public UpdateInfo()
         {
             InitializeComponent();
-        }
-
-       
-
-        
+        }        
     }
 }

@@ -304,6 +304,7 @@ namespace GUI
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(820, 640);
             Controls.Add(tabControl1);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "frmThemCauHoi";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Thêm câu hỏi";
