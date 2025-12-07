@@ -159,7 +159,10 @@ namespace GUI
             {
                 MessageBox.Show("Đã thêm sinh viên vào nhóm thành công!", "Thành công",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
             }
+
+
             LoadDanhSachSinhVien();
         }
 

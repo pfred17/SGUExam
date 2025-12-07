@@ -157,6 +157,7 @@ namespace GUI.modules
 
             try
             {
+
                 using (var workbook = new XLWorkbook(filePathExcel))
                 {
                     var worksheet = workbook.Worksheet(1);
@@ -295,6 +296,12 @@ namespace GUI.modules
                         MessageBoxButtons.OK,
                         thanhCong > 0 ? MessageBoxIcon.Information : MessageBoxIcon.Warning
                     );
+                    if (thanhCong > 0)
+                    {
+                        // Gọi trực tiếp form cha để load lại danh sách (không cần event)
+                        var parent = this.Parent as UC_SinhVienTrongNhom;
+                        parent?.LoadDanhSachSinhVien();
+                    }
                 }
             }
             catch (Exception ex)
