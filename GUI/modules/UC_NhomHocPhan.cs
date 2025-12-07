@@ -239,7 +239,7 @@ namespace GUI.modules
         {
             if (ucThem != null) return;
 
-            ucThem = new ThemNhomHocPhan(_userId);
+            ucThem = new UC_ThemNhomHocPhan(_userId);
             ucThem.Width = 624;
             ucThem.Height = 547;
             ucThem.Location = new Point((this.Width - ucThem.Width) / 2, (this.Height - ucThem.Height) / 2);
