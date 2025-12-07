@@ -102,7 +102,7 @@
             dgvMonHoc.RowHeadersWidth = 51;
             dgvMonHoc.RowTemplate.Height = 40;
             dgvMonHoc.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvMonHoc.Size = new Size(1068, 348);
+            dgvMonHoc.Size = new Size(1068, 350);
             dgvMonHoc.TabIndex = 0;
             dgvMonHoc.CellContentClick += dgvMonHoc_CellContentClick;
             dgvMonHoc.CellMouseMove += dgvMonHoc_CellMouseMove;

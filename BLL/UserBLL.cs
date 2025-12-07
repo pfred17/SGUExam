@@ -7,17 +7,14 @@ namespace BLL
     public class UserBLL
     {
         private UserDAL dal = new UserDAL();
-        
+
 
         private EmailService emailService = new EmailService();
         private Dictionary<string, string> codeStorage = new Dictionary<string, string>();
 
         public bool SendVerificationCode(string email)
         {
-            //string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            //if (!Regex.IsMatch(email, pattern)) return false;
-            //if (!dal.EmailExists(email)) return false;
-
+           
             string code = new Random().Next(100000, 999999).ToString();
             emailService.SendVerificationCode(email, code);
 
@@ -40,10 +37,32 @@ namespace BLL
             return dal.UpdatePassword(email, newPassword);
         }
 
-        public UserDTO Login(string username, string password)
+        public UserDTO Login(string mssv, string password, out LoginResult result)
         {
-            return dal.CheckLogin(username, password);
+            UserDTO user = dal.GetUserByMSSV(mssv);
+
+            if (user == null)
+            {
+                result = LoginResult.UserNotFound;
+                return null;
+            }
+
+            if (user.MatKhau != password)
+            {
+                result = LoginResult.InvalidPassword;
+                return null;
+            }
+
+            if (user.TrangThai == 0)
+            {
+                result = LoginResult.AccountLocked;
+                return null;
+            }
+
+            result = LoginResult.Success;
+            return user;
         }
+        
         public List<UserDTO> GetAllUsers()
         {
             return dal.getAllUsers();
@@ -88,7 +107,7 @@ namespace BLL
             return dal.LockUser(userId, status);
         }
 
-        public UserDTO Register(string username,string hoten, string password, string email)
+        public UserDTO Register(string username, string hoten, string password, string email)
         {
             return dal.CreateUser(username, hoten, password, email);
         }

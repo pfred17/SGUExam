@@ -8,7 +8,7 @@ using DAL;
 namespace BLL
 {
     public class PhanCongBLL
-    { 
+    {
         private readonly PhanCongDAL _dal = new PhanCongDAL();
         private readonly MonHocBLL _monHocBLL = new MonHocBLL();
         private readonly UserBLL _userBLL = new UserBLL();
@@ -34,7 +34,7 @@ namespace BLL
         }
         public int GetStatus(long maPhanCong)
         {
-            return _dal.GetStatus(maPhanCong);  
+            return _dal.GetStatus(maPhanCong);
         }
         public bool UpdateStatus(long maPhanCong, int trangThai)
         {
@@ -48,7 +48,7 @@ namespace BLL
         {
             return _dal.IsPhanCongReferenced(maPhanCong);
         }
-        public PhanCongDTO? GetPhanCongById(long  maPhanCong)
+        public PhanCongDTO? GetPhanCongById(long maPhanCong)
         {
             return _dal.GetPhanCongById(maPhanCong);
         }

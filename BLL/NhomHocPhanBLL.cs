@@ -124,9 +124,9 @@ namespace BLL
         {
             return dal.GetTenMonHocByMaNhom(maNhom);
         }
-        public List<NhomHocPhanDTO> SearchNhomHocPhan(string userId,string keyword)
+        public List<NhomHocPhanDTO> SearchNhomHocPhan(string userId, string keyword)
         {
-            return dal.SearchNhomHocPhan(userId,keyword);
+            return dal.SearchNhomHocPhan(userId, keyword);
         }
         public DataTable LayBangDiemTheoNhom(long maNhom)
         {

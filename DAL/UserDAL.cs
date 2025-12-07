@@ -14,33 +14,7 @@ namespace DAL
             private set { instance = value; }
         }
         private RoleDAL roleDAL = new RoleDAL();
-        public UserDTO CheckLogin(string username, string password)
-        {
-            string query = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = @u AND mat_khau = @p";
-            SqlParameter[] param =
-            {
-                new SqlParameter("@u", username),
-                new SqlParameter("@p", password)
-            };
-
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
-
-            if (dt.Rows.Count == 0)
-                return null;
-
-            DataRow row = dt.Rows[0];
-            return new UserDTO
-            {
-                MSSV = row["ma_nd"].ToString(),
-                TenDangNhap = row["ten_dang_nhap"].ToString(),
-                MatKhau = row["mat_khau"].ToString(),
-                HoTen = row["ho_ten"].ToString(),
-                Email = row["email"].ToString(),
-                Role = Convert.ToInt32(row["ma_nhom_quyen"]),
-                GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
-                TrangThai = Convert.ToInt32(row["trang_thai"])
-            };
-        }
+        
 
         // Lấy danh sách người dùng có phân trang
         public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
@@ -187,7 +161,6 @@ namespace DAL
         }
 
 
-        // Hàm cập nhật thông tin người dùng
         public bool UpdateUser(UserDTO user)
         {
             string query = @"UPDATE nguoi_dung 
@@ -246,6 +219,15 @@ namespace DAL
             DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
             return dt.Rows.Count > 0;
         }
+        public bool MssvExists(string userId)
+        {
+            string query = "SELECT * FROM nguoi_dung WHERE ma_nd = @e";
+            SqlParameter[] param = {
+                new SqlParameter("@e", userId)
+            };
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
+            return dt.Rows.Count > 0;
+        }
 
         public UserDTO GetUserById(string userId)
         {
@@ -290,7 +272,7 @@ namespace DAL
                     AND (@keyword = '' OR nd.ho_ten LIKE N'%' + @keyword + N'%')      
             ";
 
-            if(userId != null)
+            if (userId != null)
             {
                 query += "AND nd.ma_nd != @userId";
             }
@@ -328,7 +310,7 @@ namespace DAL
                     Email = row["email"].ToString() ?? "",
                     TenNhomQuyen = row["ten_nhom_quyen"].ToString() ?? "",
                     TrangThai = Convert.ToInt32(row["trang_thai"])
-                }); 
+                });
             }
 
             return list;
@@ -444,16 +426,7 @@ namespace DAL
 
             return Convert.ToInt32(result) > 0;
         }
-        public bool MssvExists(string userId)
-        {
-            string query = "SELECT * FROM nguoi_dung WHERE ma_nd = @e";
-            SqlParameter[] param = {
-                new SqlParameter("@e", userId)
-            };
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
-            return dt.Rows.Count > 0;
-        }
+     
 
     }
 }
-

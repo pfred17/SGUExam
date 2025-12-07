@@ -39,7 +39,28 @@ namespace DAL
             }
             return list;
         }
-        public MonHocDTO GetMonHocById(long maMonHoc)
+        public List<MonHocDTO> GetMonHocTheoPhanCong(long maND)
+        {
+            string query = @"
+                            SELECT DISTINCT mh.ma_mh, mh.ten_mh, mh.so_tin_chi,mh.trang_thai
+                            FROM mon_hoc mh 
+                            JOIN phan_cong pc  ON mh.ma_mh = pc.ma_mh
+                            WHERE pc.ma_nd = @ma_nd";
+            DataTable dt = DatabaseHelper.ExecuteQuery(query,new SqlParameter("@ma_nd",maND));
+            var list = new List<MonHocDTO>();
+            foreach(DataRow row in dt.Rows)
+            {
+                list.Add(new MonHocDTO
+                {
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                    TenMonHoc = row["ten_mh"].ToString(),
+                    SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
+                    TrangThai = Convert.ToByte(row["trang_thai"])
+                });
+            }
+            return list;
+        }
+        public MonHocDTO? GetMonHocById(long maMonHoc)
         {
             string query = "SELECT * FROM mon_hoc WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters =  {
@@ -136,7 +157,7 @@ namespace DAL
             string query = "SELECT trang_thai FROM mon_hoc WHERE ma_mh = @ma_mh";
             SqlParameter parameter = new("@ma_mh", maMonHoc);
             object result = DatabaseHelper.ExecuteScalar(query, parameter);
-            return Convert.ToInt32(result); 
+            return Convert.ToInt32(result);
         }
         public bool UpdateStatus(long maMonHoc, int trangThai)
         {
@@ -164,7 +185,7 @@ namespace DAL
                 WHERE (@keyword = '' OR ten_mh LIKE '%' + @keyword + '%')
             ";
 
-            if(trangThai != null)
+            if (trangThai != null)
             {
                 query += " AND trang_thai = @trang_thai";
             }
@@ -181,7 +202,7 @@ namespace DAL
                 new("@pageSize", pageSize)
             };
 
-            if(trangThai != null)
+            if (trangThai != null)
             {
                 parameters.Add(new SqlParameter("@trang_thai", trangThai));
             }
@@ -223,6 +244,6 @@ namespace DAL
 
             return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters.ToArray()));
         }
-        
+
     }
 }

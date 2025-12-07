@@ -72,7 +72,7 @@ namespace GUI
             };
         }
 
-        private void GenerateSidebarModules()
+        private void  GenerateSidebarModules()
         {
             panelSidebar.Controls.Clear();
 
@@ -268,6 +268,7 @@ namespace GUI
             btnProfile.Click += (s, e) =>
             {
                 Info infoForm = new Info(_userId);
+                infoForm.StartPosition = FormStartPosition.CenterParent;
                 infoForm.ShowDialog();
             };
             pnlDropdown.Controls.Add(btnLogout);
@@ -334,6 +335,7 @@ namespace GUI
             uc.Dock = DockStyle.Fill;
             panelMain.Controls.Add(uc);
         }
+
         private IEnumerable<ModuleItem> GetAccessibleModules()
         {
             var latestPermissions = _permissionBLL.GetUserPermissions(_userId);

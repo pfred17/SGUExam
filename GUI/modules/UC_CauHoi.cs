@@ -20,8 +20,8 @@ namespace GUI.modules
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
 
-        private List<CauHoiDTO> filteredList = new(); // Dữ liệu đã lọc
-        private UC_CauHoiTrungLap1? _ucTrungLap;
+        private List<CauHoiDTO> filteredList = new();
+        private UC_CauHoiTrungLap? _ucTrungLap;
 
         private const string PLACEHOLDER = "Nhập nội dung câu hỏi để tìm kiếm...";
         // Phân trang
@@ -32,6 +32,7 @@ namespace GUI.modules
         public UC_CauHoi(string userId)
         {
             _userId = userId;
+            _cauHoiBLL = new CauHoiBLL(Convert.ToInt64(_userId)); // truyen userID xuong BLL
             InitializeComponent();
             //SetupDataGridView();
 
@@ -46,14 +47,16 @@ namespace GUI.modules
         private void loadPermission()
         {
             btnThemMoi.Visible = _permissionBLL.HasPermission(_userId, 2, "Thêm");
-            dgvCauHoi.Columns["SuaCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
-            dgvCauHoi.Columns["XoaCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Xóa");
+            dgvCauHoi.Columns["xemCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Xem");
+            dgvCauHoi.Columns["suaCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Sửa");
+            dgvCauHoi.Columns["xoaCol"].Visible = _permissionBLL.HasPermission(_userId, 2, "Xóa");
         }
 
         #region Load dữ liệu
         private void LoadMonHoc()
         {
-            var list = _monHocBLL.GetAllMonHocByStatus(1);
+            long maND = Convert.ToInt64(_userId);
+            var list = _monHocBLL.GetMonHocTheoPhanCong(maND);
             list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
             SetComboBoxData(cbMonHoc, list, "TenMonHoc", "MaMonHoc", cbMonHoc_SelectedIndexChanged);
         }
@@ -75,13 +78,11 @@ namespace GUI.modules
 
         private void SetComboBoxData<T>(ComboBox combo, List<T> list, string displayMember, string valueMember, EventHandler eventHandler)
         {
-            combo.DisplayMember = displayMember;
-            combo.ValueMember = valueMember;
-
             combo.SelectedIndexChanged -= eventHandler;  // Tạm thời bỏ event để tránh gọi LoadData thừa khi gán DataSource
             combo.DataSource = list;                     // Gán danh sách dữ liệu vào ComboBox
-                     
-            combo.SelectedIndex = 0;          
+            combo.DisplayMember = displayMember;
+            combo.ValueMember = valueMember;
+            combo.SelectedIndex = 0;
             combo.SelectedIndexChanged += eventHandler;  // Gắn lại event handler
         }
         private void LoadData(int? page = null)
@@ -112,7 +113,7 @@ namespace GUI.modules
         }
         public void dispkayTatCaCauHoiFromTrungLap()
         {
-            LoadData(); // load lại toàn bộ câu hỏi
+            LoadData(); 
         }
         private void RenderGrid(List<CauHoiDTO> list)
         {
@@ -134,6 +135,7 @@ namespace GUI.modules
                     x.NoiDung,
                     x.TenMonHoc,
                     x.DoKho,
+                     Properties.Resources.icon_eyes,
                     Properties.Resources.icon_edit,
                     Properties.Resources.icon_delete
                 );
@@ -202,15 +204,15 @@ namespace GUI.modules
         }
         private void btnThemMoi_Click(object sender, EventArgs e)
         {
-            var frm = new frmThemCauHoi();
+            var frm = new frmThemCauHoi(_userId);
             if (frm.ShowDialog() == DialogResult.OK)
                 LoadData();
         }
 
         private void btnTuDieuChinh_Click(object sender, EventArgs e)
         {
-            var frm = new frmDieuChinhDoKho();
-            if(frm.ShowDialog()== DialogResult.OK)
+            var frm = new frmDieuChinhDoKho(_userId);
+            if (frm.ShowDialog() == DialogResult.OK)
                 LoadData();
         }
 
@@ -221,14 +223,19 @@ namespace GUI.modules
             string colName = dgvCauHoi.Columns[e.ColumnIndex].Name;
             // Lấy ID thật từ Tag
             long maCH = Convert.ToInt64(dgvCauHoi.Rows[e.RowIndex].Tag);
-
-            if (colName == "SuaCol")
+            if(colName== "xemCol")
             {
-                var frm = new frmSuaCauHoi(maCH); // truyền mã câu hỏi cần sửa
+                var frm = new frmXemChiTiet(maCH); // truyền mã câu hỏi để xem
+                frm.ShowDialog(); 
+
+            }
+            else if (colName == "SuaCol")
+            {
+                var frm = new frmSuaCauHoi(maCH, _userId); // truyền mã câu hỏi cần sửa
                 if (frm.ShowDialog() == DialogResult.OK)
                     LoadData();
             }
-            else if (colName == "XoaCol")
+            else if(colName == "XoaCol")
             {
                 if (MessageBox.Show("Bạn có chắc chắn muốn xóa câu hỏi này?", "Xác nhận xóa",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -239,7 +246,7 @@ namespace GUI.modules
             }
         }
 
-        // hàm này sẽ hiển thị tất cả câu hỏi khi ở form UC_CauHoi
+      
         private void showAllCauHoi(object sender, EventArgs e)
         {
             // reset combobox 
@@ -265,7 +272,7 @@ namespace GUI.modules
 
             if (_ucTrungLap == null)
             {
-                _ucTrungLap = new UC_CauHoiTrungLap1(this); // Tạo mới UC_CauHoiTrungLap nếu chưa có
+                _ucTrungLap = new UC_CauHoiTrungLap(this, _userId); // Tạo mới UC_CauHoiTrungLap nếu chưa có
                 _ucTrungLap.Dock = DockStyle.Fill;
                 var parent = this.Parent;
                 if (parent != null)

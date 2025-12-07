@@ -17,6 +17,7 @@ namespace GUI.Forms.nguoidung
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            this.Hide();
             Sua formSua = new Sua(_userId);
             formSua.ShowDialog();
 
@@ -24,6 +25,7 @@ namespace GUI.Forms.nguoidung
 
         private void Info_Load(object sender, EventArgs e)
         {
+
            UserDTO user = userBLL.GetUserById(_userId);
               showUsename.Text = "@"+user.TenDangNhap;
               showName.Text = user.HoTen;

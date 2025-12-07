@@ -129,7 +129,7 @@ namespace GUI.forms.MonHoc
         }
         private void FocusFirstError()
         {
-           if (!string.IsNullOrEmpty(lblErrorTenMonHoc.Text)) txtTenMonHoc.Focus();
+            if (!string.IsNullOrEmpty(lblErrorTenMonHoc.Text)) txtTenMonHoc.Focus();
             else if (!string.IsNullOrEmpty(lblErrorSoTinChi.Text)) txtSoTinChi.Focus();
         }
         private void txtTenMonHoc_TextChanged(object sender, EventArgs e)
@@ -167,7 +167,7 @@ namespace GUI.forms.MonHoc
 
         private void txtSoTinChi_Leave(object sender, EventArgs e)
         {
-             if (string.IsNullOrWhiteSpace(txtSoTinChi.Text))
+            if (string.IsNullOrWhiteSpace(txtSoTinChi.Text))
             {
                 lblErrorSoTinChi.Text = "Số tín chỉ không được để trống.";
                 lblErrorSoTinChi.Visible = true;

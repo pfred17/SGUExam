@@ -13,16 +13,26 @@ namespace BLL
 {
     public class MonHocBLL
     {
+        private readonly long _maND; // Lưu maND
+
         private readonly MonHocDAL _dal = new MonHocDAL();
+        public MonHocBLL(long maND = 0)
+        {
+            _maND = maND;
+        }
         public List<MonHocDTO> GetAllMonHocByStatus(int? trangThai = null)
         {
             return _dal.GetAllMonHocByStatus(trangThai);
+        }
+        public List<MonHocDTO> GetMonHocTheoPhanCong(long maND)
+        {
+            return _dal.GetMonHocTheoPhanCong(maND);
         }
         public bool IsMonHocExists(long maMonHoc)
         {
             return _dal.IsMonHocExists(maMonHoc);
         }
-        public MonHocDTO GetMonHocById(long maMonHoc)
+        public MonHocDTO? GetMonHocById(long maMonHoc)
         {
             return _dal.GetMonHocById(maMonHoc);
         }
