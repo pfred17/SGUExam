@@ -308,7 +308,8 @@ namespace DAL
                     MSSV = row["ma_nd"].ToString() ?? "",
                     HoTen = row["ho_ten"].ToString() ?? "",
                     Email = row["email"].ToString() ?? "",
-                    Role =  Convert.ToInt32(row["ten_nhom_quyen"].ToString())
+                    TenNhomQuyen = row["ten_nhom_quyen"].ToString() ?? "",
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
                 });
             }
 

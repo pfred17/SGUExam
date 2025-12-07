@@ -116,6 +116,7 @@
             dgvCauHoi.ReadOnly = true;
             dgvCauHoi.RowHeadersVisible = false;
             dgvCauHoi.RowHeadersWidth = 51;
+            dgvCauHoi.ScrollBars = ScrollBars.None;
             dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvCauHoi.Size = new Size(1050, 314);
             dgvCauHoi.TabIndex = 1;
