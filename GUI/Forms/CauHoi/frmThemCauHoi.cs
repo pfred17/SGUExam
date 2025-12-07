@@ -1,4 +1,6 @@
 ﻿using BLL;
+using ClosedXML.Excel;
+using DAL;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DTO;
 using System;
@@ -8,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using sysDraw = System.Drawing;
-using ClosedXML.Excel;
 
 namespace GUI
 {
@@ -17,14 +18,17 @@ namespace GUI
         #region Fields
         private readonly MonHocBLL _monHocBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
-        private readonly CauHoiBLL _cauHoiBLL = new();
+        private readonly CauHoiBLL _cauHoiBLL;
         private readonly List<DapAnDTO> _dapAnList = new();
+        private readonly string _userId;
         #endregion
 
         #region Constructor & Load
-        public frmThemCauHoi()
+        public frmThemCauHoi(string userId)
         {
-            InitializeComponent();
+            InitializeComponent();  
+           _userId = userId;
+           _cauHoiBLL = new CauHoiBLL(Convert.ToInt64(_userId)); // KHỞI TẠO BLL VỚI MA_ND ĐÃ LẤY
         }
 
         private void FrmThemCauHoi_Load(object? sender, EventArgs e)
@@ -37,8 +41,10 @@ namespace GUI
         #region Init Helpers
         private void InitCombos()
         {
-            var monList = _monHocBLL.GetAllMonHocByStatus(1);
-            cbMonHoc.DataSource = new List<MonHocDTO>(monList);
+            long maND = Convert.ToInt64(_userId);
+            // Lọc môn học theo phân công
+            var monList = _monHocBLL.GetMonHocTheoPhanCong(maND);
+            cbMonHoc.DataSource = monList;
             cbMonHoc.DisplayMember = "TenMonHoc";
             cbMonHoc.ValueMember = "MaMonHoc";
 
@@ -93,54 +99,53 @@ namespace GUI
 
         private void BtnThemVaoHeThong_Click(object? sender, EventArgs e)
         {
-            //var path = txtDuongDan.Text?.Trim();
-            //if (string.IsNullOrEmpty(path))
-            //{
-            //    MessageBox.Show("Vui lòng chọn file Excel chứa câu hỏi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-            //if (!(cbMonHocFile.SelectedItem is MonHocDTO monHoc))
-            //{
-            //    MessageBox.Show("Vui lòng chọn Môn học cho bộ câu hỏi import.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
+            var path = txtDuongDan.Text?.Trim();
+            if (string.IsNullOrEmpty(path))
+            {
+                MessageBox.Show("Vui lòng chọn file Excel chứa câu hỏi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!(cbMonHocFile.SelectedItem is MonHocDTO monHoc))
+            {
+                MessageBox.Show("Vui lòng chọn Môn học cho bộ câu hỏi import.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            //try
-            //{
-            //    var list = ReadExcelFile(path, monHoc.MaMonHoc);
-            //    int count = 0;
+            try
+            {
+                var list = ReadExcelFile(path, monHoc.MaMonHoc, out var errors);
 
-            //    // --- Validate từng câu trước khi import ---
-            //    var validList = new List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)>();
-            //    foreach (var item in list)
-            //    {
-            //        if (CauHoiValidator.Validate(item.NoiDung, item.MaChuong, item.DoKho, item.DapAnlist, out var valErrors))
-            //            validList.Add(item);
-            //        else
-            //            errors.Add($"Câu '{item.NoiDung.Substring(0, Math.Min(50, item.NoiDung.Length))}...': {string.Join(", ", valErrors)}");
-            //    }
+                // --- Validate từng câu trước khi import ---
+                var validList = new List<(string NoiDung, string DoKho, long MaChuong, List<DapAnDTO> DapAnlist)>();
+                foreach (var item in list)
+                {
+                    if (CauHoiValidator.Validate(item.NoiDung, item.MaChuong, item.DoKho, item.DapAnlist, out var valErrors))
+                        validList.Add(item);
+                    else
+                        errors.Add($"Câu '{item.NoiDung.Substring(0, Math.Min(50, item.NoiDung.Length))}...': {string.Join(", ", valErrors)}");
+                }
 
-            //    if (errors.Any())
-            //    {
-            //        MessageBox.Show("File Excel có lỗi, không thể import.\n" +
-            //                        string.Join("\n", errors),
-            //                        "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //        return;
-            //    }
+                if (errors.Any())
+                {
+                    MessageBox.Show("File Excel có lỗi, không thể import.\n" +
+                                    string.Join("\n", errors),
+                                    "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-            //    int count = 0;
-            //    foreach (var item in validList)
-            //    {
-            //        _cauHoiBLL.ThemMoi(item.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
-            //        count++;
-            //    }
+                int count = 0;
+                foreach (var item in validList)
+                {
+                    _cauHoiBLL.ThemMoi(item.MaChuong, item.NoiDung, item.DoKho, item.DapAnlist);
+                    count++;
+                }
 
-            //    MessageBox.Show($"Import thành công {count} câu hỏi từ Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Import thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+                MessageBox.Show($"Import thành công {count} câu hỏi từ Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Import thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnLuuCauHoi_Click(object? sender, EventArgs e)

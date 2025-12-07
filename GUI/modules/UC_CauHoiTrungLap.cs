@@ -1,133 +1,160 @@
 ﻿using BLL;
 using DTO;
-using System;
-using System.Linq;
-using System.Windows.Forms;
-
+using System.Data;
 namespace GUI.modules
 {
     public partial class UC_CauHoiTrungLap : UserControl
     {
-        private readonly CauHoiBLL _cauHoiBLL = new();
+        private readonly CauHoiBLL _cauHoiBLL;
         private readonly MonHocBLL _monHocBLL = new();
         private readonly UC_CauHoi _parentUC;
-
-        public UC_CauHoiTrungLap(UC_CauHoi parent)
+        private readonly string _userId;
+        private readonly long _maND;
+        public UC_CauHoiTrungLap(UC_CauHoi parent, string userId)
         {
             InitializeComponent();
             _parentUC = parent;
+            _userId = userId;
+            _maND = Convert.ToInt64(userId);
+            // Khởi tạo BLL với _maND để nó tự động lọc (đã sửa ở bước trước)
+            _cauHoiBLL = new CauHoiBLL(_maND);
         }
-
-        private void UC_CauHoiTrungLap_Load(object sender, EventArgs e)
+        public void UC_CauHoiTrungLap1_Load(object sender, EventArgs e)
         {
-            LoadComboBox();
-            //LoadDuLieu();
+            LoadThongKe();
+            LoadCauHoiTrungLap();
+            LoadMonHoc();
         }
-
-        private void LoadComboBox()
+        private void LoadThongKe()
         {
-            cboLoaiCauHoi.Items.Clear();
-            cboLoaiCauHoi.Items.Add("Tất cả");
-            cboLoaiCauHoi.SelectedIndex = 0;
+            var (nhom, cauTrung, duyNhat) = _cauHoiBLL.LayThongKeTrungLap();
+            lblThongKe.Text = $"Nhóm trùng: {nhom} | Câu trùng: {cauTrung} | Câu duy nhất: {duyNhat}";
+        }
+        private void LoadMonHoc()
+        {
+            var list = _monHocBLL.GetMonHocTheoPhanCong(_maND);
+            list.Insert(0, new MonHocDTO { MaMonHoc = 0, TenMonHoc = "Chọn tất cả môn học" });
 
-            cboMonHoc.Items.Clear();
-            cboMonHoc.Items.Add("Tất cả môn học");
-            cboMonHoc.Items.AddRange(_monHocBLL.GetAllMonHocByStatus(1).Select(x => x.TenMonHoc).ToArray());
+            cboMonHoc.DataSource = list;
+            cboMonHoc.DisplayMember = "TenMonHoc"; 
+            cboMonHoc.ValueMember = "MaMonHoc";  
+            // Reset chọn item đầu tiên (Chọn tất cả môn học)
             cboMonHoc.SelectedIndex = 0;
         }
-
-        //private void LoadDuLieu()
-        //{
-        //    var (nhom, trung, duyNhat) = _cauHoiBLL.LayThongKeTrungLap();
-        //    lblThongKe.Text = $"{nhom} nhóm trùng lặp • {trung} câu trùng • {duyNhat} câu duy nhất";
-
-        //    var ds = _cauHoiBLL.LayCauHoiTrungLap();
-
-        //    dgvTrungLap.Columns.Clear();
-        //    dgvTrungLap.DataSource = null;
-
-        //    if (!ds.Any())
-        //    {
-        //        dgvTrungLap.Columns.Add("ThongBao", "Thông báo");
-        //        dgvTrungLap.Rows.Add("Không tìm thấy câu hỏi trùng lặp!");
-        //        return;
-        //    }
-
-        //    // Tạo danh sách hiển thị với sửa/xóa
-        //    var listDisplay = ds.SelectMany(g =>
-        //    {
-        //        var minId = g.DanhSach.Min(c => c.MaCauHoi);
-        //        return g.DanhSach.Select(c => new
-        //        {
-        //            c.MaCauHoi,
-        //            c.NoiDung,
-        //            c.TenMonHoc,
-        //            c.DoKho,
-        //            c.TacGia,
-        //            ThuocNhom = c.MaCauHoi == minId ? "Câu gốc" : "Bản sao",
-        //            Sua = "✎",
-        //            Xoa = "🗑"
-        //        });
-        //    }).ToList();
-
-        //    dgvTrungLap.DataSource = listDisplay;
-
-        //    // Thêm cột nút sửa/xóa
-        //    if (!dgvTrungLap.Columns.Contains("Sua"))
-        //        dgvTrungLap.Columns.Add(new DataGridViewButtonColumn
-        //        {
-        //            Name = "Sua",
-        //            HeaderText = "Sửa",
-        //            Text = "✎",
-        //            UseColumnTextForButtonValue = true
-        //        });
-
-        //    if (!dgvTrungLap.Columns.Contains("Xoa"))
-        //        dgvTrungLap.Columns.Add(new DataGridViewButtonColumn
-        //        {
-        //            Name = "Xoa",
-        //            HeaderText = "Xóa",
-        //            Text = "🗑",
-        //            UseColumnTextForButtonValue = true
-        //        });
-        //}
-
-        //private void dgvTrungLap_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.RowIndex < 0) return;
-        //    var row = dgvTrungLap.Rows[e.RowIndex];
-        //    long maCauHoi = Convert.ToInt64(row.Cells["MaCauHoi"].Value);
-
-        //    if (dgvTrungLap.Columns[e.ColumnIndex].Name == "Sua")
-        //    {
-        //        var frm = new frmSuaCauHoi(maCauHoi);
-        //        frm.ShowDialog();
-        //        LoadDuLieu();
-        //    }
-        //    else if (dgvTrungLap.Columns[e.ColumnIndex].Name == "Xoa")
-        //    {
-        //        if (MessageBox.Show("Xóa câu hỏi này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
-        //        {
-        //            _cauHoiBLL.Xoa(maCauHoi);
-        //            LoadDuLieu();
-        //        }
-        //    }
-        //}
-
-        //private void btnLoc_Click(object sender, EventArgs e) => LoadDuLieu();
-
-        //private void btnReset_Click(object sender, EventArgs e)
-        //{
-        //    cboLoaiCauHoi.SelectedIndex = 0;
-        //    cboMonHoc.SelectedIndex = 0;
-        //    LoadDuLieu();
-        //}
-
-        private void loadTatCauHoi_Click(object sender, EventArgs e)
+        private void LoadCauHoiTrungLap()
         {
-            this.Visible = false;
-            _parentUC.Visible = true;
-            _parentUC?.dispkayTatCaCauHoiFromTrungLap();
+            dgvTrungLap.Rows.Clear();
+
+            var list = _cauHoiBLL.LayCauHoiTrungLap();
+
+            // Lấy môn học đã chọn
+            long maMH = cboMonHoc.SelectedItem is MonHocDTO monHoc ? monHoc.MaMonHoc : 0;
+
+            // Lọc câu theo môn học nếu có chọn
+            if (maMH > 0)
+            {
+                list = list
+                    .Select(g => new CauHoiTrungLapDTO
+                    {
+                        Key = g.Key,
+                        SoLuong = g.SoLuong,
+                        TacGia = g.TacGia,
+                        DanhSach = g.DanhSach.Where(c => c.MaMonHoc == maMH).ToList()
+                    })
+                    .Where(g => g.DanhSach.Count > 1) // chỉ giữ group còn >1 câu trùng
+                    .ToList();
+            }
+
+            // Nếu không còn group nào
+            if (!list.Any())
+            {
+                int rowIndex = dgvTrungLap.Rows.Add();
+                dgvTrungLap.Rows[rowIndex].Cells["NoiDung"].Value = "Không tìm thấy câu hỏi trùng lặp!";
+                return;
+            }
+
+            // Thêm các câu trùng vào DataGridView
+            foreach (var group in list)
+            {
+                if (group.DanhSach.Count <= 1) continue;
+
+                long minMaCauHoi = group.DanhSach.Min(c => c.MaCauHoi);
+
+                foreach (var cau in group.DanhSach)
+                {
+                    string loai = cau.MaCauHoi == minMaCauHoi ? "Bản gốc" : "Bản sao";
+
+                    dgvTrungLap.Rows.Add(
+                        cau.MaCauHoi,
+                        cau.NoiDung,
+                        cau.TenMonHoc,
+                        cau.DoKho,
+                        loai,
+                        cau.TacGia,
+                        Properties.Resources.icon_eyes,
+                        Properties.Resources.icon_delete
+                    );
+                }
+            }
+        }
+
+
+        private void dgvTrungLap_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            long maCauHoi = Convert.ToInt64(dgvTrungLap.Rows[e.RowIndex].Cells["MaCauHoi"].Value);
+
+            if (e.ColumnIndex == 6) // Sửa
+            {
+                frmSuaCauHoi frm = new frmSuaCauHoi(maCauHoi, _userId);
+                frm.ShowDialog();
+            }
+            else if (e.ColumnIndex == 7) // Xóa
+            {
+                if (MessageBox.Show("Bạn có chắc chắn muốn xóa câu hỏi này?", "Xác nhận",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    _cauHoiBLL.Xoa(maCauHoi);
+                    LoadCauHoiTrungLap(); // reload lại bảng
+                }
+            }
+        }
+        private void dgvCauHoiTrungLap1_SelectionChanged(object sender, EventArgs e)
+        {
+            dgvTrungLap.ClearSelection();
+        }
+
+        #region sự kiên button 
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            // Reset ComboBox về "Chọn tất cả môn học"
+            cboMonHoc.SelectedIndex = 0;
+            LoadCauHoiTrungLap();
+        }
+        public void BtnTatCaCauHoi_Click(object sender, EventArgs e)
+        {
+            // Nếu bạn muốn mở UC_CauHoi trong cùng một panel cha
+            if (_parentUC != null)
+            {
+                // Ẩn UC_CauHoiTrungLap
+                this.Visible = false;
+                // Hiển thị UC_CauHoi
+                _parentUC.Visible = true;
+                // Load tất cả câu hỏi
+                _parentUC.dispkayTatCaCauHoiFromTrungLap();
+            }
+        }
+
+        private void cbMonHoc_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+                LoadCauHoiTrungLap();
+        }
+        #endregion
+
+        private void dgvTrungLap_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
