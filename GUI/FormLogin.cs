@@ -45,6 +45,7 @@ namespace GUI
         {
             UC_ForgotPassword ucForgotPassword = new UC_ForgotPassword();
             ucForgotPassword.BackToLogin += SwitchToLogin;
+            ucForgotPassword.TogglePassword += (s, e) => TogglePassword(s as Guna2TextBox);
             LoadUserControl(ucForgotPassword);
         }
         private void SwitchToForgotPassword(object? sender, EventArgs e)

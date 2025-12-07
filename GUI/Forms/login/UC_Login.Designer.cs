@@ -160,7 +160,7 @@
             linkForgotPassword.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             linkForgotPassword.LinkBehavior = LinkBehavior.HoverUnderline;
             linkForgotPassword.LinkColor = Color.FromArgb(79, 70, 229);
-            linkForgotPassword.Location = new Point(275, 290);
+            linkForgotPassword.Location = new Point(305, 290);
             linkForgotPassword.Name = "linkForgotPassword";
             linkForgotPassword.Size = new Size(121, 20);
             linkForgotPassword.TabIndex = 6;
@@ -189,21 +189,21 @@
             // lbErrorMSSV
             // 
             lbErrorMSSV.AutoSize = true;
-            lbErrorMSSV.Font = new Font("Segoe UI", 8F);
-            lbErrorMSSV.ForeColor = Color.FromArgb(239, 68, 68);
-            lbErrorMSSV.Location = new Point(45, 198);
+            lbErrorMSSV.Font = new Font("Segoe UI", 9F);
+            lbErrorMSSV.ForeColor = Color.Red;
+            lbErrorMSSV.Location = new Point(45, 199);
             lbErrorMSSV.Name = "lbErrorMSSV";
-            lbErrorMSSV.Size = new Size(0, 19);
+            lbErrorMSSV.Size = new Size(0, 20);
             lbErrorMSSV.TabIndex = 3;
             // 
             // lbErrorMatKhau
             // 
             lbErrorMatKhau.AutoSize = true;
-            lbErrorMatKhau.Font = new Font("Segoe UI", 8F);
-            lbErrorMatKhau.ForeColor = Color.FromArgb(239, 68, 68);
-            lbErrorMatKhau.Location = new Point(45, 278);
+            lbErrorMatKhau.Font = new Font("Segoe UI", 9F);
+            lbErrorMatKhau.ForeColor = Color.Red;
+            lbErrorMatKhau.Location = new Point(45, 279);
             lbErrorMatKhau.Name = "lbErrorMatKhau";
-            lbErrorMatKhau.Size = new Size(0, 19);
+            lbErrorMatKhau.Size = new Size(0, 20);
             lbErrorMatKhau.TabIndex = 5;
             // 
             // panelContent

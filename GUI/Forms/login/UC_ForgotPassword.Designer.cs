@@ -152,7 +152,6 @@
             txtCode.Size = new Size(360, 45);
             txtCode.TabIndex = 4;
             txtCode.TextOffset = new Point(5, 0);
-            txtCode.TextChanged += txtCode_TextChanged;
             txtCode.KeyDown += txtCode_KeyDown;
             // 
             // txtNewPassword
@@ -166,6 +165,8 @@
             txtNewPassword.FocusedState.BorderColor = Color.FromArgb(79, 70, 229);
             txtNewPassword.Font = new Font("Segoe UI", 10F);
             txtNewPassword.ForeColor = Color.FromArgb(15, 23, 42);
+            txtNewPassword.IconRight = Properties.Resources.icon_blinds;
+            txtNewPassword.IconRightSize = new Size(50, 40);
             txtNewPassword.Location = new Point(45, 270);
             txtNewPassword.Margin = new Padding(3, 4, 3, 4);
             txtNewPassword.Name = "txtNewPassword";
@@ -176,6 +177,7 @@
             txtNewPassword.Size = new Size(360, 45);
             txtNewPassword.TabIndex = 5;
             txtNewPassword.TextOffset = new Point(5, 0);
+            txtNewPassword.IconRightClick += txtNewPassword_IconRightClick;
             // 
             // btnSave
             // 
@@ -201,6 +203,7 @@
             // 
             // linkBackToLogin
             // 
+            linkBackToLogin.ActiveLinkColor = Color.FromArgb(79, 70, 229);
             linkBackToLogin.AutoSize = true;
             linkBackToLogin.Font = new Font("Segoe UI", 10F);
             linkBackToLogin.LinkBehavior = LinkBehavior.AlwaysUnderline;

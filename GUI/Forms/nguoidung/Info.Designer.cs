@@ -82,6 +82,7 @@ namespace GUI.Forms.nguoidung
             cardPanel.ShadowDecoration.Shadow = new Padding(0, 0, 5, 5);
             cardPanel.Size = new Size(604, 528);
             cardPanel.TabIndex = 11;
+            
             // 
             // separatorLine
             // 

@@ -1,12 +1,16 @@
 ﻿
 
 using BLL;
+using DocumentFormat.OpenXml.Office.CustomUI;
+using Guna.UI2.WinForms;
+using System.Text.RegularExpressions;
 
 namespace GUI.Forms.login
 {
     public partial class UC_ForgotPassword : UserControl
     {
         public event EventHandler BackToLogin;
+        public event EventHandler TogglePassword;
 
         private UserBLL userBLL = new UserBLL();
 
@@ -20,6 +24,19 @@ namespace GUI.Forms.login
         private void btnSendCode_Click(object sender, EventArgs e)
         {
             string email = txtEmailFP.Text.Trim();
+
+            if (InputValidator.IsEmpty(email)){
+                MessageBox.Show("Email không được để trống.");
+                txtEmailFP.Focus();
+            }
+           
+            if (userBLL.IsEmailExists(email))
+            {
+                MessageBox.Show("Email đã được đăng ký.");
+                txtEmailFP.Focus();
+                return;
+            }
+
             if (userBLL.SendVerificationCode(email))
                 MessageBox.Show("Mã xác thực đã gửi tới email của bạn!");
             else
@@ -32,11 +49,7 @@ namespace GUI.Forms.login
             string code = txtCode.Text.Trim();
             string newPass = txtNewPassword.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(email)){
-                MessageBox.Show("Email không được để trống!");
-                txtEmailFP.Focus();
-                return;
-            }
+
 
             if (!userBLL.VerifyCode(email, code))
             {
@@ -45,7 +58,7 @@ namespace GUI.Forms.login
                 return;
             }
 
-            if (newPass.Length < 8)
+            if (InputValidator.IsValidPassword(newPass)) 
             {
                 MessageBox.Show("Mật khẩu mới phải ≥ 8 ký tự!");
                 txtNewPassword.Focus();
@@ -62,7 +75,7 @@ namespace GUI.Forms.login
         {
             BackToLogin?.Invoke(this, EventArgs.Empty);
         }
-
+    
         private void txtEmailFP_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -71,18 +84,23 @@ namespace GUI.Forms.login
             }
         }
 
-        private void txtCode_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+   
+        
 
         private void txtCode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (!string.IsNullOrEmpty(txtCode.Text.Trim()))             
-                btnSave.PerformClick();
+                if (!string.IsNullOrEmpty(txtCode.Text.Trim()))
+                    btnSave.PerformClick();
             }
+        }
+
+      
+
+        private void txtNewPassword_IconRightClick(object sender, EventArgs e)
+        {
+            TogglePassword(sender as Guna2TextBox, e);
         }
     }
 }

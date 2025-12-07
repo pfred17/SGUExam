@@ -88,7 +88,7 @@
             txtRegisterMssv.Size = new Size(360, 45);
             txtRegisterMssv.TabIndex = 2;
             txtRegisterMssv.TextOffset = new Point(5, 0);
-            txtRegisterMssv.KeyDown += txtRegisterMssv_KeyDown;
+            txtRegisterMssv.KeyDown += Shared_KeyDown;
             // 
             // txtFullname
             // 
@@ -112,7 +112,7 @@
             txtFullname.Size = new Size(360, 45);
             txtFullname.TabIndex = 3;
             txtFullname.TextOffset = new Point(5, 0);
-            txtFullname.KeyDown += txtFullname_KeyDown;
+            txtFullname.KeyDown += Shared_KeyDown;
             // 
             // txtRegisterPassword
             // 
@@ -142,7 +142,7 @@
             txtRegisterPassword.TabIndex = 4;
             txtRegisterPassword.TextOffset = new Point(5, 0);
             txtRegisterPassword.IconRightClick += txtRegisterPassword_IconRightClick;
-            txtRegisterPassword.KeyDown += txtRegisterPassword_KeyDown;
+            txtRegisterPassword.KeyDown += Shared_KeyDown;
             // 
             // txtRegisterConfirmPassword
             // 
@@ -167,7 +167,7 @@
             txtRegisterConfirmPassword.Size = new Size(360, 45);
             txtRegisterConfirmPassword.TabIndex = 5;
             txtRegisterConfirmPassword.TextOffset = new Point(5, 0);
-            txtRegisterConfirmPassword.KeyDown += txtRegisterConfirmPassword_KeyDown_1;
+            txtRegisterConfirmPassword.KeyDown += Shared_KeyDown;
             // 
             // txtRegisterEmail
             // 
@@ -192,7 +192,7 @@
             txtRegisterEmail.TabIndex = 6;
             txtRegisterEmail.TextOffset = new Point(5, 0);
             txtRegisterEmail.TextChanged += txtRegisterEmail_TextChanged;
-            txtRegisterEmail.KeyDown += txtRegisterEmail_KeyDown_1;
+            txtRegisterEmail.KeyDown += Shared_KeyDown;
             // 
             // btnRegister
             // 
@@ -217,9 +217,11 @@
             btnRegister.TabIndex = 7;
             btnRegister.Text = "Đăng ký";
             btnRegister.Click += btnRegister_Click;
+            btnRegister.KeyDown += Shared_KeyDown;
             // 
             // linkLogin
             // 
+            linkLogin.ActiveLinkColor = Color.FromArgb(79, 70, 229);
             linkLogin.AutoSize = true;
             linkLogin.Font = new Font("Segoe UI", 10F);
             linkLogin.LinkBehavior = LinkBehavior.AlwaysUnderline;

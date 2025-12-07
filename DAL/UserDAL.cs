@@ -14,33 +14,7 @@ namespace DAL
             private set { instance = value; }
         }
         private RoleDAL roleDAL = new RoleDAL();
-        public UserDTO CheckLogin(string username, string password)
-        {
-            string query = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = @u AND mat_khau = @p";
-            SqlParameter[] param =
-            {
-                new SqlParameter("@u", username),
-                new SqlParameter("@p", password)
-            };
-
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
-
-            if (dt.Rows.Count == 0)
-                return null;
-
-            DataRow row = dt.Rows[0];
-            return new UserDTO
-            {
-                MSSV = row["ma_nd"].ToString(),
-                TenDangNhap = row["ten_dang_nhap"].ToString(),
-                MatKhau = row["mat_khau"].ToString(),
-                HoTen = row["ho_ten"].ToString(),
-                Email = row["email"].ToString(),
-                Role = Convert.ToInt32(row["ma_nhom_quyen"]),
-                GioiTinh = Convert.ToInt32(row["gioi_tinh"]),
-                TrangThai = Convert.ToInt32(row["trang_thai"])
-            };
-        }
+        
 
         // Lấy danh sách người dùng có phân trang
         public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
@@ -188,7 +162,6 @@ namespace DAL
         }
 
 
-        // Hàm cập nhật thông tin người dùng
         public bool UpdateUser(UserDTO user)
         {
             string query = @"UPDATE nguoi_dung 

@@ -26,70 +26,46 @@ namespace GUI.Forms.login
             string password = txtRegisterPassword.Text.Trim();
             string confirmPassword = txtRegisterConfirmPassword.Text.Trim();
             string email = txtRegisterEmail.Text.Trim();
-            string regexPassword = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
-            string regexEmail = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
-
-            if (string.IsNullOrWhiteSpace(mssv))
+            if (InputValidator.IsEmpty(mssv))
             {
-                MessageBox.Show("Mã số sinh viên không được để trống!");
-                txtRegisterMssv.Focus();
+                ShowError("Mã số sinh viên không được để trống!", txtRegisterMssv);
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(hoten))
+            if (InputValidator.IsEmpty(hoten))
             {
-                MessageBox.Show("Họ tên không được để trống!");
-                txtFullname.Focus();
+                ShowError("Họ tên không được để trống!", txtFullname);
                 return;
             }
-            if (string.IsNullOrWhiteSpace(password))
+
+            if (!InputValidator.IsValidPassword(password))
             {
-                MessageBox.Show("Mật khẩu không được để trống!");
-                txtRegisterPassword.Focus();
+                ShowError("Mật khẩu phải có ít nhất 1 ký tự hoa, thường, số và >= 8 ký tự.", txtRegisterPassword);
                 return;
             }
-            if (string.IsNullOrWhiteSpace(confirmPassword))
+
+            if (!InputValidator.IsPasswordMatch(password, confirmPassword))
             {
-                MessageBox.Show("Mật khẩu xác nhận không được để trống!");
-                txtRegisterConfirmPassword.Focus();
+                ShowError("Mật khẩu xác nhận không khớp!", txtRegisterConfirmPassword);
                 return;
             }
-            if (string.IsNullOrWhiteSpace(email))
+
+            if (!InputValidator.IsValidEmail(email))
             {
-                MessageBox.Show("Email không được để trống!");
-                txtRegisterEmail.Focus();
+                ShowError("Email không đúng định dạng.", txtRegisterEmail);
                 return;
             }
+
             if (userBLL.IsMssvExists(mssv))
             {
-                MessageBox.Show("Mã số sinh viên đã được sử dụng.");
-                txtRegisterMssv.Focus();
-                return;
-            }
-            if (!Regex.IsMatch(password, regexPassword))
-            {
-                MessageBox.Show("Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và ≥ 8 ký tự.");
-                txtRegisterPassword.Focus();
+                ShowError("Mã số sinh viên đã được đăng ký.", txtRegisterMssv);
                 return;
             }
 
-            if (password != confirmPassword)
-            {
-                MessageBox.Show("Mật khẩu xác nhận không khớp!");
-                txtRegisterConfirmPassword.Focus();
-                return;
-            }
-            if (!Regex.IsMatch(email, regexEmail))
-            {
-                MessageBox.Show("Email không hợp lệ.");
-                txtRegisterEmail.Focus();
-                return;
-            }
             if (userBLL.IsEmailExists(email))
             {
-                MessageBox.Show("Email đã được sử dụng.");
-                txtRegisterEmail.Focus();
+                ShowError("Email đã được đăng ký.", txtRegisterEmail);
                 return;
             }
 
@@ -99,13 +75,16 @@ namespace GUI.Forms.login
             {
                 MessageBox.Show("Đăng ký thành công!");
                 BackToLogin?.Invoke(this, EventArgs.Empty);
-
             }
             else
             {
                 MessageBox.Show("Đăng ký thất bại!");
             }
-
+        }
+        private void ShowError(string message, Control controlToFocus)
+        {
+            MessageBox.Show(message);
+            controlToFocus.Focus();
         }
 
         private void linkLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -118,61 +97,13 @@ namespace GUI.Forms.login
             TogglePassword(sender as Guna2TextBox, e);
         }
 
-        private void txtRegisterMssv_KeyDown(object sender, KeyEventArgs e)
+        private void Shared_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                btnRegister.PerformClick();
                 e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void txtFullname_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
+                e.SuppressKeyPress = true; 
                 btnRegister.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void txtRegisterPassword_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnRegister.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-        private void txtRegisterConfirmPassword_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnRegister.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-        private void txtRegisterEmail_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnRegister.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void txtRegisterConfirmPassword_KeyDown_1(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnRegister.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
             }
         }
 
@@ -181,15 +112,7 @@ namespace GUI.Forms.login
 
         }
 
-        private void txtRegisterEmail_KeyDown_1(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnRegister.PerformClick();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
+       
     }
 
 }
