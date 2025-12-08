@@ -13,32 +13,112 @@ namespace GUI.modules
         private readonly DeThiBLL deThiBLL = new DeThiBLL();
         private readonly MonHocBLL monHocBLL = new MonHocBLL();
         private readonly ChuongBLL chuongBLL = new ChuongBLL();
+        private readonly CauHoiBLL cauHoiBLL = new CauHoiBLL();
 
+
+        private long _maNhom=0;
         public UC_TaoDeThi()
         {
             InitializeComponent();
             LoadData();
             btnTaoDe.Click += BtnTaoDe_Click;
         }
-      
 
+        
+
+        public UC_TaoDeThi(long maNhom)
+        {
+            _maNhom = maNhom;
+            InitializeComponent();
+            LoadData();
+            btnTaoDe.Click += BtnTaoDe_Click;
+        }
+
+
+        //private void LoadData()
+        //{
+        //    // Load tất cả môn học
+        //    var monList = monHocBLL.GetAllMonHocByStatus(1);
+        //    cbMonHoc.DataSource = monList;
+        //    cbMonHoc.DisplayMember = "TenMH";
+        //    cbMonHoc.ValueMember = "MaMonHoc";
+        //    cbMonHoc.SelectedIndex = -1;
+
+        //    // Clear nhóm học phần và chương
+        //    clbNhomHocPhan.Items.Clear();
+        //    clbChuong.Items.Clear();
+
+        //    // Gán event khi chọn môn học
+        //    cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
+        //    cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
+        //}
         private void LoadData()
         {
-            // Load tất cả môn học
+            // ✅ LOAD MÔN HỌC
             var monList = monHocBLL.GetAllMonHocByStatus(1);
+
             cbMonHoc.DataSource = monList;
-            cbMonHoc.DisplayMember = "TenMH";
+            cbMonHoc.DisplayMember = "TenMonHoc";   
             cbMonHoc.ValueMember = "MaMonHoc";
             cbMonHoc.SelectedIndex = -1;
 
-            // Clear nhóm học phần và chương
             clbNhomHocPhan.Items.Clear();
             clbChuong.Items.Clear();
 
-            // Gán event khi chọn môn học
             cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
             cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
+
+            
+            // ✅ ĐI TỪ NHÓM QUA → TỰ ĐỔ DATA
+            
+            if (_maNhom > 0)
+            {
+                var nhom = nhomHocPhanBLL.GetById(_maNhom);
+                if (nhom == null) return;
+
+                // ✅ MaMonHoc đang là STRING → ÉP LONG
+                long maMonHoc = Convert.ToInt64(nhom.MaMonHoc);
+
+                // ✅ CHỌN SẴN MÔN
+                cbMonHoc.SelectedValue = maMonHoc;
+                cbMonHoc.Enabled = false;
+
+                // ✅ LOAD NHÓM THEO MÔN
+                var nhomList = nhomHocPhanBLL.GetByMonHoc(maMonHoc)
+                    .Where(x => x.TrangThai == 1)
+                    .ToList();
+
+                clbNhomHocPhan.Items.Clear();
+                foreach (var item in nhomList)
+                    clbNhomHocPhan.Items.Add(item, false);
+
+                clbNhomHocPhan.DisplayMember = "TenNhom";
+
+                // ✅ CHECK ĐÚNG NHÓM ĐANG CHUYỂN QUA
+                for (int i = 0; i < clbNhomHocPhan.Items.Count; i++)
+                {
+                    var item = clbNhomHocPhan.Items[i] as NhomHocPhanDTO;
+                    if (item != null && item.MaNhom == _maNhom)
+                    {
+                        clbNhomHocPhan.SetItemChecked(i, true);
+                        clbNhomHocPhan.Enabled = false; // ✅ KHÓA
+                        break;
+                    }
+                }
+
+                // ✅ LOAD CHƯƠNG
+                var chuongList = chuongBLL.GetChuongByMonHoc(maMonHoc);
+                clbChuong.Items.Clear();
+                foreach (var chuong in chuongList)
+                    clbChuong.Items.Add(chuong, false);
+
+                clbChuong.DisplayMember = "TenChuong";
+            }
         }
+
+
+
+
 
         private void cbMonHoc_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -83,6 +163,11 @@ namespace GUI.modules
                 MessageBox.Show("Vui lòng nhập tên đề kiểm tra!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (dtpTu.Value < DateTime.Now)
+            {
+                MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời điểm hiện tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (dtpTu.Value >= dtpDen.Value)
             {
                 MessageBox.Show("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -106,6 +191,52 @@ namespace GUI.modules
                 return;
             }
 
+            int soCauDe = (int)numDe.Value;
+            int soCauTrungBinh = (int)numTrungBinh.Value;
+            int soCauKho = (int)numKho.Value;
+
+            if (soCauDe <= 0 || soCauTrungBinh <= 0 || soCauKho <= 0)
+            {
+                MessageBox.Show("Số lượng câu hỏi Dễ, Trung bình, Khó không được để trống hoặc bằng 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            int thoiGianLamBai = (int)numThoiGianLamBai.Value;
+
+            double tongThoiGianChoPhep = (dtpDen.Value - dtpTu.Value)?.TotalMinutes ?? 0;
+            if (thoiGianLamBai > tongThoiGianChoPhep)
+            {
+                MessageBox.Show("Thời gian làm bài không được vượt quá tổng thời gian từ bắt đầu đến kết thúc!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if(thoiGianLamBai < (int)numCanhBao.Value)
+            {
+                MessageBox.Show("Thời gian làm bài không được nhỏ hơn thời gian cảnh báo", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var allCauHoi = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
+            int soCauDeInput = (int)numDe.Value;
+            int soCauTrungBinhInput = (int)numTrungBinh.Value;
+            int soCauKhoInput = (int)numKho.Value;
+
+            int soCauDeThucTe = allCauHoi.Count(x => x.DoKho == "Dễ");
+            int soCauTrungBinhThucTe = allCauHoi.Count(x => x.DoKho == "Trung bình");
+            int soCauKhoThucTe = allCauHoi.Count(x => x.DoKho == "Khó");
+
+            if (soCauDeThucTe < soCauDeInput)
+            {
+                MessageBox.Show($"Các chương đã chọn chỉ có {soCauDeThucTe} câu Dễ, không đủ {soCauDeInput}!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (soCauTrungBinhThucTe < soCauTrungBinhInput)
+            {
+                MessageBox.Show($"Các chương đã chọn chỉ có {soCauTrungBinhThucTe} câu Trung bình, không đủ {soCauTrungBinhInput}!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (soCauKhoThucTe < soCauKhoInput)
+            {
+                MessageBox.Show($"Các chương đã chọn chỉ có {soCauKhoThucTe} câu Khó, không đủ {soCauKhoInput}!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             // Tạo DTO đề thi
             var deThi = new DeThiDTO
             {
@@ -143,12 +274,12 @@ namespace GUI.modules
 
                 var cauHoiBLL = new CauHoiBLL();
                 // Lấy câu hỏi theo chương và trạng thái = 1
-                var allCauHoi = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
+                var allCauHoiValidate = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
 
                 // Lấy random theo độ khó
-                var cauDe = allCauHoi.Where(x => x.DoKho == "Dễ").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauDe).ToList();
-                var cauTB = allCauHoi.Where(x => x.DoKho == "Trung bình").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauTrungBinh).ToList();
-                var cauKho = allCauHoi.Where(x => x.DoKho == "Khó").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauKho).ToList();
+                var cauDe = allCauHoiValidate.Where(x => x.DoKho == "Dễ").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauDe).ToList();
+                var cauTB = allCauHoiValidate.Where(x => x.DoKho == "Trung bình").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauTrungBinh).ToList();
+                var cauKho = allCauHoiValidate.Where(x => x.DoKho == "Khó").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauKho).ToList();
 
                 var cauHoiIds = cauDe.Concat(cauTB).Concat(cauKho).Select(x => x.MaCauHoi).ToList();
 

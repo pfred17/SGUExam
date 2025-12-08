@@ -13,6 +13,12 @@ namespace BLL
         private readonly CauHoiDAL _cauHoiDAL = new();
         private readonly DapAnDAL _dapAnDAL = new();
         private readonly ChuongBLL _chuongBLL = new();
+        private readonly long _maND; // lưu userId
+
+        public CauHoiBLL(long maND = 0)
+        {
+            _maND = maND;
+        }
 
         #region Hàm Normalize & Helper
         public static string Normalize(string text)
@@ -50,9 +56,9 @@ namespace BLL
         }
 
         public List<CauHoiDTO> GetAllForDisplay(
-            long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
+           long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
         {
-            var list = _cauHoiDAL.GetAllForDisplay();
+            var list = _cauHoiDAL.GetAllForDisplay(_maND);
             string keywordNormalized = string.IsNullOrEmpty(tuKhoa) ? "" : Normalize(tuKhoa);
 
             HashSet<long>? dsChuong = null;
@@ -109,7 +115,7 @@ namespace BLL
         #region Trùng lặp & thống kê
         public List<CauHoiTrungLapDTO> LayCauHoiTrungLap()
         {
-            var all = _cauHoiDAL.GetAllForDisplayTrungLap();
+            var all = _cauHoiDAL.GetAllForDisplayTrungLap(_maND);
             return all
                 .GroupBy(ch => new { NoiDungChuanHoa = Normalize(ch.NoiDung), ch.MaMonHoc }) // nội dung chuẩn hóa và cùng môn học
                .Where(nhom => nhom.Count() > 1)
@@ -130,16 +136,18 @@ namespace BLL
         }
 
         /// Thống kê nhanh: số nhóm trùng, số câu trùng, số câu duy nhất
-        public (int NhomTrung, int CauTrung, int CauDuyNhat) LayThongKeTrungLap()
+        public (int nhomTrung, int cauTrung, int cauDuyNhat) LayThongKeTrungLap()
         {
-            var tatca = _cauHoiDAL.GetAllForDisplay();
-            var trungLap = LayCauHoiTrungLap();
+            var all = _cauHoiDAL.GetAllForDisplayTrungLap(_maND);
+            var duplicateGroups = all
+                .GroupBy(ch => new { Key = Normalize(ch.NoiDung), ch.MaMonHoc })
+                .Where(g => g.Count() > 1);
 
-            int tongCauTrung = trungLap.Sum(x => x.SoLuong);
-            int soNhom = trungLap.Count;
-            int cauDuyNhat = tatca.Count - tongCauTrung + soNhom;
+            int nhomTrung = duplicateGroups.Count();
+            int cauTrung = duplicateGroups.Sum(g => g.Count() - 1);
+            int cauDuyNhat = all.Count - (nhomTrung + cauTrung);
 
-            return (soNhom, tongCauTrung, cauDuyNhat);
+            return (nhomTrung, cauTrung, cauDuyNhat);
         }
         public List<CauHoiDTO> GetCauHoiByChuongAndTrangThai(List<long> chuongIds, int trangThai)
         {

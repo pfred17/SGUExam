@@ -16,6 +16,8 @@ namespace GUI.modules
 {
     public partial class UC_NhomHocPhan : UserControl
     {
+        private ThemNhomHocPhan frmThem = null;
+
         public event EventHandler QuayLaiClicked;
         private UC_DeThiNhomHocPhan ucDeThiNhom;
         private UC_ThemNhomHocPhan ucThem = null;
@@ -25,7 +27,7 @@ namespace GUI.modules
         private readonly string _userId;
 
         private const int MaxColumns = 3;             // tối đa 3 item trên 1 hàng
-        private const int MinItemWidth = 240;         // nếu flow quá nhỏ, sẽ giảm số cột
+        private const int MinItemWidth = 350;         // nếu flow quá nhỏ, sẽ giảm số cột
         private const int ItemHorizontalGap = 16;     // khoảng cách ngang giữa các item (margin-left+right)
         private const int ItemVerticalGap = 12;       // khoảng cách dọc giữa các item (margin-top+bottom)
         public UC_NhomHocPhan(string userId)
@@ -167,10 +169,22 @@ namespace GUI.modules
 
             item.EditClicked += (s, e) =>
             {
-                InitUcThem();
-                ucThem.SetEditMode(item.GetCurrentData());
-                ucThem.Visible = true;
-                ucThem.BringToFront();
+                var data = item.GetCurrentData();
+                if (data == null || data.MaNhom <= 0)
+                {
+                    MessageBox.Show("Không lấy được dữ liệu để sửa!");
+                    return;
+                }
+
+                var frmSua = new SuaNhomHocPhan(_userId);
+                frmSua.LoadDuLieuSua(data);
+
+                frmSua.NhomHocPhanUpdated += (ss, updatedNhom) =>
+                {
+                    UpdateItemInFlow(updatedNhom); // cập nhật lại giao diện
+                };
+
+                frmSua.ShowDialog();
             };
             item.DeThiClicked += (s, nhom) =>
             {
@@ -191,11 +205,22 @@ namespace GUI.modules
             try
             {
                 flowDanhSachNhom.Controls.Clear();
-                var list = nhomHocPhanBLL.GetAll();
-                foreach (var nhom in list)
+
+                // Nếu không có userId → vẫn cho load tất cả (dành cho admin hoặc debug)
+                if (string.IsNullOrEmpty(_userId))
                 {
-                    AddItemToFlow(nhom);
+                    var list = nhomHocPhanBLL.GetAll();
+                    foreach (var nhom in list)
+                        AddItemToFlow(nhom);
                 }
+                else
+                {
+                    // Chỉ lấy nhóm mà giảng viên này dạy
+                    var list = nhomHocPhanBLL.GetNhomByGiangVien(_userId);
+                    foreach (var nhom in list)
+                        AddItemToFlow(nhom);
+                }
+
                 AdjustFlowChildrenSizes();
             }
             catch (Exception ex)
@@ -211,10 +236,36 @@ namespace GUI.modules
         
         private void btnThem_Click(object sender, EventArgs e)
         {
-            InitUcThem();
-            ucThem.ResetFields();
-            ucThem.Visible = true;
-            ucThem.BringToFront();
+            if (string.IsNullOrEmpty(_userId))
+            {
+                MessageBox.Show("Không xác định được người dùng hiện tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var phanCongBLL = new PhanCongBLL();
+            var dsMonHocPhanCong = phanCongBLL.GetMonHocByGiangVien(_userId);
+
+            if (dsMonHocPhanCong == null || dsMonHocPhanCong.Count == 0)
+            {
+                MessageBox.Show("Bạn chưa được phân công giảng dạy môn học nào!\nVui lòng liên hệ quản trị viên để được phân công.",
+                                "Chưa có phân công", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // DỪNG LẠI, KHÔNG MỞ FORM
+            }
+
+            // === BƯỚC 2: Nếu đã có phân công → mới mở form ===
+            var frmThem = new ThemNhomHocPhan(_userId);
+            frmThem.NhomHocPhanAdded += (s, nhom) =>
+            {
+                AddItemToFlow(nhom);
+                AdjustFlowChildrenSizes(); // cập nhật lại layout
+            };
+
+            frmThem.FormClosedEvent += (s, e) =>
+            {
+                // Optional: làm gì đó khi form đóng
+            };
+
+            frmThem.ShowDialog(); // Chỉ mở khi đã có phân công
         }
 
         private void UpdateItemInFlow(NhomHocPhanDTO updatedNhom)
@@ -234,32 +285,7 @@ namespace GUI.modules
             MessageBox.Show("✅ Đã cập nhật nhóm học phần!", "Thông báo");
         }
 
-        // lỗi sửa
-        private void InitUcThem()
-        {
-            if (ucThem != null) return;
-
-            ucThem = new UC_ThemNhomHocPhan(_userId);
-            ucThem.Width = 624;
-            ucThem.Height = 547;
-            ucThem.Location = new Point((this.Width - ucThem.Width) / 2, (this.Height - ucThem.Height) / 2);
-            this.Controls.Add(ucThem);
-
-            ucThem.FormClosedEvent += (s, args) => ucThem.Visible = false;
-
-            ucThem.NhomHocPhanAdded += (s, nhom) =>
-            {
-                AddItemToFlow(nhom);
-                ucThem.Visible = false;
-            };
-
-            ucThem.NhomHocPhanUpdated += (s, updated) =>
-            {
-                UpdateItemInFlow(updated);
-                ucThem.Visible = false;
-            };
-        }
-
+       
         
 
     }

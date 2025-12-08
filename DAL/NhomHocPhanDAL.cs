@@ -343,5 +343,51 @@ namespace DAL
             return list;
         }
 
+
+
+
+        /// update load nhóm học phần
+       
+        public List<NhomHocPhanDTO> GetNhomByGiangVien(string maGiangVien)
+        {
+            string query = @"
+        SELECT DISTINCT
+            n.ma_nhom,
+            n.ma_pc,
+            n.ten_nhom,
+            n.ghi_chu,
+            n.hoc_ky,
+            n.nam_hoc,
+            n.trang_thai,
+            mh.ma_mh AS MaMonHoc,
+            mh.ten_mh AS TenMonHoc
+        FROM nhom_hoc_phan n
+        INNER JOIN phan_cong pc ON n.ma_pc = pc.ma_pc
+        INNER JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
+        WHERE pc.ma_nd = @maGiangVien
+          AND n.trang_thai = 1
+          AND pc.trang_thai = 1";
+
+            var param = new SqlParameter("@maGiangVien", maGiangVien);
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, param);
+
+            var list = new List<NhomHocPhanDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new NhomHocPhanDTO
+                {
+                    MaNhom = Convert.ToInt64(row["ma_nhom"]),
+                    MaPhanCong = Convert.ToInt64(row["ma_pc"]),
+                    TenNhom = row["ten_nhom"].ToString() ?? string.Empty,
+                    GhiChu = row["ghi_chu"]?.ToString() ?? string.Empty,
+                    HocKy = row["hoc_ky"].ToString() ?? string.Empty,
+                    NamHoc = row["nam_hoc"].ToString() ?? string.Empty,
+                    TrangThai = Convert.ToInt32(row["trang_thai"]),
+                    MaMonHoc = row["MaMonHoc"].ToString() ?? string.Empty,
+                    TenMonHoc = row["TenMonHoc"].ToString() ?? string.Empty
+                });
+            }
+            return list;
+        }
     }
 }

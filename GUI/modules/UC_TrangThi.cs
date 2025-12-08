@@ -44,23 +44,23 @@ namespace GUI.modules
             _userId = userId;
 
             // Prepare events
-            //this.Load += UC_TrangThi_Load;
+            this.Load += UC_TrangThi_Load;
             btnTruoc.Click += BtnTruoc_Click;
             btnTiep.Click += BtnTiep_Click;
             btnNopBai.Click += BtnNopBai_Click;
         }
 
-        //private void UC_TrangThi_Load(object sender, EventArgs e)
-        //{
-        //    _user = _userBLL.GetUserById(_userId);
-        //    _cauHinh = _deThiCauHinhBLL.GetByMaDe(_maDe);
+        private void UC_TrangThi_Load(object sender, EventArgs e)
+        {
+            _user = _userBLL.GetUserById(_userId);
+            _cauHinh = _deThiCauHinhBLL.GetByMaDe(_maDe);
 
-        //    LoadDeThi();
-        //    CreateNavigationButtons();
-        //    UpdateNavigationVisuals();
-        //    StartTimer();
-        //    CenterSubmitButton();
-        //}
+            LoadDeThi();
+            CreateNavigationButtons();
+            UpdateNavigationVisuals();
+            StartTimer();
+            CenterSubmitButton();
+        }
 
         private void LoadDeThi()
         {
@@ -72,6 +72,11 @@ namespace GUI.modules
             }
 
             _dsCauHoi = _deThiBLL.GetCauHoiTheoDeThi(_maDe);
+            if (_cauHinh != null && _cauHinh.DaoCauHoi)
+            {
+                var rnd = new Random();
+                _dsCauHoi = _dsCauHoi.OrderBy(x => rnd.Next()).ToList();
+            }
 
             // Xóa radio đáp án cũ
             foreach (var item in radioDapAnPanels) panelCauHoi.Controls.Remove(item.panel);
@@ -125,6 +130,11 @@ namespace GUI.modules
             foreach (var cau in _dsCauHoi)
             {
                 var dapAnList = _dapAnBLL.GetByCauHoi(cau.MaCauHoi);
+                if (_cauHinh != null && _cauHinh.DaoDapAn)
+                {
+                    var rnd = new Random();
+                    dapAnList = dapAnList.OrderBy(x => rnd.Next()).ToList();
+                }
                 cau.DapAnList = dapAnList.Select(da => da.NoiDung).ToList();
                 cau.DapAnIds = dapAnList.Select(da => da.MaDapAn).ToList();
                 cau.DapAnChon = -1;
@@ -163,14 +173,18 @@ namespace GUI.modules
                 var item = radioDapAnPanels[i];
                 bool visible = i < cau.DapAnList.Count;
                 item.panel.Visible = visible;
+                item.radio.Checked = false; // reset trước
                 if (visible)
                 {
                     item.lbl.Text = $"{(char)('A' + i)}. {cau.DapAnList[i]}";
-                    item.radio.Checked = (cau.DapAnChon == i);
+                    if (cau.DapAnChon >= 0)
+                        item.radio.Checked = (cau.DapAnChon == i);
                     item.panel.BorderColor = (cau.DapAnChon == i) ? Color.LimeGreen : Color.Silver;
                     item.panel.BorderThickness = (cau.DapAnChon == i) ? 2 : 1;
                 }
             }
+
+
 
             btnTruoc.Enabled = _cauHienTai > 0;
             btnTiep.Enabled = _cauHienTai < _dsCauHoi.Count - 1;
@@ -272,7 +286,7 @@ namespace GUI.modules
                 else
                 {
                     // Radio KHÔNG được chọn -> Bắt buộc uncheck và reset giao diện
-                    item.radio.Checked = false; // <--- DÒNG CẦN THIẾT ĐỂ BẮT BUỘC BỎ CHỌN CÁC RADIO KHÁC
+                    item.radio.Checked = false;
                     item.panel.BorderColor = Color.Silver;
                     item.panel.BorderThickness = 1;
                 }
@@ -283,23 +297,18 @@ namespace GUI.modules
 
         private void SaveCurrentSelectedAnswer()
         {
-            // The DapAnChon state is already updated in RadioDapAn_CheckedChanged,
-            // but this ensures the state is saved when navigating away (e.g., using 'Trước' or 'Tiếp')
-            // by explicitly checking the state one last time.
-
-            // Reset selection first
-            _dsCauHoi[_cauHienTai].DapAnChon = -1;
-
+            int selectedIndex = -1;
             for (int i = 0; i < radioDapAnPanels.Count; i++)
             {
-                // Check the radio button component in the tuple
                 if (radioDapAnPanels[i].radio.Checked)
                 {
-                    _dsCauHoi[_cauHienTai].DapAnChon = i;
-                    return;
+                    selectedIndex = i;
+                    break;
                 }
             }
+            _dsCauHoi[_cauHienTai].DapAnChon = selectedIndex;
         }
+
         private void PnlOrLbl_Click(object sender, EventArgs e)
         {
             Guna2Panel panelContainer = null;
@@ -369,14 +378,23 @@ namespace GUI.modules
             if (_thoiGianConLai.TotalSeconds <= 0)
             {
                 _timer.Stop();
-                MessageBox.Show("Hết giờ. Bài thi sẽ được nộp tự động.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SubmitAndClose();
+                if (_cauHinh != null && _cauHinh.TuDongNop)
+                {
+                    MessageBox.Show("Hết giờ. Bài thi sẽ được nộp tự động.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SubmitAndClose();
+                }
+                else
+                {
+                    MessageBox.Show("Hết giờ. Bài thi sẽ bị đóng lại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.ParentForm?.Close();
+                }
                 return;
             }
 
             _thoiGianConLai = _thoiGianConLai.Add(TimeSpan.FromSeconds(-1));
             lblThoiGian.Text = $"Thời gian còn: {_thoiGianConLai:hh\\:mm\\:ss}";
         }
+
 
         private void BtnNopBai_Click(object sender, EventArgs e)
         {
@@ -399,6 +417,27 @@ namespace GUI.modules
                 MessageBox.Show($"Bạn phải trả lời tất cả các câu hỏi trước khi nộp bài!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (_thoiGianConLai.TotalMinutes >= _deThi.CanhBaoNeuDuoi)
+            {
+                var warnRes = MessageBox.Show(
+                    $"Bạn còn {Math.Floor(_thoiGianConLai.TotalMinutes)} phút. Bạn có chắc chắn muốn nộp bài sớm không?",
+                    "Cảnh báo nộp bài sớm",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+                if (warnRes != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (MessageBox.Show("Xác nhận nộp bài và kết thúc thi?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
 
             int soCauDung = 0;
             for (int i = 0; i < _dsCauHoi.Count; i++)
@@ -445,17 +484,23 @@ namespace GUI.modules
             _timer?.Stop();
             MessageBox.Show($"Nộp bài thành công! Điểm của bạn: {diem}", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            // Trong SubmitAndClose()
             try
             {
-                // Assuming GUI.forms.dethi.KetQuaBaiThi is a valid form class
-                var form = new GUI.forms.dethi.KetQuaBaiThi(_dsCauHoi, soCauDung, diem, _user, _cauHinh);
+                var form = new GUI.forms.dethi.KetQuaBaiThi(
+                    _dsCauHoi, // chính là danh sách đã đảo thứ tự và đáp án
+                    soCauDung,
+                    diem,
+                    _user,
+                    _cauHinh
+                );
                 form.ShowDialog();
             }
             catch (Exception ex)
             {
-                // Handle potential error in showing the results form
                 Console.WriteLine($"Error showing results form: {ex.Message}");
             }
+
 
             this.ParentForm?.Close();
         }

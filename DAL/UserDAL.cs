@@ -329,7 +329,6 @@ namespace DAL
                     Email = row["email"].ToString() ?? "",
                     TenNhomQuyen = row["ten_nhom_quyen"].ToString() ?? "",
                     TrangThai = Convert.ToInt32(row["trang_thai"])
-
                 });
             }
 

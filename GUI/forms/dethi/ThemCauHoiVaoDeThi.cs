@@ -52,6 +52,7 @@ namespace GUI.modules
             _questionPool = _cauHoiBLL.GetCauHoiByChuongAndTrangThai(_deThi.ChuongIds, 1);
 
             UpdateDeThiInfoLabels();
+            UpdateSelectedQuestionLabel();
             LoadQuestions();
         }
 
@@ -174,6 +175,7 @@ namespace GUI.modules
                     }
 
                     UpdateDeThiInfoLabels();
+                    UpdateSelectedQuestionLabel();
                 };
 
                 flpQuestions.Controls.Add(chk);
@@ -195,6 +197,12 @@ namespace GUI.modules
 
             lblTenDeThi.Text = _deThi.TenDe ?? "";
             lblThoiGian.Text = $"Thời gian: {_deThi.ThoiGianLamBai} phút";
+        }
+        private void UpdateSelectedQuestionLabel()
+        {
+            lblChuaCoCauHoi.Text = _selectedQuestionIds.Count == 0
+                ? "Chưa có câu hỏi nào được chọn"
+                : $"Đã chọn {_selectedQuestionIds.Count} câu hỏi";
         }
 
         // Paging handlers

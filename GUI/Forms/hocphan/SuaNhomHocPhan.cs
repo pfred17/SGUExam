@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GUI.forms.hocphan
 {
-    public partial class ThemNhomHocPhan : Form
+    public partial class SuaNhomHocPhan : Form
     {
         private bool isEditMode = false;
         private long editingMaNhom = 0;
@@ -24,9 +24,13 @@ namespace GUI.forms.hocphan
         private MonHocBLL monHocBLL = new MonHocBLL();
         private readonly PhanCongBLL phanCongBLL = new PhanCongBLL();
         private readonly string maUserDangNhap;
-        public ThemNhomHocPhan(string maNguoiDung)
+      
+        private NhomHocPhanDTO nhomDangSua;
+
+        public SuaNhomHocPhan(string maNguoiDung)
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.maUserDangNhap = maNguoiDung;
         }
 
@@ -142,113 +146,28 @@ namespace GUI.forms.hocphan
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            try
+            if (string.IsNullOrWhiteSpace(tbTenNhom.Text))
             {
-                if (string.IsNullOrWhiteSpace(tbTenNhom.Text))
-                {
-                    MessageBox.Show("Vui lòng nhập tên nhóm học phần.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(tbGhiChu.Text))
-                {
-                    MessageBox.Show("Vui lòng nhập ghi chú!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    tbGhiChu.Focus();
-                    return;
-                }
-                if (cbMonHoc.SelectedValue == null)
-                {
-                    MessageBox.Show("Vui lòng chọn môn học.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(cbNamHoc.Text) || cbNamHoc.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Vui lòng chọn năm học!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    cbNamHoc.DroppedDown = true;
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(cbHocKy.Text) || cbHocKy.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Vui lòng chọn học kỳ!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    cbHocKy.DroppedDown = true;
-                    return;
-                }
-
-                long maMH = Convert.ToInt64(cbMonHoc.SelectedValue);
-                // TÌM ma_pc của giảng viên hiện tại với môn này
-                long maPC = phanCongBLL.GetMaPCByGiangVienAndMonHoc(maMH, maUserDangNhap);
-                if (maPC <= 0)
-                {
-                    MessageBox.Show("Bạn chưa Hinton được phân công giảng dạy môn này!", "Lỗi phân công", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                var nhom = new NhomHocPhanDTO
-                {
-                    MaPhanCong = maPC,  // ĐÚNG RỒI ĐÂY!
-                    TenNhom = tbTenNhom.Text.Trim(),
-                    GhiChu = tbGhiChu.Text.Trim(),
-                    HocKy = cbHocKy.Text,
-                    NamHoc = cbNamHoc.Text,
-                    TrangThai = 1
-                };
-
-                bool result;
-
-                if (isEditMode)
-                {
-                    // === KHI SỬA: DÙNG LẠI maPC CŨ (từ dữ liệu đang sửa) ===
-                    nhom.MaNhom = editingMaNhom;
-                    nhom.MaPhanCong = nhomHocPhanEditing.MaPhanCong; // Lấy trực tiếp từ DTO cũ
-
-                    result = nhomHocPhanBLL.Update(nhom);
-                    if (result)
-                    {
-                        NhomHocPhanUpdated?.Invoke(this, nhom);
-                        MessageBox.Show("Cập nhật nhóm học phần thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Cập nhật thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    // === KHI THÊM MỚI: DÙNG TÊN BIẾN KHÁC ĐỂ TRÁNH TRÙNG ===
-                    long maMonHocMoi = Convert.ToInt64(cbMonHoc.SelectedValue);
-                    long maPhanCongMoi = phanCongBLL.GetMaPCByGiangVienAndMonHoc(maMonHocMoi, maUserDangNhap);
-
-                    if (maPhanCongMoi <= 0)
-                    {
-                        MessageBox.Show("Bạn chưa được phân công giảng dạy môn này!", "Lỗi phân công", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    nhom.MaPhanCong = maPhanCongMoi;
-
-                    long newId = nhomHocPhanBLL.InsertReturnId(nhom);
-                    if (newId > 0)
-                    {
-                        nhom.MaNhom = newId;
-                        NhomHocPhanAdded?.Invoke(this, nhom);
-                        MessageBox.Show("Thêm nhóm học phần thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Thêm thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
-
-                // Đóng form thêm
-                this.Visible = false;
-                FormClosedEvent?.Invoke(this, EventArgs.Empty);
-
-                // Reset trạng thái
-                isEditMode = false;
-                editingMaNhom = 0;
+                MessageBox.Show("Vui lòng nhập tên nhóm!");
+                return;
             }
-            catch (Exception ex)
+
+            nhomDangSua.TenNhom = tbTenNhom.Text.Trim();
+            nhomDangSua.GhiChu = tbGhiChu.Text.Trim();
+            nhomDangSua.HocKy = cbHocKy.Text;
+            nhomDangSua.NamHoc = cbNamHoc.Text;
+
+            bool result = nhomHocPhanBLL.Update(nhomDangSua);
+
+            if (result)
             {
-                MessageBox.Show("Lỗi khi lưu nhóm học phần: " + ex.Message);
+                NhomHocPhanUpdated?.Invoke(this, nhomDangSua);
+                MessageBox.Show("✅ Cập nhật thành công!");
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("❌ Cập nhật thất bại!");
             }
         }
         public void ResetFields()
@@ -377,6 +296,23 @@ namespace GUI.forms.hocphan
         {
 
         }
+        //
+        public void LoadDuLieuSua(NhomHocPhanDTO nhom)
+        {
+            nhomDangSua = nhom;
+
+            LoadComboBoxMonHoc();
+            LoadHocKy();
+            LoadNamHoc();
+
+            tbTenNhom.Text = nhom.TenNhom;
+            tbGhiChu.Text = nhom.GhiChu;
+            cbHocKy.Text = nhom.HocKy;
+            cbNamHoc.Text = nhom.NamHoc;
+
+            cbMonHoc.SelectedValue = nhom.MaMonHoc;
+            cbMonHoc.Enabled = false; // không cho sửa môn
+        }
+
     }
 }
-    

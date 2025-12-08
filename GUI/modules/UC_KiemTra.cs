@@ -63,7 +63,7 @@ namespace GUI.modules
                         now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc
                     ).ToList();
             }
-            else if (selectedStatus == "Đã đóng")
+            else if (selectedStatus == "Kết thúc")
             {
                 danhSachDeThi = danhSachDeThi
                     .Where(deThi =>
@@ -202,9 +202,11 @@ namespace GUI.modules
             };
 
             // ===== MÔ TẢ =====
+
+            var deThiFull = deThiBLL.GetFullDetailById(deThi.MaDe);
             var lblMoTa = new Label
             {
-                Text = "Giao cho học phần Lập trình web và ứng dụng - NH2025 - HK1",
+                Text = $"Nhóm học phần: {deThiFull.TenNhomHocPhan ?? "Chưa có"}",
                 Font = new Font("Segoe UI", 10),
                 ForeColor = Color.Gray,
                 Location = new Point(22, 55),

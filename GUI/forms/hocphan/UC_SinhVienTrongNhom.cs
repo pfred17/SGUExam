@@ -159,7 +159,10 @@ namespace GUI
             {
                 MessageBox.Show("Đã thêm sinh viên vào nhóm thành công!", "Thành công",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
             }
+
+
             LoadDanhSachSinhVien();
         }
 
@@ -209,6 +212,18 @@ namespace GUI
                     }
 
                 }
+            }
+            // 2. Click vào icon con mắt → mở form chi tiết
+            else if (e.ColumnIndex == dgvSinhVien.Columns["colChiTiet"].Index)
+            {
+                // Lấy MSSV từ dòng hiện tại (cột thứ 3 - index = 2)
+                //string mssv = dgvSinhVien.Rows[e.RowIndex].Cells[2].Value.ToString().Trim();
+
+                string mssv = dgvSinhVien.Rows[e.RowIndex].Cells[2].Value.ToString().Trim();
+                long maNhom = _nhom.MaNhom; // cái này bạn đã có sẵn
+
+                frmChiTietSinhVien frm = new frmChiTietSinhVien(mssv, maNhom);
+                frm.ShowDialog();
             }
         }
 
@@ -494,7 +509,7 @@ namespace GUI
                 BorderThickness = 1,
                 BorderColor = Color.LightGray,
                 FillColor = Color.White,
-                Margin = new Padding(15,8,8,8),
+                Margin = new Padding(15, 8, 8, 8),
                 ShadowDecoration = { Enabled = true, Depth = 3 }
             };
 

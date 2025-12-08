@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             btnThemUC = new Guna.UI2.WinForms.Guna2Button();
             txtTimKiem = new Guna.UI2.WinForms.Guna2TextBox();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
@@ -44,7 +44,7 @@
             // btnThemUC
             // 
             btnThemUC.BorderRadius = 6;
-            btnThemUC.CustomizableEdges = customizableEdges5;
+            btnThemUC.CustomizableEdges = customizableEdges1;
             btnThemUC.DisabledState.BorderColor = Color.DarkGray;
             btnThemUC.DisabledState.CustomBorderColor = Color.DarkGray;
             btnThemUC.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -53,6 +53,7 @@
             btnThemUC.ForeColor = Color.White;
             btnThemUC.Location = new Point(898, 18);
             btnThemUC.Name = "btnThemUC";
+            btnThemUC.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnThemUC.Size = new Size(164, 50);
             btnThemUC.TabIndex = 4;
             btnThemUC.Text = "Thêm";
@@ -60,7 +61,7 @@
             // 
             // txtTimKiem
             // 
-            txtTimKiem.CustomizableEdges = customizableEdges7;
+            txtTimKiem.CustomizableEdges = customizableEdges3;
             txtTimKiem.DefaultText = "";
             txtTimKiem.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtTimKiem.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -74,8 +75,8 @@
             txtTimKiem.Name = "txtTimKiem";
             txtTimKiem.PlaceholderText = "";
             txtTimKiem.SelectedText = "";
-            txtTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtTimKiem.Size = new Size(294, 33);
+            txtTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            txtTimKiem.Size = new Size(434, 35);
             txtTimKiem.TabIndex = 6;
             // 
             // sqlCommand1
@@ -88,7 +89,7 @@
             flowDanhSachNhom.AutoScroll = true;
             flowDanhSachNhom.Controls.Add(richTextBox1);
             flowDanhSachNhom.Location = new Point(11, 92);
-            flowDanhSachNhom.Margin = new Padding(2, 2, 2, 2);
+            flowDanhSachNhom.Margin = new Padding(2);
             flowDanhSachNhom.Name = "flowDanhSachNhom";
             flowDanhSachNhom.Size = new Size(1096, 608);
             flowDanhSachNhom.TabIndex = 7;
@@ -97,7 +98,7 @@
             // richTextBox1
             // 
             richTextBox1.Location = new Point(2, 2);
-            richTextBox1.Margin = new Padding(2, 2, 2, 2);
+            richTextBox1.Margin = new Padding(2);
             richTextBox1.Name = "richTextBox1";
             richTextBox1.Size = new Size(7, 7);
             richTextBox1.TabIndex = 0;
