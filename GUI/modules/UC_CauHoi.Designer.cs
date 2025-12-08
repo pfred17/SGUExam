@@ -27,6 +27,7 @@
             colNoiDung = new DataGridViewTextBoxColumn();
             colMonHoc = new DataGridViewTextBoxColumn();
             colDoKho = new DataGridViewTextBoxColumn();
+            xemCol = new DataGridViewImageColumn();
             SuaCol = new DataGridViewImageColumn();
             XoaCol = new DataGridViewImageColumn();
             label2 = new Label();
@@ -99,17 +100,7 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCauHoi.ColumnHeadersHeight = 29;
-            dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho, SuaCol, XoaCol });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvCauHoi.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvCauHoi.EnableHeadersVisualStyles = false;
-            dgvCauHoi.GridColor = Color.FromArgb(235, 240, 245);
+            dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho,xemCol, SuaCol, XoaCol });
             dgvCauHoi.Location = new Point(25, 280);
             dgvCauHoi.MultiSelect = false;
             dgvCauHoi.Name = "dgvCauHoi";
@@ -154,6 +145,12 @@
             colDoKho.Name = "colDoKho";
             colDoKho.ReadOnly = true;
             // 
+            //xemcol
+
+            xemCol.HeaderText = "";
+            xemCol.MinimumWidth = 6;
+            xemCol.Name = "xemCol";
+            xemCol.ReadOnly = true;
             // SuaCol
             // 
             SuaCol.HeaderText = "";
@@ -319,6 +316,7 @@
         private DataGridViewTextBoxColumn colNoiDung = null!;
         private DataGridViewTextBoxColumn colMonHoc = null!;
         private DataGridViewTextBoxColumn colDoKho = null!;
+        private DataGridViewImageColumn xemCol = null!;
         private DataGridViewImageColumn SuaCol = null!;
         private DataGridViewImageColumn XoaCol = null!;
         private Label lbTatCaCauhoi = null!;

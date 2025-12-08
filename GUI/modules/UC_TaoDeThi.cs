@@ -16,31 +16,109 @@ namespace GUI.modules
         private readonly CauHoiBLL cauHoiBLL = new CauHoiBLL();
 
 
+        private long _maNhom=0;
         public UC_TaoDeThi()
         {
             InitializeComponent();
             LoadData();
             btnTaoDe.Click += BtnTaoDe_Click;
         }
-      
 
+        
+
+        public UC_TaoDeThi(long maNhom)
+        {
+            _maNhom = maNhom;
+            InitializeComponent();
+            LoadData();
+            btnTaoDe.Click += BtnTaoDe_Click;
+        }
+
+
+        //private void LoadData()
+        //{
+        //    // Load tất cả môn học
+        //    var monList = monHocBLL.GetAllMonHocByStatus(1);
+        //    cbMonHoc.DataSource = monList;
+        //    cbMonHoc.DisplayMember = "TenMH";
+        //    cbMonHoc.ValueMember = "MaMonHoc";
+        //    cbMonHoc.SelectedIndex = -1;
+
+        //    // Clear nhóm học phần và chương
+        //    clbNhomHocPhan.Items.Clear();
+        //    clbChuong.Items.Clear();
+
+        //    // Gán event khi chọn môn học
+        //    cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
+        //    cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
+        //}
         private void LoadData()
         {
-            // Load tất cả môn học
+            // ✅ LOAD MÔN HỌC
             var monList = monHocBLL.GetAllMonHocByStatus(1);
+
             cbMonHoc.DataSource = monList;
-            cbMonHoc.DisplayMember = "TenMonHoc";
+            cbMonHoc.DisplayMember = "TenMonHoc";   
             cbMonHoc.ValueMember = "MaMonHoc";
             cbMonHoc.SelectedIndex = -1;
 
-            // Clear nhóm học phần và chương
             clbNhomHocPhan.Items.Clear();
             clbChuong.Items.Clear();
 
-            // Gán event khi chọn môn học
             cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
             cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
+
+            
+            // ✅ ĐI TỪ NHÓM QUA → TỰ ĐỔ DATA
+            
+            if (_maNhom > 0)
+            {
+                var nhom = nhomHocPhanBLL.GetById(_maNhom);
+                if (nhom == null) return;
+
+                // ✅ MaMonHoc đang là STRING → ÉP LONG
+                long maMonHoc = Convert.ToInt64(nhom.MaMonHoc);
+
+                // ✅ CHỌN SẴN MÔN
+                cbMonHoc.SelectedValue = maMonHoc;
+                cbMonHoc.Enabled = false;
+
+                // ✅ LOAD NHÓM THEO MÔN
+                var nhomList = nhomHocPhanBLL.GetByMonHoc(maMonHoc)
+                    .Where(x => x.TrangThai == 1)
+                    .ToList();
+
+                clbNhomHocPhan.Items.Clear();
+                foreach (var item in nhomList)
+                    clbNhomHocPhan.Items.Add(item, false);
+
+                clbNhomHocPhan.DisplayMember = "TenNhom";
+
+                // ✅ CHECK ĐÚNG NHÓM ĐANG CHUYỂN QUA
+                for (int i = 0; i < clbNhomHocPhan.Items.Count; i++)
+                {
+                    var item = clbNhomHocPhan.Items[i] as NhomHocPhanDTO;
+                    if (item != null && item.MaNhom == _maNhom)
+                    {
+                        clbNhomHocPhan.SetItemChecked(i, true);
+                        clbNhomHocPhan.Enabled = false; // ✅ KHÓA
+                        break;
+                    }
+                }
+
+                // ✅ LOAD CHƯƠNG
+                var chuongList = chuongBLL.GetChuongByMonHoc(maMonHoc);
+                clbChuong.Items.Clear();
+                foreach (var chuong in chuongList)
+                    clbChuong.Items.Add(chuong, false);
+
+                clbChuong.DisplayMember = "TenChuong";
+            }
         }
+
+
+
+
 
         private void cbMonHoc_SelectedIndexChanged(object sender, EventArgs e)
         {

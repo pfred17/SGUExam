@@ -39,7 +39,28 @@ namespace DAL
             }
             return list;
         }
-        public MonHocDTO GetMonHocById(long maMonHoc)
+        public List<MonHocDTO> GetMonHocTheoPhanCong(long maND)
+        {
+            string query = @"
+                            SELECT DISTINCT mh.ma_mh, mh.ten_mh, mh.so_tin_chi,mh.trang_thai
+                            FROM mon_hoc mh 
+                            JOIN phan_cong pc  ON mh.ma_mh = pc.ma_mh
+                            WHERE pc.ma_nd = @ma_nd";
+            DataTable dt = DatabaseHelper.ExecuteQuery(query,new SqlParameter("@ma_nd",maND));
+            var list = new List<MonHocDTO>();
+            foreach(DataRow row in dt.Rows)
+            {
+                list.Add(new MonHocDTO
+                {
+                    MaMonHoc = Convert.ToInt64(row["ma_mh"]),
+                    TenMonHoc = row["ten_mh"].ToString(),
+                    SoTinChi = Convert.ToInt32(row["so_tin_chi"]),
+                    TrangThai = Convert.ToByte(row["trang_thai"])
+                });
+            }
+            return list;
+        }
+        public MonHocDTO? GetMonHocById(long maMonHoc)
         {
             string query = "SELECT * FROM mon_hoc WHERE ma_mh = @ma_mh";
             SqlParameter[] parameters =  {

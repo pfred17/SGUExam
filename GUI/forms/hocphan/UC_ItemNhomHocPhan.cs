@@ -41,12 +41,12 @@ namespace GUI.modules
         public void SetData(NhomHocPhanDTO nhom)
         {
             currentData = nhom;
-            lbTenNhom.Text =  $" {nhom.MaMonHoc} - {nhom.TenNhom}";
+            lbTenNhom1.Text = $" {nhom.MaMonHoc} - {nhom.TenNhom}";
 
-            lbMonHoc.Text = $" {nhom.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
-            lbGhiChu.Text = nhom.GhiChu;
+            lbMonHoc1.Text = $" {nhom.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
+            lbGhiChu1.Text = nhom.GhiChu;
             int soLuongSV = ChiTietNhomHocPhanBLL.DemSinhVienTrongNhom(nhom.MaNhom);
-            lbSiSo.Text = $"Sỉ số:{soLuongSV}";
+            lbSiSo1.Text = $"Sỉ số:{soLuongSV}";
         }
 
 
@@ -95,6 +95,11 @@ namespace GUI.modules
         private void menuDeThi_Click(object sender, EventArgs e)
         {
             DeThiClicked?.Invoke(this, currentData);
+        }
+
+        private void lbTenNhom1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

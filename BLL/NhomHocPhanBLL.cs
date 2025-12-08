@@ -136,5 +136,15 @@ namespace BLL
         {
             return dal.LayBangDiemPivot(maNhom);
         }
+
+        //update load nhóm học phần
+        
+        public List<NhomHocPhanDTO> GetNhomByGiangVien(string maGiangVien)
+        {
+            if (string.IsNullOrWhiteSpace(maGiangVien))
+                return new List<NhomHocPhanDTO>();
+
+            return dal.GetNhomByGiangVien(maGiangVien);
+        }
     }
 }
