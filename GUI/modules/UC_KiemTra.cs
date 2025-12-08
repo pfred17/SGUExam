@@ -63,7 +63,7 @@ namespace GUI.modules
                         now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc
                     ).ToList();
             }
-            else if (selectedStatus == "Đã đóng")
+            else if (selectedStatus == "Kết thúc")
             {
                 danhSachDeThi = danhSachDeThi
                     .Where(deThi =>

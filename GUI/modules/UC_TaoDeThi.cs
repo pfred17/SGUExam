@@ -13,6 +13,8 @@ namespace GUI.modules
         private readonly DeThiBLL deThiBLL = new DeThiBLL();
         private readonly MonHocBLL monHocBLL = new MonHocBLL();
         private readonly ChuongBLL chuongBLL = new ChuongBLL();
+        private readonly CauHoiBLL cauHoiBLL = new CauHoiBLL();
+
 
         public UC_TaoDeThi()
         {
@@ -120,6 +122,43 @@ namespace GUI.modules
                 MessageBox.Show("Số lượng câu hỏi Dễ, Trung bình, Khó không được để trống hoặc bằng 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            int thoiGianLamBai = (int)numThoiGianLamBai.Value;
+
+            double tongThoiGianChoPhep = (dtpDen.Value - dtpTu.Value)?.TotalMinutes ?? 0;
+            if (thoiGianLamBai > tongThoiGianChoPhep)
+            {
+                MessageBox.Show("Thời gian làm bài không được vượt quá tổng thời gian từ bắt đầu đến kết thúc!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if(thoiGianLamBai < (int)numCanhBao.Value)
+            {
+                MessageBox.Show("Thời gian làm bài không được nhỏ hơn thời gian cảnh báo", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var allCauHoi = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
+            int soCauDeInput = (int)numDe.Value;
+            int soCauTrungBinhInput = (int)numTrungBinh.Value;
+            int soCauKhoInput = (int)numKho.Value;
+
+            int soCauDeThucTe = allCauHoi.Count(x => x.DoKho == "Dễ");
+            int soCauTrungBinhThucTe = allCauHoi.Count(x => x.DoKho == "Trung bình");
+            int soCauKhoThucTe = allCauHoi.Count(x => x.DoKho == "Khó");
+
+            if (soCauDeThucTe < soCauDeInput)
+            {
+                MessageBox.Show($"Các chương đã chọn chỉ có {soCauDeThucTe} câu Dễ, không đủ {soCauDeInput}!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (soCauTrungBinhThucTe < soCauTrungBinhInput)
+            {
+                MessageBox.Show($"Các chương đã chọn chỉ có {soCauTrungBinhThucTe} câu Trung bình, không đủ {soCauTrungBinhInput}!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (soCauKhoThucTe < soCauKhoInput)
+            {
+                MessageBox.Show($"Các chương đã chọn chỉ có {soCauKhoThucTe} câu Khó, không đủ {soCauKhoInput}!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             // Tạo DTO đề thi
             var deThi = new DeThiDTO
             {
@@ -157,12 +196,12 @@ namespace GUI.modules
 
                 var cauHoiBLL = new CauHoiBLL();
                 // Lấy câu hỏi theo chương và trạng thái = 1
-                var allCauHoi = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
+                var allCauHoiValidate = cauHoiBLL.GetCauHoiByChuongAndTrangThai(chuongIds, 1);
 
                 // Lấy random theo độ khó
-                var cauDe = allCauHoi.Where(x => x.DoKho == "Dễ").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauDe).ToList();
-                var cauTB = allCauHoi.Where(x => x.DoKho == "Trung bình").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauTrungBinh).ToList();
-                var cauKho = allCauHoi.Where(x => x.DoKho == "Khó").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauKho).ToList();
+                var cauDe = allCauHoiValidate.Where(x => x.DoKho == "Dễ").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauDe).ToList();
+                var cauTB = allCauHoiValidate.Where(x => x.DoKho == "Trung bình").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauTrungBinh).ToList();
+                var cauKho = allCauHoiValidate.Where(x => x.DoKho == "Khó").OrderBy(x => Guid.NewGuid()).Take(deThi.SoCauKho).ToList();
 
                 var cauHoiIds = cauDe.Concat(cauTB).Concat(cauKho).Select(x => x.MaCauHoi).ToList();
 

@@ -301,7 +301,7 @@ namespace GUI.modules
             swXemBaiLam = AddSwitch(panelConfig, "Xem bài làm khi thi xong", ref sy);
             swDaoCauHoi = AddSwitch(panelConfig, "Đảo câu hỏi", ref sy);
             swDaoDapAn = AddSwitch(panelConfig, "Đảo đáp án", ref sy);
-            swTuDongNop = AddSwitch(panelConfig, "Tự động nộp bài khi chuyển tab", ref sy);
+            swTuDongNop = AddSwitch(panelConfig, "Tự động nộp bài", ref sy);
             swDeLuyenTap = AddSwitch(panelConfig, "Đề luyện tập", ref sy);
             swTinhDiem = AddSwitch(panelConfig, "Tính điểm", ref sy);
 

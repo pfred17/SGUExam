@@ -175,7 +175,7 @@ namespace GUI.modules
                     }
 
                     UpdateDeThiInfoLabels();
-                    UpdateSelectedQuestionLabel()
+                    UpdateSelectedQuestionLabel();
                 };
 
                 flpQuestions.Controls.Add(chk);

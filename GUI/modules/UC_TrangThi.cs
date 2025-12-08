@@ -173,14 +173,18 @@ namespace GUI.modules
                 var item = radioDapAnPanels[i];
                 bool visible = i < cau.DapAnList.Count;
                 item.panel.Visible = visible;
+                item.radio.Checked = false; // reset trước
                 if (visible)
                 {
                     item.lbl.Text = $"{(char)('A' + i)}. {cau.DapAnList[i]}";
-                    item.radio.Checked = (cau.DapAnChon == i);
+                    if (cau.DapAnChon >= 0)
+                        item.radio.Checked = (cau.DapAnChon == i);
                     item.panel.BorderColor = (cau.DapAnChon == i) ? Color.LimeGreen : Color.Silver;
                     item.panel.BorderThickness = (cau.DapAnChon == i) ? 2 : 1;
                 }
             }
+
+
 
             btnTruoc.Enabled = _cauHienTai > 0;
             btnTiep.Enabled = _cauHienTai < _dsCauHoi.Count - 1;
@@ -282,7 +286,7 @@ namespace GUI.modules
                 else
                 {
                     // Radio KHÔNG được chọn -> Bắt buộc uncheck và reset giao diện
-                    item.radio.Checked = false; // <--- DÒNG CẦN THIẾT ĐỂ BẮT BUỘC BỎ CHỌN CÁC RADIO KHÁC
+                    item.radio.Checked = false;
                     item.panel.BorderColor = Color.Silver;
                     item.panel.BorderThickness = 1;
                 }
@@ -293,23 +297,18 @@ namespace GUI.modules
 
         private void SaveCurrentSelectedAnswer()
         {
-            // The DapAnChon state is already updated in RadioDapAn_CheckedChanged,
-            // but this ensures the state is saved when navigating away (e.g., using 'Trước' or 'Tiếp')
-            // by explicitly checking the state one last time.
-
-            // Reset selection first
-            _dsCauHoi[_cauHienTai].DapAnChon = -1;
-
+            int selectedIndex = -1;
             for (int i = 0; i < radioDapAnPanels.Count; i++)
             {
-                // Check the radio button component in the tuple
                 if (radioDapAnPanels[i].radio.Checked)
                 {
-                    _dsCauHoi[_cauHienTai].DapAnChon = i;
-                    return;
+                    selectedIndex = i;
+                    break;
                 }
             }
+            _dsCauHoi[_cauHienTai].DapAnChon = selectedIndex;
         }
+
         private void PnlOrLbl_Click(object sender, EventArgs e)
         {
             Guna2Panel panelContainer = null;
