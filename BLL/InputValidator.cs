@@ -7,8 +7,7 @@ namespace BLL.Validator
     {
 
         private static readonly string PasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,10}$";
-        private static readonly string EmailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        private static readonly string MssvPattern = @"^312\d{7}$";
+        private static readonly string MssvPattern = @"^312\d{7}$"; private static readonly string EmailPattern = @"^[^@\s]+@[^@\s]+\.com$";
         private static readonly string UsernamePattern = @"^[a-zA-Z0-9]{6,20}$";
 
         // Kiểm tra chuỗi rỗng hoặc chỉ chứa khoảng trắng
