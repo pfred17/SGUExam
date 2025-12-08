@@ -183,12 +183,20 @@ namespace GUI.modules
                         int gioiTinh = worksheet.Cell(row, 7).GetValue<int>();
                         int trangThai = worksheet.Cell(row, 8).GetValue<int>();
 
-                        if (string.IsNullOrWhiteSpace(mssv))
+                        var cotRong = new List<string>();
+                        if (string.IsNullOrWhiteSpace(mssv)) cotRong.Add("MSSV");
+                        if (string.IsNullOrWhiteSpace(tenDangNhap)) cotRong.Add("TenDangNhap");
+                        if (string.IsNullOrWhiteSpace(matKhau)) cotRong.Add("MatKhau");
+                        if (string.IsNullOrWhiteSpace(hoTen)) cotRong.Add("HoTen");
+                        if (string.IsNullOrWhiteSpace(email)) cotRong.Add("Email");
+                        if (cotRong.Count > 0)
                         {
-                            loiChiTiet.Add("• Dòng trống hoặc MSSV không hợp lệ");
+                            loiChiTiet.Add($"• Dòng {row} → Các cột trống: {string.Join(", ", cotRong)}");
                             thatBai++;
-                            continue;
-                        } 
+                            continue; // bỏ qua dòng này vì dữ liệu không đầy đủ
+                        }
+
+
 
                         UserDTO user = userBLL.GetUserByMSSV(mssv, true);
 

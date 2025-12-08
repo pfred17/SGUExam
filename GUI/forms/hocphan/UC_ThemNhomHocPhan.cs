@@ -178,7 +178,7 @@ namespace GUI.modules
                 }
                 var nhom = new NhomHocPhanDTO
                 {
-                    MaPhanCong = maPC,  // ĐÚNG RỒI ĐÂY!
+                    MaPhanCong = maPC,  
                     TenNhom = tbTenNhom.Text.Trim(),
                     GhiChu = tbGhiChu.Text.Trim(),
                     HocKy = cbHocKy.Text,
