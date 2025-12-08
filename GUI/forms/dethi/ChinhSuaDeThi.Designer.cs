@@ -263,7 +263,7 @@ namespace GUI.modules
             {
                 Text = "CHỈNH SỬA DANH SÁCH CÂU HỎI",
                 Location = new Point(x + 220, y),   // Bên phải nút Cập Nhật
-                Width = 280,
+                Width = 400,
                 Height = 45,
                 BorderRadius = 8,
                 FillColor = Color.FromArgb(255, 128, 0),
@@ -288,7 +288,7 @@ namespace GUI.modules
             {
                 Text = "CẤU HÌNH",
                 Location = new Point(20, 20),
-                Size = new Size(100, 30),
+                Size = new Size(300, 30),
                 Font = new Font("Segoe UI", 12, FontStyle.Bold)
             });
 
@@ -302,8 +302,8 @@ namespace GUI.modules
             swDaoCauHoi = AddSwitch(panelConfig, "Đảo câu hỏi", ref sy);
             swDaoDapAn = AddSwitch(panelConfig, "Đảo đáp án", ref sy);
             swTuDongNop = AddSwitch(panelConfig, "Tự động nộp bài", ref sy);
-            swDeLuyenTap = AddSwitch(panelConfig, "Đề luyện tập", ref sy);
-            swTinhDiem = AddSwitch(panelConfig, "Tính điểm", ref sy);
+            //swDeLuyenTap = AddSwitch(panelConfig, "Đề luyện tập", ref sy);
+            //swTinhDiem = AddSwitch(panelConfig, "Tính điểm", ref sy);
 
             // Add panels
             this.Controls.Add(panelMain);

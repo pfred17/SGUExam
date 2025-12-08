@@ -31,136 +31,191 @@ namespace GUI.forms.dethi
             int top = 10;
 
             // 1. Thông tin người làm bài
-            var lblMSSV = new Label { Text = $"MSSV: {user.MSSV}", Font = new Font("Segoe UI", 13, FontStyle.Bold), ForeColor = Color.DarkSlateGray, Location = new Point(20, top), AutoSize = true };
-            panel.Controls.Add(lblMSSV);
+            panel.Controls.Add(new Label
+            {
+                Text = $"MSSV: {user.MSSV}",
+                Font = new Font("Segoe UI", 13, FontStyle.Bold),
+                ForeColor = Color.DarkSlateGray,
+                Location = new Point(20, top),
+                AutoSize = true
+            });
             top += 28;
 
-            var lblHoTen = new Label { Text = $"Họ tên: {user.HoTen}", Font = new Font("Segoe UI", 13, FontStyle.Bold), ForeColor = Color.DarkSlateGray, Location = new Point(20, top), AutoSize = true };
-            panel.Controls.Add(lblHoTen);
+            panel.Controls.Add(new Label
+            {
+                Text = $"Họ tên: {user.HoTen}",
+                Font = new Font("Segoe UI", 13, FontStyle.Bold),
+                ForeColor = Color.DarkSlateGray,
+                Location = new Point(20, top),
+                AutoSize = true
+            });
             top += 28;
 
-            var lblEmail = new Label { Text = $"Email: {user.Email}", Font = new Font("Segoe UI", 13, FontStyle.Bold), ForeColor = Color.DarkSlateGray, Location = new Point(20, top), AutoSize = true };
-            panel.Controls.Add(lblEmail);
+            panel.Controls.Add(new Label
+            {
+                Text = $"Email: {user.Email}",
+                Font = new Font("Segoe UI", 13, FontStyle.Bold),
+                ForeColor = Color.DarkSlateGray,
+                Location = new Point(20, top),
+                AutoSize = true
+            });
             top += 28;
 
             // 2. Hiển thị điểm
-            bool shouldShowScore = _cauHinh.XemDiemSauThi == true || (_cauHinh.XemDapAnSauThi == true && _cauHinh.XemBaiLam == true);
+            bool shouldShowScore =
+                _cauHinh.XemDiemSauThi == true ||
+                (_cauHinh.XemDapAnSauThi == true && _cauHinh.XemBaiLam == true);
 
             if (shouldShowScore)
             {
-                var lblTongKet = new Label
+                panel.Controls.Add(new Label
                 {
                     Text = $"Số câu đúng: {soCauDung}/{dsCauHoi.Count}    Điểm: {diem}",
                     Font = new Font("Segoe UI", 16, FontStyle.Bold),
                     ForeColor = Color.DarkBlue,
                     Location = new Point(20, top),
                     AutoSize = true
-                };
-                panel.Controls.Add(lblTongKet);
+                });
                 top += 40;
             }
 
-            // 3. Chỉ xem điểm, không xem chi tiết
-            if (_cauHinh.XemDiemSauThi == true && _cauHinh.XemDapAnSauThi == false)
+            // 3. Chỉ xem điểm – không xem chi tiết
+            if (_cauHinh.XemDiemSauThi == true && _cauHinh.XemDapAnSauThi == false && _cauHinh.XemBaiLam == false)
             {
-                var lblChiXemDiem = new Label
+                panel.Controls.Add(new Label
                 {
-                    Text = "Bạn chỉ được phép xem thông tin và điểm số.",
+                    Text = "Bạn chỉ được xem điểm, không được xem chi tiết bài làm.",
                     Font = new Font("Segoe UI", 12, FontStyle.Italic),
                     ForeColor = Color.OrangeRed,
                     Location = new Point(20, top),
                     AutoSize = true
-                };
-                panel.Controls.Add(lblChiXemDiem);
+                });
                 return;
             }
 
-            // 4. Hiển thị chi tiết câu hỏi và đáp án
-            if (_cauHinh.XemDapAnSauThi == true)
+            // 4. Không được xem điểm + không xem đáp án + không xem bài làm
+            if (_cauHinh.XemDiemSauThi == false && _cauHinh.XemDapAnSauThi == false && _cauHinh.XemBaiLam == false)
             {
-                bool shouldShowUserChoice = _cauHinh.XemBaiLam == true;
-                var dapAnBLL = new BLL.DapAnBLL();
-
-                for (int i = 0; i < dsCauHoi.Count; i++)
+                panel.Controls.Add(new Label
                 {
-                    var cau = dsCauHoi[i];
-                    var dapAnList = dapAnBLL.GetByCauHoi(cau.MaCauHoi);
+                    Text = "Bạn không được phép xem bất kỳ thông tin nào về bài thi.",
+                    Font = new Font("Segoe UI", 12, FontStyle.Italic),
+                    ForeColor = Color.Gray,
+                    Location = new Point(20, top),
+                    AutoSize = true
+                });
+                return;
+            }
 
-                    // Tìm ID đáp án đúng
-                    var dapAnDung = dapAnList.FirstOrDefault(da => da.Dung);
-                    long? dapAnDungId = dapAnDung?.MaDapAn;
+            // 5. CASE: Chỉ xem đáp án – không xem bài làm
+            if (_cauHinh.XemDapAnSauThi == true && _cauHinh.XemBaiLam == false)
+            {
+                panel.Controls.Add(new Label
+                {
+                    Text = "Bạn chỉ được xem đáp án đúng của bài thi.",
+                    Font = new Font("Segoe UI", 12, FontStyle.Italic),
+                    ForeColor = Color.RoyalBlue,
+                    Location = new Point(20, top),
+                    AutoSize = true
+                });
+                top += 35;
+            }
 
-                    // Tiêu đề câu hỏi
-                    var lblCau = new Label
+            // 6. CASE: Chỉ xem bài làm – không xem đáp án
+            if (_cauHinh.XemBaiLam == true && _cauHinh.XemDapAnSauThi == false)
+            {
+                panel.Controls.Add(new Label
+                {
+                    Text = "Bạn chỉ được xem bài làm của mình (không xem đáp án đúng).",
+                    Font = new Font("Segoe UI", 12, FontStyle.Italic),
+                    ForeColor = Color.OrangeRed,
+                    Location = new Point(20, top),
+                    AutoSize = true
+                });
+                top += 35;
+            }
+
+            // 7. Hiển thị câu hỏi + đáp án
+            var dapAnBLL = new BLL.DapAnBLL();
+            bool allowSeeAnswer = _cauHinh.XemDapAnSauThi == true;
+            bool allowSeeUserChoice = _cauHinh.XemBaiLam == true;
+
+            for (int i = 0; i < dsCauHoi.Count; i++)
+            {
+                var cau = dsCauHoi[i];
+                var dapAnList = dapAnBLL.GetByCauHoi(cau.MaCauHoi);
+
+                var dapAnDung = dapAnList.FirstOrDefault(da => da.Dung);
+                long? dapAnDungId = dapAnDung?.MaDapAn;
+
+                // Tiêu đề câu hỏi
+                panel.Controls.Add(new Label
+                {
+                    Text = $"Câu {i + 1}: {cau.NoiDung}",
+                    Font = new Font("Segoe UI", 13, FontStyle.Bold),
+                    Location = new Point(20, top),
+                    AutoSize = true
+                });
+                top += 30;
+
+                // Vòng for hiển thị đáp án
+                for (int j = 0; j < cau.DapAnList.Count; j++)
+                {
+                    bool isCorrect = (cau.DapAnIds[j] == dapAnDungId);
+                    bool isChosen = (j == cau.DapAnChon);
+
+                    Color foreColor = Color.Black;
+                    Color backColor = Color.White;
+                    string suffix = "";
+                    string prefix = $"{(char)('A' + j)}. ";
+
+                    // CASE 1: Xem đáp án đúng
+                    if (allowSeeAnswer)
                     {
-                        Text = $"Câu {i + 1}: {cau.NoiDung}",
-                        Font = new Font("Segoe UI", 13, FontStyle.Bold),
-                        Location = new Point(20, top),
-                        AutoSize = true,
-                        ForeColor = (shouldShowUserChoice && cau.DapAnChon >= 0 && cau.DapAnChon < cau.DapAnIds.Count && cau.DapAnIds[cau.DapAnChon] == dapAnDungId)
-                            ? Color.DarkGreen
-                            : Color.Black
-                    };
-                    panel.Controls.Add(lblCau);
-                    top += 30;
-
-                    // Hiển thị đáp án
-                    for (int j = 0; j < cau.DapAnList.Count; j++)
-                    {
-                        string prefix = $"{(char)('A' + j)}. ";
-                        Color foreColor = Color.Black;
-                        Color backColor = Color.White;
-                        string suffix = "";
-
-                        bool isDapAnDung = (cau.DapAnIds[j] == dapAnDungId);
-                        bool isDapAnChon = (j == cau.DapAnChon);
-
-                        if (isDapAnDung)
+                        if (isCorrect)
                         {
                             foreColor = Color.DarkGreen;
                             suffix = " ✓";
-                            if (isDapAnChon && shouldShowUserChoice)
-                            {
+
+                            if (isChosen && allowSeeUserChoice)
                                 backColor = Color.LightGreen;
-                            }
                         }
-                        else if (isDapAnChon && shouldShowUserChoice)
+                        else if (isChosen && allowSeeUserChoice)
                         {
                             backColor = Color.LightCoral;
                             suffix = " ✗";
                         }
-
-                        var lblDapAn = new Label
-                        {
-                            Text = $"{prefix}{cau.DapAnList[j]}{suffix}",
-                            Location = new Point(40, top),
-                            AutoSize = true,
-                            Font = new Font("Segoe UI", 12),
-                            ForeColor = foreColor,
-                            BackColor = backColor,
-                            Padding = new Padding(5)
-                        };
-
-                        panel.Controls.Add(lblDapAn);
-                        top += 35;
                     }
-                    top += 10;
-                }
-            }
-            else
-            {
-                if (_cauHinh.XemDiemSauThi == false)
-                {
-                    var lblKhongDuocXem = new Label
+                    // CASE 2: Chỉ xem bài làm – không xem đáp án
+                    else if (!allowSeeAnswer && allowSeeUserChoice)
                     {
-                        Text = "Bạn không được phép xem kết quả chi tiết hay điểm số.",
-                        Font = new Font("Segoe UI", 12, FontStyle.Italic),
-                        ForeColor = Color.Gray,
-                        Location = new Point(20, top),
-                        AutoSize = true
-                    };
-                    panel.Controls.Add(lblKhongDuocXem);
+                        if (isChosen)
+                        {
+                            backColor = Color.LightYellow;
+                            foreColor = Color.DarkBlue;
+                        }
+                    }
+
+                    // CASE 3: Không được xem bài làm → không highlight
+                    else
+                    {
+                        backColor = Color.White;
+                    }
+
+                    panel.Controls.Add(new Label
+                    {
+                        Text = $"{prefix}{cau.DapAnList[j]}{suffix}",
+                        Font = new Font("Segoe UI", 12),
+                        Location = new Point(40, top),
+                        AutoSize = true,
+                        ForeColor = foreColor,
+                        BackColor = backColor,
+                        Padding = new Padding(5)
+                    });
+
+                    top += 35;
                 }
+                top += 10;
             }
         }
     }

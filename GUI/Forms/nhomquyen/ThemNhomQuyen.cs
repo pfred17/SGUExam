@@ -1,4 +1,5 @@
 ﻿using BLL;
+using BLL.Validator;
 using DAL;
 using DTO;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -112,9 +113,25 @@ namespace GUI.forms.nhomquyen
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            List<AddPermissionDTO> danhSachQuyen = LayDanhSachQuyenTuDataGridView(tblThem);
 
             string ten_nhom_quyen = txtName.Text;
+            if (!InputValidator.IsValidName(ten_nhom_quyen))
+            {
+                lbErrorTenNhomQuyen.Text = "Họ tên phải có độ dài trên 6 ký tự ";
+                lbErrorTenNhomQuyen.Visible = true;
+                txtName.Focus();
+                return;
+            }
+
+            List<AddPermissionDTO> danhSachQuyen = LayDanhSachQuyenTuDataGridView(tblThem);
+
+            if (danhSachQuyen.Count == 0 && !tsThamGiaThi.Checked && !tsThamGiaHocPhan.Checked)
+            {
+                MessageBox.Show("Vui lòng chọn ít nhất một quyền cho nhóm quyền.", "Lỗi",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
 
             if (tsThamGiaThi.Checked)
             {

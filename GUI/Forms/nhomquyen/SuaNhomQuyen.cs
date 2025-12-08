@@ -1,4 +1,5 @@
 ﻿using BLL;
+using BLL.Validator;
 using DTO;
 
 namespace GUI.forms.nhomquyen
@@ -155,14 +156,22 @@ namespace GUI.forms.nhomquyen
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            string ten_nhom_quyen_moi = txtName.Text.Trim();
-            if (string.IsNullOrEmpty(ten_nhom_quyen_moi))
+            string ten_nhom_quyen_moi = txtName.Text;
+            if (!InputValidator.IsValidName(ten_nhom_quyen_moi))
             {
-                MessageBox.Show("Tên nhóm quyền không được để trống.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                lbErrorTenNhomQuyen.Text = "Họ tên phải có độ dài trên 6 ký tự ";
+                lbErrorTenNhomQuyen.Visible = true;
+                txtName.Focus();
                 return;
             }
 
             List<AddPermissionDTO> danhSachQuyen = LayDanhSachQuyenTuDataGridView(tblSua);
+            if (danhSachQuyen.Count == 0 && !tsThamGiaThi.Checked && !tsThamGiaHocPhan.Checked)
+            {
+                MessageBox.Show("Vui lòng chọn ít nhất một quyền cho nhóm quyền.", "Lỗi",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             AddPermissionDTO thamGiaThi = new AddPermissionDTO
             {

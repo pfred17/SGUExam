@@ -195,9 +195,14 @@ namespace GUI.modules
             int soCauTrungBinh = (int)numTrungBinh.Value;
             int soCauKho = (int)numKho.Value;
 
-            if (soCauDe <= 0 || soCauTrungBinh <= 0 || soCauKho <= 0)
+            if (soCauDe < 0 || soCauTrungBinh < 0 || soCauKho < 0)
             {
-                MessageBox.Show("Số lượng câu hỏi Dễ, Trung bình, Khó không được để trống hoặc bằng 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Số lượng câu hỏi không được nhỏ hơn 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (soCauDe + soCauTrungBinh + soCauKho < 1)
+            {
+                MessageBox.Show("Phải chọn ít nhất một câu hỏi (Dễ, Trung bình hoặc Khó)!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             int thoiGianLamBai = (int)numThoiGianLamBai.Value;

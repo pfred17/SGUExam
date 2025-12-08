@@ -36,6 +36,8 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
                 WHERE
+                    nd.trang_thai = 1
+                    AND
                     (
                         @keyword = '' 
                         OR nd.ho_ten LIKE N'%' + @keyword + N'%'
@@ -158,6 +160,25 @@ namespace DAL
                 Role = Convert.ToInt32(row["ma_nhom_quyen"]),
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
+        }
+        public bool UpdateInfo(UserDTO user)
+        {
+            string query = @"UPDATE nguoi_dung 
+                             SET mat_khau= @MatKhau, 
+                                 ho_ten = @HoTen, 
+                                 email = @Email, 
+                                 gioi_tinh = @GioiTinh
+                             WHERE ma_nd = @MSSV";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@HoTen", user.HoTen),
+                new SqlParameter("@Email", user.Email),
+                new SqlParameter("@MSSV", user.MSSV),
+                new SqlParameter("@MatKhau", user.MatKhau),
+                new SqlParameter("@GioiTinh", user.GioiTinh),
+            };
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
         }
 
 

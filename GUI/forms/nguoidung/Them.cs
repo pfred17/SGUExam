@@ -21,6 +21,8 @@ namespace GUI.forms.nguoidung
             List<String> roles = new List<String>();
             List<RoleDTO> roleDTOs = _roleBLL.getAllRole();
 
+            roles.Add("--Chọn nhóm quyền");
+
             foreach (var role in roleDTOs)
             {
                 roles.Add(role.TenNhomQuyen);
@@ -31,6 +33,7 @@ namespace GUI.forms.nguoidung
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            if(!checkAllInput()) return;
 
             int gioiTinh = 1;
 
@@ -55,7 +58,7 @@ namespace GUI.forms.nguoidung
             var user = new UserDTO
             {
                 MSSV = txtMSSV.Text.Trim(),
-                TenDangNhap = txtUsername.Text.Trim(),
+                TenDangNhap = txtMSSV.Text.Trim(),
                 MatKhau = txtPassword.Text.Trim(),
                 HoTen = txtHoVaTen.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
@@ -137,30 +140,11 @@ namespace GUI.forms.nguoidung
             lbErrorHoVaTen.Visible = false;
         }
 
-        private void txtUsername_Leave(object sender, EventArgs e)
-        {
-            if (!InputValidator.IsValidUsername(txtUsername.Text))
-            {
-                lbErrorUsername.Text = "Tên đăng nhập phải có ít nhất 6 ký tự!";
-                lbErrorUsername.Visible = true;
-            }
-            else
-            {
-                lbErrorUsername.Text = "";
-                lbErrorUsername.Visible = false;
-            }
-        }
-
-        private void txtUsername_TextChanged(object sender, EventArgs e)
-        {
-            lbErrorUsername.Visible = false;
-        }
-
         private void txtPassword_Leave(object sender, EventArgs e)
         {
             if (!InputValidator.IsValidPassword(txtPassword.Text))
             {
-                lbErrorPassowrd.Text = "Mật khẩu phải có ít nhất 6 ký tự!";
+                lbErrorPassowrd.Text = "Mật khẩu phải có ít nhất 6 ký tự (bao gồm chữ hoa và thường)!";
                 lbErrorPassowrd.Visible = true;
             }
             else
@@ -175,9 +159,42 @@ namespace GUI.forms.nguoidung
             lbErrorPassowrd.Visible = false;
         }
 
-        private void lbErrorEmail_Click(object sender, EventArgs e)
+        private bool checkAllInput()
         {
+            if (InputValidator.IsEmpty(txtMSSV.Text))
+            {
+                OpenMessageBox("Vui lòng nhập MSSV!", "Thông báo");
+                lbErrorMSSV.Text = "Vui lòng nhập MSSV!";
+                lbErrorMSSV.Visible = true;
+                return false;
+            }
+            if (InputValidator.IsEmpty(txtEmail.Text))
+            {
+                OpenMessageBox("Vui lòng nhập email!", "Thông báo");
+                lbErrorEmail.Text = "Vui lòng nhập email!";
+                lbErrorEmail.Visible = true;
+                return false;
+            }
+            if (InputValidator.IsEmpty(txtHoVaTen.Text))
+            {
+                OpenMessageBox("Vui lòng nhập họ và tên!", "Thông báo");
+                lbErrorHoVaTen.Text = "Vui lòng nhập họ và tên!";
+                lbErrorHoVaTen.Visible = true;
+                return false;
+            }
+            if (InputValidator.IsEmpty(txtPassword.Text))
+            {
+                OpenMessageBox("Vui lòng nhập mật khẩu!", "Thông báo");
+                lbErrorPassowrd.Text = "Vui lòng nhập mật khẩu!";
+                lbErrorPassowrd.Visible = true;
+                return false;
+            }
+            return true;
+        }
 
+        private void OpenMessageBox(string message, string title)
+        {
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

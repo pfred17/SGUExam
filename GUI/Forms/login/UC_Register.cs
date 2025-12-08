@@ -1,7 +1,7 @@
 ﻿using BLL;
+using BLL.Validator;
 using DTO;
 using Guna.UI2.WinForms;
-using System.Text.RegularExpressions;
 
 namespace GUI.Forms.login
 {
@@ -33,15 +33,22 @@ namespace GUI.Forms.login
                 return;
             }
 
+
             if (InputValidator.IsEmpty(hoten))
             {
                 ShowError("Họ tên không được để trống!", txtFullname);
                 return;
             }
 
-            if (!InputValidator.IsValidPassword(password))
+            if (InputValidator.IsEmpty(password))
             {
-                ShowError("Mật khẩu phải có ít nhất 1 ký tự hoa, thường, số và >= 8 ký tự.", txtRegisterPassword);
+                ShowError("Mật khẩu không được để trống!", txtRegisterPassword);
+                return;
+            }
+            if (InputValidator.IsEmpty(email))
+            {
+
+                ShowError("Email không được để trống",txtRegisterEmail);
                 return;
             }
 
@@ -51,15 +58,31 @@ namespace GUI.Forms.login
                 return;
             }
 
-            if (!InputValidator.IsValidEmail(email))
+            if (!InputValidator.IsValidMSSV(mssv))
             {
-                ShowError("Email không đúng định dạng.", txtRegisterEmail);
+                ShowError("Mã số sinh viên bắt đầu bằng 312 và 7 ký tự số tiếp theo",txtRegisterMssv);
                 return;
             }
 
             if (userBLL.IsMssvExists(mssv))
             {
                 ShowError("Mã số sinh viên đã được đăng ký.", txtRegisterMssv);
+                return;
+            }
+            if (!InputValidator.IsValidName(hoten))
+            {
+                ShowError("Họ tên phải có độ dài trên 6 ký tự ",txtFullname);
+                return;
+            }
+            if (!InputValidator.IsValidPassword(password))
+            {
+                ShowError("Mật khẩu từ 8 -> 10 ký tự, ít nhất 1 ký tự chữ hoa, 1 ký tự chữ thường", txtRegisterPassword);
+                return;
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                ShowError("Email không đúng định dạng.", txtRegisterEmail);
                 return;
             }
 

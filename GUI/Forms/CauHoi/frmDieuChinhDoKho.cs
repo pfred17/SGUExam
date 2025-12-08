@@ -52,6 +52,16 @@ namespace GUI.Forms.CauHoi
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (nguongKho < 0 || nguongKho > 100)
+            {
+                MessageBox.Show("Ngưỡng khó phải từ 0 đến 100.", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (nguongDe < 0 || nguongDe > 100)
+            {
+                MessageBox.Show("Ngưỡng dễ phải từ 0 đến 100.", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             try
             {
                 var result = _cauHoiBLL.TinhToanVaDeXuatDoKho(maMonHoc, minLuotLam, nguongDe, nguongKho);

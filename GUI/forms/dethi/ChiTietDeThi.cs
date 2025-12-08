@@ -93,8 +93,8 @@ namespace GUI.forms.dethi
             table.Controls.Add(new Label { Text = "❓ Số lượng câu hỏi", Font = new Font("Segoe UI", 11), AutoSize = true }, 0, 3);
             table.Controls.Add(new Label { Text = $"{soLuongCauHoi}", Font = new Font("Segoe UI", 11), AutoSize = true }, 1, 3);
 
-            table.Controls.Add(new Label { Text = "📘 Môn học", Font = new Font("Segoe UI", 11), AutoSize = true }, 0, 4);
-            table.Controls.Add(new Label { Text = deThi.TenNhomHocPhan, Font = new Font("Segoe UI", 11), AutoSize = true }, 1, 4);
+            //table.Controls.Add(new Label { Text = "📘 Môn học", Font = new Font("Segoe UI", 11), AutoSize = true }, 0, 4);
+            //table.Controls.Add(new Label { Text = deThi.TenMonHoc, Font = new Font("Segoe UI", 11), AutoSize = true }, 1, 4);
             var btnStatus = new Button
             {
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
@@ -146,6 +146,7 @@ namespace GUI.forms.dethi
                         ucTrangThi.Dock = DockStyle.Fill;
                         frm.Controls.Add(ucTrangThi);
                         frm.ShowDialog();
+                        this.Dispose();
                     };
                     break;
                 case 2:
