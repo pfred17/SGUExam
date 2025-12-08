@@ -159,6 +159,25 @@ namespace DAL
                 TrangThai = Convert.ToInt32(row["trang_thai"])
             };
         }
+        public bool UpdateInfo(UserDTO user)
+        {
+            string query = @"UPDATE nguoi_dung 
+                             SET mat_khau= @MatKhau, 
+                                 ho_ten = @HoTen, 
+                                 email = @Email, 
+                                 gioi_tinh = @GioiTinh
+                             WHERE ma_nd = @MSSV";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@HoTen", user.HoTen),
+                new SqlParameter("@Email", user.Email),
+                new SqlParameter("@MSSV", user.MSSV),
+                new SqlParameter("@MatKhau", user.MatKhau),
+                new SqlParameter("@GioiTinh", user.GioiTinh),
+            };
+            int rows = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return rows > 0;
+        }
 
 
         public bool UpdateUser(UserDTO user)
@@ -308,7 +327,9 @@ namespace DAL
                     MSSV = row["ma_nd"].ToString() ?? "",
                     HoTen = row["ho_ten"].ToString() ?? "",
                     Email = row["email"].ToString() ?? "",
-                    Role =  Convert.ToInt32(row["ten_nhom_quyen"].ToString())
+                    TenNhomQuyen = row["ten_nhom_quyen"].ToString() ?? "",
+                    TrangThai = Convert.ToInt32(row["trang_thai"])
+
                 });
             }
 
