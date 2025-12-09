@@ -40,22 +40,25 @@
             dgvBangDiem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBangDiem.Dock = DockStyle.Fill;
             dgvBangDiem.Location = new Point(0, 0);
+            dgvBangDiem.Margin = new Padding(2, 2, 2, 2);
             dgvBangDiem.Name = "dgvBangDiem";
             dgvBangDiem.ReadOnly = true;
             dgvBangDiem.RowHeadersWidth = 62;
             dgvBangDiem.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvBangDiem.Size = new Size(1098, 674);
+            dgvBangDiem.Size = new Size(878, 539);
             dgvBangDiem.TabIndex = 0;
             dgvBangDiem.CellContentClick += dataGridView1_CellContentClick;
             // 
             // frmChiTietDiem
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1098, 674);
+            ClientSize = new Size(878, 539);
             Controls.Add(dgvBangDiem);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "frmChiTietDiem";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmChiTietDiem";
             ((System.ComponentModel.ISupportInitialize)dgvBangDiem).EndInit();
             ResumeLayout(false);
