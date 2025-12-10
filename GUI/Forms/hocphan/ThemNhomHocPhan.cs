@@ -28,16 +28,68 @@ namespace GUI.forms.hocphan
         {
             InitializeComponent();
             this.maUserDangNhap = maNguoiDung;
-        }
 
+            this.AcceptButton = null;
+            this.KeyPreview = true; 
+
+            tbTenNhom.KeyDown += Input_KeyDown;
+            tbGhiChu.KeyDown += Input_KeyDown;
+            cbMonHoc.KeyDown += Input_KeyDown;
+            cbNamHoc.KeyDown += Input_KeyDown;
+            cbHocKy.KeyDown += Input_KeyDown;
+
+            this.Shown += (s, e) => tbTenNhom.Focus();
+
+        }
+        private void Input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+
+                Control current = sender as Control;
+                if (current is Guna.UI2.WinForms.Guna2ComboBox combo && !combo.DroppedDown)
+                {
+                    combo.DroppedDown = true;
+                    return;
+                }
+                Control[] order = new Control[]
+                {
+                    tbTenNhom,
+                    tbGhiChu,
+                    cbMonHoc,
+                    cbNamHoc,
+                    cbHocKy,
+                    btnLuu  
+                };
+                int index = Array.IndexOf(order, current);
+                if (index == -1) return;
+                if (index < order.Length - 1)
+                {
+                    Control next = order[index + 1];
+                    if (next.CanFocus)
+                    {
+                        next.Focus();
+                        if (next is Guna.UI2.WinForms.Guna2ComboBox nextCombo)
+                            nextCombo.DroppedDown = true; 
+                    }
+                }
+                else
+                {
+                    btnLuu.PerformClick();
+                }
+            }
+        }
         private void ThemNhomHocPhan_Load(object sender, EventArgs e)
         {
             LoadComboBoxMonHoc();
             LoadHocKy();
             LoadNamHoc();
-            //ResetFields(); // ✅ Mở form mặc định là THÊM
+
         }
 
+       
         private void LoadComboBoxMonHoc()
         {
             try
@@ -227,14 +279,18 @@ namespace GUI.forms.hocphan
                     long newId = nhomHocPhanBLL.InsertReturnId(nhom);
                     if (newId > 0)
                     {
-                        nhom.MaNhom = newId;
-                        NhomHocPhanAdded?.Invoke(this, nhom);
-                        MessageBox.Show("Thêm nhóm học phần thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Thêm thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        // Thêm dòng này: Load lại DTO đầy đủ từ DB theo ma_nhom vừa tạo
+                        var nhomFull = nhomHocPhanBLL.GetById(newId);  // hoặc DAL.GetById(newId)
+
+                        if (nhomFull != null)
+                        {
+                            NhomHocPhanAdded?.Invoke(this, nhomFull);  // Truyền đúng DTO đầy đủ
+                            MessageBox.Show("Thêm nhóm học phần thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Thêm thành công nhưng không tải lại được dữ liệu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                 }
 
@@ -290,82 +346,7 @@ namespace GUI.forms.hocphan
         {
 
         }
-        //Update nhomhocphan
-        // Gọi khi muốn sửa 1 nhóm học phần
-        //public void SetEditMode(NhomHocPhanDTO nhom)
-        //{
-        //    if (nhom == null) return;
-
-        //    isEditMode = true;
-        //    editingMaNhom = nhom.MaNhom;
-
-        //    // Đảm bảo combobox đã load trước khi set
-        //    if (cbMonHoc.DataSource == null)
-        //        LoadComboBoxMonHoc();
-
-        //    if (cbHocKy.DataSource == null)
-        //        LoadHocKy();
-
-        //    if (cbNamHoc.DataSource == null)
-        //        LoadNamHoc();
-        //    // Gán dữ liệu lên form
-        //    tbTenNhom.Text = nhom.TenNhom;
-        //    tbGhiChu.Text = nhom.GhiChu;
-        //    cbMonHoc.SelectedValue = nhom.MaMonHoc;
-        //    cbHocKy.Text = nhom.HocKy;
-        //    cbNamHoc.Text = nhom.NamHoc;
-        //}
-        //public void SetEditMode(NhomHocPhanDTO nhom)
-        //{
-        //    if (nhom == null) return;
-
-        //    isEditMode = true;
-        //    editingMaNhom = nhom.MaNhom;
-        //    nhomHocPhanEditing = nhom;
-
-        //    // 1. Load lại dữ liệu ComboBox (bắt buộc)
-        //    LoadComboBoxMonHoc();
-        //    LoadHocKy();
-        //    LoadNamHoc();
-
-        //    // 2. Đợi 1 chút để DataSource được gán xong (rất quan trọng!)
-        //    this.BeginInvoke((MethodInvoker)delegate
-        //    {
-        //        // Gán các field text
-        //        tbTenNhom.Text = nhom.TenNhom ?? "";
-        //        tbGhiChu.Text = nhom.GhiChu ?? "";
-        //        cbHocKy.Text = nhom.HocKy ?? "";
-        //        cbNamHoc.Text = nhom.NamHoc ?? "";
-
-        //        // QUAN TRỌNG NHẤT: Chọn đúng môn học
-        //        if (nhom.MaMonHoc != null && cbMonHoc.Items.Count > 0)
-        //        {
-        //            // Thử chọn bằng Value
-        //            cbMonHoc.SelectedValue = nhom.MaMonHoc;
-
-        //            // Nếu không chọn được bằng Value → tìm trong danh sách và chọn bằng Text
-        //            if (cbMonHoc.SelectedValue == null || !cbMonHoc.SelectedValue.Equals(nhom.MaMonHoc))
-        //            {
-        //                var item = cbMonHoc.Items.Cast<dynamic>().FirstOrDefault(x =>
-        //                    x.MaMonHoc.ToString() == nhom.MaMonHoc.ToString());
-
-        //                if (item != null)
-        //                    cbMonHoc.SelectedItem = item;
-        //            }
-
-        //            // Vẫn không được? → hiển thị trực tiếp tên môn (để người dùng biết)
-        //            if (cbMonHoc.SelectedIndex == -1 && !string.IsNullOrEmpty(nhom.TenMonHoc))
-        //            {
-        //                cbMonHoc.Text = $"{nhom.MaMonHoc} - {nhom.TenMonHoc} (Đã phân công)";
-        //                cbMonHoc.Enabled = false; // Không cho sửa môn khi edit (rất hợp lý!)
-        //            }
-        //        }
-
-        //        // Focus vào tên nhóm để dễ sửa
-        //        tbTenNhom.Focus();
-        //        tbTenNhom.SelectAll();
-        //    });
-        //}
+        
 
 
         private void cbMonHoc_SelectedIndexChanged(object sender, EventArgs e)
