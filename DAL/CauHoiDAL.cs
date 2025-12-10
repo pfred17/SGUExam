@@ -6,7 +6,7 @@ namespace DAL
 {
     public class CauHoiDAL
     {
-        public List<CauHoiDTO> GetAllForDisplay(long maND)
+        public List<CauHoiDTO> GetAllForDisplay(string maND)
         {
             var list = new List<CauHoiDTO>();
             string query = @"
@@ -16,7 +16,7 @@ namespace DAL
                 JOIN mon_hoc mh ON cg.ma_mh = mh.ma_mh
                 JOIN phan_cong AS pc ON pc.ma_mh = mh.ma_mh
                 WHERE ch.trang_thai = 1
-                        AND (@MaND = 0 OR pc.ma_nd = @MaND) 
+                        AND pc.ma_nd = @MaND  
                 ORDER BY ch.ma_cau_hoi";
 
             var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@MaND", maND));
@@ -184,11 +184,11 @@ namespace DAL
                 LEFT JOIN phan_cong pc ON mh.ma_mh = pc.ma_mh
                 LEFT JOIN nguoi_dung nd ON pc.ma_nd = nd.ma_nd
                 WHERE ch.trang_thai = 1
-                        AND (@MaND = 0 OR pc.ma_nd = @MaND)
+                        AND pc.ma_nd = @MaND
                 GROUP BY ch.ma_cau_hoi, ch.noi_dung, mh.ten_mh, mh.ma_mh, ch.do_kho, cg.ma_chuong
                 ORDER BY ch.ma_cau_hoi";
 
-            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@MaND", maND));
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@MaND", maND.ToString()));
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(new CauHoiDTO

@@ -94,7 +94,7 @@ namespace GUI.modules
             var doKho = cbDoKho.Text == "Tất cả" ? "" : cbDoKho.Text;
             var keyword = txtTimKiem.Text == PLACEHOLDER ? "" : txtTimKiem.Text.Trim();
 
-            filteredList = _cauHoiBLL.GetAllForDisplay(maMH, maCh, doKho, keyword)
+            filteredList = _cauHoiBLL.GetAllForDisplay(_userId, maMH, maCh, doKho, keyword)
                  .GroupBy(x => new { Key = CauHoiBLL.Normalize(x.NoiDung), x.MaMonHoc })
                 .Select(g => g.OrderByDescending(x => x.MaCauHoi).First())
                 .ToList();

@@ -17,7 +17,6 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             txtTimKiem = new TextBox();
             cbDoKho = new ComboBox();
             cbChuong = new ComboBox();
@@ -99,8 +98,8 @@
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvCauHoi.ColumnHeadersHeight = 29;
-            dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho,xemCol, SuaCol, XoaCol });
+            dgvCauHoi.ColumnHeadersHeight = 45;
+            dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho, xemCol, SuaCol, XoaCol });
             dgvCauHoi.Location = new Point(25, 280);
             dgvCauHoi.MultiSelect = false;
             dgvCauHoi.Name = "dgvCauHoi";
@@ -109,7 +108,7 @@
             dgvCauHoi.RowHeadersWidth = 51;
             dgvCauHoi.ScrollBars = ScrollBars.None;
             dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvCauHoi.Size = new Size(1050, 314);
+            dgvCauHoi.Size = new Size(1050, 349);
             dgvCauHoi.TabIndex = 1;
             dgvCauHoi.CellContentClick += dgvCauHoi_CellContentClick;
             dgvCauHoi.SelectionChanged += dgvCauHoi_SelectionChanged;
@@ -139,31 +138,40 @@
             // 
             // colDoKho
             // 
+            colDoKho.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             colDoKho.FillWeight = 80F;
             colDoKho.HeaderText = "Độ khó";
             colDoKho.MinimumWidth = 6;
             colDoKho.Name = "colDoKho";
             colDoKho.ReadOnly = true;
+            colDoKho.Width = 108;
             // 
-            //xemcol
-
+            // xemCol
+            // 
+            xemCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             xemCol.HeaderText = "";
-            xemCol.MinimumWidth = 6;
+            xemCol.MinimumWidth = 50;
             xemCol.Name = "xemCol";
             xemCol.ReadOnly = true;
+            xemCol.Width = 50;
+            // 
             // SuaCol
             // 
+            SuaCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             SuaCol.HeaderText = "";
-            SuaCol.MinimumWidth = 6;
+            SuaCol.MinimumWidth = 50;
             SuaCol.Name = "SuaCol";
             SuaCol.ReadOnly = true;
+            SuaCol.Width = 50;
             // 
             // XoaCol
             // 
+            XoaCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             XoaCol.HeaderText = "";
-            XoaCol.MinimumWidth = 6;
+            XoaCol.MinimumWidth = 50;
             XoaCol.Name = "XoaCol";
             XoaCol.ReadOnly = true;
+            XoaCol.Width = 50;
             // 
             // label2
             // 
@@ -312,13 +320,6 @@
         private ComboBox cbChuong = null!;
         private ComboBox cbMonHoc = null!;
         private DataGridView dgvCauHoi = null!;
-        private DataGridViewTextBoxColumn colID = null!;
-        private DataGridViewTextBoxColumn colNoiDung = null!;
-        private DataGridViewTextBoxColumn colMonHoc = null!;
-        private DataGridViewTextBoxColumn colDoKho = null!;
-        private DataGridViewImageColumn xemCol = null!;
-        private DataGridViewImageColumn SuaCol = null!;
-        private DataGridViewImageColumn XoaCol = null!;
         private Label lbTatCaCauhoi = null!;
         private Label label2 = null!;
         private Button btnThemMoi = null!;
@@ -328,6 +329,13 @@
         private Label lblTrangHienTai;
         private Button btnTrangSau;
         private Button btnTrangTruoc;
+        private DataGridViewTextBoxColumn colID;
+        private DataGridViewTextBoxColumn colNoiDung;
+        private DataGridViewTextBoxColumn colMonHoc;
+        private DataGridViewTextBoxColumn colDoKho;
+        private DataGridViewImageColumn xemCol;
+        private DataGridViewImageColumn SuaCol;
+        private DataGridViewImageColumn XoaCol;
         //private ComboBox cbSoDongTrang;
     }
 }

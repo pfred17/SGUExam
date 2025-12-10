@@ -100,7 +100,7 @@ namespace GUI.modules
 
                 var roleDto = _roleBLL.GetRoleDTOById(user.Role);
 
-                if (roleDto.TrangThai == 0) continue;
+                if (roleDto.TrangThai == 0 || user.MSSV == _userId) continue;
 
 
                 int rowIndex = tableNguoiDung.Rows.Add(

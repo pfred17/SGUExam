@@ -148,7 +148,7 @@ namespace GUI.modules
             btnXuatBangDiem.ForeColor = Color.White;
             btnXuatBangDiem.Location = new Point(900, 30);
             btnXuatBangDiem.Name = "btnXuatBangDiem";
-            btnXuatBangDiem.Size = new Size(180, 36);
+            btnXuatBangDiem.Size = new Size(200, 40);
             btnXuatBangDiem.Text = "📄 Xuất bảng điểm";
             btnXuatBangDiem.Click += btnXuatBangDiem_Click;
 

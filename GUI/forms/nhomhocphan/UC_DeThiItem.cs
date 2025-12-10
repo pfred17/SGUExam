@@ -1,5 +1,6 @@
 ﻿using DTO;
 using GUI.forms.dethi;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace GUI.Forms.nhomhocphan
 {
@@ -13,38 +14,31 @@ namespace GUI.Forms.nhomhocphan
             _userId = userId; 
         }
 
-        public void SetData(DeThiDTO dethi)
-        {
-            linkDeKiemTra.Text = dethi.TenDe;
-            lblStart.Text = "Bắt đầu: " + dethi.ThoiGianBatDau.ToString();
-            lblEnd.Text = "Kết thúc: " + dethi.ThoiGianKetThuc.ToString();
-            lblTime.Text = "Thời gian làm bài: " + dethi.ThoiGianLamBai + " phút";
-            int trangThaiCode = dethi.TrangThai;
-            linkDeKiemTra.Tag = dethi;
-            switch (trangThaiCode)
-            {
-                case 1:
-                    lblStatus.Text = "CHƯA MỞ";
-                    lblStatus.ForeColor = Color.DarkGray;
-                    break;
+      
 
-                case 2:
-                    lblStatus.Text = "CHƯA LÀM";
-                    lblStatus.ForeColor = Color.Orange;
-                    break;
-                case 3:
-                    lblStatus.Text = "ĐÃ HOÀN THÀNH";
-                    lblStatus.ForeColor = Color.Green;
-                    break;
-                case 4:
-                    lblStatus.Text = "QUÁ HẠN";
-                    lblStatus.ForeColor = Color.Red;
-                    break;
-                default:
-                    lblStatus.Text = "KHÔNG XÁC ĐỊNH";
-                    lblStatus.ForeColor = Color.Black;
-                    break;
-            }
+        public void SetData(DeThiDTO deThi)
+        {
+
+            
+            linkDeKiemTra.Text = deThi.TenDe;
+            lblStart.Text = "Bắt đầu: " + deThi.ThoiGianBatDau.ToString();
+            lblEnd.Text = "Kết thúc: " + deThi.ThoiGianKetThuc.ToString();
+            lblTime.Text = "Thời gian làm bài: " + deThi.ThoiGianLamBai + " phút";
+            int trangThaiCode = deThi.TrangThai;
+            linkDeKiemTra.Tag = deThi;
+
+            var now = DateTime.Now;
+
+            if (deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau)
+                lblStatus.Text = "Chưa mở";
+            else if (deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
+                 now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc)
+                lblStatus.Text = "Đang thi";
+            else if (deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
+                lblStatus.Text = "Kết thúc";
+            else
+                lblStatus.Text = "Không xác đinh";
+
         }
 
         private void linkDeKiemTra_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

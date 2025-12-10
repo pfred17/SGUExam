@@ -8,7 +8,7 @@
         public DateTime? ThoiGianKetThuc { get; set; }
         public int ThoiGianLamBai { get; set; }
         public int CanhBaoNeuDuoi { get; set; }
-        public int SoCauDe { get; set; }
+        public int SoCauDe { get; set; }    
         public int SoCauTrungBinh { get; set; }
         public int SoCauKho { get; set; }
         public int TrangThai { get; set; }

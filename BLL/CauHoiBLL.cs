@@ -55,10 +55,10 @@ namespace BLL
             return dapAns.Select(da => (da, _dapAnDAL.CheckDapAnSuDung(da.MaDapAn))).ToList();
         }
 
-        public List<CauHoiDTO> GetAllForDisplay(
+        public List<CauHoiDTO> GetAllForDisplay(string? userId = null,
            long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
         {
-            var list = _cauHoiDAL.GetAllForDisplay(_maND);
+            var list = _cauHoiDAL.GetAllForDisplay(userId);
             string keywordNormalized = string.IsNullOrEmpty(tuKhoa) ? "" : Normalize(tuKhoa);
 
             HashSet<long>? dsChuong = null;
@@ -66,13 +66,12 @@ namespace BLL
                 dsChuong = _chuongBLL.GetChuongByMonHoc(maMH)
                                     .Select(ch => ch.MaChuong)
                                     .ToHashSet();
-
-            return list.Where(c =>
-                (dsChuong == null || dsChuong.Contains(c.MaChuong)) &&
-                (maChuong == 0 || c.MaChuong == maChuong) && // lọc theo chương
-                (string.IsNullOrEmpty(doKho) || c.DoKho == doKho) && // lọc theo độ khó 
-                (string.IsNullOrEmpty(keywordNormalized) || Normalize(c.NoiDung).Contains(keywordNormalized)) // lọc theo từ khóa 
-            ).ToList();
+                return list.Where(c =>
+                    (dsChuong == null || dsChuong.Contains(c.MaChuong)) &&
+                    (maChuong == 0 || c.MaChuong == maChuong) && // lọc theo chương
+                    (string.IsNullOrEmpty(doKho) || c.DoKho == doKho) && // lọc theo độ khó 
+                    (string.IsNullOrEmpty(keywordNormalized) || Normalize(c.NoiDung).Contains(keywordNormalized)) // lọc theo từ khóa 
+                ).ToList();
         }
         #endregion
 

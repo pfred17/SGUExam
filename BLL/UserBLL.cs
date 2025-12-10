@@ -101,7 +101,10 @@ namespace BLL
         {
             return dal.UpdateUser(userDTO);
         }
-
+        public bool UpdateInfo(UserDTO userDTO)
+        {
+            return dal.UpdateInfo(userDTO);
+        }
         public bool LockUser(string userId, int status = 0)
         {
             return dal.LockUser(userId, status);

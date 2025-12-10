@@ -1,8 +1,7 @@
 ﻿using BLL;
+using BLL.Validator;
 using DTO;
 using Guna.UI2.WinForms;
-using Microsoft.VisualBasic.ApplicationServices;
-using MySqlX.XDevAPI.Common;
 
 namespace GUI.Forms.login
 {

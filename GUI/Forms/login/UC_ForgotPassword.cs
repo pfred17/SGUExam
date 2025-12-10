@@ -1,9 +1,8 @@
 ﻿
 
 using BLL;
-using DocumentFormat.OpenXml.Office.CustomUI;
+using BLL.Validator;
 using Guna.UI2.WinForms;
-using System.Text.RegularExpressions;
 
 namespace GUI.Forms.login
 {
@@ -28,11 +27,19 @@ namespace GUI.Forms.login
             if (InputValidator.IsEmpty(email)){
                 MessageBox.Show("Email không được để trống.");
                 txtEmailFP.Focus();
+                return;
+            }
+
+            if (!InputValidator.IsValidEmail(email))
+            {
+                MessageBox.Show("Email không hợp lệ");
+                txtEmailFP.Focus();
+                return;
             }
            
-            if (userBLL.IsEmailExists(email))
+            if (!userBLL.IsEmailExists(email))
             {
-                MessageBox.Show("Email đã được đăng ký.");
+                MessageBox.Show("Email chưa được đăng ký.");
                 txtEmailFP.Focus();
                 return;
             }
@@ -58,9 +65,9 @@ namespace GUI.Forms.login
                 return;
             }
 
-            if (InputValidator.IsValidPassword(newPass)) 
+            if (!InputValidator.IsValidPassword(newPass)) 
             {
-                MessageBox.Show("Mật khẩu mới phải ≥ 8 ký tự!");
+                MessageBox.Show("Mật khẩu mới phải ≥ 8 ký tự, ít nhất 1 ký tự chữ hoa,thường");
                 txtNewPassword.Focus();
                 return;
             }

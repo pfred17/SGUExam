@@ -43,15 +43,16 @@
             // 
             // btnThemUC
             // 
-            btnThemUC.BorderRadius = 6;
+            btnThemUC.BorderRadius = 4;
             btnThemUC.CustomizableEdges = customizableEdges1;
             btnThemUC.DisabledState.BorderColor = Color.DarkGray;
             btnThemUC.DisabledState.CustomBorderColor = Color.DarkGray;
             btnThemUC.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnThemUC.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnThemUC.FillColor = Color.FromArgb(6, 101, 208);
             btnThemUC.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThemUC.ForeColor = Color.White;
-            btnThemUC.Location = new Point(898, 18);
+            btnThemUC.Location = new Point(943, 16);
             btnThemUC.Name = "btnThemUC";
             btnThemUC.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnThemUC.Size = new Size(164, 50);

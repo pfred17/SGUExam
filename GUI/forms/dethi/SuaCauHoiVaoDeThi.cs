@@ -196,6 +196,7 @@ namespace GUI.modules
             lblSoLuongKho.Text = $"KHÓ {GetSelectedCount("Khó")}/{_deThi.SoCauKho}";
 
             lblTenDeThi.Text = _deThi.TenDe ?? "";
+            lblTenDeThi.Width = 400;
             lblThoiGian.Text = $"Thời gian: {_deThi.ThoiGianLamBai} phút";
         }
         private void UpdateSelectedQuestionLabel()

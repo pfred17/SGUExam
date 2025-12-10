@@ -29,23 +29,27 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_ItemNhomHocPhan));
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             menuChucNang = new ContextMenuStrip(components);
             toolStripMenuItem1 = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
             toolStripMenuItem4 = new ToolStripMenuItem();
             toolStripMenuItem7 = new ToolStripMenuItem();
-            btnSetting = new Guna.UI2.WinForms.Guna2Button();
-            panel1 = new Panel();
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
-            lbSiSo1 = new Label();
+            guna2Separator1 = new Guna.UI2.WinForms.Guna2Separator();
+            btnSetting = new Guna.UI2.WinForms.Guna2Button();
+            lbTenNhom1 = new Label();
+            btnNamHocHK = new Guna.UI2.WinForms.Guna2Button();
+            btnSiSo = new Guna.UI2.WinForms.Guna2Button();
             lbGhiChu1 = new Label();
             lbMonHoc1 = new Label();
-            lbTenNhom1 = new Label();
             lbTenNhom = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lbGhiChu = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lbMonHoc = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -90,99 +94,142 @@
             toolStripMenuItem7.Text = "Xóa nhóm";
             toolStripMenuItem7.Click += menuXoa_Click;
             // 
+            // guna2CustomGradientPanel1
+            // 
+            guna2CustomGradientPanel1.BorderRadius = 6;
+            guna2CustomGradientPanel1.Controls.Add(guna2Separator1);
+            guna2CustomGradientPanel1.Controls.Add(btnSetting);
+            guna2CustomGradientPanel1.Controls.Add(lbTenNhom1);
+            guna2CustomGradientPanel1.Controls.Add(btnNamHocHK);
+            guna2CustomGradientPanel1.Controls.Add(btnSiSo);
+            guna2CustomGradientPanel1.Controls.Add(lbGhiChu1);
+            guna2CustomGradientPanel1.Controls.Add(lbMonHoc1);
+            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges7;
+            guna2CustomGradientPanel1.Dock = DockStyle.Fill;
+            guna2CustomGradientPanel1.Location = new Point(0, 0);
+            guna2CustomGradientPanel1.Margin = new Padding(2);
+            guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
+            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            guna2CustomGradientPanel1.Size = new Size(339, 240);
+            guna2CustomGradientPanel1.TabIndex = 0;
+            guna2CustomGradientPanel1.Paint += guna2CustomGradientPanel1_Paint;
+            // 
+            // guna2Separator1
+            // 
+            guna2Separator1.BackColor = Color.Transparent;
+            guna2Separator1.Location = new Point(8, 50);
+            guna2Separator1.Name = "guna2Separator1";
+            guna2Separator1.Size = new Size(317, 16);
+            guna2Separator1.TabIndex = 11;
+            // 
             // btnSetting
             // 
-            btnSetting.BackColor = Color.White;
-            btnSetting.BorderColor = Color.White;
+            btnSetting.BackColor = Color.Transparent;
+            btnSetting.BorderColor = Color.Transparent;
             btnSetting.BorderRadius = 3;
+            btnSetting.Cursor = Cursors.Hand;
             btnSetting.CustomizableEdges = customizableEdges1;
             btnSetting.DisabledState.BorderColor = Color.DarkGray;
             btnSetting.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSetting.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnSetting.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnSetting.FillColor = Color.White;
+            btnSetting.FillColor = Color.Transparent;
             btnSetting.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnSetting.ForeColor = Color.White;
-            btnSetting.Image = (Image)resources.GetObject("btnSetting.Image");
-            btnSetting.ImageSize = new Size(30, 30);
-            btnSetting.Location = new Point(288, 11);
+            btnSetting.ForeColor = Color.Transparent;
+            btnSetting.Image = Properties.Resources.icon_phanquyencaidat;
+            btnSetting.ImageSize = new Size(25, 25);
+            btnSetting.Location = new Point(286, 15);
             btnSetting.Margin = new Padding(2);
             btnSetting.Name = "btnSetting";
             btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnSetting.Size = new Size(39, 41);
+            btnSetting.Size = new Size(39, 36);
             btnSetting.TabIndex = 1;
             btnSetting.Click += btnSetting_Click;
             // 
-            // panel1
+            // lbTenNhom1
             // 
-            panel1.BackColor = SystemColors.ControlText;
-            panel1.Location = new Point(2, 65);
-            panel1.Margin = new Padding(2);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(456, 2);
-            panel1.TabIndex = 2;
+            lbTenNhom1.BackColor = Color.Transparent;
+            lbTenNhom1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbTenNhom1.ForeColor = Color.FromArgb(6, 101, 208);
+            lbTenNhom1.ImageAlign = ContentAlignment.MiddleLeft;
+            lbTenNhom1.Location = new Point(8, 17);
+            lbTenNhom1.Name = "lbTenNhom1";
+            lbTenNhom1.Size = new Size(254, 32);
+            lbTenNhom1.TabIndex = 3;
+            lbTenNhom1.Text = "lbTenNhom";
+            lbTenNhom1.TextAlign = ContentAlignment.MiddleLeft;
+            lbTenNhom1.Click += lbTenNhom1_Click;
             // 
-            // guna2CustomGradientPanel1
+            // btnNamHocHK
             // 
-            guna2CustomGradientPanel1.BorderRadius = 15;
-            guna2CustomGradientPanel1.Controls.Add(lbSiSo1);
-            guna2CustomGradientPanel1.Controls.Add(lbGhiChu1);
-            guna2CustomGradientPanel1.Controls.Add(lbMonHoc1);
-            guna2CustomGradientPanel1.Controls.Add(lbTenNhom1);
-            guna2CustomGradientPanel1.Controls.Add(panel1);
-            guna2CustomGradientPanel1.Controls.Add(btnSetting);
-            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges3;
-            guna2CustomGradientPanel1.Dock = DockStyle.Fill;
-            guna2CustomGradientPanel1.Location = new Point(0, 0);
-            guna2CustomGradientPanel1.Margin = new Padding(2);
-            guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
-            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            guna2CustomGradientPanel1.Size = new Size(339, 240);
-            guna2CustomGradientPanel1.TabIndex = 0;
-            guna2CustomGradientPanel1.Paint += guna2CustomGradientPanel1_Paint;
+            btnNamHocHK.BackColor = Color.Transparent;
+            btnNamHocHK.BorderColor = Color.FromArgb(6, 101, 208);
+            btnNamHocHK.BorderRadius = 8;
+            btnNamHocHK.BorderStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            btnNamHocHK.BorderThickness = 1;
+            btnNamHocHK.CustomizableEdges = customizableEdges3;
+            btnNamHocHK.DisabledState.BorderColor = Color.DarkGray;
+            btnNamHocHK.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnNamHocHK.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnNamHocHK.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnNamHocHK.FillColor = Color.Transparent;
+            btnNamHocHK.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNamHocHK.ForeColor = Color.FromArgb(6, 101, 208);
+            btnNamHocHK.HoverState.BorderColor = Color.FromArgb(6, 101, 208);
+            btnNamHocHK.HoverState.FillColor = Color.Transparent;
+            btnNamHocHK.HoverState.ForeColor = Color.FromArgb(6, 101, 208);
+            btnNamHocHK.Location = new Point(88, 179);
+            btnNamHocHK.Name = "btnNamHocHK";
+            btnNamHocHK.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnNamHocHK.Size = new Size(149, 35);
+            btnNamHocHK.TabIndex = 10;
+            btnNamHocHK.Text = "HK1 - 2024-2026";
             // 
-            // lbSiSo1
+            // btnSiSo
             // 
-            lbSiSo1.BackColor = Color.White;
-            lbSiSo1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbSiSo1.Location = new Point(260, 201);
-            lbSiSo1.Name = "lbSiSo1";
-            lbSiSo1.Size = new Size(67, 25);
-            lbSiSo1.TabIndex = 7;
-            lbSiSo1.Text = "lbSiSo";
+            btnSiSo.BackColor = Color.Transparent;
+            btnSiSo.BorderColor = Color.FromArgb(6, 101, 208);
+            btnSiSo.BorderRadius = 8;
+            btnSiSo.BorderStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            btnSiSo.BorderThickness = 1;
+            btnSiSo.CustomizableEdges = customizableEdges5;
+            btnSiSo.DisabledState.BorderColor = Color.DarkGray;
+            btnSiSo.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSiSo.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnSiSo.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnSiSo.FillColor = Color.Transparent;
+            btnSiSo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSiSo.ForeColor = Color.FromArgb(6, 101, 208);
+            btnSiSo.HoverState.BorderColor = Color.FromArgb(6, 101, 208);
+            btnSiSo.HoverState.FillColor = Color.Transparent;
+            btnSiSo.HoverState.ForeColor = Color.FromArgb(6, 101, 208);
+            btnSiSo.Location = new Point(243, 179);
+            btnSiSo.Name = "btnSiSo";
+            btnSiSo.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnSiSo.Size = new Size(82, 35);
+            btnSiSo.TabIndex = 9;
+            btnSiSo.Text = "Sĩ số: 19";
             // 
             // lbGhiChu1
             // 
             lbGhiChu1.BackColor = Color.White;
-            lbGhiChu1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbGhiChu1.Location = new Point(17, 162);
+            lbGhiChu1.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lbGhiChu1.Location = new Point(9, 114);
             lbGhiChu1.Name = "lbGhiChu1";
-            lbGhiChu1.Size = new Size(235, 49);
+            lbGhiChu1.Size = new Size(316, 45);
             lbGhiChu1.TabIndex = 6;
             lbGhiChu1.Text = "lbGhiChu";
             // 
             // lbMonHoc1
             // 
             lbMonHoc1.BackColor = Color.White;
-            lbMonHoc1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbMonHoc1.Location = new Point(17, 85);
+            lbMonHoc1.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbMonHoc1.ForeColor = Color.Gray;
+            lbMonHoc1.Location = new Point(8, 70);
             lbMonHoc1.Name = "lbMonHoc1";
-            lbMonHoc1.Size = new Size(282, 50);
+            lbMonHoc1.Size = new Size(317, 44);
             lbMonHoc1.TabIndex = 4;
             lbMonHoc1.Text = "lbMonHoc";
-            // 
-            // lbTenNhom1
-            // 
-            lbTenNhom1.BackColor = Color.White;
-            lbTenNhom1.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbTenNhom1.ImageAlign = ContentAlignment.MiddleLeft;
-            lbTenNhom1.Location = new Point(17, 11);
-            lbTenNhom1.Name = "lbTenNhom1";
-            lbTenNhom1.Size = new Size(256, 50);
-            lbTenNhom1.TabIndex = 3;
-            lbTenNhom1.Text = "lbTenNhom";
-            lbTenNhom1.TextAlign = ContentAlignment.MiddleLeft;
-            lbTenNhom1.Click += lbTenNhom1_Click;
             // 
             // lbTenNhom
             // 
@@ -249,8 +296,6 @@
 
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel1;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbTenNhom;
-        private Guna.UI2.WinForms.Guna2Button btnSetting;
-        private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel2;
         private ContextMenuStrip menuChucNang;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem toolStripMenuItem2;
@@ -258,12 +303,14 @@
         private ToolStripMenuItem toolStripMenuItem7;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbMonHoc;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbGhiChu;
-        private Panel panel1;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbSiSo;
-        private Label lbTenNhom1;
         private Label lbMonHoc1;
         private Label lbGhiChu1;
-        private Label lbSiSo1;
+        private Guna.UI2.WinForms.Guna2Button btnSiSo;
+        private Guna.UI2.WinForms.Guna2Button btnNamHocHK;
+        private Guna.UI2.WinForms.Guna2Separator guna2Separator1;
+        private Guna.UI2.WinForms.Guna2Button btnSetting;
+        private Label lbTenNhom1;
     }
 }

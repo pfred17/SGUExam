@@ -44,11 +44,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             lbErrorNhomQuyen = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lbErrorPassowrd = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            lbErrorUsername = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lbErrorHoVaTen = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lbErrorEmail = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
@@ -62,8 +59,6 @@
             radioNam = new Guna.UI2.WinForms.Guna2CustomRadioButton();
             txtPassword = new Guna.UI2.WinForms.Guna2TextBox();
             guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            txtUsername = new Guna.UI2.WinForms.Guna2TextBox();
-            guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             txtHoVaTen = new Guna.UI2.WinForms.Guna2TextBox();
             guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             txtEmail = new Guna.UI2.WinForms.Guna2TextBox();
@@ -77,7 +72,7 @@
             lbErrorNhomQuyen.BackColor = Color.Transparent;
             lbErrorNhomQuyen.Font = new Font("Segoe UI", 8F);
             lbErrorNhomQuyen.ForeColor = Color.Red;
-            lbErrorNhomQuyen.Location = new Point(24, 689);
+            lbErrorNhomQuyen.Location = new Point(22, 586);
             lbErrorNhomQuyen.Name = "lbErrorNhomQuyen";
             lbErrorNhomQuyen.Size = new Size(150, 19);
             lbErrorNhomQuyen.TabIndex = 53;
@@ -89,24 +84,12 @@
             lbErrorPassowrd.BackColor = Color.Transparent;
             lbErrorPassowrd.Font = new Font("Segoe UI", 8F);
             lbErrorPassowrd.ForeColor = Color.Red;
-            lbErrorPassowrd.Location = new Point(22, 541);
+            lbErrorPassowrd.Location = new Point(20, 438);
             lbErrorPassowrd.Name = "lbErrorPassowrd";
             lbErrorPassowrd.Size = new Size(131, 19);
             lbErrorPassowrd.TabIndex = 52;
             lbErrorPassowrd.Text = "Message lỗi mật khẩu";
             lbErrorPassowrd.Visible = false;
-            // 
-            // lbErrorUsername
-            // 
-            lbErrorUsername.BackColor = Color.Transparent;
-            lbErrorUsername.Font = new Font("Segoe UI", 8F);
-            lbErrorUsername.ForeColor = Color.Red;
-            lbErrorUsername.Location = new Point(24, 434);
-            lbErrorUsername.Name = "lbErrorUsername";
-            lbErrorUsername.Size = new Size(163, 19);
-            lbErrorUsername.TabIndex = 51;
-            lbErrorUsername.Text = "Message lỗi tên đăng nhập";
-            lbErrorUsername.Visible = false;
             // 
             // lbErrorHoVaTen
             // 
@@ -135,7 +118,7 @@
             // guna2Panel1
             // 
             guna2Panel1.CustomizableEdges = customizableEdges1;
-            guna2Panel1.Location = new Point(24, 813);
+            guna2Panel1.Location = new Point(22, 710);
             guna2Panel1.Name = "guna2Panel1";
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges2;
             guna2Panel1.Size = new Size(358, 20);
@@ -151,7 +134,7 @@
             btnSubmit.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnSubmit.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSubmit.ForeColor = Color.White;
-            btnSubmit.Location = new Point(24, 738);
+            btnSubmit.Location = new Point(22, 635);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnSubmit.Size = new Size(358, 56);
@@ -175,18 +158,19 @@
             cbbNhomQuyen.ForeColor = Color.FromArgb(68, 88, 112);
             cbbNhomQuyen.ItemHeight = 30;
             cbbNhomQuyen.Items.AddRange(new object[] { "Chọn nhóm quyền", "Admin", "Giảng viên", "Sinh viên" });
-            cbbNhomQuyen.Location = new Point(24, 647);
+            cbbNhomQuyen.Location = new Point(22, 544);
             cbbNhomQuyen.Name = "cbbNhomQuyen";
             cbbNhomQuyen.ShadowDecoration.CustomizableEdges = customizableEdges6;
             cbbNhomQuyen.Size = new Size(358, 36);
             cbbNhomQuyen.StartIndex = 0;
             cbbNhomQuyen.TabIndex = 43;
+            cbbNhomQuyen.SelectedIndexChanged += cbbNhomQuyen_SelectedIndexChanged;
             // 
             // guna2HtmlLabel9
             // 
             guna2HtmlLabel9.BackColor = Color.Transparent;
             guna2HtmlLabel9.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2HtmlLabel9.Location = new Point(24, 619);
+            guna2HtmlLabel9.Location = new Point(22, 516);
             guna2HtmlLabel9.Name = "guna2HtmlLabel9";
             guna2HtmlLabel9.Size = new Size(94, 22);
             guna2HtmlLabel9.TabIndex = 42;
@@ -196,7 +180,7 @@
             // 
             guna2HtmlLabel8.BackColor = Color.Transparent;
             guna2HtmlLabel8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            guna2HtmlLabel8.Location = new Point(284, 575);
+            guna2HtmlLabel8.Location = new Point(282, 472);
             guna2HtmlLabel8.Name = "guna2HtmlLabel8";
             guna2HtmlLabel8.Size = new Size(23, 22);
             guna2HtmlLabel8.TabIndex = 41;
@@ -209,7 +193,7 @@
             radioNu.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
             radioNu.CheckedState.InnerColor = Color.White;
             radioNu.Cursor = Cursors.Hand;
-            radioNu.Location = new Point(249, 575);
+            radioNu.Location = new Point(247, 472);
             radioNu.Name = "radioNu";
             radioNu.ShadowDecoration.CustomizableEdges = customizableEdges7;
             radioNu.Size = new Size(20, 20);
@@ -219,12 +203,13 @@
             radioNu.UncheckedState.BorderThickness = 2;
             radioNu.UncheckedState.FillColor = Color.Transparent;
             radioNu.UncheckedState.InnerColor = Color.Transparent;
+            radioNu.CheckedChanged += radioNu_CheckedChanged;
             // 
             // guna2HtmlLabel7
             // 
             guna2HtmlLabel7.BackColor = Color.Transparent;
             guna2HtmlLabel7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            guna2HtmlLabel7.Location = new Point(168, 575);
+            guna2HtmlLabel7.Location = new Point(166, 472);
             guna2HtmlLabel7.Name = "guna2HtmlLabel7";
             guna2HtmlLabel7.Size = new Size(35, 22);
             guna2HtmlLabel7.TabIndex = 39;
@@ -234,7 +219,7 @@
             // 
             guna2HtmlLabel6.BackColor = Color.Transparent;
             guna2HtmlLabel6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2HtmlLabel6.Location = new Point(24, 575);
+            guna2HtmlLabel6.Location = new Point(22, 472);
             guna2HtmlLabel6.Name = "guna2HtmlLabel6";
             guna2HtmlLabel6.Size = new Size(63, 22);
             guna2HtmlLabel6.TabIndex = 38;
@@ -248,7 +233,7 @@
             radioNam.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
             radioNam.CheckedState.InnerColor = Color.White;
             radioNam.Cursor = Cursors.Hand;
-            radioNam.Location = new Point(133, 575);
+            radioNam.Location = new Point(131, 472);
             radioNam.Name = "radioNam";
             radioNam.ShadowDecoration.CustomizableEdges = customizableEdges8;
             radioNam.Size = new Size(20, 20);
@@ -258,6 +243,7 @@
             radioNam.UncheckedState.BorderThickness = 2;
             radioNam.UncheckedState.FillColor = Color.Transparent;
             radioNam.UncheckedState.InnerColor = Color.Transparent;
+            radioNam.CheckedChanged += radioNam_CheckedChanged;
             // 
             // txtPassword
             // 
@@ -274,7 +260,7 @@
             txtPassword.Font = new Font("Segoe UI", 9F);
             txtPassword.ForeColor = Color.DimGray;
             txtPassword.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPassword.Location = new Point(24, 484);
+            txtPassword.Location = new Point(22, 381);
             txtPassword.Margin = new Padding(3, 4, 3, 4);
             txtPassword.Name = "txtPassword";
             txtPassword.PlaceholderText = "";
@@ -282,57 +268,23 @@
             txtPassword.ShadowDecoration.CustomizableEdges = customizableEdges10;
             txtPassword.Size = new Size(360, 50);
             txtPassword.TabIndex = 36;
+            txtPassword.Leave += txtPassword_Leave;
             // 
             // guna2HtmlLabel5
             // 
             guna2HtmlLabel5.BackColor = Color.Transparent;
             guna2HtmlLabel5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2HtmlLabel5.Location = new Point(24, 455);
+            guna2HtmlLabel5.Location = new Point(22, 352);
             guna2HtmlLabel5.Name = "guna2HtmlLabel5";
             guna2HtmlLabel5.Size = new Size(69, 22);
             guna2HtmlLabel5.TabIndex = 35;
             guna2HtmlLabel5.Text = "Mật khẩu";
             // 
-            // txtUsername
-            // 
-            txtUsername.BorderColor = Color.FromArgb(237, 240, 247);
-            txtUsername.BorderRadius = 4;
-            txtUsername.CustomizableEdges = customizableEdges11;
-            txtUsername.DefaultText = "";
-            txtUsername.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtUsername.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtUsername.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtUsername.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtUsername.FillColor = Color.FromArgb(237, 240, 247);
-            txtUsername.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtUsername.Font = new Font("Segoe UI", 9F);
-            txtUsername.ForeColor = Color.DimGray;
-            txtUsername.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtUsername.Location = new Point(24, 377);
-            txtUsername.Margin = new Padding(3, 4, 3, 4);
-            txtUsername.Name = "txtUsername";
-            txtUsername.PlaceholderText = "";
-            txtUsername.SelectedText = "";
-            txtUsername.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            txtUsername.Size = new Size(360, 50);
-            txtUsername.TabIndex = 34;
-            txtUsername.Leave += txtUsername_Leave;
-            // 
-            // guna2HtmlLabel4
-            // 
-            guna2HtmlLabel4.BackColor = Color.Transparent;
-            guna2HtmlLabel4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2HtmlLabel4.Location = new Point(24, 348);
-            guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(107, 22);
-            guna2HtmlLabel4.TabIndex = 33;
-            guna2HtmlLabel4.Text = "Tên đăng nhập";
-            // 
             // txtHoVaTen
             // 
             txtHoVaTen.BorderColor = Color.FromArgb(237, 240, 247);
             txtHoVaTen.BorderRadius = 4;
-            txtHoVaTen.CustomizableEdges = customizableEdges13;
+            txtHoVaTen.CustomizableEdges = customizableEdges11;
             txtHoVaTen.DefaultText = "";
             txtHoVaTen.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtHoVaTen.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -348,9 +300,10 @@
             txtHoVaTen.Name = "txtHoVaTen";
             txtHoVaTen.PlaceholderText = "";
             txtHoVaTen.SelectedText = "";
-            txtHoVaTen.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtHoVaTen.ShadowDecoration.CustomizableEdges = customizableEdges12;
             txtHoVaTen.Size = new Size(360, 50);
             txtHoVaTen.TabIndex = 32;
+            txtHoVaTen.Leave += txtHoVaTen_Leave;
             // 
             // guna2HtmlLabel3
             // 
@@ -366,7 +319,7 @@
             // 
             txtEmail.BorderColor = Color.FromArgb(237, 240, 247);
             txtEmail.BorderRadius = 4;
-            txtEmail.CustomizableEdges = customizableEdges15;
+            txtEmail.CustomizableEdges = customizableEdges13;
             txtEmail.DefaultText = "";
             txtEmail.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtEmail.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -382,9 +335,10 @@
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "";
             txtEmail.SelectedText = "";
-            txtEmail.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            txtEmail.ShadowDecoration.CustomizableEdges = customizableEdges14;
             txtEmail.Size = new Size(360, 50);
             txtEmail.TabIndex = 30;
+            txtEmail.Leave += txtEmail_Leave;
             // 
             // guna2HtmlLabel2
             // 
@@ -400,7 +354,7 @@
             // 
             txtMSSV.BorderColor = Color.FromArgb(237, 240, 247);
             txtMSSV.BorderRadius = 4;
-            txtMSSV.CustomizableEdges = customizableEdges17;
+            txtMSSV.CustomizableEdges = customizableEdges15;
             txtMSSV.DefaultText = "";
             txtMSSV.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtMSSV.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -417,7 +371,7 @@
             txtMSSV.Name = "txtMSSV";
             txtMSSV.PlaceholderText = "";
             txtMSSV.SelectedText = "";
-            txtMSSV.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            txtMSSV.ShadowDecoration.CustomizableEdges = customizableEdges16;
             txtMSSV.Size = new Size(360, 50);
             txtMSSV.TabIndex = 28;
             // 
@@ -439,7 +393,6 @@
             ClientSize = new Size(417, 603);
             Controls.Add(lbErrorNhomQuyen);
             Controls.Add(lbErrorPassowrd);
-            Controls.Add(lbErrorUsername);
             Controls.Add(lbErrorHoVaTen);
             Controls.Add(lbErrorEmail);
             Controls.Add(guna2Panel1);
@@ -453,8 +406,6 @@
             Controls.Add(radioNam);
             Controls.Add(txtPassword);
             Controls.Add(guna2HtmlLabel5);
-            Controls.Add(txtUsername);
-            Controls.Add(guna2HtmlLabel4);
             Controls.Add(txtHoVaTen);
             Controls.Add(guna2HtmlLabel3);
             Controls.Add(txtEmail);
@@ -466,6 +417,7 @@
             Name = "Sua";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sua";
+            Load += Sua_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -474,7 +426,6 @@
 
         private Guna.UI2.WinForms.Guna2HtmlLabel lbErrorNhomQuyen;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbErrorPassowrd;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lbErrorUsername;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbErrorHoVaTen;
         private Guna.UI2.WinForms.Guna2HtmlLabel lbErrorEmail;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
@@ -488,8 +439,6 @@
         private Guna.UI2.WinForms.Guna2CustomRadioButton radioNam;
         private Guna.UI2.WinForms.Guna2TextBox txtPassword;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
-        private Guna.UI2.WinForms.Guna2TextBox txtUsername;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
         private Guna.UI2.WinForms.Guna2TextBox txtHoVaTen;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
         private Guna.UI2.WinForms.Guna2TextBox txtEmail;

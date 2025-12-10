@@ -49,7 +49,7 @@
             cbxFemale = new Guna.UI2.WinForms.Guna2HtmlLabel();
             txtPassword = new Guna.UI2.WinForms.Guna2TextBox();
             guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            txtHoVaTen = new Guna.UI2.WinForms.Guna2TextBox();
+            txtHoTen = new Guna.UI2.WinForms.Guna2TextBox();
             guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             txtEmail = new Guna.UI2.WinForms.Guna2TextBox();
             guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -105,6 +105,7 @@
             btnSubmit.Size = new Size(360, 45);
             btnSubmit.TabIndex = 5;
             btnSubmit.Text = "LƯU THÔNG TIN";
+            btnSubmit.Click += btnSubmit_Click;
             // 
             // guna2HtmlLabel6
             // 
@@ -174,6 +175,8 @@
             txtPassword.DefaultText = "";
             txtPassword.Font = new Font("Segoe UI", 9F);
             txtPassword.ForeColor = Color.Black;
+            txtPassword.IconRight = Properties.Resources.icon_blinds;
+            txtPassword.IconRightSize = new Size(50, 40);
             txtPassword.Location = new Point(45, 296);
             txtPassword.Margin = new Padding(3, 4, 3, 4);
             txtPassword.Name = "txtPassword";
@@ -183,6 +186,7 @@
             txtPassword.ShadowDecoration.CustomizableEdges = customizableEdges6;
             txtPassword.Size = new Size(360, 40);
             txtPassword.TabIndex = 2;
+            txtPassword.IconRightClick += txtPassword_IconRightClick;
             // 
             // guna2HtmlLabel5
             // 
@@ -195,22 +199,22 @@
             guna2HtmlLabel5.TabIndex = 5;
             guna2HtmlLabel5.Text = "Mật khẩu";
             // 
-            // txtHoVaTen
+            // txtHoTen
             // 
-            txtHoVaTen.BorderColor = Color.FromArgb(217, 221, 226);
-            txtHoVaTen.BorderRadius = 8;
-            txtHoVaTen.CustomizableEdges = customizableEdges7;
-            txtHoVaTen.DefaultText = "";
-            txtHoVaTen.Font = new Font("Segoe UI", 9F);
-            txtHoVaTen.ForeColor = Color.Black;
-            txtHoVaTen.Location = new Point(45, 54);
-            txtHoVaTen.Margin = new Padding(3, 4, 3, 4);
-            txtHoVaTen.Name = "txtHoVaTen";
-            txtHoVaTen.PlaceholderText = "";
-            txtHoVaTen.SelectedText = "";
-            txtHoVaTen.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtHoVaTen.Size = new Size(360, 40);
-            txtHoVaTen.TabIndex = 0;
+            txtHoTen.BorderColor = Color.FromArgb(217, 221, 226);
+            txtHoTen.BorderRadius = 8;
+            txtHoTen.CustomizableEdges = customizableEdges7;
+            txtHoTen.DefaultText = "";
+            txtHoTen.Font = new Font("Segoe UI", 9F);
+            txtHoTen.ForeColor = Color.Black;
+            txtHoTen.Location = new Point(45, 54);
+            txtHoTen.Margin = new Padding(3, 4, 3, 4);
+            txtHoTen.Name = "txtHoTen";
+            txtHoTen.PlaceholderText = "";
+            txtHoTen.SelectedText = "";
+            txtHoTen.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            txtHoTen.Size = new Size(360, 40);
+            txtHoTen.TabIndex = 0;
             // 
             // guna2HtmlLabel3
             // 
@@ -258,7 +262,7 @@
             BackColor = Color.FromArgb(249, 250, 251);
             ClientSize = new Size(450, 550);
             Controls.Add(lbErrorHoten);
-            Controls.Add(txtHoVaTen);
+            Controls.Add(txtHoTen);
             Controls.Add(guna2HtmlLabel3);
             Controls.Add(lbErrorEmail);
             Controls.Add(txtEmail);
@@ -290,7 +294,7 @@
         private Guna.UI2.WinForms.Guna2CustomRadioButton radioNam;
         private Guna.UI2.WinForms.Guna2TextBox txtPassword;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
-        private Guna.UI2.WinForms.Guna2TextBox txtHoVaTen;
+        private Guna.UI2.WinForms.Guna2TextBox txtHoTen;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
         private Guna.UI2.WinForms.Guna2TextBox txtEmail;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
