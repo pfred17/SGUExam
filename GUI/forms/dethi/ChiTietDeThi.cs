@@ -92,9 +92,9 @@ namespace GUI.forms.dethi
             int soLuongCauHoi = deThiBLL.GetSoLuongCauHoiTheoDe(deThi.MaDe);
             table.Controls.Add(new Label { Text = "❓ Số lượng câu hỏi", Font = new Font("Segoe UI", 11), AutoSize = true }, 0, 3);
             table.Controls.Add(new Label { Text = $"{soLuongCauHoi}", Font = new Font("Segoe UI", 11), AutoSize = true }, 1, 3);
-
-            //table.Controls.Add(new Label { Text = "📘 Môn học", Font = new Font("Segoe UI", 11), AutoSize = true }, 0, 4);
-            //table.Controls.Add(new Label { Text = deThi.TenMonHoc, Font = new Font("Segoe UI", 11), AutoSize = true }, 1, 4);
+            var tenMonHoc = deThiBLL.GetTenMonHocByMaDe(deThi.MaDe);
+            table.Controls.Add(new Label { Text = "📘 Môn học", Font = new Font("Segoe UI", 11), AutoSize = true }, 0, 4);
+            table.Controls.Add(new Label { Text = tenMonHoc, Font = new Font("Segoe UI", 11), AutoSize = true }, 1, 4);
             var btnStatus = new Button
             {
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),

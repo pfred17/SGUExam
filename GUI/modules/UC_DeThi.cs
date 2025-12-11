@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -32,29 +33,40 @@ namespace GUI.modules
         private void LoadDeThi()
         {
             flowDeThi.Controls.Clear();
-            var danhSachDeThi = deThiBLL.GetAllWithNhomHocPhan();
+            List<DeThiDTO> danhSachDeThi = deThiBLL.GetAll();
 
-            // Lấy danh sách nhóm học phần của sinh viên
-            var nhomIds = new ChiTietNhomHocPhanBLL().GetNhomHocPhanIdsByUser(_userId);
+            // Lọc các đề thi có trạng thái khác 0 (Nháp) và 4 (Khóa)
+            danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai != 0 && deThi.TrangThai != 4).ToList();
 
-            // Chỉ lấy đề thi mà sinh viên thuộc ít nhất một nhóm học phần của đề đó
-            danhSachDeThi = danhSachDeThi
-                .Where(deThi => deThi.NhomHocPhanIds != null && deThi.NhomHocPhanIds.Any(id => nhomIds.Contains(id)))
-                .ToList();
+            AutoUpdateDeThiStatus(danhSachDeThi);
 
-            // Lọc trạng thái
-            int trangThai = cbTrangThai.SelectedIndex; // 0: tất cả, 1: chưa mở, 2: chưa làm, 3: hoàn thành, 4: quá hạn
-            if (trangThai > 0)
-                danhSachDeThi = danhSachDeThi.Where(x => x.TrangThai == trangThai).ToList();
-
-            // Tìm kiếm
+            // 🔥 Lọc theo từ khóa tìm kiếm
             string keyword = txtSearch.Text.Trim().ToLower();
             if (!string.IsNullOrEmpty(keyword))
-                danhSachDeThi = danhSachDeThi.Where(x =>
-                    x.TenDe.ToLower().Contains(keyword) ||
-                    (x.TenNhomHocPhan?.ToLower().Contains(keyword) ?? false)
-                ).ToList();
+            {
+                danhSachDeThi = danhSachDeThi
+                    .Where(x => x.TenDe != null && x.TenDe.ToLower().Contains(keyword))
+                    .ToList();
+            }
 
+            // Lọc theo trạng thái
+            string selectedStatus = cbTrangThai.SelectedItem?.ToString() ?? "Tất cả";
+            DateTime now = DateTime.Now;
+
+            switch (selectedStatus)
+            {
+                case "Sẵn sàng":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 1).ToList();
+                    break;
+                case "Đang thi":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 2).ToList();
+                    break;
+                case "Đã thi":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 3).ToList();
+                    break;
+            }
+
+            // Tạo thẻ (card)
             foreach (var deThi in danhSachDeThi)
             {
                 var card = CreateDeThiCard(deThi);
@@ -62,6 +74,25 @@ namespace GUI.modules
             }
         }
 
+        private void AutoUpdateDeThiStatus(List<DeThiDTO> danhSachDeThi)
+        {
+            DateTime now = DateTime.Now;
+            foreach (var deThi in danhSachDeThi)
+            {
+                int oldStatus = deThi.TrangThai;
+                // Chỉ xử lý nếu đề thi đang ở trạng thái "Sẵn sàng" hoặc "Đang thi"
+                if (deThi.TrangThai == 1 && deThi.ThoiGianBatDau != null && now >= deThi.ThoiGianBatDau)
+                {
+                    deThi.TrangThai = 2; // Đang thi
+                    deThiBLL.UpdateDeThiStatus(deThi);
+                }
+                else if (deThi.TrangThai == 2 && deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
+                {
+                    deThi.TrangThai = 3; // Đã thi
+                    deThiBLL.UpdateDeThiStatus(deThi);
+                }
+            }
+        }
 
         private Control CreateDeThiCard(DeThiDTO deThi)
         {
@@ -85,7 +116,7 @@ namespace GUI.modules
                 Location = new Point(20, 12),
                 AutoSize = true
             };
-
+            Debug.WriteLine($"TenNhomHocPhan: {deThi.TenNhomHocPhan}");
             // Nhóm học phần
             var lblNhom = new Label
             {

@@ -255,6 +255,7 @@ namespace GUI.modules
                 SoCauKho = (int)numKho.Value,
                 NhomHocPhanIds = nhomHocPhanIds,
                 ChuongIds = chuongIds,
+                TrangThai = 0,
                 CauHinh = new DeThiCauHinhDTO
                 {
                     TuDongLay = swTuDongLay.Checked,
