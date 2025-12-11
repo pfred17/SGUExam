@@ -11,7 +11,7 @@ namespace BLL
     public class CauHoiBLL
     {
         private readonly CauHoiDAL _cauHoiDAL = new();
-        private readonly DapAnDAL _dapAnDAL = new();
+        private readonly DapAnBLL _dapAnBLL = new();
         private readonly ChuongBLL _chuongBLL = new();
         private readonly long _maND; // lưu userId
 
@@ -49,13 +49,11 @@ namespace BLL
         #region Lấy dữ liệu
         public CauHoiDTO? GetById(long maCauHoi) => _cauHoiDAL.GetById(maCauHoi);
 
-        public List<DapAnDTO> GetDapAn(long maCauHoi) => _dapAnDAL.GetByCauHoi(maCauHoi);
+        public List<DapAnDTO> GetDapAn(long maCauHoi) => _dapAnBLL.GetByCauHoi(maCauHoi);
 
-        public List<(DapAnDTO DapAn, bool DaDuocSuDung)> GetDapAnWithUsage(long maCauHoi)
-        {
-            var dapAns = _dapAnDAL.GetByCauHoi(maCauHoi);
-            return dapAns.Select(da => (da, _dapAnDAL.CheckDapAnSuDung(da.MaDapAn))).ToList();
-        }
+        public List<(DapAnDTO, bool)> GetDapAnWithUsage(long maCauHoi)
+               => _dapAnBLL.GetWithUsage(maCauHoi);
+
 
         public List<CauHoiDTO> GetAllForDisplay(
            long maMH = 0, long maChuong = 0, string doKho = "", string tuKhoa = "")
@@ -85,7 +83,7 @@ namespace BLL
             if (dapAnList?.Count > 0)
             {
                 dapAnList.ForEach(da => da.MaCauHoi = maCauHoi);
-                _dapAnDAL.ThemDapAn(dapAnList);
+                _dapAnBLL.ThemDapAn(dapAnList);
             }
             return maCauHoi;
         }
@@ -118,7 +116,7 @@ namespace BLL
                     var danhSach = nhom.OrderByDescending(x => x.MaCauHoi).ToList(); // Sắp xếp câu theo MaCauHoi giảm dần
                     return new CauHoiTrungLapDTO
                     {
-                        Key = nhom.Key.NoiDungChuanHoa,
+                        Key = nhom.Key.NoiDungChuanHoa,     
                         SoLuong = nhom.Count(),
                         DanhSach = danhSach,
                         TacGia = danhSach.First().TacGia
