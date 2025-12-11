@@ -33,8 +33,25 @@ namespace GUI.modules
         private void LoadDeThi()
         {
             flowDeThi.Controls.Clear();
-            List<DeThiDTO> danhSachDeThi = deThiBLL.GetAll();
+
+            // 1. Lấy danh sách nhóm học phần đã được phân công cho user hiện tại
+            var nhomHocPhanBLL = new NhomHocPhanBLL();
+            var dsNhomHocPhan = nhomHocPhanBLL.GetNhomHocPhanByUserId(_userId);
+            var nhomHocPhanIds = dsNhomHocPhan
+                .Select(nhp => nhp.MaNhom)
+                .Distinct()
+                .ToList();
+
+            // 2. Lấy tất cả đề thi
+            List<DeThiDTO> danhSachDeThi = deThiBLL.GetAllWithNhomHocPhan();
+
+            // 3. Chỉ giữ lại đề thi thuộc nhóm học phần đã phân công
+            danhSachDeThi = danhSachDeThi
+                .Where(deThi => deThi.NhomHocPhanIds != null && deThi.NhomHocPhanIds.Any(id => nhomHocPhanIds.Contains(id)))
+                .ToList();
+
             AutoUpdateDeThiStatus(danhSachDeThi);
+
             // 🔥 Lọc theo từ khóa tìm kiếm
             string keyword = txtSearch.Text.Trim().ToLower();
             if (!string.IsNullOrEmpty(keyword))
@@ -111,7 +128,7 @@ namespace GUI.modules
             var mainForm = this.FindForm() as MainForm;
             if (mainForm != null)
             {
-                var uc = new UC_TaoDeThi();
+                var uc = new UC_TaoDeThi(_userId);
                 var panelMain = mainForm.Controls["panelMain"];
                 if (panelMain is Panel p)
                 {
@@ -125,12 +142,25 @@ namespace GUI.modules
         {
             var btn = sender as Guna2Button;
             var deThi = btn.Tag as DeThiDTO;
+            if (deThi == null) return;
+
+            // Không cho phép chỉnh sửa nếu trạng thái là Đang thi, Đã thi, Đã khóa
+            if (deThi.TrangThai == 2 || deThi.TrangThai == 3 || deThi.TrangThai == 4)
+            {
+                MessageBox.Show(
+                    "Không thể chỉnh sửa đề thi khi đang thi, đã thi hoặc đã bị khóa.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+                return;
+            }
 
             // Tìm MainForm cha và panelMain
             var mainForm = this.FindForm() as MainForm;
             if (mainForm != null)
             {
-                var uc = new ChinhSuaDeThi(deThi.MaDe);
+                var uc = new ChinhSuaDeThi(deThi.MaDe, _userId);
                 var panelMain = mainForm.Controls["panelMain"];
                 if (panelMain is Panel p)
                 {
@@ -140,6 +170,7 @@ namespace GUI.modules
                 }
             }
         }
+
         private void BtnDelete_Click(object sender, EventArgs e)
         {
             var btn = sender as Guna2Button;
