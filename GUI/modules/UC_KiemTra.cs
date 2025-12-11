@@ -34,7 +34,7 @@ namespace GUI.modules
         {
             flowDeThi.Controls.Clear();
             List<DeThiDTO> danhSachDeThi = deThiBLL.GetAll();
-
+            AutoUpdateDeThiStatus(danhSachDeThi);
             // 🔥 Lọc theo từ khóa tìm kiếm
             string keyword = txtSearch.Text.Trim().ToLower();
             if (!string.IsNullOrEmpty(keyword))
@@ -48,28 +48,25 @@ namespace GUI.modules
             string selectedStatus = cbTrangThai.SelectedItem?.ToString() ?? "Tất cả";
             DateTime now = DateTime.Now;
 
-            if (selectedStatus == "Chưa mở")
+            switch (selectedStatus)
             {
-                danhSachDeThi = danhSachDeThi
-                    .Where(deThi =>
-                        deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau
-                    ).ToList();
+                case "Nháp":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 0).ToList();
+                    break;
+                case "Khóa":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 4).ToList();
+                    break;
+                case "Sẵn sàng":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 1).ToList();
+                    break;
+                case "Đang thi":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 2).ToList();
+                    break;
+                case "Đã thi":
+                    danhSachDeThi = danhSachDeThi.Where(deThi => deThi.TrangThai == 3).ToList();
+                    break;
             }
-            else if (selectedStatus == "Đang mở")
-            {
-                danhSachDeThi = danhSachDeThi
-                    .Where(deThi =>
-                        deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
-                        now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc
-                    ).ToList();
-            }
-            else if (selectedStatus == "Kết thúc")
-            {
-                danhSachDeThi = danhSachDeThi
-                    .Where(deThi =>
-                        deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc
-                    ).ToList();
-            }
+
 
             // Tạo thẻ (card)
             foreach (var deThi in danhSachDeThi)
@@ -175,6 +172,25 @@ namespace GUI.modules
                 MessageBox.Show($"Xóa đề thi thất bại!\nChi tiết lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void AutoUpdateDeThiStatus(List<DeThiDTO> danhSachDeThi)
+        {
+            DateTime now = DateTime.Now;
+            foreach (var deThi in danhSachDeThi)
+            {
+                int oldStatus = deThi.TrangThai;
+                // Chỉ xử lý nếu đề thi đang ở trạng thái "Sẵn sàng" hoặc "Đang thi"
+                if (deThi.TrangThai == 1 && deThi.ThoiGianBatDau != null && now >= deThi.ThoiGianBatDau)
+                {
+                    deThi.TrangThai = 2; // Đang thi
+                    deThiBLL.UpdateDeThiStatus(deThi);
+                }
+                else if (deThi.TrangThai == 2 && deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
+                {
+                    deThi.TrangThai = 3; // Đã thi
+                    deThiBLL.UpdateDeThiStatus(deThi);
+                }
+            }
+        }
 
 
 
@@ -237,41 +253,128 @@ namespace GUI.modules
             string statusText;
             Color statusColor;
             DateTime now = DateTime.Now;
-
-            if (deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau)
-            {
-                statusText = "Chưa mở";
-                statusColor = Color.LightGray;
-            }
-            else if (deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
-                     now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc)
-            {
-                statusText = "Đang thi";
-                statusColor = Color.LightBlue;
-            }
-            else if (deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
-            {
-                statusText = "Kết thúc";
-                statusColor = Color.FromArgb(120, 144, 156);
-            }
-            else
-            {
-                statusText = "Không xác định";
-                statusColor = Color.Gray;
-            }
-
             var btnStatus = new Guna2Button
             {
-                Text = statusText,
-                FillColor = statusColor,
-                ForeColor = Color.White,
                 BorderRadius = 10,
                 Width = 100,
                 Height = 36,
                 TextAlign = HorizontalAlignment.Center,
-                Margin = new Padding(4, 0, 4, 0)
+                Margin = new Padding(4, 0, 4, 0),
+                ForeColor = Color.White
             };
-
+            switch (deThi.TrangThai)
+            {
+                case 0: // Nháp
+                    statusText = "Nháp";
+                    statusColor = Color.DarkGray;
+                    // Thêm sự kiện click xác nhận chuyển trạng thái
+                    btnStatus.Cursor = Cursors.Hand;
+                    btnStatus.Click += (s, e) =>
+                    {
+                        var confirm = MessageBox.Show(
+                            "Bạn có chắc chắn muốn chuyển trạng thái đề thi này sang 'Sẵn sàng' để mở cho sinh viên?",
+                            "Xác nhận chuyển trạng thái",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question);
+                        if (confirm == DialogResult.Yes)
+                        {
+                            // Cập nhật trạng thái sang 1 (Sẵn sàng)
+                            deThi.TrangThai = 1;
+                            deThiBLL.UpdateDeThiStatus(deThi);
+                            // Reload lại danh sách đề thi
+                            LoadDeThi();
+                        }
+                    };
+                    break;
+                case 4: // Khóa
+                    statusText = "Đã khóa";
+                    statusColor = Color.FromArgb(120, 120, 120);
+                    // Thêm sự kiện click xác nhận mở khóa lại
+                    btnStatus.Cursor = Cursors.Hand;
+                    btnStatus.Click += (s, e) =>
+                    {
+                        var confirm = MessageBox.Show(
+                            "Bạn có chắc chắn muốn MỞ KHÓA đề thi này để cho phép sinh viên vào thi?",
+                            "Xác nhận mở khóa đề thi",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question);
+                        if (confirm == DialogResult.Yes)
+                        {
+                            deThi.TrangThai = 1; // Sẵn sàng
+                            deThiBLL.UpdateDeThiStatus(deThi);
+                            LoadDeThi();
+                        }
+                    };
+                    break;
+                case 2: // Đang thi (luôn hiển thị Đang thi)
+                    statusText = "Đang thi";
+                    statusColor = Color.LightBlue;
+                    break;
+                case 3: // Đã thi (luôn hiển thị Đã kết thúc)
+                    statusText = "Đã kết thúc";
+                    statusColor = Color.FromArgb(120, 144, 156);
+                    break;
+                case 1: // Sẵn sàng, xét theo thời gian
+                    if (deThi.ThoiGianBatDau != null && now < deThi.ThoiGianBatDau)
+                    {
+                        statusText = "Chưa mở";
+                        statusColor = Color.LightGray;
+                        // Thêm sự kiện click xác nhận khóa đề
+                        btnStatus.Cursor = Cursors.Hand;
+                        btnStatus.Click += (s, e) =>
+                        {
+                            var confirm = MessageBox.Show(
+                                "Bạn có chắc chắn muốn KHÓA đề thi này? Sau khi khóa, sinh viên sẽ không thể vào thi cho đến khi mở lại.",
+                                "Xác nhận khóa đề thi",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question);
+                            if (confirm == DialogResult.Yes)
+                            {
+                                deThi.TrangThai = 4; // Khóa
+                                deThiBLL.UpdateDeThiStatus(deThi);
+                                LoadDeThi();
+                            }
+                        };
+                    }
+                    else if (deThi.ThoiGianBatDau != null && deThi.ThoiGianKetThuc != null &&
+                             now >= deThi.ThoiGianBatDau && now <= deThi.ThoiGianKetThuc)
+                    {
+                        statusText = "Đang thi";
+                        statusColor = Color.LightBlue;
+                    }
+                    else if (deThi.ThoiGianKetThuc != null && now > deThi.ThoiGianKetThuc)
+                    {
+                        statusText = "Kết thúc";
+                        statusColor = Color.FromArgb(120, 144, 156);
+                        btnStatus.Cursor = Cursors.Hand;
+                        btnStatus.Click += (s, e) =>
+                        {
+                            var confirm = MessageBox.Show(
+                                "Bạn có chắc chắn muốn KHÓA đề thi này. Sau khi khóa không thể chỉnh sửa?",
+                                "Xác nhận mở khóa đề thi",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question);
+                            if (confirm == DialogResult.Yes)
+                            {
+                                deThi.TrangThai = 4;
+                                deThiBLL.UpdateDeThiStatus(deThi);
+                                LoadDeThi();
+                            }
+                        };
+                    }
+                    else
+                    {
+                        statusText = "Không xác định";
+                        statusColor = Color.Gray;
+                    }
+                    break;
+                default:
+                    statusText = "Không xác định";
+                    statusColor = Color.Gray;
+                    break;
+            }
+            btnStatus.Text = statusText;
+            btnStatus.FillColor = statusColor;
             // ===== NÚT XEM =====
             var btnView = new Guna2Button
             {
@@ -304,28 +407,54 @@ namespace GUI.modules
             btnEdit.Visible = _permissionBLL.HasPermission(_userId, 5, "Sửa");
             btnEdit.Click += BtnEdit_Click;
 
-
-            // ===== NÚT XOÁ =====
-            var btnDelete = new Guna2Button
+            // ===== NÚT KHÓA/MỞ KHÓA hoặc XOÁ =====
+            // ===== NÚT KHÓA/MỞ KHÓA =====
+            var btnAction = new Guna2Button
             {
-                Text = "✖",
+                Text = (deThi.TrangThai == 4) ? "🔓" : "🔒",
                 BorderRadius = 10,
-                Width = 50,
+                Width = 60,
                 Height = 36,
-                FillColor = Color.FromArgb(255, 235, 238),
-                ForeColor = Color.FromArgb(198, 40, 40),
+                FillColor = (deThi.TrangThai == 4) ? Color.FromArgb(232, 245, 233) : Color.FromArgb(255, 235, 238),
+                ForeColor = (deThi.TrangThai == 4) ? Color.FromArgb(46, 125, 50) : Color.FromArgb(198, 40, 40),
                 TextAlign = HorizontalAlignment.Center,
                 Margin = new Padding(4, 0, 4, 0),
                 Tag = deThi
             };
-            btnDelete.Visible = _permissionBLL.HasPermission(_userId, 5, "Xóa");
-            btnDelete.Click += BtnDelete_Click;
+            btnAction.Visible = _permissionBLL.HasPermission(_userId, 5, "Sửa");
+            btnAction.Click += (s, e) =>
+            {
+                // Chỉ cho phép khóa/mở khóa ở trạng thái 0, 1, 3, 4
+                if (deThi.TrangThai == 0 || deThi.TrangThai == 1 || deThi.TrangThai == 3 || deThi.TrangThai == 4)
+                {
+                    var isUnlock = deThi.TrangThai == 4;
+                    var confirm = MessageBox.Show(
+                        isUnlock
+                            ? "Bạn có chắc chắn muốn MỞ KHÓA đề thi này để cho phép sinh viên vào thi?"
+                            : "Bạn có chắc chắn muốn KHÓA đề thi này? Sau khi khóa, sinh viên sẽ không thể vào thi cho đến khi mở lại.",
+                        isUnlock ? "Xác nhận mở khóa đề thi" : "Xác nhận khóa đề thi",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (confirm == DialogResult.Yes)
+                    {
+                        deThi.TrangThai = isUnlock ? 1 : 4;
+                        deThiBLL.UpdateDeThiStatus(deThi);
+                        LoadDeThi();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Đề thi đang ở trạng thái không thể khóa/mở khóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
 
             // Add nút vào panel
             buttonPanel.Controls.Add(btnStatus);
             buttonPanel.Controls.Add(btnView);
             buttonPanel.Controls.Add(btnEdit);
-            buttonPanel.Controls.Add(btnDelete);
+            buttonPanel.Controls.Add(btnAction);
+
 
             // Add tất cả control
             card.Controls.Add(lblTitle);

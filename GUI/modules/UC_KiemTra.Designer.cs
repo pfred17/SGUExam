@@ -122,11 +122,19 @@ namespace GUI.modules
             cbTrangThai.Font = new Font("Segoe UI", 10F);
             cbTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cbTrangThai.ItemHeight = 30;
-            cbTrangThai.Items.AddRange(new object[] { "Tất cả", "Kết thúc", "Đang mở", "Chưa mở" });
+            cbTrangThai.Items.AddRange(new object[] {
+                    "Tất cả",
+                    "Nháp",
+                    "Khóa",
+                    "Sẵn sàng",
+                    "Đang thi",
+                    "Đã thi"
+                });
             cbTrangThai.Location = new Point(486, 18);
+
             cbTrangThai.Name = "cbTrangThai";
             cbTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            cbTrangThai.Size = new Size(150, 36);
+            cbTrangThai.Size = new Size(200, 36);
             cbTrangThai.TabIndex = 2;
             cbTrangThai.SelectedIndexChanged += CbTrangThai_SelectedIndexChanged;
             // 
