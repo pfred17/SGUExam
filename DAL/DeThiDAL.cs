@@ -743,10 +743,14 @@ namespace DAL
         {
             string query = @"
         SELECT DISTINCT dt.*
-        FROM de_thi dt
-        JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
-        JOIN chi_tiet_nhom_hoc_phan ctnhp ON dtn.ma_nhom = ctnhp.ma_nhom
-        WHERE ctnhp.ma_nd = @UserId";
+        FROM phan_cong pc
+        JOIN nhom_hoc_phan nhp 
+            ON pc.ma_pc = nhp.ma_pc
+        JOIN de_thi_nhom dtn 
+            ON nhp.ma_nhom = dtn.ma_nhom
+        JOIN de_thi dt
+            ON dtn.ma_de = dt.ma_de
+        WHERE pc.ma_nd =   @UserId";
             var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@UserId", userId));
             var list = new List<DeThiDTO>();
             foreach (DataRow row in dt.Rows)
