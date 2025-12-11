@@ -39,7 +39,7 @@ namespace GUI.modules
         private void loadPermission()
         {
             btnThem.Visible = _permissionBLL.HasPermission(_userId, 4, "Thêm");
-            //dgvPhanCong.Columns["DetailCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Xem");
+            dgvPhanCong.Columns["DetailCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Xem");
             dgvPhanCong.Columns["EditCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Sửa");
             dgvPhanCong.Columns["DeleteCol"].Visible = _permissionBLL.HasPermission(_userId, 4, "Xóa");
         }
@@ -131,10 +131,11 @@ namespace GUI.modules
                 row.Height = 50;
 
                 row.Cells["MaPhanCong"].Value = "";
-                row.Cells["MaMon"].Value = "";
+                //row.Cells["MaMon"].Value = "";
                 row.Cells["MaGiangVien"].Value = "";
                 row.Cells["TenGiangVien"].Value = "";
                 row.Cells["TrangThai"].Value = "";
+                row.Cells["DetailCol"].Value = null;
                 row.Cells["EditCol"].Value = null;
                 row.Cells["DeleteCol"].Value = null;
             }
@@ -147,11 +148,12 @@ namespace GUI.modules
                 row.Tag = pc;
 
                 row.Cells["MaPhanCong"].Value = pc.MaPhanCong;
-                row.Cells["MaMon"].Value = pc.MaMonHoc;
+                //row.Cells["MaMon"].Value = pc.MaMonHoc;
                 row.Cells["MonHoc"].Value = pc.TenMonHoc;
                 row.Cells["MaGiangVien"].Value = pc.MaNguoiDung;
                 row.Cells["TenGiangVien"].Value = pc.TenNguoiDung;
                 row.Cells["TrangThai"].Value = pc.TrangThai == 1 ? "Hoạt động" : "Đang khóa";
+                row.Cells["DetailCol"].Value = Properties.Resources.icon_detail;
                 row.Cells["EditCol"].Value = Properties.Resources.icon_edit;
                 row.Cells["DeleteCol"].Value = Properties.Resources.icon_delete;
             }
@@ -194,7 +196,7 @@ namespace GUI.modules
             // Lấy tên cột được click
             string col = dgvPhanCong.Columns[e.ColumnIndex].Name;
 
-            if (col == "EditCol" || col == "DeleteCol")
+            if (col == "DetailCol" || col == "EditCol" || col == "DeleteCol")
             {
                 string? maGiangVien = dgvPhanCong.Rows[e.RowIndex].Cells["MaGiangVien"].Value?.ToString();
 
@@ -209,6 +211,12 @@ namespace GUI.modules
                 if (currentRow.Tag is PhanCongDTO dataItem)
                 {
                     long maPC = dataItem.MaPhanCong;
+
+                    if (col == "DetailCol")
+                    {
+                        ChiTietPhanCong frm = new ChiTietPhanCong(maPC);
+                        frm.ShowDialog();
+                    }
 
                     if (col == "EditCol")
                     {
@@ -238,7 +246,8 @@ namespace GUI.modules
         private void dgvPhanCong_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
 
-            if (dgvPhanCong.Columns[e.ColumnIndex].Name == "EditCol" ||
+            if (dgvPhanCong.Columns[e.ColumnIndex].Name == "DetailCol" ||
+                dgvPhanCong.Columns[e.ColumnIndex].Name == "EditCol" ||
                 dgvPhanCong.Columns[e.ColumnIndex].Name == "DeleteCol")
             {
                 string? maGiangVien = dgvPhanCong.Rows[e.RowIndex].Cells["MaGiangVien"].Value?.ToString();
@@ -282,7 +291,7 @@ namespace GUI.modules
             {
                 string columnName = dgvPhanCong.Columns[e.ColumnIndex].Name;
 
-                if (columnName == "EditCol" || columnName == "DeleteCol")
+                if (columnName == "DetailCol" || columnName == "EditCol" || columnName == "DeleteCol")
                 {
                     string? maGiangVien = dgvPhanCong.Rows[e.RowIndex].Cells["MaGiangVien"].Value?.ToString();
 
@@ -296,11 +305,6 @@ namespace GUI.modules
                     dgvPhanCong.Cursor = Cursors.Default;
                 }
             }
-        }
-
-        private void lblPage_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
