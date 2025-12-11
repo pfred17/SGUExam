@@ -134,7 +134,7 @@ namespace GUI.forms.hocphan
                 return;
             }
 
-            var uc = new GUI.modules.ChinhSuaDeThi(maDe);
+            var uc = new GUI.modules.ChinhSuaDeThi(maDe, "0000000000");
             uc.Dock = DockStyle.Fill;
 
             var panelMain = mainForm.Controls["panelMain"];
@@ -199,34 +199,6 @@ namespace GUI.forms.hocphan
         }
         private void btnTaoDe_Click(object sender, EventArgs e)
         {
-            //// ✅ Kiểm tra đã có nhóm hay chưa
-            //if (_maNhom <= 0)
-            //{
-            //    MessageBox.Show("Chưa chọn nhóm học phần!", "Thông báo",
-            //        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
-
-            //// ✅ Tìm MainForm cha
-            //var mainForm = this.FindForm() as MainForm;
-            //if (mainForm == null)
-            //{
-            //    MessageBox.Show("Không tìm thấy MainForm!");
-            //    return;
-            //}
-
-            //// ✅ Tạo UC_TaoDeThi và truyền mã nhóm vào
-            //var ucTaoDe = new UC_TaoDeThi(-_maNhom);
-
-            //// ✅ Lấy panelMain trong MainForm
-            //var panelMain = mainForm.Controls["panelMain"];
-            //if (panelMain is Panel p)
-            //{
-            //    p.Controls.Clear();
-            //    ucTaoDe.Dock = DockStyle.Fill;
-            //    p.Controls.Add(ucTaoDe);
-            //}
-
             if (_maNhom <= 0)
             {
                 MessageBox.Show("Chưa chọn nhóm học phần!", "Thông báo",
@@ -241,8 +213,8 @@ namespace GUI.forms.hocphan
                 return;
             }
 
-            // ✅ Truyền MÃ NHÓM sang UC_TaoDeThi
-            var ucTaoDe = new UC_TaoDeThi(_maNhom);
+            // ✅ Convert _maNhom (long) to string before passing to UC_TaoDeThi
+            var ucTaoDe = new UC_TaoDeThi(_maNhom.ToString());
             ucTaoDe.Dock = DockStyle.Fill;
 
             var panelMain = mainForm.Controls["panelMain"];

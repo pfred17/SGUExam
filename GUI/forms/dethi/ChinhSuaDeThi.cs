@@ -15,29 +15,51 @@ namespace GUI.modules
         private readonly MonHocBLL monHocBLL = new MonHocBLL();
         private readonly NhomHocPhanBLL nhomHocPhanBLL = new NhomHocPhanBLL();
         private readonly ChuongBLL chuongBLL = new ChuongBLL();
-        private readonly long _maDe; 
-
-        public ChinhSuaDeThi(long maDe)
+        private readonly long _maDe;
+        private readonly string _userId;
+        public ChinhSuaDeThi(long maDe, string userId)
         {
             _maDe = maDe;
+            _userId = userId;
             InitializeComponent();
             LoadData();
             btnTaoDe.Click += BtnTaoDe_Click;
         }
 
+
         private void LoadData()
         {
             // 1. Lấy dữ liệu đề thi từ maDe
             var deThi = deThiBLL.GetFullDetailById(_maDe);
-            Debug.WriteLine($"deThi: {System.Text.Json.JsonSerializer.Serialize(deThi)}"); Debug.WriteLine($"deThi: {System.Text.Json.JsonSerializer.Serialize(deThi)}");
             if (deThi == null)
             {
                 MessageBox.Show("Không tìm thấy đề thi!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // 2. Load tất cả môn học
-            var monList = monHocBLL.GetAllMonHocByStatus(1);
+            // 2. Enable/Disable controls theo trạng thái đề thi
+            bool allowEdit = deThi.TrangThai == 0;
+            txtTenDe.Enabled = allowEdit;
+            dtpTu.Enabled = allowEdit;
+            dtpDen.Enabled = allowEdit;
+            numThoiGianLamBai.Enabled = allowEdit;
+            numCanhBao.Enabled = allowEdit;
+            numDe.Enabled = allowEdit;
+            numTrungBinh.Enabled = allowEdit;
+            numKho.Enabled = allowEdit;
+            cbMonHoc.Enabled = allowEdit;
+            clbNhomHocPhan.Enabled = allowEdit;
+            clbChuong.Enabled = allowEdit;
+            swTuDongLay.Enabled = allowEdit;
+            swXemDiem.Enabled = allowEdit;
+            swXemDapAn.Enabled = allowEdit;
+            swXemBaiLam.Enabled = allowEdit;
+            swDaoCauHoi.Enabled = allowEdit;
+            swDaoDapAn.Enabled = allowEdit;
+            swTuDongNop.Enabled = allowEdit;
+
+            // 3. Chỉ load môn học được phân công cho user
+            var monList = monHocBLL.GetMonHocTheoPhanCong(Convert.ToInt64(_userId));
             cbMonHoc.DataSource = monList;
             cbMonHoc.DisplayMember = "TenMonHoc";
             cbMonHoc.ValueMember = "MaMonHoc";
@@ -46,7 +68,7 @@ namespace GUI.modules
             cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
             cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
 
-            // 3. Chọn môn học dựa vào nhóm học phần đầu tiên
+            // 4. Chọn môn học dựa vào nhóm học phần đầu tiên
             if (deThi.NhomHocPhanIds != null && deThi.NhomHocPhanIds.Count > 0)
             {
                 var nhom = nhomHocPhanBLL.GetById(deThi.NhomHocPhanIds[0]);
@@ -60,13 +82,14 @@ namespace GUI.modules
                 cbMonHoc.SelectedIndex = -1;
             }
 
-            // 4. Load nhóm học phần và chương theo môn học đã chọn
+            // 5. Load nhóm học phần và chương theo môn học đã chọn
             if (cbMonHoc.SelectedItem is MonHocDTO selectedMonHoc)
             {
-                // Nhóm học phần
-                var nhomList = nhomHocPhanBLL.GetByMonHoc(selectedMonHoc.MaMonHoc)
-                    .Where(x => x.TrangThai == 1)
+                // Chỉ load nhóm học phần mà user được phân công
+                var nhomList = nhomHocPhanBLL.GetNhomByGiangVien(_userId)
+                    .Where(x => x.MaMonHoc == selectedMonHoc.MaMonHoc.ToString() && x.TrangThai == 1)
                     .ToList();
+
                 clbNhomHocPhan.Items.Clear();
                 foreach (var nhom in nhomList)
                 {
@@ -89,7 +112,7 @@ namespace GUI.modules
                 clbChuong.Items.Clear();
             }
 
-            // 5. Các trường thông tin đề thi
+            // 6. Bind các trường thông tin đề thi
             txtTenDe.Text = deThi.TenDe ?? "";
             dtpTu.Value = deThi.ThoiGianBatDau ?? DateTime.Now;
             dtpDen.Value = deThi.ThoiGianKetThuc ?? DateTime.Now.AddHours(1);
