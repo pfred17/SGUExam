@@ -1,11 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Font = System.Drawing.Font;
+using iTextFont = iTextSharp.text.Font;
+
 using BLL;
-using DTO;
 
 namespace GUI.modules
 {
@@ -210,7 +211,89 @@ namespace GUI.modules
             MessageBox.Show($"Xuất thành công.\nFile đã lưu: {path}\nĐường dẫn đã được copy vào clipboard.", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void btnExportPDF_Click(object sender, EventArgs e)
+        {
+            var bangDiem = _deThiBLL.GetAllBangDiemByDeThi(_maDe);
+            if (bangDiem == null || bangDiem.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
+            using var sfd = new SaveFileDialog
+            {
+                Filter = "PDF File (*.pdf)|*.pdf",
+                FileName = $"BangDiem_{_maDe}_{DateTime.Now:yyyyMMdd}.pdf",
+                Title = "Lưu file PDF",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            string path = sfd.FileName;
+
+            try
+            {
+                var pdfDoc = new Document(PageSize.A4, 10f, 10f, 20f, 20f);
+                PdfWriter.GetInstance(pdfDoc, new FileStream(path, FileMode.Create));
+                pdfDoc.Open();
+
+                string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "times.ttf");
+                BaseFont bf = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+                var fontTitle = new iTextSharp.text.Font(bf, 16, iTextSharp.text.Font.BOLD);
+                var fontHeader = new iTextSharp.text.Font(bf, 10, iTextSharp.text.Font.BOLD);
+                var fontData = new iTextSharp.text.Font(bf, 10, iTextSharp.text.Font.NORMAL);
+
+                var title = new Paragraph("BẢNG ĐIỂM CHI TIẾT", fontTitle);
+                title.Alignment = Element.ALIGN_CENTER;
+                title.SpacingAfter = 20;
+                pdfDoc.Add(title);
+
+                var table = new PdfPTable(8);
+                table.WidthPercentage = 100;
+                table.SetWidths(new float[] { 7f, 15f, 25f, 8f, 15f, 15f, 10f, 12f });
+
+                string[] headers = { "STT", "MSSV", "Họ tên", "Điểm", "Vào thi", "Nộp bài", "TG Thi", "Trạng thái" };
+                foreach (var header in headers)
+                {
+                    var cell = new PdfPCell(new Phrase(header, fontHeader));
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                    cell.Padding = 5;
+                    cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    table.AddCell(cell);
+                }
+
+                int stt = 1;
+                foreach (var item in bangDiem)
+                {
+                    table.AddCell(new PdfPCell(new Phrase(stt++.ToString(), fontData)) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.MSSV ?? "", fontData)) { Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.HoTen ?? "", fontData)) { Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.Diem.HasValue ? item.Diem.Value.ToString() : "", fontData)) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.ThoiGianVaoThi.HasValue ? item.ThoiGianVaoThi.Value.ToString("dd/MM/yyyy HH:mm") : "", fontData)) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.ThoiGianNopBai.HasValue ? item.ThoiGianNopBai.Value.ToString("dd/MM/yyyy HH:mm") : "", fontData)) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.ThoiGianThi.HasValue ? item.ThoiGianThi.Value.ToString() : "", fontData)) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 });
+                    table.AddCell(new PdfPCell(new Phrase(item.ThoiGianNopBai.HasValue ? "Đã nộp" : "Chưa nộp", fontData)) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5 });
+                }
+
+                pdfDoc.Add(table);
+                pdfDoc.Close();
+
+                try
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{path}\"");
+                    Clipboard.SetText(path);
+                }
+                catch { }
+
+                MessageBox.Show($"Xuất thành công.\nFile đã lưu: {path}", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Có lỗi xảy ra: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void tableBangDiem_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             // Ignore header or invalid row
