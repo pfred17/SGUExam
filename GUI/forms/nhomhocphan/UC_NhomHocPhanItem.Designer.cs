@@ -57,16 +57,18 @@
             pnlMain.FillColor = Color.White;
             pnlMain.Location = new Point(0, 0);
             pnlMain.Name = "pnlMain";
-            pnlMain.Radius = 12;
+            pnlMain.Radius = 6;
             pnlMain.ShadowColor = Color.Black;
             pnlMain.ShadowDepth = 20;
             pnlMain.ShadowShift = 4;
-            pnlMain.Size = new Size(260, 160);
+            pnlMain.Size = new Size(329, 240);
             pnlMain.TabIndex = 0;
             // 
             // btnSetting
             // 
-            btnSetting.BorderRadius = 15;
+            btnSetting.BorderColor = Color.FromArgb(6, 101, 208);
+            btnSetting.BorderRadius = 4;
+            btnSetting.BorderThickness = 1;
             btnSetting.Cursor = Cursors.Hand;
             btnSetting.CustomizableEdges = customizableEdges1;
             btnSetting.DisabledState.BorderColor = Color.DarkGray;
@@ -76,13 +78,12 @@
             btnSetting.FillColor = Color.Transparent;
             btnSetting.Font = new Font("Segoe UI", 9F);
             btnSetting.ForeColor = Color.White;
-            btnSetting.HoverState.FillColor = Color.FromArgb(255, 230, 230);
-            btnSetting.Image = Properties.Resources.settings;
-            btnSetting.ImageSize = new Size(18, 18);
-            btnSetting.Location = new Point(220, 10);
+            btnSetting.HoverState.FillColor = Color.Transparent;
+            btnSetting.Image = Properties.Resources.icon_logout;
+            btnSetting.Location = new Point(279, 26);
             btnSetting.Name = "btnSetting";
             btnSetting.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnSetting.Size = new Size(30, 30);
+            btnSetting.Size = new Size(35, 35);
             btnSetting.TabIndex = 6;
             btnSetting.Click += btnSetting_Click;
             // 
@@ -91,32 +92,35 @@
             colorStrip.BorderRadius = 2;
             colorStrip.CustomizableEdges = customizableEdges3;
             colorStrip.FillColor = Color.FromArgb(94, 148, 255);
-            colorStrip.Location = new Point(18, 22);
+            colorStrip.Location = new Point(18, 26);
             colorStrip.Name = "colorStrip";
             colorStrip.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            colorStrip.Size = new Size(5, 45);
+            colorStrip.Size = new Size(5, 35);
             colorStrip.TabIndex = 5;
             // 
             // btnDetails
             // 
-            btnDetails.BorderRadius = 8;
+            btnDetails.BackColor = Color.Transparent;
+            btnDetails.BorderColor = Color.FromArgb(6, 101, 208);
+            btnDetails.BorderRadius = 4;
+            btnDetails.BorderThickness = 1;
             btnDetails.Cursor = Cursors.Hand;
             btnDetails.CustomizableEdges = customizableEdges5;
             btnDetails.DisabledState.BorderColor = Color.DarkGray;
             btnDetails.DisabledState.CustomBorderColor = Color.DarkGray;
             btnDetails.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnDetails.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnDetails.FillColor = Color.FromArgb(240, 245, 255);
+            btnDetails.FillColor = Color.FromArgb(6, 101, 208);
             btnDetails.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnDetails.ForeColor = Color.FromArgb(94, 148, 255);
+            btnDetails.ForeColor = Color.White;
             btnDetails.HoverState.FillColor = Color.FromArgb(94, 148, 255);
             btnDetails.HoverState.ForeColor = Color.White;
-            btnDetails.Location = new Point(145, 115);
+            btnDetails.Location = new Point(18, 180);
             btnDetails.Name = "btnDetails";
             btnDetails.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnDetails.Size = new Size(100, 35);
+            btnDetails.Size = new Size(296, 35);
             btnDetails.TabIndex = 4;
-            btnDetails.Text = "Chi tiết";
+            btnDetails.Text = "CHI TIẾT";
             btnDetails.Click += btnDetails_Click;
             // 
             // lblTenNhom
@@ -124,7 +128,7 @@
             lblTenNhom.AutoSize = true;
             lblTenNhom.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             lblTenNhom.ForeColor = Color.FromArgb(100, 100, 120);
-            lblTenNhom.Location = new Point(28, 95);
+            lblTenNhom.Location = new Point(18, 115);
             lblTenNhom.Name = "lblTenNhom";
             lblTenNhom.Size = new Size(90, 20);
             lblTenNhom.TabIndex = 3;
@@ -135,7 +139,7 @@
             lblThoiGian.AutoSize = true;
             lblThoiGian.Font = new Font("Segoe UI", 8.5F);
             lblThoiGian.ForeColor = Color.Gray;
-            lblThoiGian.Location = new Point(28, 75);
+            lblThoiGian.Location = new Point(18, 83);
             lblThoiGian.Name = "lblThoiGian";
             lblThoiGian.Size = new Size(121, 20);
             lblThoiGian.TabIndex = 2;
@@ -148,7 +152,7 @@
             lblTenMonHoc.ForeColor = Color.FromArgb(30, 30, 45);
             lblTenMonHoc.Location = new Point(28, 20);
             lblTenMonHoc.Name = "lblTenMonHoc";
-            lblTenMonHoc.Size = new Size(185, 50);
+            lblTenMonHoc.Size = new Size(236, 47);
             lblTenMonHoc.TabIndex = 1;
             lblTenMonHoc.Text = "Lập trình trên Windows";
             lblTenMonHoc.TextAlign = ContentAlignment.MiddleLeft;
@@ -174,7 +178,7 @@
             Controls.Add(pnlMain);
             Margin = new Padding(10);
             Name = "UC_NhomHocPhanItem";
-            Size = new Size(260, 160);
+            Size = new Size(329, 240);
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();
             contextMenuStripThoat.ResumeLayout(false);

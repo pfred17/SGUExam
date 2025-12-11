@@ -41,6 +41,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             tableNguoiDung = new Guna.UI2.WinForms.Guna2DataGridView();
             MaNguoiDung = new DataGridViewTextBoxColumn();
             HoVaTen = new DataGridViewTextBoxColumn();
@@ -55,6 +57,7 @@
             btnPrev = new Guna.UI2.WinForms.Guna2Button();
             lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
             btnNext = new Guna.UI2.WinForms.Guna2Button();
+            btnXuat = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)tableNguoiDung).BeginInit();
             SuspendLayout();
             // 
@@ -189,7 +192,7 @@
             cbbFilter.Location = new Point(43, 37);
             cbbFilter.Name = "cbbFilter";
             cbbFilter.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            cbbFilter.Size = new Size(130, 36);
+            cbbFilter.Size = new Size(156, 36);
             cbbFilter.StartIndex = 0;
             cbbFilter.TabIndex = 1;
             cbbFilter.SelectedValueChanged += cbbFilter_ValueChanged;
@@ -206,13 +209,13 @@
             txtSearch.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSearch.Font = new Font("Segoe UI", 9F);
             txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(203, 37);
+            txtSearch.Location = new Point(205, 37);
             txtSearch.Margin = new Padding(3, 5, 3, 5);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "";
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtSearch.Size = new Size(373, 36);
+            txtSearch.Size = new Size(296, 36);
             txtSearch.TabIndex = 2;
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Enter += txtSearch_Enter;
@@ -230,10 +233,10 @@
             guna2Button1.FillColor = Color.FromArgb(6, 101, 208);
             guna2Button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             guna2Button1.ForeColor = Color.White;
-            guna2Button1.Location = new Point(859, 37);
+            guna2Button1.Location = new Point(908, 37);
             guna2Button1.Name = "guna2Button1";
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            guna2Button1.Size = new Size(225, 36);
+            guna2Button1.Size = new Size(176, 36);
             guna2Button1.TabIndex = 3;
             guna2Button1.Text = "THÊM NGƯỜI DÙNG";
             guna2Button1.Click += guna2Button1_Click;
@@ -285,10 +288,39 @@
             btnNext.Text = ">";
             btnNext.Click += btnNext_Click;
             // 
+            // btnXuat
+            // 
+            btnXuat.BorderColor = Color.FromArgb(6, 101, 208);
+            btnXuat.BorderRadius = 2;
+            btnXuat.BorderThickness = 1;
+            btnXuat.Cursor = Cursors.Hand;
+            btnXuat.CustomizableEdges = customizableEdges11;
+            btnXuat.DisabledState.BorderColor = Color.DarkGray;
+            btnXuat.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnXuat.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnXuat.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnXuat.FillColor = Color.Transparent;
+            btnXuat.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnXuat.ForeColor = Color.FromArgb(6, 101, 208);
+            btnXuat.HoverState.FillColor = Color.FromArgb(116, 185, 255);
+            btnXuat.HoverState.ForeColor = Color.White;
+            btnXuat.Image = Properties.Resources.import_icon;
+            btnXuat.ImageAlign = HorizontalAlignment.Left;
+            btnXuat.ImageSize = new Size(22, 22);
+            btnXuat.Location = new Point(807, 37);
+            btnXuat.Name = "btnXuat";
+            btnXuat.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnXuat.Size = new Size(95, 36);
+            btnXuat.TabIndex = 9;
+            btnXuat.Text = "XUẤT";
+            btnXuat.TextAlign = HorizontalAlignment.Right;
+            btnXuat.Click += btnXuat_Click;
+            // 
             // UC_NguoiDung
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnXuat);
             Controls.Add(btnPrev);
             Controls.Add(lblPage);
             Controls.Add(btnNext);
@@ -319,5 +351,6 @@
         private Guna.UI2.WinForms.Guna2Button btnPrev;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblPage;
         private Guna.UI2.WinForms.Guna2Button btnNext;
+        private Guna.UI2.WinForms.Guna2Button btnXuat;
     }
 }

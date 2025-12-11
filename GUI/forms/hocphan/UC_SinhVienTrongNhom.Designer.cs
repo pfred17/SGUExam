@@ -144,13 +144,13 @@
             tbTimKiem.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             tbTimKiem.Font = new Font("Segoe UI", 9F);
             tbTimKiem.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            tbTimKiem.Location = new Point(99, 18);
+            tbTimKiem.Location = new Point(108, 18);
             tbTimKiem.Margin = new Padding(3, 4, 3, 4);
             tbTimKiem.Name = "tbTimKiem";
             tbTimKiem.PlaceholderText = "";
             tbTimKiem.SelectedText = "";
             tbTimKiem.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            tbTimKiem.Size = new Size(221, 36);
+            tbTimKiem.Size = new Size(259, 36);
             tbTimKiem.TabIndex = 3;
             // 
             // guna2CustomGradientPanel1
@@ -343,10 +343,10 @@
             label1.Location = new Point(12, 18);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(82, 36);
+            label1.Size = new Size(91, 36);
             label1.TabIndex = 7;
             label1.Text = "Tìm kiếm";
-            label1.TextAlign = ContentAlignment.MiddleRight;
+            label1.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // guna2Button2
             // 
