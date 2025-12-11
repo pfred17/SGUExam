@@ -7,30 +7,69 @@ namespace BLL
     public class UserBLL
     {
         private UserDAL dal = new UserDAL();
-
-
+        private static Random _random = new Random();
         private EmailService emailService = new EmailService();
-        private Dictionary<string, string> codeStorage = new Dictionary<string, string>();
+        Dictionary<string, VerificationSession> codeStorage = new Dictionary<string, VerificationSession>();
 
         public bool SendVerificationCode(string email)
         {
            
-            string code = new Random().Next(100000, 999999).ToString();
-            emailService.SendVerificationCode(email, code);
+            string code = _random.Next(100000, 999999).ToString();
 
-            if (codeStorage.ContainsKey(email)) codeStorage[email] = code;
-            else codeStorage.Add(email, code);
+            var session = new VerificationSession
+            {
+                Code = code,
+                // 1 phút hết hạn
+                ExpiryTime = DateTime.Now.AddMinutes(1) 
+            };
+
+            emailService.SendVerificationCode(email, code);
+            codeStorage[email] = session;
+
+            try
+            {
+                emailService.SendVerificationCode(email, code);
+                return true;
+            }
+            catch (Exception ex)
+            {
+               
+                codeStorage.Remove(email);
+                return false; 
+            }
 
             return true;
         }
-        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+
+        public VerifyResult VerifyCode(string email, string inputCode)
         {
-            return dal.GetUserByMSSV(mssv, includeInactive);
+            
+            if (!codeStorage.ContainsKey(email))
+            {
+                return VerifyResult.EmailNotFound; 
+            }
+
+           
+            var session = codeStorage[email];
+
+          
+            if (session.Code != inputCode)
+            {
+                return VerifyResult.InvalidCode; 
+            }
+
+         
+            if (DateTime.Now > session.ExpiryTime)
+            {
+                codeStorage.Remove(email); 
+                return VerifyResult.Expired;
+            }
+
+           
+            codeStorage.Remove(email); 
+            return VerifyResult.Success;
         }
-        public bool VerifyCode(string email, string code)
-        {
-            return codeStorage.ContainsKey(email) && codeStorage[email] == code;
-        }
+
 
         public bool ResetPassword(string email, string newPassword)
         {
@@ -62,7 +101,10 @@ namespace BLL
             result = LoginResult.Success;
             return user;
         }
-        
+        public UserDTO GetUserByMSSV(string mssv, bool includeInactive = false)
+        {
+            return dal.GetUserByMSSV(mssv, includeInactive);
+        }
         public List<UserDTO> GetAllUsers()
         {
             return dal.getAllUsers();

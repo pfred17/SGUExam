@@ -2,6 +2,7 @@
 
 using BLL;
 using BLL.Validator;
+using DTO;
 using Guna.UI2.WinForms;
 
 namespace GUI.Forms.login
@@ -56,26 +57,45 @@ namespace GUI.Forms.login
             string code = txtCode.Text.Trim();
             string newPass = txtNewPassword.Text.Trim();
 
+            var result = userBLL.VerifyCode(email, code);
 
-
-            if (!userBLL.VerifyCode(email, code))
+            switch (result)
             {
-                MessageBox.Show("Mã xác thực không đúng!");
-                txtCode.Focus();
-                return;
+                case VerifyResult.EmailNotFound:
+                    MessageBox.Show("Email này chưa yêu cầu gửi mã.");
+                    return; 
+
+                case VerifyResult.InvalidCode:
+                    MessageBox.Show("Mã xác thực không đúng!");
+                    txtCode.Focus();
+                    return; 
+
+                case VerifyResult.Expired:
+                    MessageBox.Show("Mã xác thực đã hết hạn! Vui lòng lấy mã mới.");
+                    txtCode.Clear();
+                    return; 
+
+                case VerifyResult.Success:
+                    break;
             }
 
-            if (!InputValidator.IsValidPassword(newPass)) 
+            if (!InputValidator.IsValidPassword(newPass))
             {
-                MessageBox.Show("Mật khẩu mới phải ≥ 8 ký tự, ít nhất 1 ký tự chữ hoa,thường");
+                MessageBox.Show("Mật khẩu mới phải ≥ 8 ký tự, ít nhất 1 ký tự chữ hoa, thường");
                 txtNewPassword.Focus();
                 return;
             }
 
             if (userBLL.ResetPassword(email, newPass))
+            {
                 MessageBox.Show("Đổi mật khẩu thành công!");
+                 BackToLogin?.Invoke(this, EventArgs.Empty);
+
+            }
             else
-                MessageBox.Show("Đổi mật khẩu thất bại!");
+            {
+                MessageBox.Show("Đổi mật khẩu thất bại! Có lỗi hệ thống.");
+            }
         }
 
         private void linkBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
