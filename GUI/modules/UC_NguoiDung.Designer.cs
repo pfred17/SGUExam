@@ -44,13 +44,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             tableNguoiDung = new Guna.UI2.WinForms.Guna2DataGridView();
-            MaNguoiDung = new DataGridViewTextBoxColumn();
-            HoVaTen = new DataGridViewTextBoxColumn();
-            Email = new DataGridViewTextBoxColumn();
-            Role = new DataGridViewTextBoxColumn();
-            TrangThai = new DataGridViewTextBoxColumn();
-            editCol = new DataGridViewImageColumn();
-            deleteCol = new DataGridViewImageColumn();
             cbbFilter = new Guna.UI2.WinForms.Guna2ComboBox();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
@@ -58,25 +51,34 @@
             lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
             btnNext = new Guna.UI2.WinForms.Guna2Button();
             btnXuat = new Guna.UI2.WinForms.Guna2Button();
+            MaNguoiDung = new DataGridViewTextBoxColumn();
+            HoVaTen = new DataGridViewTextBoxColumn();
+            Email = new DataGridViewTextBoxColumn();
+            Role = new DataGridViewTextBoxColumn();
+            TrangThai = new DataGridViewTextBoxColumn();
+            detailCol = new DataGridViewImageColumn();
+            editCol = new DataGridViewImageColumn();
+            deleteCol = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)tableNguoiDung).BeginInit();
             SuspendLayout();
             // 
             // tableNguoiDung
             // 
             tableNguoiDung.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(242, 245, 250);
             tableNguoiDung.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            tableNguoiDung.BorderStyle = BorderStyle.Fixed3D;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(242, 245, 250);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(242, 245, 250);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Gray;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(6, 101, 208);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(6, 101, 208);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             tableNguoiDung.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             tableNguoiDung.ColumnHeadersHeight = 50;
             tableNguoiDung.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            tableNguoiDung.Columns.AddRange(new DataGridViewColumn[] { MaNguoiDung, HoVaTen, Email, Role, TrangThai, editCol, deleteCol });
+            tableNguoiDung.Columns.AddRange(new DataGridViewColumn[] { MaNguoiDung, HoVaTen, Email, Role, TrangThai, detailCol, editCol, deleteCol });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -117,63 +119,6 @@
             tableNguoiDung.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             tableNguoiDung.CellContentClick += guna2DataGridView1_CellContentClick;
             tableNguoiDung.CellMouseMove += guna2DataGridView1_CellMouseMove;
-            // 
-            // MaNguoiDung
-            // 
-            MaNguoiDung.FillWeight = 85.47237F;
-            MaNguoiDung.HeaderText = "MSSV";
-            MaNguoiDung.MinimumWidth = 6;
-            MaNguoiDung.Name = "MaNguoiDung";
-            // 
-            // HoVaTen
-            // 
-            HoVaTen.FillWeight = 85.47237F;
-            HoVaTen.HeaderText = "Họ và tên";
-            HoVaTen.MinimumWidth = 6;
-            HoVaTen.Name = "HoVaTen";
-            // 
-            // Email
-            // 
-            Email.FillWeight = 85.47237F;
-            Email.HeaderText = "Email";
-            Email.MinimumWidth = 6;
-            Email.Name = "Email";
-            // 
-            // Role
-            // 
-            Role.FillWeight = 85.47237F;
-            Role.HeaderText = "Nhóm quyền";
-            Role.MinimumWidth = 6;
-            Role.Name = "Role";
-            // 
-            // TrangThai
-            // 
-            TrangThai.FillWeight = 85.47237F;
-            TrangThai.HeaderText = "Trạng thái";
-            TrangThai.MinimumWidth = 6;
-            TrangThai.Name = "TrangThai";
-            // 
-            // editCol
-            // 
-            editCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            editCol.FillWeight = 85.47237F;
-            editCol.HeaderText = "";
-            editCol.MinimumWidth = 6;
-            editCol.Name = "editCol";
-            editCol.Resizable = DataGridViewTriState.True;
-            editCol.SortMode = DataGridViewColumnSortMode.Automatic;
-            editCol.Width = 50;
-            // 
-            // deleteCol
-            // 
-            deleteCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            deleteCol.FillWeight = 187.165771F;
-            deleteCol.HeaderText = "";
-            deleteCol.MinimumWidth = 6;
-            deleteCol.Name = "deleteCol";
-            deleteCol.Resizable = DataGridViewTriState.True;
-            deleteCol.SortMode = DataGridViewColumnSortMode.Automatic;
-            deleteCol.Width = 50;
             // 
             // cbbFilter
             // 
@@ -316,6 +261,71 @@
             btnXuat.TextAlign = HorizontalAlignment.Right;
             btnXuat.Click += btnXuat_Click;
             // 
+            // MaNguoiDung
+            // 
+            MaNguoiDung.FillWeight = 85.47237F;
+            MaNguoiDung.HeaderText = "MSSV";
+            MaNguoiDung.MinimumWidth = 6;
+            MaNguoiDung.Name = "MaNguoiDung";
+            // 
+            // HoVaTen
+            // 
+            HoVaTen.FillWeight = 85.47237F;
+            HoVaTen.HeaderText = "Họ và tên";
+            HoVaTen.MinimumWidth = 6;
+            HoVaTen.Name = "HoVaTen";
+            // 
+            // Email
+            // 
+            Email.FillWeight = 85.47237F;
+            Email.HeaderText = "Email";
+            Email.MinimumWidth = 6;
+            Email.Name = "Email";
+            // 
+            // Role
+            // 
+            Role.FillWeight = 85.47237F;
+            Role.HeaderText = "Nhóm quyền";
+            Role.MinimumWidth = 6;
+            Role.Name = "Role";
+            // 
+            // TrangThai
+            // 
+            TrangThai.FillWeight = 85.47237F;
+            TrangThai.HeaderText = "Trạng thái";
+            TrangThai.MinimumWidth = 6;
+            TrangThai.Name = "TrangThai";
+            // 
+            // detailCol
+            // 
+            detailCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            detailCol.HeaderText = "";
+            detailCol.MinimumWidth = 6;
+            detailCol.Name = "detailCol";
+            detailCol.Width = 50;
+            // 
+            // editCol
+            // 
+            editCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            editCol.FillWeight = 85.47237F;
+            editCol.HeaderText = "";
+            editCol.MinimumWidth = 6;
+            editCol.Name = "editCol";
+            editCol.Resizable = DataGridViewTriState.True;
+            editCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            editCol.Width = 50;
+            // 
+            // deleteCol
+            // 
+            deleteCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            deleteCol.FillWeight = 187.165771F;
+            deleteCol.HeaderText = "";
+            deleteCol.MinimumWidth = 6;
+            deleteCol.Name = "deleteCol";
+            deleteCol.Resizable = DataGridViewTriState.True;
+            deleteCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            deleteCol.Width = 50;
+            // 
             // UC_NguoiDung
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -341,16 +351,17 @@
         private Guna.UI2.WinForms.Guna2ComboBox cbbFilter;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private Guna.UI2.WinForms.Guna2Button btnPrev;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblPage;
+        private Guna.UI2.WinForms.Guna2Button btnNext;
+        private Guna.UI2.WinForms.Guna2Button btnXuat;
         private DataGridViewTextBoxColumn MaNguoiDung;
         private DataGridViewTextBoxColumn HoVaTen;
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Role;
         private DataGridViewTextBoxColumn TrangThai;
+        private DataGridViewImageColumn detailCol;
         private DataGridViewImageColumn editCol;
         private DataGridViewImageColumn deleteCol;
-        private Guna.UI2.WinForms.Guna2Button btnPrev;
-        private Guna.UI2.WinForms.Guna2HtmlLabel lblPage;
-        private Guna.UI2.WinForms.Guna2Button btnNext;
-        private Guna.UI2.WinForms.Guna2Button btnXuat;
     }
 }

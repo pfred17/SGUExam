@@ -33,10 +33,11 @@ namespace GUI.Forms.nguoidung
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             cardPanel = new Guna.UI2.WinForms.Guna2Panel();
+            pbAvatar = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             separatorLine = new Guna.UI2.WinForms.Guna2Separator();
             btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             showName = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -49,7 +50,6 @@ namespace GUI.Forms.nguoidung
             showGender = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lblUserName = new Guna.UI2.WinForms.Guna2HtmlLabel();
             lblFullName = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            pbAvatar = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             cardPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbAvatar).BeginInit();
             SuspendLayout();
@@ -82,7 +82,18 @@ namespace GUI.Forms.nguoidung
             cardPanel.ShadowDecoration.Shadow = new Padding(0, 0, 5, 5);
             cardPanel.Size = new Size(604, 528);
             cardPanel.TabIndex = 11;
-            
+            // 
+            // pbAvatar
+            // 
+            pbAvatar.FillColor = Color.FromArgb(41, 128, 185);
+            pbAvatar.ImageRotate = 0F;
+            pbAvatar.Location = new Point(250, 20);
+            pbAvatar.Name = "pbAvatar";
+            pbAvatar.ShadowDecoration.CustomizableEdges = customizableEdges1;
+            pbAvatar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            pbAvatar.Size = new Size(100, 100);
+            pbAvatar.TabIndex = 0;
+            pbAvatar.TabStop = false;
             // 
             // separatorLine
             // 
@@ -219,18 +230,6 @@ namespace GUI.Forms.nguoidung
             lblFullName.TabIndex = 0;
             lblFullName.Text = null;
             // 
-            // pbAvatar
-            // 
-            pbAvatar.FillColor = Color.FromArgb(41, 128, 185);
-            pbAvatar.ImageRotate = 0F;
-            pbAvatar.Location = new Point(250, 20);
-            pbAvatar.Name = "pbAvatar";
-            pbAvatar.ShadowDecoration.CustomizableEdges = customizableEdges1;
-            pbAvatar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            pbAvatar.Size = new Size(100, 100);
-            pbAvatar.TabIndex = 0;
-            pbAvatar.TabStop = false;
-            // 
             // Info
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -240,6 +239,7 @@ namespace GUI.Forms.nguoidung
             Controls.Add(cardPanel);
             MaximizeBox = false;
             Name = "Info";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Thông tin cá nhân";
             Load += Info_Load;
             cardPanel.ResumeLayout(false);

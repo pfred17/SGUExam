@@ -16,8 +16,35 @@ namespace DAL
         private RoleDAL roleDAL = new RoleDAL();
         
 
+        public int GetTotalUsers(string? keyword = null, int? option = 0, string? userId = "")
+        {
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+            string query = @"
+                SELECT COUNT(*) 
+                FROM nguoi_dung AS nd
+                JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
+                WHERE
+                    nd.trang_thai = 1 AND nd.ma_nd != @userId
+                    AND
+                    (
+                        @keyword = '' 
+                        OR nd.ho_ten LIKE N'%' + @keyword + N'%'
+                        OR nd.ten_dang_nhap LIKE N'%' + @keyword + N'%'
+                        OR nd.email LIKE N'%' + @keyword + N'%'
+                        OR nq.ten_nhom_quyen LIKE N'%' + @keyword + N'%'
+                    )
+                    AND (@option = 0 OR nd.ma_nhom_quyen = @option);
+            ";
+            SqlParameter[] parameters = {
+                new("@keyword", keyword),
+                new("@option", option),
+                new("@userId", userId)
+            };
+            return Convert.ToInt32(DatabaseHelper.ExecuteScalar(query, parameters));
+        }
+
         // Lấy danh sách người dùng có phân trang
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0, string? userId = "")
         {
             int offset = (page - 1) * pageSize;
             keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
@@ -36,7 +63,7 @@ namespace DAL
                 FROM nguoi_dung AS nd
                 JOIN nhom_quyen AS nq ON nq.ma_nhom_quyen = nd.ma_nhom_quyen
                 WHERE
-                    nd.trang_thai = 1
+                    nd.trang_thai = 1 AND nd.ma_nd != @userId
                     AND
                     (
                         @keyword = '' 
@@ -55,7 +82,8 @@ namespace DAL
                 new("@keyword", keyword),
                 new("@option", option),
                 new("@offset", offset),
-                new("@pageSize", pageSize)
+                new("@pageSize", pageSize),
+                new("@userId", userId),
             };
             DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
             List<UserDTO> list = new List<UserDTO>();

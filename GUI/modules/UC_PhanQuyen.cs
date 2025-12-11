@@ -47,21 +47,13 @@ namespace GUI.modules
             string keyword = txtSearch.Text.Trim();
             if (keyword == "Tìm kiếm...") keyword = "";
 
-            totalRecords = _roleBLL.getAllRole().Count();
+            totalRecords = _roleBLL.GetTotalActiveRolesCount(keyword);
             totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
             if (totalPages == 0) totalPages = 1;
             if (pageCurrent > totalPages) pageCurrent = totalPages;
 
             var roles = _roleBLL.getAllRolePaged(pageCurrent, pageSize, keyword);
-            //var roles = _roleBLL.getAllRole();
-
-            if (roles.Count() == 0)
-            {
-                MessageBox.Show(this, "Không tìm thấy nhóm quyền nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //txtSearch.Text = "";
-                return;
-            }
 
             tablePhanQuyen.Rows.Clear();
 

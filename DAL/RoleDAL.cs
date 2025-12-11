@@ -25,6 +25,21 @@ namespace DAL
             return roles;
         }
 
+        public int getTotalActiveRolesCount(string? keyword = null)
+        {
+            keyword = string.IsNullOrWhiteSpace(keyword) ? "" : keyword;
+            string query = @"SELECT COUNT(*) 
+                             FROM nhom_quyen 
+                             WHERE (@keyword = '' OR ten_nhom_quyen LIKE N'%' + @keyword + N'%') 
+                               AND (trang_thai = 1)";
+            SqlParameter[] parameters =
+            {
+                new("@keyword", keyword)
+            };
+            object result = DatabaseHelper.ExecuteScalar(query, parameters);
+            return (result != null && result != DBNull.Value) ? Convert.ToInt32(result) : 0;
+        }
+
         // Lấy tất cả nhóm quyền CÓ PHÂN TRANG và TÌM KIẾM
         public List<RoleDTO> getAllRolePaged(int page, int pageSize, string? keyword = null)
         {

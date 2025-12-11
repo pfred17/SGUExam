@@ -247,7 +247,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.BorderColor = Color.FromArgb(237, 240, 247);
+            txtPassword.BorderColor = Color.FromArgb(224, 224, 224);
             txtPassword.BorderRadius = 4;
             txtPassword.CustomizableEdges = customizableEdges9;
             txtPassword.DefaultText = "";
@@ -282,7 +282,7 @@
             // 
             // txtHoVaTen
             // 
-            txtHoVaTen.BorderColor = Color.FromArgb(237, 240, 247);
+            txtHoVaTen.BorderColor = Color.FromArgb(224, 224, 224);
             txtHoVaTen.BorderRadius = 4;
             txtHoVaTen.CustomizableEdges = customizableEdges11;
             txtHoVaTen.DefaultText = "";
@@ -317,7 +317,7 @@
             // 
             // txtEmail
             // 
-            txtEmail.BorderColor = Color.FromArgb(237, 240, 247);
+            txtEmail.BorderColor = Color.FromArgb(224, 224, 224);
             txtEmail.BorderRadius = 4;
             txtEmail.CustomizableEdges = customizableEdges13;
             txtEmail.DefaultText = "";

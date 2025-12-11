@@ -10,7 +10,7 @@ namespace DAL
             //"Server=localhost;Database=SGUExam;Trusted_Connection=True;Encrypt=False;";
             //"Data Source = DESKTOP-U6EVNRO;Initial Catalog = SGUExam1; User ID = sa; Password=12345678;Trust Server Certificate=True";
             //"Data Source=LG8888\\SQLEXPRESS;Initial Catalog=SGUExam;Integrated Security=True;TrustServerCertificate=True";
-            "Server=localhost;Database=SGUExam;Trusted_Connection=True;Encrypt=False;";
+            //"Server=localhost;Database=SGUExam;Trusted_Connection=True;Encrypt=False;";   
 
         public static SqlConnection GetConnection()
         {
