@@ -23,7 +23,6 @@ namespace BLL
                 ExpiryTime = DateTime.Now.AddMinutes(1) 
             };
 
-            emailService.SendVerificationCode(email, code);
             codeStorage[email] = session;
 
             try
@@ -64,9 +63,7 @@ namespace BLL
                 codeStorage.Remove(email); 
                 return VerifyResult.Expired;
             }
-
-           
-            codeStorage.Remove(email); 
+        
             return VerifyResult.Success;
         }
 
