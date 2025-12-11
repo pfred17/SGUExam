@@ -7,13 +7,15 @@ namespace GUI.Forms.nguoidung
     public partial class Info : Form
     {
         private readonly string _userId;
+        private readonly bool _isXemChiTiet;
 
         private  UserBLL userBLL = new UserBLL();
         private  RoleBLL roleBLL = new RoleBLL();
-        public Info(string userId)
+        public Info(string userId, bool isXemChiTiet)
         {
             InitializeComponent();
-            _userId = userId;          
+            _userId = userId;
+            _isXemChiTiet = isXemChiTiet;
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -44,6 +46,10 @@ namespace GUI.Forms.nguoidung
         }
         private void Info_Load(object sender, EventArgs e)
         {
+            if (_isXemChiTiet)
+            {
+                btnUpdate.Visible = false;  
+            }
             LoadUserData();
         }
     }

@@ -75,14 +75,15 @@ namespace BLL
         {
             return dal.GetAllAssignableUsers();
         }
-        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0)
+        public List<UserDTO> GetUserPaged(int page, int pageSize, string? keyword = null, int? option = 0, string? userId = "")
         {
-            return dal.GetUserPaged(page, pageSize, keyword, option);
+            return dal.GetUserPaged(page, pageSize, keyword, option, userId);
         }
-        //public int GetTotalUser(string? userId, string? keyword = null, int? trangThai = null)
-        //{
-        //    return dal.GetTotalUser(userId, keyword, trangThai);
-        //}
+
+        public int GetTotalUser(string? keyword = null, int? option = 0, string? userId = "")
+        {
+            return dal.GetTotalUsers(keyword, option, userId);
+        }
         public List<UserDTO> GetAssignableUsersPaged(int page, int pageSize, string? userId, string? keyword = null)
         {
             return dal.GetAssignableUsersPaged(page, pageSize, userId, keyword);

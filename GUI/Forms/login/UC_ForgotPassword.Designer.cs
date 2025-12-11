@@ -79,7 +79,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(363, 54);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Recover Password";
+            lblTitle.Text = "Khôi phục mật khẩu";
             // 
             // lblSubTitle
             // 

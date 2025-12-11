@@ -1,10 +1,12 @@
 ﻿using BLL;
 using DAL;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DTO;
 using GUI.forms.nguoidung;
+using GUI.Forms.nguoidung;
 using Guna.UI2.WinForms;
 using System.Collections.Generic;
 
@@ -42,6 +44,7 @@ namespace GUI.modules
         private void loadPermission()
         {
             guna2Button1.Visible = _permissionBLL.HasPermission(_userId, 8, "Thêm");
+            tableNguoiDung.Columns["detailCol"].Visible = _permissionBLL.HasPermission(_userId, 8, "Xem");
             tableNguoiDung.Columns["editCol"].Visible = _permissionBLL.HasPermission(_userId, 8, "Sửa");
             tableNguoiDung.Columns["deleteCol"].Visible = _permissionBLL.HasPermission(_userId, 8, "Xóa");
         }
@@ -88,13 +91,14 @@ namespace GUI.modules
 
             int option = _roleBLL.GetRoleIdByName(cbbFilter.GetItemText(cbbFilter.SelectedItem));
 
-            totalRecords = _userBLL.GetAllUsers().Count;
+            //totalRecords = _userBLL.GetAllUsers().Count;
+            totalRecords = _userBLL.GetTotalUser(keyword, option, _userId);
             totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
             if (totalPages == 0) totalPages = 1;
             if (pageCurrent > totalPages) pageCurrent = totalPages;
 
-            var users = _userBLL.GetUserPaged(pageCurrent, pageSize, keyword, option);
+            var users = _userBLL.GetUserPaged(pageCurrent, pageSize, keyword, option, _userId);
 
             tableNguoiDung.Rows.Clear();
             foreach (var user in users)
@@ -102,13 +106,14 @@ namespace GUI.modules
 
                 var roleDto = _roleBLL.GetRoleDTOById(user.Role);
 
-                if (roleDto.TrangThai == 0 || user.MSSV == _userId) continue;
+                //if (roleDto.TrangThai == 0 || user.MSSV == _userId) continue;
 
 
                 int rowIndex = tableNguoiDung.Rows.Add(
                     user.MSSV, user.HoTen,
                     user.Email, _roleBLL.GetRoleNameById(user.Role),
                     user.TrangThai == 1 ? "Hoạt động" : "Bị khóa",
+                    Properties.Resources.icon_detail_user,
                     Properties.Resources.icon_edit,
                     Properties.Resources.icon_delete);
 
@@ -150,6 +155,14 @@ namespace GUI.modules
             var userId = tableNguoiDung.Rows[e.RowIndex].Cells["MaNguoiDung"].Value.ToString();
             var userName = tableNguoiDung.Rows[e.RowIndex].Cells["HoVaTen"].Value.ToString();
             var status = tableNguoiDung.Rows[e.RowIndex].Cells["TrangThai"].Value.ToString();
+
+            // === Khi click vào icon SỬA ===
+            if (columnName == "detailCol")
+            {
+                Info formSua = new Info(userId, true);
+
+                formSua.ShowDialog();
+            }
 
             // === Khi click vào icon SỬA ===
             if (columnName == "editCol")
@@ -226,14 +239,14 @@ namespace GUI.modules
                 string columnName = tableNguoiDung.Columns[e.ColumnIndex].Name;
 
                 // Nếu là cột Sửa hoặc Xóa => hiện bàn tay
-                if (columnName == "editCol" || columnName == "deleteCol")
+                if (columnName == "editCol" || columnName == "deleteCol" || columnName == "detailCol")
                 {
                     tableNguoiDung.Cursor = Cursors.Hand;
                 }
                 else
                 {
                     tableNguoiDung.Cursor = Cursors.Default;
-                }
+                } 
             }
         }
 
