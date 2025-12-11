@@ -100,6 +100,8 @@ namespace BLL
             return _dal.GetDeLuyenTapByMaNhom(maNhom);
         }
 
+        public List<DeThiDTO> GetDeThiByUserId(string userId)
+    => _dal.GetDeThiByUserId(userId);
 
 
     }
