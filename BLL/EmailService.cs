@@ -1,5 +1,4 @@
-﻿// BLL/EmailService.cs
-using MimeKit;
+﻿using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 

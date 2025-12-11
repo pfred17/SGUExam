@@ -21,6 +21,7 @@ namespace GUI.modules
         private Guna2ComboBox cbLocTrangThai;
         private Guna2TextBox txtTimKiem;
         private Guna2Button btnXuatBangDiem;
+        private Guna2Button  btnExportPDF;
         private Guna2DataGridView tableBangDiem;
 
         // Phân tích - additional controls (were missing declarations)
@@ -55,6 +56,7 @@ namespace GUI.modules
             cbLocTrangThai = new Guna2ComboBox();
             txtTimKiem = new Guna2TextBox();
             btnXuatBangDiem = new Guna2Button();
+            btnExportPDF = new Guna2Button();
             tableBangDiem = new Guna2DataGridView();
 
             // Phân tích controls (declare before use)
@@ -85,6 +87,7 @@ namespace GUI.modules
             tabBangDiem.Controls.Add(txtTimKiem);
             tabBangDiem.Controls.Add(btnXuatBangDiem);
             tabBangDiem.Controls.Add(tableBangDiem);
+            tabBangDiem.Controls.Add(btnExportPDF);
 
             // 
             // cbLocLop
@@ -151,6 +154,19 @@ namespace GUI.modules
             btnXuatBangDiem.Size = new Size(200, 40);
             btnXuatBangDiem.Text = "📄 Xuất bảng điểm";
             btnXuatBangDiem.Click += btnXuatBangDiem_Click;
+
+
+            //btnExportPDF
+            btnExportPDF.BorderRadius = 2;
+            btnExportPDF.Cursor = Cursors.Hand;
+            btnExportPDF.FillColor = Color.FromArgb(255, 0, 0);
+            btnExportPDF.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            btnExportPDF.ForeColor = Color.White;
+            btnExportPDF.Location = new Point(690, 30);
+            btnExportPDF.Name = "btnExportPDF";
+            btnExportPDF.Size = new Size(200, 40);
+            btnExportPDF.Text = "📄 Xuất PDF";
+            btnExportPDF.Click += btnExportPDF_Click;
 
 
             // =======================

@@ -56,7 +56,11 @@ namespace GUI.forms.nguoidung
             txtHoVaTen.Text = user.HoTen;
             txtEmail.Text = user.Email;
             txtPassword.Text = user.MatKhau;
-            //loadRoleData();
+            if (user.GioiTinh == 1)
+                radioNam.Checked = true;
+            else
+                radioNu.Checked = true;
+            loadRoleData();
         }
 
         public void loadRoleData()
@@ -71,6 +75,11 @@ namespace GUI.forms.nguoidung
 
             cbbNhomQuyen.DataSource = roles;
             cbbNhomQuyen.Text = roleBLL.GetRoleNameById(user.Role);
+        }
+
+        private void txtUsername_Leave(object sender, EventArgs e)
+        {
+
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
