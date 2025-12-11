@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -40,7 +40,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             pnMain = new Panel();
             dgvPhanCong = new DataGridView();
             btnPrev = new Guna.UI2.WinForms.Guna2Button();
@@ -50,11 +49,11 @@
             btnThem = new Guna.UI2.WinForms.Guna2Button();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             MaPhanCong = new DataGridViewTextBoxColumn();
-            MaMon = new DataGridViewTextBoxColumn();
             MonHoc = new DataGridViewTextBoxColumn();
             MaGiangVien = new DataGridViewTextBoxColumn();
             TenGiangVien = new DataGridViewTextBoxColumn();
             TrangThai = new DataGridViewTextBoxColumn();
+            DetailCol = new DataGridViewImageColumn();
             EditCol = new DataGridViewImageColumn();
             DeleteCol = new DataGridViewImageColumn();
             pnMain.SuspendLayout();
@@ -96,15 +95,15 @@
             dgvPhanCong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvPhanCong.ColumnHeadersHeight = 40;
             dgvPhanCong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPhanCong.Columns.AddRange(new DataGridViewColumn[] { MaPhanCong, MaMon, MonHoc, MaGiangVien, TenGiangVien, TrangThai, EditCol, DeleteCol });
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Window;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle5.ForeColor = Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvPhanCong.DefaultCellStyle = dataGridViewCellStyle5;
+            dgvPhanCong.Columns.AddRange(new DataGridViewColumn[] { MaPhanCong, MonHoc, MaGiangVien, TenGiangVien, TrangThai, DetailCol, EditCol, DeleteCol });
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvPhanCong.DefaultCellStyle = dataGridViewCellStyle4;
             dgvPhanCong.EnableHeadersVisualStyles = false;
             dgvPhanCong.GridColor = Color.FromArgb(231, 229, 255);
             dgvPhanCong.Location = new Point(26, 140);
@@ -150,7 +149,6 @@
             lblPage.TabIndex = 5;
             lblPage.Text = "1";
             lblPage.TextAlignment = ContentAlignment.MiddleCenter;
-            lblPage.Click += lblPage_Click;
             // 
             // btnNext
             // 
@@ -237,25 +235,11 @@
             MaPhanCong.SortMode = DataGridViewColumnSortMode.NotSortable;
             MaPhanCong.Width = 149;
             // 
-            // MaMon
-            // 
-            MaMon.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            MaMon.DefaultCellStyle = dataGridViewCellStyle3;
-            MaMon.FillWeight = 74.3705139F;
-            MaMon.HeaderText = "Mã môn";
-            MaMon.MinimumWidth = 6;
-            MaMon.Name = "MaMon";
-            MaMon.ReadOnly = true;
-            MaMon.Resizable = DataGridViewTriState.False;
-            MaMon.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MaMon.Width = 94;
-            // 
             // MonHoc
             // 
             MonHoc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            MonHoc.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            MonHoc.DefaultCellStyle = dataGridViewCellStyle3;
             MonHoc.FillWeight = 74.3705139F;
             MonHoc.HeaderText = "Môn học";
             MonHoc.MinimumWidth = 6;
@@ -267,12 +251,10 @@
             // MaGiangVien
             // 
             MaGiangVien.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            MaGiangVien.FillWeight = 74.3705139F;
             MaGiangVien.HeaderText = "Mã giảng viên";
             MaGiangVien.MinimumWidth = 6;
             MaGiangVien.Name = "MaGiangVien";
             MaGiangVien.ReadOnly = true;
-            MaGiangVien.Resizable = DataGridViewTriState.False;
             MaGiangVien.SortMode = DataGridViewColumnSortMode.NotSortable;
             MaGiangVien.Width = 147;
             // 
@@ -294,6 +276,15 @@
             TrangThai.Name = "TrangThai";
             TrangThai.ReadOnly = true;
             TrangThai.Width = 125;
+            // 
+            // DetailCol
+            // 
+            DetailCol.HeaderText = "";
+            DetailCol.MinimumWidth = 6;
+            DetailCol.Name = "DetailCol";
+            DetailCol.ReadOnly = true;
+            DetailCol.Resizable = DataGridViewTriState.False;
+            DetailCol.Width = 50;
             // 
             // EditCol
             // 
@@ -342,11 +333,11 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblPage;
         private Guna.UI2.WinForms.Guna2Button btnNext;
         private DataGridViewTextBoxColumn MaPhanCong;
-        private DataGridViewTextBoxColumn MaMon;
         private DataGridViewTextBoxColumn MonHoc;
         private DataGridViewTextBoxColumn MaGiangVien;
         private DataGridViewTextBoxColumn TenGiangVien;
         private DataGridViewTextBoxColumn TrangThai;
+        private DataGridViewImageColumn DetailCol;
         private DataGridViewImageColumn EditCol;
         private DataGridViewImageColumn DeleteCol;
     }

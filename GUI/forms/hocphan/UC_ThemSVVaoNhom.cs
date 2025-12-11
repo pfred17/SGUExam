@@ -57,49 +57,7 @@ namespace GUI.modules
         }
         private void btnThemSV_Click(object sender, EventArgs e)
         {
-            string mssv = tbMaSv.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(mssv))
-            {
-                MessageBox.Show("Vui lòng nhập mã sinh viên!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                // Kiểm tra trong CSDL
-                UserDTO user = userBLL.GetUserByMSSV(mssv, true);
-
-                if (user == null)
-                {
-                    MessageBox.Show("Mã sinh viên không tồn tại hoặc tài khoản đã bị khóa!", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                
-                bool coQuyen = userBLL.QuyenThamGia(user.MSSV);
-
-                if (!coQuyen)
-                {
-                    MessageBox.Show("Tài khoản này không có quyền tham gia nhóm học phần!", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-
-                // Thành công → phát event cho form cha
-                OnSinhVienAdded(user, isFromExcel: false);
-
-                // Xóa ô nhập và focus lại để thêm tiếp
-                tbMaSv.Clear();
-                tbMaSv.Focus();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi hệ thống",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            
         }
 
         private void btnDong_Click(object sender, EventArgs e)
@@ -140,13 +98,7 @@ namespace GUI.modules
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
 
-        }
-
-
-       
         private void btnThemExcel_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(filePathExcel))
@@ -344,7 +296,54 @@ namespace GUI.modules
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            
+
+        }
+
+        private void btnThemSV1_Click(object sender, EventArgs e)
+        {
+            string mssv = tbMaSv.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(mssv))
+            {
+                MessageBox.Show("Vui lòng nhập mã sinh viên!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Kiểm tra trong CSDL
+                UserDTO user = userBLL.GetUserByMSSV(mssv, true);
+
+                if (user == null)
+                {
+                    MessageBox.Show("Mã sinh viên không tồn tại hoặc tài khoản đã bị khóa!", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                bool coQuyen = userBLL.QuyenThamGia(user.MSSV);
+
+                if (!coQuyen)
+                {
+                    MessageBox.Show("Tài khoản này không có quyền tham gia nhóm học phần!", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+
+                // Thành công → phát event cho form cha
+                OnSinhVienAdded(user, isFromExcel: false);
+
+                // Xóa ô nhập và focus lại để thêm tiếp
+                tbMaSv.Clear();
+                tbMaSv.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi hệ thống",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
     public static class RichTextBoxExtensions

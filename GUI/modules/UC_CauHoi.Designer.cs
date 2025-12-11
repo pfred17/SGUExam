@@ -17,18 +17,12 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             txtTimKiem = new TextBox();
             cbDoKho = new ComboBox();
             cbChuong = new ComboBox();
             cbMonHoc = new ComboBox();
             dgvCauHoi = new DataGridView();
-            colID = new DataGridViewTextBoxColumn();
-            colNoiDung = new DataGridViewTextBoxColumn();
-            colMonHoc = new DataGridViewTextBoxColumn();
-            colDoKho = new DataGridViewTextBoxColumn();
-            xemCol = new DataGridViewImageColumn();
-            SuaCol = new DataGridViewImageColumn();
-            XoaCol = new DataGridViewImageColumn();
             label2 = new Label();
             btnTuDieuChinh = new Button();
             btnThemMoi = new Button();
@@ -38,6 +32,13 @@
             lblTrangHienTai = new Label();
             btnTrangTruoc = new Button();
             btnTrangSau = new Button();
+            colID = new DataGridViewTextBoxColumn();
+            colNoiDung = new DataGridViewTextBoxColumn();
+            colMonHoc = new DataGridViewTextBoxColumn();
+            colDoKho = new DataGridViewTextBoxColumn();
+            xemCol = new DataGridViewImageColumn();
+            SuaCol = new DataGridViewImageColumn();
+            XoaCol = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)dgvCauHoi).BeginInit();
             pnlContainer.SuspendLayout();
             SuspendLayout();
@@ -90,88 +91,37 @@
             dgvCauHoi.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvCauHoi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCauHoi.BackgroundColor = Color.White;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dgvCauHoi.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(6, 101, 208);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(6, 101, 208);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCauHoi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCauHoi.ColumnHeadersHeight = 45;
             dgvCauHoi.Columns.AddRange(new DataGridViewColumn[] { colID, colNoiDung, colMonHoc, colDoKho, xemCol, SuaCol, XoaCol });
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvCauHoi.DefaultCellStyle = dataGridViewCellStyle3;
             dgvCauHoi.Location = new Point(25, 280);
             dgvCauHoi.MultiSelect = false;
             dgvCauHoi.Name = "dgvCauHoi";
             dgvCauHoi.ReadOnly = true;
             dgvCauHoi.RowHeadersVisible = false;
-            dgvCauHoi.RowHeadersWidth = 51;
+            dgvCauHoi.RowHeadersWidth = 50;
             dgvCauHoi.ScrollBars = ScrollBars.None;
             dgvCauHoi.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvCauHoi.Size = new Size(1050, 349);
             dgvCauHoi.TabIndex = 1;
             dgvCauHoi.CellContentClick += dgvCauHoi_CellContentClick;
             dgvCauHoi.SelectionChanged += dgvCauHoi_SelectionChanged;
-            // 
-            // colID
-            // 
-            colID.FillWeight = 50F;
-            colID.HeaderText = "ID";
-            colID.MinimumWidth = 6;
-            colID.Name = "colID";
-            colID.ReadOnly = true;
-            // 
-            // colNoiDung
-            // 
-            colNoiDung.FillWeight = 300F;
-            colNoiDung.HeaderText = "Nội dung câu hỏi";
-            colNoiDung.MinimumWidth = 6;
-            colNoiDung.Name = "colNoiDung";
-            colNoiDung.ReadOnly = true;
-            // 
-            // colMonHoc
-            // 
-            colMonHoc.HeaderText = "Môn học";
-            colMonHoc.MinimumWidth = 6;
-            colMonHoc.Name = "colMonHoc";
-            colMonHoc.ReadOnly = true;
-            // 
-            // colDoKho
-            // 
-            colDoKho.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            colDoKho.FillWeight = 80F;
-            colDoKho.HeaderText = "Độ khó";
-            colDoKho.MinimumWidth = 6;
-            colDoKho.Name = "colDoKho";
-            colDoKho.ReadOnly = true;
-            colDoKho.Width = 108;
-            // 
-            // xemCol
-            // 
-            xemCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            xemCol.HeaderText = "";
-            xemCol.MinimumWidth = 50;
-            xemCol.Name = "xemCol";
-            xemCol.ReadOnly = true;
-            xemCol.Width = 50;
-            // 
-            // SuaCol
-            // 
-            SuaCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            SuaCol.HeaderText = "";
-            SuaCol.MinimumWidth = 50;
-            SuaCol.Name = "SuaCol";
-            SuaCol.ReadOnly = true;
-            SuaCol.Width = 50;
-            // 
-            // XoaCol
-            // 
-            XoaCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            XoaCol.HeaderText = "";
-            XoaCol.MinimumWidth = 50;
-            XoaCol.Name = "XoaCol";
-            XoaCol.ReadOnly = true;
-            XoaCol.Width = 50;
             // 
             // label2
             // 
@@ -285,6 +235,65 @@
             btnTrangSau.Text = ">>";
             btnTrangSau.UseVisualStyleBackColor = false;
             btnTrangSau.Click += btnNextPage_Click;
+            // 
+            // colID
+            // 
+            colID.FillWeight = 50F;
+            colID.HeaderText = "ID";
+            colID.MinimumWidth = 6;
+            colID.Name = "colID";
+            colID.ReadOnly = true;
+            // 
+            // colNoiDung
+            // 
+            colNoiDung.FillWeight = 300F;
+            colNoiDung.HeaderText = "Nội dung câu hỏi";
+            colNoiDung.MinimumWidth = 6;
+            colNoiDung.Name = "colNoiDung";
+            colNoiDung.ReadOnly = true;
+            // 
+            // colMonHoc
+            // 
+            colMonHoc.HeaderText = "Môn học";
+            colMonHoc.MinimumWidth = 6;
+            colMonHoc.Name = "colMonHoc";
+            colMonHoc.ReadOnly = true;
+            // 
+            // colDoKho
+            // 
+            colDoKho.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colDoKho.FillWeight = 80F;
+            colDoKho.HeaderText = "Độ khó";
+            colDoKho.MinimumWidth = 6;
+            colDoKho.Name = "colDoKho";
+            colDoKho.ReadOnly = true;
+            // 
+            // xemCol
+            // 
+            xemCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            xemCol.HeaderText = "";
+            xemCol.MinimumWidth = 50;
+            xemCol.Name = "xemCol";
+            xemCol.ReadOnly = true;
+            xemCol.Width = 50;
+            // 
+            // SuaCol
+            // 
+            SuaCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            SuaCol.HeaderText = "";
+            SuaCol.MinimumWidth = 50;
+            SuaCol.Name = "SuaCol";
+            SuaCol.ReadOnly = true;
+            SuaCol.Width = 50;
+            // 
+            // XoaCol
+            // 
+            XoaCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            XoaCol.HeaderText = "";
+            XoaCol.MinimumWidth = 50;
+            XoaCol.Name = "XoaCol";
+            XoaCol.ReadOnly = true;
+            XoaCol.Width = 50;
             // 
             // UC_CauHoi
             // 
