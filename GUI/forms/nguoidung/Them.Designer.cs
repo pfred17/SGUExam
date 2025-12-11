@@ -106,6 +106,7 @@
             txtMSSV.Size = new Size(360, 51);
             txtMSSV.TabIndex = 1;
             txtMSSV.TextChanged += txtMSSV_TextChanged;
+            txtMSSV.Enter += txtMSSV_Enter;
             txtMSSV.Leave += txtMSSV_Leave;
             // 
             // txtEmail
@@ -312,7 +313,6 @@
             cbbNhomQuyen.Name = "cbbNhomQuyen";
             cbbNhomQuyen.ShadowDecoration.CustomizableEdges = customizableEdges12;
             cbbNhomQuyen.Size = new Size(358, 36);
-            cbbNhomQuyen.StartIndex = 0;
             cbbNhomQuyen.TabIndex = 16;
             // 
             // guna2HtmlLabel10
