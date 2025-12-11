@@ -53,7 +53,7 @@
             titleRegister.Name = "titleRegister";
             titleRegister.Size = new Size(287, 50);
             titleRegister.TabIndex = 0;
-            titleRegister.Text = "Create Account";
+            titleRegister.Text = "Đăng ký tài khoản";
             // 
             // lblSubTitle
             // 

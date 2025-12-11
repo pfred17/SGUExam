@@ -41,12 +41,15 @@ namespace GUI.modules
         public void SetData(NhomHocPhanDTO nhom)
         {
             currentData = nhom;
-            lbTenNhom1.Text = $" {nhom.MaMonHoc} - {nhom.TenNhom}";
 
-            lbMonHoc1.Text = $" {nhom.TenMonHoc} - {nhom.HocKy} - {nhom.NamHoc}";
-            lbGhiChu1.Text = nhom.GhiChu;
-            int soLuongSV = ChiTietNhomHocPhanBLL.DemSinhVienTrongNhom(nhom.MaNhom);
-            lbSiSo1.Text = $"Sỉ số:{soLuongSV}";
+            lbTenNhom1.Text = $"Mã {nhom.MaNhom} - {nhom.TenNhom}";
+
+            lbMonHoc1.Text = $"Môn: {nhom.TenMonHoc}";
+
+            lbGhiChu1.Text = $"Ghi chú: {nhom.GhiChu}";
+
+            btnNamHocHK.Text = $"{nhom.HocKy} - {nhom.NamHoc}";
+            btnSiSo.Text = $"Sỉ số: {ChiTietNhomHocPhanBLL.DemSinhVienTrongNhom(nhom.MaNhom)}";
         }
 
 

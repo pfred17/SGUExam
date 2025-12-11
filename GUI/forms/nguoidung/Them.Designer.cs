@@ -106,11 +106,12 @@
             txtMSSV.Size = new Size(360, 51);
             txtMSSV.TabIndex = 1;
             txtMSSV.TextChanged += txtMSSV_TextChanged;
+            txtMSSV.Enter += txtMSSV_Enter;
             txtMSSV.Leave += txtMSSV_Leave;
             // 
             // txtEmail
             // 
-            txtEmail.BorderColor = Color.FromArgb(237, 240, 247);
+            txtEmail.BorderColor = Color.FromArgb(224, 224, 224);
             txtEmail.BorderRadius = 4;
             txtEmail.CustomizableEdges = customizableEdges3;
             txtEmail.DefaultText = "";
@@ -146,7 +147,7 @@
             // 
             // txtHoVaTen
             // 
-            txtHoVaTen.BorderColor = Color.FromArgb(237, 240, 247);
+            txtHoVaTen.BorderColor = Color.FromArgb(224, 224, 224);
             txtHoVaTen.BorderRadius = 4;
             txtHoVaTen.CustomizableEdges = customizableEdges5;
             txtHoVaTen.DefaultText = "";
@@ -182,7 +183,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.BorderColor = Color.FromArgb(237, 240, 247);
+            txtPassword.BorderColor = Color.FromArgb(224, 224, 224);
             txtPassword.BorderRadius = 4;
             txtPassword.CustomizableEdges = customizableEdges7;
             txtPassword.DefaultText = "";
@@ -312,7 +313,6 @@
             cbbNhomQuyen.Name = "cbbNhomQuyen";
             cbbNhomQuyen.ShadowDecoration.CustomizableEdges = customizableEdges12;
             cbbNhomQuyen.Size = new Size(358, 36);
-            cbbNhomQuyen.StartIndex = 0;
             cbbNhomQuyen.TabIndex = 16;
             // 
             // guna2HtmlLabel10

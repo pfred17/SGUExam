@@ -4,6 +4,7 @@ using DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection.Metadata;
 
 namespace BLL
 {
@@ -61,6 +62,11 @@ namespace BLL
         {
             return _dal.UpdateDeThi(deThi);
         }
+        public bool UpdateDeThiStatus(DeThiDTO deThi)
+        {
+            // Gọi xuống DAL để cập nhật trạng thái đề thi
+            return _dal.UpdateDeThiStatus(deThi.MaDe, deThi.TrangThai);
+        }
         public void DeleteDeThiCauHoi(long maDe)
         {
             string sql = "DELETE FROM de_thi_cau_hoi WHERE ma_de = @maDe";
@@ -78,6 +84,10 @@ namespace BLL
         {
             return _dal.GetThongKeCauHoi(maDe);
         }
+        public String GetTenMonHocByMaDe(long maDe)
+        {
+            return _dal.GetTenMonHocByMaDe(maDe);
+        }
 
         // dal của bảo phan
         public List <DeThiDTO> GetDeKiemTraByMaNhom (long maNhom)
@@ -89,6 +99,9 @@ namespace BLL
         {
             return _dal.GetDeLuyenTapByMaNhom(maNhom);
         }
+
+        public List<DeThiDTO> GetDeThiByUserId(string userId)
+    => _dal.GetDeThiByUserId(userId);
 
 
     }

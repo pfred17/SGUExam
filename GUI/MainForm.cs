@@ -267,7 +267,7 @@ namespace GUI
             btnLogout.Click += (s, e) => handleLogout();
             btnProfile.Click += (s, e) =>
             {
-                Info infoForm = new Info(_userId);
+                Info infoForm = new Info(_userId, false);
                 infoForm.StartPosition = FormStartPosition.CenterParent;
                 infoForm.ShowDialog();
             };

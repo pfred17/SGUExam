@@ -47,7 +47,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(310, 54);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Welcome Back!";
+            lblTitle.Text = "Đăng nhập!";
             // 
             // lblSubTitle
             // 

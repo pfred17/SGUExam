@@ -33,7 +33,7 @@ namespace GUI.forms.nguoidung
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-            if(!checkAllInput()) return;
+            if (!checkAllInput()) return;
 
             int gioiTinh = 1;
 
@@ -106,7 +106,7 @@ namespace GUI.forms.nguoidung
             // Kiểm tra xem email có hợp lệ không
             if (!InputValidator.IsValidMSSV(txtMSSV.Text))
             {
-                lbErrorMSSV.Text = "MSSV phải có đúng 10 ký tự!";
+                lbErrorMSSV.Text = "MSSV phải có đúng 10 ký tự và bắt đầu từ 312...)";
                 lbErrorMSSV.Visible = true;
             }
             else
@@ -114,6 +114,10 @@ namespace GUI.forms.nguoidung
                 lbErrorMSSV.Text = "";
                 lbErrorMSSV.Visible = false;
             }
+        }
+        private void txtMSSV_Enter(object sender, EventArgs e)
+        {
+            lbErrorMSSV.Visible = false;
         }
 
         private void txtMSSV_TextChanged(object sender, EventArgs e)

@@ -24,7 +24,11 @@ namespace DAL
 
         public List<DeThiDTO> GetAll()
         {
-            string query = "SELECT * FROM de_thi";
+            string query = @"
+        SELECT dt.*, nhp.ten_nhom
+        FROM de_thi dt
+        LEFT JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
+        LEFT JOIN nhom_hoc_phan nhp ON dtn.ma_nhom = nhp.ma_nhom";
             DataTable dt = DatabaseHelper.ExecuteQuery(query);
 
             var list = new List<DeThiDTO>(dt.Rows.Count);
@@ -33,6 +37,7 @@ namespace DAL
 
             return list;
         }
+
         public DeThiDTO GetFullDetailById(long maDe)
         {
             // 1. Lấy thông tin đề thi
@@ -172,7 +177,7 @@ namespace DAL
                 INSERT INTO de_thi
                 (ten_de, thoi_gian_bat_dau, thoi_gian_ket_thuc, thoi_gian_lam_bai, 
                  canh_bao_neu_duoi, so_cau_de, so_cau_trung_binh, so_cau_kho, trang_thai)
-                VALUES (@ten, @bd, @kt, @tg, @cb, @cd, @ctb, @ck, 1);
+                VALUES (@ten, @bd, @kt, @tg, @cb, @cd, @ctb, @ck, @tt);
                 SELECT SCOPE_IDENTITY();";
 
             var parameters = new SqlParameter[]
@@ -184,7 +189,8 @@ namespace DAL
                 new("@cb", deThi.CanhBaoNeuDuoi),
                 new("@cd", deThi.SoCauDe),
                 new("@ctb", deThi.SoCauTrungBinh),
-                new("@ck", deThi.SoCauKho)
+                new("@ck", deThi.SoCauKho),
+                new("@tt", deThi.TrangThai)
             };
 
             long maDe = Convert.ToInt64(DatabaseHelper.ExecuteScalar(query, parameters));
@@ -450,6 +456,21 @@ namespace DAL
             // 5. Không động đến de_thi_cau_hoi ở đây (xử lý riêng nếu cần)
             return affected > 0;
         }
+        public bool UpdateDeThiStatus(long maDe, int trangThai)
+        {
+            string query = @"
+        UPDATE de_thi
+        SET trang_thai = @trang_thai
+        WHERE ma_de = @ma_de";
+            var parameters = new SqlParameter[]
+            {
+        new("@trang_thai", trangThai),
+        new("@ma_de", maDe)
+            };
+            int affected = DatabaseHelper.ExecuteNonQuery(query, parameters);
+            return affected > 0;
+        }
+
         public void DeleteDeThiCauHoi(long maDe)
         {
             string sql = "DELETE FROM de_thi_cau_hoi WHERE ma_de = @maDe";
@@ -703,6 +724,38 @@ namespace DAL
                     SoCauKho = row["so_cau_kho"] == DBNull.Value ? 0 : Convert.ToInt32(row["so_cau_kho"]),
                     TrangThai = row["trang_thai"] == DBNull.Value ? 0 : Convert.ToInt32(row["trang_thai"])
                 });
+            }
+            return list;
+        }
+        public string GetTenMonHocByMaDe(long maDe)
+        {
+            string query = @"
+        SELECT mh.ten_mh
+        FROM de_thi_nhom dtn
+        JOIN nhom_hoc_phan nhp ON dtn.ma_nhom = nhp.ma_nhom
+        JOIN phan_cong pc ON nhp.ma_pc = pc.ma_pc
+        JOIN mon_hoc mh ON pc.ma_mh = mh.ma_mh
+        WHERE dtn.ma_de = @maDe";
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@maDe", maDe));
+            return dt.Rows.Count > 0 ? dt.Rows[0]["ten_mh"].ToString() : "";
+        }
+        public List<DeThiDTO> GetDeThiByUserId(string userId)
+        {
+            string query = @"
+        SELECT DISTINCT dt.*
+        FROM phan_cong pc
+        JOIN nhom_hoc_phan nhp 
+            ON pc.ma_pc = nhp.ma_pc
+        JOIN de_thi_nhom dtn 
+            ON nhp.ma_nhom = dtn.ma_nhom
+        JOIN de_thi dt
+            ON dtn.ma_de = dt.ma_de
+        WHERE pc.ma_nd =   @UserId";
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@UserId", userId));
+            var list = new List<DeThiDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(MapDeThi(row));
             }
             return list;
         }

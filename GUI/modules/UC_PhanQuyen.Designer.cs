@@ -40,31 +40,31 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             tablePhanQuyen = new Guna.UI2.WinForms.Guna2DataGridView();
-            MaNhomQuyen = new DataGridViewTextBoxColumn();
-            TenNhomQuyen = new DataGridViewTextBoxColumn();
-            SoNguoiDung = new DataGridViewTextBoxColumn();
-            editCol = new DataGridViewImageColumn();
-            deleteCol = new DataGridViewImageColumn();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnPrev = new Guna.UI2.WinForms.Guna2Button();
             lblPage = new Guna.UI2.WinForms.Guna2HtmlLabel();
             btnNext = new Guna.UI2.WinForms.Guna2Button();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             label1 = new Label();
+            MaNhomQuyen = new DataGridViewTextBoxColumn();
+            TenNhomQuyen = new DataGridViewTextBoxColumn();
+            SoNguoiDung = new DataGridViewTextBoxColumn();
+            editCol = new DataGridViewImageColumn();
+            deleteCol = new DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)tablePhanQuyen).BeginInit();
             SuspendLayout();
             // 
             // tablePhanQuyen
             // 
             tablePhanQuyen.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(242, 245, 250);
             tablePhanQuyen.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(242, 245, 250);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.Gray;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(242, 245, 250);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Gray;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(6, 101, 208);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(6, 101, 208);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             tablePhanQuyen.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             tablePhanQuyen.ColumnHeadersHeight = 50;
@@ -109,46 +109,6 @@
             tablePhanQuyen.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             tablePhanQuyen.CellContentClick += tablePhanQuyen_CellContentClick;
             tablePhanQuyen.CellMouseMove += tablePhanQuyen_CellMouseMove;
-            // 
-            // MaNhomQuyen
-            // 
-            MaNhomQuyen.HeaderText = "Mã nhóm quyền";
-            MaNhomQuyen.MinimumWidth = 6;
-            MaNhomQuyen.Name = "MaNhomQuyen";
-            // 
-            // TenNhomQuyen
-            // 
-            TenNhomQuyen.HeaderText = "Tên nhóm quyên";
-            TenNhomQuyen.MinimumWidth = 6;
-            TenNhomQuyen.Name = "TenNhomQuyen";
-            // 
-            // SoNguoiDung
-            // 
-            SoNguoiDung.HeaderText = "Số người dùng";
-            SoNguoiDung.MinimumWidth = 6;
-            SoNguoiDung.Name = "SoNguoiDung";
-            // 
-            // editCol
-            // 
-            editCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            editCol.FillWeight = 85.47237F;
-            editCol.HeaderText = "";
-            editCol.MinimumWidth = 6;
-            editCol.Name = "editCol";
-            editCol.Resizable = DataGridViewTriState.True;
-            editCol.SortMode = DataGridViewColumnSortMode.Automatic;
-            editCol.Width = 50;
-            // 
-            // deleteCol
-            // 
-            deleteCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            deleteCol.FillWeight = 187.165771F;
-            deleteCol.HeaderText = "";
-            deleteCol.MinimumWidth = 6;
-            deleteCol.Name = "deleteCol";
-            deleteCol.Resizable = DataGridViewTriState.True;
-            deleteCol.SortMode = DataGridViewColumnSortMode.Automatic;
-            deleteCol.Width = 50;
             // 
             // btnAdd
             // 
@@ -248,6 +208,46 @@
             label1.TabIndex = 15;
             label1.Text = "Tìm kiếm";
             // 
+            // MaNhomQuyen
+            // 
+            MaNhomQuyen.HeaderText = "Mã nhóm quyền";
+            MaNhomQuyen.MinimumWidth = 6;
+            MaNhomQuyen.Name = "MaNhomQuyen";
+            // 
+            // TenNhomQuyen
+            // 
+            TenNhomQuyen.HeaderText = "Tên nhóm quyền";
+            TenNhomQuyen.MinimumWidth = 6;
+            TenNhomQuyen.Name = "TenNhomQuyen";
+            // 
+            // SoNguoiDung
+            // 
+            SoNguoiDung.HeaderText = "Số người dùng";
+            SoNguoiDung.MinimumWidth = 6;
+            SoNguoiDung.Name = "SoNguoiDung";
+            // 
+            // editCol
+            // 
+            editCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            editCol.FillWeight = 85.47237F;
+            editCol.HeaderText = "";
+            editCol.MinimumWidth = 6;
+            editCol.Name = "editCol";
+            editCol.Resizable = DataGridViewTriState.True;
+            editCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            editCol.Width = 50;
+            // 
+            // deleteCol
+            // 
+            deleteCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            deleteCol.FillWeight = 187.165771F;
+            deleteCol.HeaderText = "";
+            deleteCol.MinimumWidth = 6;
+            deleteCol.Name = "deleteCol";
+            deleteCol.Resizable = DataGridViewTriState.True;
+            deleteCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            deleteCol.Width = 50;
+            // 
             // UC_PhanQuyen
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -269,16 +269,16 @@
         #endregion
 
         private Guna.UI2.WinForms.Guna2DataGridView tablePhanQuyen;
-        private DataGridViewTextBoxColumn MaNhomQuyen;
-        private DataGridViewTextBoxColumn TenNhomQuyen;
-        private DataGridViewTextBoxColumn SoNguoiDung;
-        private DataGridViewImageColumn editCol;
-        private DataGridViewImageColumn deleteCol;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnPrev;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblPage;
         private Guna.UI2.WinForms.Guna2Button btnNext;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Label label1;
+        private DataGridViewTextBoxColumn MaNhomQuyen;
+        private DataGridViewTextBoxColumn TenNhomQuyen;
+        private DataGridViewTextBoxColumn SoNguoiDung;
+        private DataGridViewImageColumn editCol;
+        private DataGridViewImageColumn deleteCol;
     }
 }

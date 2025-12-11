@@ -14,20 +14,22 @@ namespace GUI.modules
         private readonly MonHocBLL monHocBLL = new MonHocBLL();
         private readonly ChuongBLL chuongBLL = new ChuongBLL();
         private readonly CauHoiBLL cauHoiBLL = new CauHoiBLL();
+        private readonly string _userId;
+
 
 
         private long _maNhom=0;
-        public UC_TaoDeThi()
+        public UC_TaoDeThi(string userId)
         {
+            _userId = userId;
             InitializeComponent();
             LoadData();
             btnTaoDe.Click += BtnTaoDe_Click;
         }
 
-        
-
-        public UC_TaoDeThi(long maNhom)
+        public UC_TaoDeThi(string userId, long maNhom)
         {
+            _userId = userId;
             _maNhom = maNhom;
             InitializeComponent();
             LoadData();
@@ -54,11 +56,10 @@ namespace GUI.modules
         //}
         private void LoadData()
         {
-            // ✅ LOAD MÔN HỌC
-            var monList = monHocBLL.GetAllMonHocByStatus(1);
-
+            // Lấy danh sách môn học mà user được phân công
+            var monList = monHocBLL.GetMonHocTheoPhanCong(Convert.ToInt64(_userId));
             cbMonHoc.DataSource = monList;
-            cbMonHoc.DisplayMember = "TenMonHoc";   
+            cbMonHoc.DisplayMember = "TenMonHoc";
             cbMonHoc.ValueMember = "MaMonHoc";
             cbMonHoc.SelectedIndex = -1;
 
@@ -68,53 +69,45 @@ namespace GUI.modules
             cbMonHoc.SelectedIndexChanged -= cbMonHoc_SelectedIndexChanged;
             cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
 
-            
-            // ✅ ĐI TỪ NHÓM QUA → TỰ ĐỔ DATA
-            
+            // Nếu truyền vào mã nhóm, tự động chọn môn học và nhóm học phần
             if (_maNhom > 0)
             {
-                var nhom = nhomHocPhanBLL.GetById(_maNhom);
+                var nhomList = nhomHocPhanBLL.GetNhomByGiangVien(_userId);
+                var nhom = nhomList.FirstOrDefault(x => x.MaNhom == _maNhom);
                 if (nhom == null) return;
 
-                // ✅ MaMonHoc đang là STRING → ÉP LONG
-                long maMonHoc = Convert.ToInt64(nhom.MaMonHoc);
-
-                // ✅ CHỌN SẴN MÔN
-                cbMonHoc.SelectedValue = maMonHoc;
+                // Chọn sẵn môn học
+                cbMonHoc.SelectedValue = Convert.ToInt64(nhom.MaMonHoc);
                 cbMonHoc.Enabled = false;
 
-                // ✅ LOAD NHÓM THEO MÔN
-                var nhomList = nhomHocPhanBLL.GetByMonHoc(maMonHoc)
-                    .Where(x => x.TrangThai == 1)
-                    .ToList();
-
+                // Chỉ load các nhóm học phần thuộc môn học này mà user được phân công
+                var nhomListByMon = nhomList.Where(x => x.MaMonHoc == nhom.MaMonHoc && x.TrangThai == 1).ToList();
                 clbNhomHocPhan.Items.Clear();
-                foreach (var item in nhomList)
+                foreach (var item in nhomListByMon)
                     clbNhomHocPhan.Items.Add(item, false);
-
                 clbNhomHocPhan.DisplayMember = "TenNhom";
 
-                // ✅ CHECK ĐÚNG NHÓM ĐANG CHUYỂN QUA
+                // Check đúng nhóm đang chuyển qua
                 for (int i = 0; i < clbNhomHocPhan.Items.Count; i++)
                 {
                     var item = clbNhomHocPhan.Items[i] as NhomHocPhanDTO;
                     if (item != null && item.MaNhom == _maNhom)
                     {
                         clbNhomHocPhan.SetItemChecked(i, true);
-                        clbNhomHocPhan.Enabled = false; // ✅ KHÓA
+                        clbNhomHocPhan.Enabled = false;
                         break;
                     }
                 }
 
-                // ✅ LOAD CHƯƠNG
-                var chuongList = chuongBLL.GetChuongByMonHoc(maMonHoc);
+                // Load chương của môn học
+                var chuongList = chuongBLL.GetChuongByMonHoc(Convert.ToInt64(nhom.MaMonHoc));
                 clbChuong.Items.Clear();
                 foreach (var chuong in chuongList)
                     clbChuong.Items.Add(chuong, false);
-
                 clbChuong.DisplayMember = "TenChuong";
             }
         }
+
 
 
 
@@ -255,6 +248,7 @@ namespace GUI.modules
                 SoCauKho = (int)numKho.Value,
                 NhomHocPhanIds = nhomHocPhanIds,
                 ChuongIds = chuongIds,
+                TrangThai = 0,
                 CauHinh = new DeThiCauHinhDTO
                 {
                     TuDongLay = swTuDongLay.Checked,
