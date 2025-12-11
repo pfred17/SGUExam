@@ -34,21 +34,8 @@ namespace GUI.modules
         {
             flowDeThi.Controls.Clear();
 
-            // 1. Lấy danh sách nhóm học phần đã được phân công cho user hiện tại
-            var nhomHocPhanBLL = new NhomHocPhanBLL();
-            var dsNhomHocPhan = nhomHocPhanBLL.GetNhomHocPhanByUserId(_userId);
-            var nhomHocPhanIds = dsNhomHocPhan
-                .Select(nhp => nhp.MaNhom)
-                .Distinct()
-                .ToList();
-
-            // 2. Lấy tất cả đề thi
-            List<DeThiDTO> danhSachDeThi = deThiBLL.GetAllWithNhomHocPhan();
-
-            // 3. Chỉ giữ lại đề thi thuộc nhóm học phần đã phân công
-            danhSachDeThi = danhSachDeThi
-                .Where(deThi => deThi.NhomHocPhanIds != null && deThi.NhomHocPhanIds.Any(id => nhomHocPhanIds.Contains(id)))
-                .ToList();
+            // 1. Lấy danh sách đề thi thuộc nhóm học phần mà user hiện tại tham gia
+            List<DeThiDTO> danhSachDeThi = deThiBLL.GetDeThiByUserId(_userId);
 
             AutoUpdateDeThiStatus(danhSachDeThi);
 

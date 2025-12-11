@@ -739,6 +739,21 @@ namespace DAL
             var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@maDe", maDe));
             return dt.Rows.Count > 0 ? dt.Rows[0]["ten_mh"].ToString() : "";
         }
-
+        public List<DeThiDTO> GetDeThiByUserId(string userId)
+        {
+            string query = @"
+        SELECT DISTINCT dt.*
+        FROM de_thi dt
+        JOIN de_thi_nhom dtn ON dt.ma_de = dtn.ma_de
+        JOIN chi_tiet_nhom_hoc_phan ctnhp ON dtn.ma_nhom = ctnhp.ma_nhom
+        WHERE ctnhp.ma_nd = @UserId";
+            var dt = DatabaseHelper.ExecuteQuery(query, new SqlParameter("@UserId", userId));
+            var list = new List<DeThiDTO>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(MapDeThi(row));
+            }
+            return list;
+        }
     }
 }
