@@ -58,7 +58,8 @@ namespace DAL
                     ROW_NUMBER() OVER (ORDER BY nd.ho_ten) AS STT,
                     nd.ma_nd AS MSSV,
                     nd.ho_ten AS HoTen,
-                    nd.gioi_tinh AS GioiTinh
+                    nd.gioi_tinh AS GioiTinh,
+                    nd.email AS Email
                 FROM chi_tiet_nhom_hoc_phan ct
                 JOIN nguoi_dung nd ON ct.ma_nd = nd.ma_nd
                 WHERE ct.ma_nhom = @maNhom AND nd.trang_thai = 1

@@ -55,12 +55,6 @@
             btnNext = new Button();
             btnPrev = new Button();
             dgvSinhVien = new Guna.UI2.WinForms.Guna2DataGridView();
-            colSTT = new DataGridViewTextBoxColumn();
-            colHoTen = new DataGridViewTextBoxColumn();
-            colMaSinhVien = new DataGridViewTextBoxColumn();
-            colGioiTinh = new DataGridViewTextBoxColumn();
-            colHanhDong = new DataGridViewButtonColumn();
-            colChiTiet = new DataGridViewImageColumn();
             lbTongSV = new Label();
             guna2CustomGradientPanel2 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             lbThongTinNhom = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -70,6 +64,13 @@
             btnClose = new Button();
             lbThongTinNhomDeThi = new Label();
             flowDeThi = new FlowLayoutPanel();
+            colSTT = new DataGridViewTextBoxColumn();
+            colHoTen = new DataGridViewTextBoxColumn();
+            colMaSinhVien = new DataGridViewTextBoxColumn();
+            colGioiTinh = new DataGridViewTextBoxColumn();
+            colEmail = new DataGridViewTextBoxColumn();
+            colHanhDong = new DataGridViewButtonColumn();
+            colChiTiet = new DataGridViewImageColumn();
             guna2CustomGradientPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSinhVien).BeginInit();
             guna2CustomGradientPanel2.SuspendLayout();
@@ -217,7 +218,7 @@
             dgvSinhVien.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvSinhVien.ColumnHeadersHeight = 27;
             dgvSinhVien.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dgvSinhVien.Columns.AddRange(new DataGridViewColumn[] { colSTT, colHoTen, colMaSinhVien, colGioiTinh, colHanhDong, colChiTiet });
+            dgvSinhVien.Columns.AddRange(new DataGridViewColumn[] { colSTT, colHoTen, colMaSinhVien, colGioiTinh, colEmail, colHanhDong, colChiTiet });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -227,7 +228,7 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvSinhVien.DefaultCellStyle = dataGridViewCellStyle3;
             dgvSinhVien.GridColor = Color.FromArgb(231, 229, 255);
-            dgvSinhVien.Location = new Point(20, 30);
+            dgvSinhVien.Location = new Point(23, 30);
             dgvSinhVien.Margin = new Padding(0);
             dgvSinhVien.Name = "dgvSinhVien";
             dgvSinhVien.RowHeadersVisible = false;
@@ -257,48 +258,6 @@
             dgvSinhVien.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvSinhVien.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvSinhVien.SelectionChanged += dgvSinhVien_SelectionChanged;
-            // 
-            // colSTT
-            // 
-            colSTT.HeaderText = "STT";
-            colSTT.MinimumWidth = 8;
-            colSTT.Name = "colSTT";
-            // 
-            // colHoTen
-            // 
-            colHoTen.HeaderText = "Họ tên";
-            colHoTen.MinimumWidth = 8;
-            colHoTen.Name = "colHoTen";
-            // 
-            // colMaSinhVien
-            // 
-            colMaSinhVien.HeaderText = "Mã sinh viên";
-            colMaSinhVien.MinimumWidth = 8;
-            colMaSinhVien.Name = "colMaSinhVien";
-            // 
-            // colGioiTinh
-            // 
-            colGioiTinh.HeaderText = "Giới tính";
-            colGioiTinh.MinimumWidth = 8;
-            colGioiTinh.Name = "colGioiTinh";
-            // 
-            // colHanhDong
-            // 
-            colHanhDong.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colHanhDong.HeaderText = "Xóa";
-            colHanhDong.MinimumWidth = 7;
-            colHanhDong.Name = "colHanhDong";
-            colHanhDong.Resizable = DataGridViewTriState.True;
-            colHanhDong.SortMode = DataGridViewColumnSortMode.Automatic;
-            colHanhDong.Width = 106;
-            // 
-            // colChiTiet
-            // 
-            colChiTiet.HeaderText = "Chi tiết";
-            colChiTiet.Image = Properties.Resources.icon_eyes1;
-            colChiTiet.MinimumWidth = 6;
-            colChiTiet.Name = "colChiTiet";
-            colChiTiet.ReadOnly = true;
             // 
             // lbTongSV
             // 
@@ -413,6 +372,54 @@
             flowDeThi.Size = new Size(536, 656);
             flowDeThi.TabIndex = 0;
             // 
+            // colSTT
+            // 
+            colSTT.HeaderText = "STT";
+            colSTT.MinimumWidth = 8;
+            colSTT.Name = "colSTT";
+            // 
+            // colHoTen
+            // 
+            colHoTen.HeaderText = "Họ tên";
+            colHoTen.MinimumWidth = 8;
+            colHoTen.Name = "colHoTen";
+            // 
+            // colMaSinhVien
+            // 
+            colMaSinhVien.HeaderText = "Mã sinh viên";
+            colMaSinhVien.MinimumWidth = 8;
+            colMaSinhVien.Name = "colMaSinhVien";
+            // 
+            // colGioiTinh
+            // 
+            colGioiTinh.HeaderText = "Giới tính";
+            colGioiTinh.MinimumWidth = 8;
+            colGioiTinh.Name = "colGioiTinh";
+            // 
+            // colEmail
+            // 
+            colEmail.HeaderText = "Email";
+            colEmail.MinimumWidth = 6;
+            colEmail.Name = "colEmail";
+            // 
+            // colHanhDong
+            // 
+            colHanhDong.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colHanhDong.HeaderText = "Xóa";
+            colHanhDong.MinimumWidth = 7;
+            colHanhDong.Name = "colHanhDong";
+            colHanhDong.Resizable = DataGridViewTriState.True;
+            colHanhDong.SortMode = DataGridViewColumnSortMode.Automatic;
+            colHanhDong.Width = 106;
+            // 
+            // colChiTiet
+            // 
+            colChiTiet.HeaderText = "Chi tiết";
+            colChiTiet.Image = Properties.Resources.icon_eyes1;
+            colChiTiet.MinimumWidth = 6;
+            colChiTiet.Name = "colChiTiet";
+            colChiTiet.ReadOnly = true;
+            // 
             // UC_SinhVienTrongNhom
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -462,6 +469,7 @@
         private DataGridViewTextBoxColumn colHoTen;
         private DataGridViewTextBoxColumn colMaSinhVien;
         private DataGridViewTextBoxColumn colGioiTinh;
+        private DataGridViewTextBoxColumn colEmail;
         private DataGridViewButtonColumn colHanhDong;
         private DataGridViewImageColumn colChiTiet;
     }

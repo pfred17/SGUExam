@@ -57,8 +57,8 @@ namespace GUI.forms.hocphan
                 Control[] order = new Control[]
                 {
                     tbTenNhom,
-                    tbGhiChu,
                     cbMonHoc,
+                    tbGhiChu,
                     cbNamHoc,
                     cbHocKy,
                     btnLuu  

@@ -122,7 +122,7 @@
             cbMonHoc.Name = "cbMonHoc";
             cbMonHoc.ShadowDecoration.CustomizableEdges = customizableEdges6;
             cbMonHoc.Size = new Size(567, 36);
-            cbMonHoc.TabIndex = 2;
+            cbMonHoc.TabIndex = 1;
             cbMonHoc.SelectedIndexChanged += cbMonHoc_SelectedIndexChanged;
             // 
             // tbGhiChu
@@ -143,7 +143,7 @@
             tbGhiChu.SelectedText = "";
             tbGhiChu.ShadowDecoration.CustomizableEdges = customizableEdges8;
             tbGhiChu.Size = new Size(567, 29);
-            tbGhiChu.TabIndex = 1;
+            tbGhiChu.TabIndex = 2;
             // 
             // tbTenNhom
             // 

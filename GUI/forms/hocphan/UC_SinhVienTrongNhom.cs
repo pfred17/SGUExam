@@ -301,7 +301,9 @@ namespace GUI
                     row["HoTen"].ToString(),
                     row["MSSV"].ToString(),
                     Convert.ToInt32(row["GioiTinh"]) == 0 ? "Nam" : "Nữ",
+                    row["Email"] != DBNull.Value ? row["Email"].ToString() : "",
                     "Xóa"
+                    
                 );
             }
         }
@@ -405,7 +407,8 @@ namespace GUI
                     ws.Cell(1, 2).Value = "Họ tên";
                     ws.Cell(1, 3).Value = "MSSV";
                     ws.Cell(1, 4).Value = "Giới tính";
-                    ws.Range(1, 1, 1, 4).Style.Font.SetBold();
+                    ws.Cell(1, 5).Value = "Email";
+                    ws.Range(1, 1, 1, 5).Style.Font.SetBold();
 
                     int r = 2;
                     int stt = 1;
@@ -413,6 +416,7 @@ namespace GUI
                     {
                         string hoTen = row["HoTen"]?.ToString() ?? string.Empty;
                         string mssv = row["MSSV"]?.ToString() ?? string.Empty;
+                        string email = row["Email"] != DBNull.Value ? row["Email"].ToString() : "";
                         int gioiTinh = 0;
                         if (row.Table.Columns.Contains("GioiTinh") && row["GioiTinh"] != DBNull.Value)
                         {
@@ -430,7 +434,7 @@ namespace GUI
                         cellMSSV.Style.NumberFormat.Format = "@";
 
                         ws.Cell(r, 4).Value = gioiTinh == 0 ? "Nam" : "Nữ";
-
+                        ws.Cell(r, 5).Value = email;
                         r++;
                     }
 
